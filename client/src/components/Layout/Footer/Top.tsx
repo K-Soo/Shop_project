@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import * as S from 'components/Layout/Footer/style';
-import { ACCOUNT_INFO, FAVORITE_MENU, CUSTOMER_CENTER } from '../../../../utils/constants/footer';
+import { ACCOUNT_INFO, FAVORITE_MENU, CUSTOMER_CENTER, RETURN_EXCHANGE } from '../../../../utils/constants/footer';
 
 interface ITop {
   className?: string;
@@ -52,6 +52,18 @@ const Top: React.FC<ITop> = ({ className }) => {
             ))}
           </ul>
         </article>
+
+        <article className='container__favorite-menu'>
+          <S.Title>RETURN / EXCHANGE</S.Title>
+          <ul>
+            {RETURN_EXCHANGE.map((d) => (
+              <li key={d}>
+                {d}
+              </li>
+            ))}
+          </ul>
+        </article>
+
       </section>
     </div>
   )
@@ -71,11 +83,11 @@ export default styled(Top)`
     flex-wrap: wrap;
     &__customer{
       border: 1px solid red;
-      flex-basis: 40%;
+      flex-basis: 30%;
     }
     &__account-info{
       border: 1px solid red;
-      flex-basis: 30%;
+      /* flex-basis: 30%; */
     }
   }
 `;
