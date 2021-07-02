@@ -20,4 +20,5 @@ export default styled(MainContainer)`
   max-width: 1200px;
   margin: 0 auto;
   border: 1px solid #000;
+  height: 700px;
 `;

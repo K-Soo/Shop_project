@@ -10,8 +10,9 @@ interface IBottom {
 const Bottom: React.FC<IBottom> = ({ className }) => {
 
   return (
-    <section className={className}>
-      <div className='container'>
+    <div className={className}>
+      <section className='container'>
+        {/* <Icon  name='bed'/> */}
         <ul className='container__lists'>
           {Object.entries(COMPANY_INFO).map((d => (
             <li key={d[1]} className='container__lists--item'>
@@ -24,8 +25,8 @@ const Bottom: React.FC<IBottom> = ({ className }) => {
             </li>
           )))}
         </ul>
-      </div>
-    </section>
+      </section>
+    </div>
   )
 };
 

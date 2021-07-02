@@ -3,11 +3,8 @@ import { normalize } from 'styled-normalize'
 
 export const GlobalStyle = createGlobalStyle`
   ${normalize}
-  
-  html,
-  body {
-    overflow: hidden;
-  }
+
+
 
   html,
   body,
@@ -135,4 +132,8 @@ export const GlobalStyle = createGlobalStyle`
   * {
     box-sizing: border-box;
   }
-`
+
+  body{
+    padding-top: 40px;
+  }
+`;

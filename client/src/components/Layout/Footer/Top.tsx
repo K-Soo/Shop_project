@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import * as S from 'components/Layout/Footer/style';
 import { ACCOUNT_INFO, FAVORITE_MENU, CUSTOMER_CENTER, RETURN_EXCHANGE } from '../../../../utils/constants/footer';
-
+// import Gicon from '../../Icon/Gicon';
 interface ITop {
   className?: string;
 }
@@ -13,30 +13,18 @@ const Top: React.FC<ITop> = ({ className }) => {
       <section className='container'>
         <article className='container__customer'>
           <S.Title>CUSTOMER CENTER</S.Title>
-          <p className='container__customer--number' >
-            {CUSTOMER_CENTER.number}
-          </p>
-
-          <p>
-            {CUSTOMER_CENTER.open} / {CUSTOMER_CENTER.close}
-          </p>
-
-          <p>
-            {CUSTOMER_CENTER.desc}
-          </p>
+          <p className='container__customer--number' >{CUSTOMER_CENTER.number}</p>
+          <p className='container__customer--time-zone'>{CUSTOMER_CENTER.open} / {CUSTOMER_CENTER.close}</p>
+          <p className='container__customer--desc'>{CUSTOMER_CENTER.desc}</p>
         </article>
 
         <article className='container__account-info'>
           <S.Title>ACCOUNT INFO</S.Title>
           <ul>
             {ACCOUNT_INFO.map((d) => (
-              <li key={d.label}>
-                <span>
-                  {d.label}
-                </span>
-                <span>
-                  {d.value}
-                </span>
+              <li key={d.label} className='container__account-info--item'>
+                <span>{d.label}</span>
+                <span>{d.value}</span>
               </li>
             ))}
           </ul>
@@ -46,18 +34,18 @@ const Top: React.FC<ITop> = ({ className }) => {
           <S.Title>FAVORITE MENU</S.Title>
           <ul>
             {FAVORITE_MENU.map((d) => (
-              <li key={d}>
+              <li key={d} className='container__favorite-menu--item'>
                 {d}
               </li>
             ))}
           </ul>
         </article>
 
-        <article className='container__favorite-menu'>
+        <article className='container__return-exchange'>
           <S.Title>RETURN / EXCHANGE</S.Title>
           <ul>
             {RETURN_EXCHANGE.map((d) => (
-              <li key={d}>
+              <li key={d} className='container__return-exchange--item'>
                 {d}
               </li>
             ))}
@@ -72,22 +60,69 @@ const Top: React.FC<ITop> = ({ className }) => {
 
 
 export default styled(Top)`
-  /* height: 150px; */
   border-top: 1px solid #e7e7e7;
   border-bottom: 1px solid #e7e7e7;
   .container{
     max-width: 1200px;
     margin: 20px auto;
-    border: 1px solid red;
     display: flex;
-    flex-wrap: wrap;
+    /* flex-wrap: wrap; */
+    color: #888;
+    font-size: 11px;
+    justify-content: space-between;
     &__customer{
+      /* flex-basis: 30%; */
       border: 1px solid red;
-      flex-basis: 30%;
+      &--number{
+        color: #333;
+        margin-bottom: 15px;
+        font-size: 30px;
+        font-weight: bold;
+      }
+      &--time-zone{
+        margin-bottom: 20px;
+      }
+      &--desc{
+        border: 1px solid red;
+        max-width: 400px;
+      }
     }
     &__account-info{
+      padding: 0 30px;
       border: 1px solid red;
+
+      &--item{
+        margin-bottom:10px;
+        span:first-child{
+          ::after{
+            content: ' : ';
+          }
+        }
+        &:last-child{
+          margin: 0;
+        }
+      }
+    }
+
+    &__favorite-menu{
+      /* flex-basis: 20%; */
+      padding: 0 30px;
+      border: 1px solid red;
+
+      &--item{
+        margin-bottom:10px;
+        :last-child{
+          margin: 0;
+        }
+      }
+    }
+    &__return-exchange{
       /* flex-basis: 30%; */
+      padding-left: 30px;
+      border: 1px solid red;
+      &--item{
+        margin-bottom: 10px;
+      }
     }
   }
 `;

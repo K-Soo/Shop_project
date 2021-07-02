@@ -1,5 +1,6 @@
 import React,{useEffect,useState} from 'react';
 import styled from 'styled-components';
+import SubTop from 'components/Layout/Footer/SubTop';
 import Top from 'components/Layout/Footer/Top';
 import Bottom from 'components/Layout/Footer/Bottom';
 import axios from 'axios';
@@ -24,6 +25,7 @@ const Footer: React.FC<IFooter> = ({ className }) => {
 
   return (
     <footer className={className}>
+      <SubTop />
       <Top />
       <Bottom />
     </footer>
