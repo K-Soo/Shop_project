@@ -9,7 +9,6 @@ interface IMainContainer {
 const MainContainer: React.FC<IMainContainer> = ({ className }) => {
   return (
     <main className={className}>
-      MainContainer
       {/* <DaumPost /> */}
     </main>
   )
@@ -19,6 +18,6 @@ const MainContainer: React.FC<IMainContainer> = ({ className }) => {
 export default styled(MainContainer)`
   max-width: 1200px;
   margin: 0 auto;
-  border: 1px solid #000;
+  /* border: 1px solid #000; */
   height: 700px;
 `;

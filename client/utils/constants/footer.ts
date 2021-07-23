@@ -36,3 +36,9 @@ export const RETURN_EXCHANGE = [
   "자세한 교환·반품절차 안내는 문의란 및 공지사항을 참고해주세요",
 ] as const;
 
+export const SUB_TOP_LISTS = [
+  { label: '회사소개', value: 'login', url: '/auth/login' },
+  { label: '이용약관', value: 'register', url: '/auth/register' },
+  { label: '개인정보 취급 방침', value: 'register', url: '/auth/register' },
+  { label: '이용안내', value: 'register', url: '/auth/register' },
+] as const
