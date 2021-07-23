@@ -9,8 +9,6 @@ interface ITop {
 
 
 const Top: React.FC<ITop> = ({ className }) => {
-
-
   return (
     <div className={className}>
       <section className='container'>
@@ -74,7 +72,6 @@ export default styled(Top)`
     justify-content: space-between;
     &__customer{
       /* flex-basis: 30%; */
-      border: 1px solid red;
       &--number{
         color: #333;
         margin-bottom: 15px;
@@ -85,14 +82,11 @@ export default styled(Top)`
         margin-bottom: 20px;
       }
       &--desc{
-        border: 1px solid red;
         max-width: 400px;
       }
     }
     &__account-info{
       padding: 0 30px;
-      border: 1px solid red;
-
       &--item{
         margin-bottom:10px;
         span:first-child{
@@ -105,12 +99,9 @@ export default styled(Top)`
         }
       }
     }
-
     &__favorite-menu{
       /* flex-basis: 20%; */
       padding: 0 30px;
-      border: 1px solid red;
-
       &--item{
         margin-bottom:10px;
         :last-child{
@@ -121,7 +112,6 @@ export default styled(Top)`
     &__return-exchange{
       /* flex-basis: 30%; */
       padding-left: 30px;
-      border: 1px solid red;
       &--item{
         margin-bottom: 10px;
       }
