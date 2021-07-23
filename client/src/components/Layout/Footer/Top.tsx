@@ -7,7 +7,10 @@ interface ITop {
   className?: string;
 }
 
+
 const Top: React.FC<ITop> = ({ className }) => {
+
+
   return (
     <div className={className}>
       <section className='container'>
@@ -51,7 +54,6 @@ const Top: React.FC<ITop> = ({ className }) => {
             ))}
           </ul>
         </article>
-
       </section>
     </div>
   )

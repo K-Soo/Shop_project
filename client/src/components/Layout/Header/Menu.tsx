@@ -1,23 +1,55 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import Link from 'next/link';
 
 interface IMenu {
   className?: string;
+  ScrollActive: boolean;
 }
 
-const Categories = [
+const Categories: { label: string, value: string, url: string }[] = [
   { label: '로그인', value: 'login', url: '/auth/login' },
   { label: '회원가입', value: 'register', url: '/auth/register' },
 ]
 
-const Menu: React.FC<IMenu> = ({ className }) => {
+
+const Lists = styled.ul<{ ScrollActive: boolean }>`
+  height: 100%;
+  border: 1px solid red;
+  display: flex;
+  align-items: center;
+  .item {
+    border: 1px solid #000;
+    padding: 0px 10px;
+  }
+  .home-link{
+    opacity: 0;
+    width: 0px;
+  }
+
+  ${props => props.ScrollActive && css`
+    .home-link{
+      border: 1px solid red;
+      width: 50px;
+      /* display: block; */
+      transition: width .5s ease;
+      opacity: 1;
+      height: 100%;
+    }
+  `}
+  
+`;
+
+const Menu: React.FC<IMenu> = ({ className, ScrollActive }) => {
   return (
     <div className={className}>
       <div className='container'>
-        <ul className='container__lists'>
+        <Lists className='lists' ScrollActive={ScrollActive}>
+          <li className='home-link'>
+            홈
+          </li>
           {Categories.map((d) => (
-            <li key={d.value} className='container__lists--item'>
+            <li key={d.value} className='item'>
               <Link href={d.url} >
                 <a>
                   {d.label}
@@ -25,25 +57,11 @@ const Menu: React.FC<IMenu> = ({ className }) => {
               </Link>
             </li>
           ))}
-        </ul>
-
-        <ul className='container__'>
-          {Categories.map((d) => (
-            <li key={d.value} className='container__lists--item'>
-              <Link href={d.url} >
-                <a>
-                  {d.label}
-                </a>
-              </Link>
-            </li>
-          ))}
-        </ul>
-
+        </Lists>
       </div>
     </div>
   )
 };
-
 
 export default styled(Menu)`
   height: 40px;
@@ -61,12 +79,12 @@ export default styled(Menu)`
     font-size: 12px;
     letter-spacing: 0.5px;
     display: flex;
-    justify-content: space-between;
-    &__lists{
+    /* justify-content: space-between; */
+    /* &__lists{
       height: 100%;
       border: 1px solid red;
       display: flex;
       align-items: center;
-    }
+    } */
   }
 `;
