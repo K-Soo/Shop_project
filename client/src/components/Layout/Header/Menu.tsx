@@ -84,7 +84,7 @@ export default styled(Menu)`
   top: 0;
   width: 100%;
   border-bottom: 1px solid #e8e8e8;
-  border-bottom-color: rgba(0,0,0,.09);
+  /* border-bottom: rgba(0,0,0,.09); */
   .container{
     max-width: 1200px;
     height: 100%;

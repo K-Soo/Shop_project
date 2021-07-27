@@ -39,6 +39,6 @@ export const RETURN_EXCHANGE = [
 export const SUB_TOP_LISTS = [
   { label: '회사소개', value: 'login', url: '/auth/login' },
   { label: '이용약관', value: 'register', url: '/auth/register' },
-  { label: '개인정보 취급 방침', value: 'register', url: '/auth/register' },
-  { label: '이용안내', value: 'register', url: '/auth/register' },
+  { label: '개인정보 취급 방침', value: '개인정보', url: '/auth/register' },
+  { label: '이용안내', value: '이용안내', url: '/auth/register' },
 ] as const

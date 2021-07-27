@@ -1,12 +1,15 @@
-import type { AppProps } from 'next/app'
-import Layout from 'components/Layout';
-import { GlobalStyle } from 'styles/global-styles.ts';
-import Theme from 'styles/Theme';
-
+import type { AppProps } from "next/app";
+import Layout from "components/Layout";
+import { GlobalStyle } from "styles/global-styles.ts";
+import Theme from "styles/Theme";
+import Head from "next/head";
 
 function App({ Component, pageProps }: AppProps) {
   return (
     <>
+      <Head>
+        <title>ㅁㅁㅁㅁ</title>
+      </Head>
       <GlobalStyle />
       <Theme>
         <Layout>
@@ -14,6 +17,6 @@ function App({ Component, pageProps }: AppProps) {
         </Layout>
       </Theme>
     </>
-  )
+  );
 }
-export default App
+export default App;

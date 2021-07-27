@@ -1,19 +1,18 @@
 import React from 'react';
-import styled from 'styled-components';
+import Head from 'next/head'
+
 
 interface IRegister {
   className?: string;
 }
 
-const register: React.FC<IRegister> = ({ className }) => {
+export default function register()  {
   return (
-    <div className={className}>
+    <>
+      <Head>
+        <title>회원가입</title>
+      </Head>
       register
-    </div>
+    </>
   )
 };
-
-
-export default styled(register)`
-
-`;

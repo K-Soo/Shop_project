@@ -1,20 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import styled, { css } from 'styled-components';
-import Nav from 'components/Layout/Header/Nav';
-import ImageBox from 'components/Layout/Header/ImageBox';
-import Menu from 'components/Layout/Header/Menu';
+import React, { useState, useEffect } from "react";
+import styled, { css } from "styled-components";
+import Nav from "components/Layout/Header/Nav";
+import ImageBox from "components/Layout/Header/ImageBox";
+import Menu from "components/Layout/Header/Menu";
 
 interface IHeader {
   className?: string;
 }
 
 const StyledHeader = styled.header<{ ScrollActive: boolean }>`
-  /* border: 1px solid #000; */
   /* position: relative; */
-  height: auto;
-  ${props => props.ScrollActive && css`
-    margin-bottom:50px;
-  `}
+  ${props =>
+    props.ScrollActive &&
+    css`
+      margin-bottom: 50px;
+    `}
 `;
 
 const Header: React.FC<IHeader> = ({ className }) => {
@@ -44,11 +44,11 @@ const Header: React.FC<IHeader> = ({ className }) => {
 
   return (
     <StyledHeader className={className} ScrollActive={ScrollActive}>
-      <Menu ScrollActive={ScrollActive}/>
+      <Menu ScrollActive={ScrollActive} />
       <ImageBox />
       <Nav ScrollActive={ScrollActive} />
     </StyledHeader>
-  )
+  );
 };
 
 export default Header;
