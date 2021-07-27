@@ -49,9 +49,7 @@ const StyledNav = styled.nav<{ ScrollActive: boolean }>`
           vertical-align: bottom;
           font-size: 14px;
           ${({ theme }) => theme.mobile`
-            // font-size: 10px;
             padding: 0;
-
           `}
         }
       }

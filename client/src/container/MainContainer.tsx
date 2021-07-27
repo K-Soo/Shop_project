@@ -55,6 +55,7 @@ const MainContainer: React.FC<IMainContainer> = ({ className }) => {
 
 export default styled(MainContainer)`
   max-width: 1200px;
+  padding: 0 20px;
   margin: 0 auto;
   border: 1px solid #000;
   height: 700px;
