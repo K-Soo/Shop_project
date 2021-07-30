@@ -1,4 +1,11 @@
-const PAGE: { [index: string]: { path: string; tag: string } } = {
+export interface IPage {
+  [index:string]:{
+    path: string;
+    tag: string;
+  }
+}
+
+const PAGE: IPage= {
   MAIN: {
     path: "/",
     tag: "메인",
@@ -9,8 +16,24 @@ const PAGE: { [index: string]: { path: string; tag: string } } = {
   },
   REGISTER: {
     path: "/auth/register",
-    tag: "회원가입",
+    tag: "회원가입",              
   },
-} as const;
+  COMPANY: {
+    path: "/shop-info/company",
+    tag: "회사소개",
+  },
+  AGREEMENT: {
+    path: "/shop-info/agreement",
+    tag: "이용약관",
+  },
+  PRIVACY: {
+    path: "/shop-info/privacy",
+    tag: "개인정보취급방침",
+  },
+  GUIDE: {
+    path: "/shop-info/guide",
+    tag: "이용안내",
+  },
+}
 
 export default PAGE;

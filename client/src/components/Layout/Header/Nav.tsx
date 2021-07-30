@@ -1,21 +1,11 @@
 import React, { useState, useEffect } from "react";
 import styled, { css } from "styled-components";
 import Link from "next/link";
-
+import { NAV_MENU } from "../../../../utils/constants/nav";
 interface INav {
   className?: string;
   ScrollActive: boolean;
 }
-
-const lists: { label: string }[] = [
-  { label: "메뉴1" },
-  { label: "메뉴2" },
-  { label: "메뉴3" },
-  { label: "메뉴4" },
-  { label: "메뉴5" },
-  { label: "메뉴6" },
-  { label: "메뉴7" },
-];
 
 const StyledNav = styled.nav<{ ScrollActive: boolean }>`
   height: 50px;
@@ -69,9 +59,9 @@ const Nav: React.FC<INav> = ({ className, ScrollActive }) => {
     <StyledNav className={className} ScrollActive={ScrollActive}>
       <div className='container'>
         <ul className='container__lists'>
-          {lists.map(d => (
+          {NAV_MENU.map(d => (
             <li className='container__lists--item' key={d.label}>
-              <Link href={""}>
+              <Link href={d.url}>
                 <a>{d.label}</a>
               </Link>
             </li>

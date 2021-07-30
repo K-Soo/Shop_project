@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Button from "components/style/Button";
 import { useRouter } from "next/router";
-import PAGE, { IPAGE } from "../../../../utils/path";
+import PAGE from "../../../../utils/path";
 import Breadcrumb from "components/Common/Breadcrumb";
 import Link from "next/link";
 
@@ -10,20 +10,14 @@ interface ILogin {
   className?: string;
 }
 
-const items = [
-  { url: "/", label: "홈" },
-  { url: "", label: "로그인" },
-];
-const arr = [PAGE.MAIN, PAGE.LOGIN];
-
 const Login: React.FC<ILogin> = ({ className }) => {
   const router = useRouter();
   return (
-    <div className={className}>
+    <main className={className}>
       <Breadcrumb>
-        {items.map(({ url, label }) => (
-          <Link key={url} href={url}>
-            {label}
+        {[PAGE.MAIN, PAGE.LOGIN].map(({ path, tag }) => (
+          <Link key={path} href={path}>
+            {tag}
           </Link>
         ))}
       </Breadcrumb>
@@ -52,7 +46,7 @@ const Login: React.FC<ILogin> = ({ className }) => {
           {PAGE.REGISTER.tag}
         </Button>
       </div>
-    </div>
+    </main>
   );
 };
 

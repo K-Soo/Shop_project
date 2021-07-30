@@ -7,19 +7,16 @@ interface IBreadcrumb {
 
 const BreadcrumbBlock = styled.ol`
   display: flex;
-  border: 1px solid red;
-  padding: 10px 0;
   font-size: 12px;
   color: #666666;
-  li:last-child {
-    border: 1px solid red;
-    cursor: none;
-  }
   li {
-    padding: 0 10px;
-    /* border: 1px solid red; */
+    padding: 0 5px;
+    a {
+      display: inline-block;
+    }
     &:last-child {
       font-weight: 600;
+      padding: 0 15px;
       color: #000;
     }
   }
@@ -41,7 +38,7 @@ const Breadcrumb: React.FC<IBreadcrumb> = props => {
   children = children.reduce((acc, child, index) => {
     const notLast: boolean = index < lastIndex;
     if (notLast) {
-      acc.push(child, "/");
+      acc.push(child, ">");
     } else {
       acc.push(child);
     }
@@ -56,9 +53,8 @@ const Breadcrumb: React.FC<IBreadcrumb> = props => {
 };
 
 export default styled(Breadcrumb)`
-  border: 1px solid red;
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 15px auto;
   display: flex;
   justify-content: flex-end;
 `;

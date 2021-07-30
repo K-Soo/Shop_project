@@ -3,9 +3,6 @@ import { normalize } from 'styled-normalize'
 
 export const GlobalStyle = createGlobalStyle`
   ${normalize}
-
-
-
   html,
   body,
   div,

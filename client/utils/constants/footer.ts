@@ -37,8 +37,8 @@ export const RETURN_EXCHANGE = [
 ] as const;
 
 export const SUB_TOP_LISTS = [
-  { label: '회사소개', value: 'login', url: '/auth/login' },
-  { label: '이용약관', value: 'register', url: '/auth/register' },
-  { label: '개인정보 취급 방침', value: '개인정보', url: '/auth/register' },
-  { label: '이용안내', value: '이용안내', url: '/auth/register' },
+  { label: '회사소개', value: 'login', url: '/shop-info/company' },
+  { label: '이용약관', value: 'register', url: '/shop-info/agreement' },
+  { label: '개인정보 취급 방침', value: '개인정보', url: '/shop-info/privacy' },
+  { label: '이용안내', value: '이용안내', url: '/shop-info/guide' },
 ] as const

@@ -4,7 +4,7 @@ import { GlobalStyle } from "styles/global-styles.ts";
 import Theme from "styles/Theme";
 import Head from "next/head";
 
-function App({ Component, pageProps }: AppProps) {
+export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
@@ -19,4 +19,3 @@ function App({ Component, pageProps }: AppProps) {
     </>
   );
 }
-export default App;
