@@ -53,8 +53,8 @@ const StyledNav = styled.nav<{ ScrollActive: boolean }>`
 
 const Nav: React.FC<INav> = ({ className, ScrollActive }) => {
   return (
-    <StyledNav className={className} ScrollActive={ScrollActive}>
-      <div className='container'>
+    <StyledNav className={className} ScrollActive={ScrollActive} id='top'>
+      <div className='container' id='top'>
         <ul className='container__lists'>
           {NAV_MENU.map(d => (
             <li className='container__lists--item' key={d.label}>

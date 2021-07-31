@@ -1,24 +1,23 @@
-import React from 'react';
-import styled, { css } from 'styled-components';
-import Link from 'next/link';
-import PAGE from '../../../../utils/path';
+import React from "react";
+import styled, { css } from "styled-components";
+import Link from "next/link";
+import PAGE from "../../../../utils/path";
 
 interface IMenu {
   className?: string;
   ScrollActive: boolean;
 }
 
-const Categories: { label: string, value: string, url: string }[] = [
-  { label: '로그인', value: 'login', url: '/auth/login' },
-  { label: '회원가입', value: 'register', url: '/auth/register' },
-]
-
+const Categories: { label: string; value: string; url: string }[] = [
+  { label: "로그인", value: "login", url: "/auth/login" },
+  { label: "회원가입", value: "register", url: "/auth/register" },
+];
 
 const Lists = styled.ul<{ ScrollActive: boolean }>`
   height: 100%;
   display: flex;
   align-items: center;
-  a{
+  a {
     display: inline-block;
     width: 100%;
     text-align: center;
@@ -29,7 +28,7 @@ const Lists = styled.ul<{ ScrollActive: boolean }>`
     height: 100%;
     width: 50px;
   }
-  .home-link{
+  .home-link {
     opacity: 0;
     width: 0px;
     display: flex;
@@ -37,17 +36,18 @@ const Lists = styled.ul<{ ScrollActive: boolean }>`
     justify-content: center;
   }
 
-  ${props => props.ScrollActive && css`
-    .home-link{
-      color: #fff;
-      width: 50px;
-      background-color: rgba(55,55,55,0.9);
-      transition: width .5s ease;
-      opacity: 1;
-      height: 100%;
-    }
-  `}
-  
+  ${props =>
+    props.ScrollActive &&
+    css`
+      .home-link {
+        color: #fff;
+        width: 50px;
+        background-color: rgba(55, 55, 55, 0.9);
+        transition: width 0.5s ease;
+        opacity: 1;
+        height: 100%;
+      }
+    `}
 `;
 
 const Menu: React.FC<IMenu> = ({ className, ScrollActive }) => {
@@ -57,35 +57,31 @@ const Menu: React.FC<IMenu> = ({ className, ScrollActive }) => {
         <Lists className='lists' ScrollActive={ScrollActive}>
           <li className='home-link'>
             <Link href={PAGE.MAIN.path}>
-              <a>
-                홈
-              </a>
+              <a>홈</a>
             </Link>
           </li>
-          {Categories.map((d) => (
+          {Categories.map(d => (
             <li key={d.value} className='item'>
-              <Link href={d.url} >
-                <a>
-                  {d.label}
-                </a>
+              <Link href={d.url}>
+                <a>{d.label}</a>
               </Link>
             </li>
           ))}
         </Lists>
       </div>
     </div>
-  )
+  );
 };
 
 export default styled(Menu)`
   height: 40px;
-  background-color: rgba(255,255,255,.95);
+  background-color: rgba(255, 255, 255, 0.95);
   position: fixed;
   top: 0;
   width: 100%;
   border-bottom: 1px solid #e8e8e8;
   /* border-bottom: rgba(0,0,0,.09); */
-  .container{
+  .container {
     max-width: 1200px;
     height: 100%;
     margin: 0 auto;

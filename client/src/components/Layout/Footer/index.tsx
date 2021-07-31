@@ -20,4 +20,5 @@ const Footer: React.FC<IFooter> = ({ className }) => {
 
 export default styled(Footer)`
   border-top: 1px solid #555;
+  margin-top: 50px;
 `;

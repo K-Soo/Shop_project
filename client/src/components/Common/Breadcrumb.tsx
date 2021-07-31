@@ -7,7 +7,7 @@ interface IBreadcrumb {
 
 const BreadcrumbBlock = styled.ol`
   display: flex;
-  font-size: 12px;
+  font-size: 11px;
   color: #666666;
   li {
     padding: 0 5px;
