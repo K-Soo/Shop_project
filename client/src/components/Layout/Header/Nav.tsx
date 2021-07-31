@@ -24,23 +24,20 @@ const StyledNav = styled.nav<{ ScrollActive: boolean }>`
       flex-wrap: nowrap;
       justify-content: space-around;
       height: 100%;
+      align-items: center;
       &--item {
         display: inline-block;
-        height: 100%;
         text-align: center;
-        border: 1px solid red;
+        font-size: 13px;
         flex: 1;
         a {
           display: inline-block;
-          height: 100%;
           padding: 0 10px;
-          line-height: 3;
-          border: 1px solid red;
+          width: 100%;
           vertical-align: bottom;
-          font-size: 14px;
-          ${({ theme }) => theme.mobile`
-            padding: 0;
-          `}
+          &:hover {
+            color: red;
+          }
         }
       }
     }
