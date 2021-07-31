@@ -24,7 +24,6 @@ const Top: React.FC<ITop> = ({ className }) => {
           <p className='container__customer--time-zone'>
             {CUSTOMER_CENTER.open} / {CUSTOMER_CENTER.close}
           </p>
-          <p className='container__customer--desc'>{CUSTOMER_CENTER.desc}</p>
         </article>
 
         <article className='container__account-info'>
@@ -87,9 +86,6 @@ export default styled(Top)`
       }
       &--time-zone {
         margin-bottom: 20px;
-      }
-      &--desc {
-        max-width: 400px;
       }
     }
     &__account-info {

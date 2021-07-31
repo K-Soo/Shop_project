@@ -12,7 +12,6 @@ export const CUSTOMER_CENTER = {
   number: "1600-3000",
   open: "월-금 pm1:00-5:00",
   close: "토,일,공휴일 휴무",
-  desc: "본(자뎅)쇼핑몰의 사진과 저작권, 초상권은 자뎅에 있으며 자뎅과 합의되지 않고 사용된 컨텐츠 적발시 법적처벌과 손해배상을 청구할 수 있습니다.",
 } as const;
 
 export const ACCOUNT_INFO = [

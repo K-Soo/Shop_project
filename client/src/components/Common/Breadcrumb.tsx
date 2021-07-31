@@ -16,7 +16,6 @@ const BreadcrumbBlock = styled.ol`
     }
     &:last-child {
       font-weight: 600;
-      padding: 0 15px;
       color: #000;
     }
   }

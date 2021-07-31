@@ -11,8 +11,8 @@ const member: React.FC<Imember> = ({ className }) => {
   return (
     <form action='submit' className={className}>
       <fieldset className='login-info'>
-        <Input placeholder='아이디' margin='0 0 10px 0' height='40' />
-        <Input placeholder='비밀번호' height='40' />
+        <Input placeholder='아이디' margin='0 0 10px 0' />
+        <Input placeholder='비밀번호' />
       </fieldset>
 
       <fieldset className='security'>

@@ -24,7 +24,7 @@ const Button: React.FC<IButton> = ({ className, children, onClick }) => {
 
 export default styled(Button)`
   width: ${({ width }) => width ?? "100%"};
-  height: ${({ height }) => height ?? "40px"};
+  height: ${({ height }) => height ?? "50px"};
   margin: ${({ margin }) => margin ?? "0px"};
   font-size: ${({ fontSize }) => fontSize ?? "16px"};
   font-weight: ${({ fontWeight }) => fontWeight ?? "500"};

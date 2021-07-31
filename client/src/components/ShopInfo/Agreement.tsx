@@ -58,6 +58,7 @@ const Agreement: React.FC<IAgreement> = ({ className }) => {
 export default styled(Agreement)`
   max-width: 1200px;
   margin: 0 auto;
+  padding: 0 20px;
   .container {
     &__title-box {
       margin: 10px 0 10px;

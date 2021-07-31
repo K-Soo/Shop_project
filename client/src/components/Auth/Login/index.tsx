@@ -5,7 +5,6 @@ import Button from "components/style/Button";
 import { useRouter } from "next/router";
 import PAGE from "../../../../utils/path";
 import Breadcrumb from "components/Common/Breadcrumb";
-import Input from "components/style/Input";
 import Title from "components/style/Title";
 import Member from "components/Auth/Login/Member";
 import NoMember from "components/Auth/Login/NoMember";
@@ -60,7 +59,7 @@ const Login: React.FC<ILogin> = ({ className }) => {
           </Link>
         ))}
       </Breadcrumb>
-      <div className='container'>
+      <article className='container'>
         <Title margin='0 0 30px 0'>LOGIN</Title>
         <LoginMenu toggle={toggle}>
           <li className='member item' onClick={() => setToggle("member")}>
@@ -71,24 +70,30 @@ const Login: React.FC<ILogin> = ({ className }) => {
           </li>
         </LoginMenu>
         {toggle === "member" ? <Member /> : <NoMember />}
-
-        <Button kakao>카카오로 시작하기</Button>
-
-        <div className='join-box'>
-          <span className='join-box__question'>아직도 회원이 아니신가요?</span>
-          <Link href={PAGE.REGISTER.path}>
-            <a className='join-box__link'>{PAGE.REGISTER.tag}</a>
-          </Link>
-        </div>
-      </div>
+        {toggle === "member" && (
+          <>
+            <Button kakao>카카오로 시작하기</Button>
+            <div className='join-box'>
+              <span className='join-box__question'>
+                아직도 회원이 아니신가요?
+              </span>
+              <Link href={PAGE.REGISTER.path}>
+                <a className='join-box__link'>{PAGE.REGISTER.tag}</a>
+              </Link>
+            </div>
+          </>
+        )}
+      </article>
     </main>
   );
 };
 
 export default styled(Login)`
+  max-width: 1200px;
   margin: 0 auto;
+  padding: 0 20px;
   .container {
-    max-width: 500px;
+    max-width: 400px;
     margin: 0 auto;
     .join-box {
       margin: 10px 0;

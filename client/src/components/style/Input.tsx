@@ -3,6 +3,7 @@ import styled, { css } from "styled-components";
 
 interface IInput {
   className?: string;
+  id?: string;
   width?: string;
   marginright?: string;
   marginleft?: string;
@@ -44,10 +45,12 @@ let Input: React.FC<IInput> = ({
   disabled,
   height,
   margin,
+  id,
+  width,
 }) => {
   return (
     <input
-      // type={type || 'text'}
+      type={type || "text"}
       readOnly={readOnly}
       placeholder={placeholder}
       name={name}
@@ -63,20 +66,20 @@ let Input: React.FC<IInput> = ({
       required={required}
       title={title}
       disabled={disabled}
+      id={id}
     />
   );
 };
 
 Input = styled(Input)`
-  height: ${({ height }) => `${height}px` ?? "30px"};
-  max-width: ${({ width }) => `${width}px` ?? "100%"};
+  height: ${({ height }) => (height ? `${height}px` : "40px")};
+  width: ${({ width }) => (width ? `${width}px` : "100%")};
   margin: ${({ margin }) => `${margin}` ?? "0px"};
   box-sizing: border-box;
-  width: 100%;
   line-height: 1.19;
-  font-size: 16px;
+  font-size: 14px;
+  padding-left: 10px;
   border: 1px solid #dee2e6;
-  padding-left: 18px;
   appearance: none;
   &::placeholder {
     color: #adb5bd;
