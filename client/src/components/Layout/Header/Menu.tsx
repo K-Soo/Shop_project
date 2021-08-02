@@ -73,10 +73,10 @@ const Right = styled.ul`
 `;
 
 const MyShop = styled.div`
-    width:50px;
+    width: 50px;
     border-left: 1px solid #e8e8e8;
     border-right: 1px solid #e8e8e8;
-    height:40px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -84,10 +84,8 @@ const MyShop = styled.div`
       color: #222;
     }
     .Tool{
-      display: block;
       font-size: 12px;
       padding: 5px 10px;
-      background-color: #fff;
     }
 `;
 
@@ -119,9 +117,9 @@ const SubBanner = styled.div<{ ScrollActive: boolean }>`
     css`
       opacity: 1;
       transform: translateY(0%);
-      transition: all 0.5s ease;
+      transition: transform 0.5s ease;
+      transition: opacity 1s ease;
     `}
-
   ${({ theme }) => theme.mobile`
     display: none;
   `}
@@ -162,14 +160,13 @@ const Menu: React.FC<IMenu> = ({ className, ScrollActive }) => {
             <a data-tip data-for='happyFace' data-border={true} >
               <Icon name='human' />
             </a>
-            <ReactTooltip  id='happyFace' type='light' place="left" effect="solid" className='Tool' >
+            <ReactTooltip id='happyFace' type='light' place="left" effect="solid" className='Tool' >
               마이쇼핑
             </ReactTooltip>
           </MyShop>
           <MyCart >
             <Icon name='cart' />
           </MyCart>
-
         </Right>
       </div>
     </div>
