@@ -40,6 +40,5 @@ export default styled(Label)`
   ${({ theme }) => theme.mobile`
     font-size: 11px;
     width: 80px;
-
   `}
 `;

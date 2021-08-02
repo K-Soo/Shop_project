@@ -1,15 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef,useCallback } from "react";
 import styled, { css } from "styled-components";
 import Nav from "components/Layout/Header/Nav";
 import ImageBox from "components/Layout/Header/ImageBox";
 import Menu from "components/Layout/Header/Menu";
+import TopMenu from "components/Layout/Header/TopMenu";
+import {useScroll} from 'hooks/useScroll';
 
 interface IHeader {
   className?: string;
 }
 
 const StyledHeader = styled.header<{ ScrollActive: boolean }>`
-  /* position: relative; */
   ${props =>
     props.ScrollActive &&
     css`
@@ -18,29 +19,18 @@ const StyledHeader = styled.header<{ ScrollActive: boolean }>`
 `;
 
 const Header: React.FC<IHeader> = ({ className }) => {
-  const [ScrollY, setScrollY] = useState(0); // window 의 pageYOffset값을 저장
   const [ScrollActive, setScrollActive] = useState(false);
-
-  function handleScroll() {
-    if (ScrollY >= 80) {
-      setScrollY(window.pageYOffset);
-      setScrollActive(true);
-    } else {
-      setScrollY(window.pageYOffset);
-      setScrollActive(false);
-    }
-  }
+  const {scrollY} = useScroll();
+  console.log('scrollY: ', scrollY);
 
   useEffect(() => {
-    function scrollListener() {
-      window.addEventListener("scroll", handleScroll);
-    } //  window 에서 스크롤을 감시 시작
-    scrollListener(); // window 에서 스크롤을 감시
+    if (scrollY > 80) {
+      setScrollActive(true);
+    } else {
+      setScrollActive(false);
+    }
+  },[scrollY])
 
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    }; //  window 에서 스크롤을 감시를 종료
-  });
 
   return (
     <StyledHeader className={className} ScrollActive={ScrollActive}>

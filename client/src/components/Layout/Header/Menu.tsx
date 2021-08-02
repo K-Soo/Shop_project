@@ -2,31 +2,36 @@ import React from "react";
 import styled, { css } from "styled-components";
 import Link from "next/link";
 import PAGE from "../../../../utils/path";
+import { MAIN_MENU } from "../../../../utils/constants/header";
+import Icon from 'components/Icon/Icon';
 
 interface IMenu {
   className?: string;
   ScrollActive: boolean;
 }
 
-const Categories: { label: string; value: string; url: string }[] = [
-  { label: "로그인", value: "login", url: "/auth/login" },
-  { label: "회원가입", value: "register", url: "/auth/register" },
-];
 
 const Lists = styled.ul<{ ScrollActive: boolean }>`
-  height: 100%;
   display: flex;
   align-items: center;
-  a {
-    display: inline-block;
-    width: 100%;
-    text-align: center;
-    height: 100%;
-    line-height: 38px;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  .inner{
+    display: flex;
   }
-  .item {
-    height: 100%;
-    width: 50px;
+  .item{
+    width: 60px;
+    border-right: 1px solid #999;
+    text-align: center;
+    padding: 0 5px;
+    color: #323232;
+    &:last-child{
+      border: none;
+    }
+    a {
+      display: inline-block;
+      width: 100%;
+    }
   }
   .home-link {
     opacity: 0;
@@ -35,7 +40,6 @@ const Lists = styled.ul<{ ScrollActive: boolean }>`
     align-items: center;
     justify-content: center;
   }
-
   ${props =>
     props.ScrollActive &&
     css`
@@ -50,6 +54,19 @@ const Lists = styled.ul<{ ScrollActive: boolean }>`
     `}
 `;
 
+const MyShop = styled.div`
+    width:50px;
+    border-left: 1px solid #e8e8e8;
+    border-right: 1px solid #e8e8e8;
+    height:40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    svg{
+      color: #222;
+    }
+`;
+
 const Menu: React.FC<IMenu> = ({ className, ScrollActive }) => {
   return (
     <div className={className}>
@@ -60,13 +77,27 @@ const Menu: React.FC<IMenu> = ({ className, ScrollActive }) => {
               <a>홈</a>
             </Link>
           </li>
-          {Categories.map(d => (
+          {MAIN_MENU.left.map(d => (
             <li key={d.value} className='item'>
               <Link href={d.url}>
                 <a>{d.label}</a>
               </Link>
             </li>
           ))}
+        </Lists>
+        <Lists className='lists' ScrollActive={ScrollActive}>
+          <div className='inner'>
+            {MAIN_MENU.right.map(d => (
+              <li key={d.value} className='item'>
+                <Link href={d.url}>
+                  <a>{d.label}</a>
+                </Link>
+              </li>
+            ))}
+          </div>
+          <MyShop >
+            <Icon name='human' />
+          </MyShop>
         </Lists>
       </div>
     </div>
@@ -75,26 +106,16 @@ const Menu: React.FC<IMenu> = ({ className, ScrollActive }) => {
 
 export default styled(Menu)`
   height: 40px;
-  background-color: rgba(255, 255, 255, 0.95);
   position: fixed;
   top: 0;
   width: 100%;
   border-bottom: 1px solid #e8e8e8;
-  /* border-bottom: rgba(0,0,0,.09); */
+  background-color: rgba(255, 255, 255, 0.95);
   .container {
+    display: flex;
+    justify-content: space-between;
     max-width: 1200px;
     height: 100%;
     margin: 0 auto;
-    color: #323232;
-    font-size: 12px;
-    letter-spacing: 0.5px;
-    display: flex;
-    /* justify-content: space-between; */
-    /* &__lists{
-      height: 100%;
-      border: 1px solid red;
-      display: flex;
-      align-items: center;
-    } */
   }
 `;

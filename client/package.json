@@ -19,6 +19,7 @@
     "styled-normalize": "^8.0.7"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.171",
     "@types/react": "17.0.11",
     "@types/styled-components": "^5.1.10",
     "babel-plugin-inline-react-svg": "^2.0.1",

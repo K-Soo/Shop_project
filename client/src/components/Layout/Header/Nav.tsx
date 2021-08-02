@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled, { css } from "styled-components";
 import Link from "next/link";
-import { NAV_MENU } from "../../../../utils/constants/nav";
+import { NAV_MENU } from "../../../../utils/constants/header";
 interface INav {
   className?: string;
   ScrollActive: boolean;
@@ -54,7 +54,7 @@ const StyledNav = styled.nav<{ ScrollActive: boolean }>`
 
 const Nav: React.FC<INav> = ({ className, ScrollActive }) => {
   return (
-    <StyledNav className={className} ScrollActive={ScrollActive} id='top'>
+    <StyledNav className={className} ScrollActive={ScrollActive} >
       <div className='container' id='top'>
         <ul className='container__lists'>
           {NAV_MENU.map(d => (

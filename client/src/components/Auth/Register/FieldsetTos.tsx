@@ -22,6 +22,7 @@ const CheckBlock = styled.p`
   color: #333;
   display: flex;
   align-items: stretch;
+
   .icon-wrap{
     padding-left: 10px;
     display: inline-flex;
@@ -31,6 +32,9 @@ const CheckBlock = styled.p`
       padding-left: 3px;
     }
   }
+  ${({ theme }) => theme.mobile`
+    font-size: 12px;
+  `}
 `;
 
 const TotalCheck = styled.div`
@@ -41,12 +45,16 @@ const TotalCheck = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
+
   &::after{
     margin: 0 15px 0 5px;
     height:40px;
     line-height: 42px;
     content: '이용약관 및 개인정보수집 및 이용에 모두 동의합니다.'
   }
+  ${({ theme }) => theme.mobile`
+    font-size: 12px;
+  `}
 `;
 
 const FieldsetTos: React.FC<IFieldsetTos> = ({ className }) => {
