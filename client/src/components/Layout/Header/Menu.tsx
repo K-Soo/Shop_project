@@ -4,20 +4,28 @@ import Link from "next/link";
 import PAGE from "../../../../utils/path";
 import { MAIN_MENU } from "../../../../utils/constants/header";
 import Icon from 'components/Icon/Icon';
+import ReactTooltip from 'react-tooltip';
 
 interface IMenu {
   className?: string;
   ScrollActive: boolean;
 }
 
-
-const Lists = styled.ul<{ ScrollActive: boolean }>`
+const Common = css<{ ScrollActive?: boolean }>`
   display: flex;
   align-items: center;
   font-size: 12px;
   letter-spacing: 0.5px;
+  /* border: 1px solid red; */
+  flex:1;
+  .right{
+  border: 1px solid red;
+  }
   .inner{
     display: flex;
+    ${({ theme }) => theme.mobile`
+      display: none;    
+    `}
   }
   .item{
     width: 60px;
@@ -54,6 +62,16 @@ const Lists = styled.ul<{ ScrollActive: boolean }>`
     `}
 `;
 
+const Left = styled.ul`
+  ${Common}
+  justify-content: flex-start;
+`;
+
+const Right = styled.ul`
+  ${Common}
+  justify-content: flex-end;
+`;
+
 const MyShop = styled.div`
     width:50px;
     border-left: 1px solid #e8e8e8;
@@ -65,13 +83,55 @@ const MyShop = styled.div`
     svg{
       color: #222;
     }
+    .Tool{
+      display: block;
+      font-size: 12px;
+      padding: 5px 10px;
+      background-color: #fff;
+    }
+`;
+
+const MyCart = styled.div`
+  transform: translateY(-200%);
+  width: 0px;
+  ${({ theme }) => theme.mobile`
+    transform: translateY(0%);
+    transition: transform 0.5s ease;
+    width:50px;
+    height:40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    svg{
+      color: #222;
+    }
+  `}
+`;
+
+const SubBanner = styled.div<{ ScrollActive: boolean }>`
+  transform: translateY(-200%);
+  margin: 0 auto;
+  /* flex: 1; */
+  opacity: 0;
+  border: 1px solid red;
+  ${props =>
+    props.ScrollActive &&
+    css`
+      opacity: 1;
+      transform: translateY(0%);
+      transition: all 0.5s ease;
+    `}
+
+  ${({ theme }) => theme.mobile`
+    display: none;
+  `}
 `;
 
 const Menu: React.FC<IMenu> = ({ className, ScrollActive }) => {
   return (
     <div className={className}>
       <div className='container'>
-        <Lists className='lists' ScrollActive={ScrollActive}>
+        <Left ScrollActive={ScrollActive}>
           <li className='home-link'>
             <Link href={PAGE.MAIN.path}>
               <a>홈</a>
@@ -84,8 +144,11 @@ const Menu: React.FC<IMenu> = ({ className, ScrollActive }) => {
               </Link>
             </li>
           ))}
-        </Lists>
-        <Lists className='lists' ScrollActive={ScrollActive}>
+        </Left>
+        <SubBanner ScrollActive={ScrollActive}>
+          쇼핑몰 입니다
+        </SubBanner>
+        <Right >
           <div className='inner'>
             {MAIN_MENU.right.map(d => (
               <li key={d.value} className='item'>
@@ -96,9 +159,18 @@ const Menu: React.FC<IMenu> = ({ className, ScrollActive }) => {
             ))}
           </div>
           <MyShop >
-            <Icon name='human' />
+            <a data-tip data-for='happyFace' data-border={true} >
+              <Icon name='human' />
+            </a>
+            <ReactTooltip  id='happyFace' type='light' place="left" effect="solid" className='Tool' >
+              마이쇼핑
+            </ReactTooltip>
           </MyShop>
-        </Lists>
+          <MyCart >
+            <Icon name='cart' />
+          </MyCart>
+
+        </Right>
       </div>
     </div>
   );
