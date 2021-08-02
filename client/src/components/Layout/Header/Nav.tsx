@@ -11,6 +11,7 @@ const StyledNav = styled.nav<{ ScrollActive: boolean }>`
   height: 50px;
   color: #222;
   width: 100%;
+  background-color: #fff;
   border-top: 1px solid #4c4c4c;
   border-top-color: rgba(0, 0, 0, 0.7);
   border-bottom: 1px solid #e8e8e8;

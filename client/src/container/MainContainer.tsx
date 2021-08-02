@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-// import DaumPost from 'components/DaumPost';
 import styled from "styled-components";
 import axios, { AxiosResponse } from "axios";
 import Product from "components/Product";
@@ -44,7 +43,6 @@ const MainContainer: React.FC<IMainContainer> = ({ className }) => {
 
   return (
     <main className={className}>
-      {/* <DaumPost /> */}
       {/* {items && items.map((d) => (
         <Product key={d.id}/>
       ))} */}

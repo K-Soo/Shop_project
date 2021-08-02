@@ -1,6 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components";
-interface SelectProps {
+interface ISelect {
   className?: string;
   marginright?: string;
   marginleft?: string;
@@ -9,13 +9,13 @@ interface SelectProps {
   name?: string;
   value?: string | number;
   disabled?: boolean;
-  onChange: React.ChangeEventHandler<HTMLSelectElement>;
+  onChange?: React.ChangeEventHandler<HTMLSelectElement>;
   required?: boolean;
   id?: string;
   readOnly?: boolean;
 }
 
-let GlobalSelect: React.FunctionComponent<SelectProps> = ({
+let Select: React.FunctionComponent<ISelect> = ({
   className,
   children,
   name,
@@ -40,15 +40,14 @@ let GlobalSelect: React.FunctionComponent<SelectProps> = ({
   );
 };
 
-GlobalSelect = styled(GlobalSelect)`
+Select = styled(Select)`
   box-sizing: border-box;
   width: ${({ width }) => `${width}px` ?? "100%"};
   margin-left: ${({ marginleft }) => `${marginleft}px` ?? "0"};
   margin-right: ${({ marginright }) => `${marginright}px` ?? "0"};
-  height: ${props => (props.height ? `${props.height}px` : "50px")};
+  height: ${props => (props.height ? `${props.height}px` : "40px")};
   font-size: 14px;
-  line-height: 1.19;
-  padding-left: 18px;
+  padding-left: 10px;
   border: 1px solid #dee2e6;
   ${props =>
     props.disabled &&
@@ -59,4 +58,4 @@ GlobalSelect = styled(GlobalSelect)`
     `}
 `;
 
-export default GlobalSelect;
+export default Select;

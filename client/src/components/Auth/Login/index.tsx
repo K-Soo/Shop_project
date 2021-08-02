@@ -60,7 +60,7 @@ const Login: React.FC<ILogin> = ({ className }) => {
         ))}
       </Breadcrumb>
       <article className='container'>
-        <Title margin='0 0 30px 0'>LOGIN</Title>
+        <Title level={1} marginB='30'>LOGIN</Title>
         <LoginMenu toggle={toggle}>
           <li className='member item' onClick={() => setToggle("member")}>
             회원 로그인

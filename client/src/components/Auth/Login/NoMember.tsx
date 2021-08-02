@@ -10,13 +10,13 @@ const NoMember: React.FC<INoMember> = ({ className }) => {
   return (
     <form action='submit' className={className}>
       <fieldset className='login-info'>
-        <Input placeholder='아이디' margin='0 0 10px 0' height='40' />
+        <Input placeholder='주문자명' margin='0 0 10px 0' height='40' />
         <Input placeholder='아이디' margin='0 0 10px 0' height='40' />
         <Input placeholder='아이디' margin='0 0 10px 0' height='40' />
       </fieldset>
 
       <fieldset className='login'>
-        <Button login>로그인</Button>
+        <Button login>주문조회</Button>
       </fieldset>
     </form>
   );

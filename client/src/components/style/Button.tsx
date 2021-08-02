@@ -1,22 +1,23 @@
 import React from "react";
 import styled, { css } from "styled-components";
 
+
 interface IButton {
   className?: string;
   login?: boolean;
   kakao?: boolean;
-  header?: boolean;
   width?: string;
   height?: string;
   margin?: string;
   fontSize?: string;
   fontWeight?: string;
   onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  type?: "button" | "submit" | "reset" | undefined;
 }
 
-const Button: React.FC<IButton> = ({ className, children, onClick }) => {
+const Button: React.FC<IButton> = ({ className, children, onClick, type }) => {
   return (
-    <button className={className} onClick={onClick}>
+    <button className={className} onClick={onClick} type={type}>
       {children}
     </button>
   );
@@ -31,11 +32,9 @@ export default styled(Button)`
   cursor: pointer;
   text-align: center;
   background: #152a69;
-  object-fit: contain;
-  font-stretch: normal;
-  font-style: normal;
-  letter-spacing: normal;
   color: #ffffff;
+  border: none;
+  letter-spacing: 2px;
   &:hover {
     transition: all 0.3s ease-in-out;
     background: #00003e;

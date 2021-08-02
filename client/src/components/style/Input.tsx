@@ -74,10 +74,9 @@ let Input: React.FC<IInput> = ({
 Input = styled(Input)`
   height: ${({ height }) => (height ? `${height}px` : "40px")};
   width: ${({ width }) => (width ? `${width}px` : "100%")};
-  margin: ${({ margin }) => `${margin}` ?? "0px"};
+  margin: ${({ margin }) => margin ?? "0px"};
   box-sizing: border-box;
-  line-height: 1.19;
-  font-size: 14px;
+  font-size: 12px;
   padding-left: 10px;
   border: 1px solid #dee2e6;
   appearance: none;

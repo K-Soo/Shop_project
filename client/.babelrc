@@ -1,9 +1,18 @@
 {
-  "presets": ["next/babel"],
+  "presets": [
+    "next/babel"
+  ],
   "plugins": [
     [
       "babel-plugin-styled-components",
-      { "fileName": true, "displayName": true, "pure": true }
+      {
+        "fileName": true,
+        "displayName": true,
+        "pure": true
+      }
+    ],
+    [
+      "inline-react-svg"
     ]
   ]
 }
