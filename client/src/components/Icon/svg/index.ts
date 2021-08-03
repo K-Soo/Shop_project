@@ -4,5 +4,7 @@ import { ReactComponent as human } from "./human.svg";
 import { ReactComponent as cart } from "./cart.svg";
 import { ReactComponent as search } from "./search.svg";
 import { ReactComponent as bookmark } from "./bookmark.svg";
+import { ReactComponent as arrowTop } from "./arrowTop.svg";
+import { ReactComponent as arrowBottom } from "./arrowBottom.svg";
 
-export { bed, check, human, cart, search, bookmark };
+export { bed, check, human, cart, search, bookmark,arrowTop,arrowBottom };

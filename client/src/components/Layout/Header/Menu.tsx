@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled, { css } from "styled-components";
 import Link from "next/link";
 import PAGE from "../../../../utils/path";
 import { MAIN_MENU } from "../../../../utils/constants/header";
 import Icon from 'components/Icon/Icon';
-import ReactTooltip from 'react-tooltip';
+// import ReactTooltip from 'react-tooltip';
+import dynamic from "next/dynamic";
+
+const ReactTooltip = dynamic(() => import("react-tooltip"), {
+  ssr: false,
+});
 
 interface IMenu {
   className?: string;
@@ -126,6 +131,11 @@ const SubBanner = styled.div<{ ScrollActive: boolean }>`
 `;
 
 const Menu: React.FC<IMenu> = ({ className, ScrollActive }) => {
+  const [tooltipVisible, setTooltipVisible] = useState(false);
+
+  useEffect(() => {
+    setTooltipVisible(true);
+  }, [])
   return (
     <div className={className}>
       <div className='container'>
@@ -164,6 +174,7 @@ const Menu: React.FC<IMenu> = ({ className, ScrollActive }) => {
               마이쇼핑
             </ReactTooltip>
           </MyShop>
+
           <MyCart >
             <Icon name='cart' />
           </MyCart>

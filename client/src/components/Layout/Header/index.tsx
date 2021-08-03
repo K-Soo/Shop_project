@@ -19,9 +19,8 @@ const StyledHeader = styled.header<{ ScrollActive: boolean }>`
 `;
 
 const Header: React.FC<IHeader> = ({ className }) => {
-  const [ScrollActive, setScrollActive] = useState(false);
+  const [scrollActive, setScrollActive] = useState(false);
   const {scrollY} = useScroll();
-  console.log('scrollY: ', scrollY);
 
   useEffect(() => {
     if (scrollY > 80) {
@@ -32,10 +31,10 @@ const Header: React.FC<IHeader> = ({ className }) => {
   },[scrollY])
 
   return (
-    <StyledHeader className={className} ScrollActive={ScrollActive}>
-      <Menu ScrollActive={ScrollActive} />
+    <StyledHeader className={className} ScrollActive={scrollActive}>
+      <Menu ScrollActive={scrollActive} />
       <ImageBox />
-      <Nav ScrollActive={ScrollActive} />
+      <Nav ScrollActive={scrollActive} />
     </StyledHeader>
   );
 };
