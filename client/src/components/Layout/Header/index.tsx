@@ -31,7 +31,6 @@ const Header: React.FC<IHeader> = ({ className }) => {
     }
   },[scrollY])
 
-
   return (
     <StyledHeader className={className} ScrollActive={ScrollActive}>
       <Menu ScrollActive={ScrollActive} />
