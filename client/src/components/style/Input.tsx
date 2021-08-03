@@ -24,6 +24,7 @@ interface IInput {
   disabled?: boolean;
   height?: string;
   margin?: string;
+  ref?: React.LegacyRef<HTMLInputElement> | undefined
 }
 
 let Input: React.FC<IInput> = ({
@@ -47,6 +48,7 @@ let Input: React.FC<IInput> = ({
   margin,
   id,
   width,
+  ref
 }) => {
   return (
     <input
@@ -67,13 +69,14 @@ let Input: React.FC<IInput> = ({
       title={title}
       disabled={disabled}
       id={id}
+      ref={ref}
     />
   );
 };
 
 Input = styled(Input)`
   height: ${({ height }) => (height ? `${height}px` : "40px")};
-  width: ${({ width }) => (width ? `${width}px` : "100%")};
+  width: ${({ width }) => (width ? `${width}` : "100%")};
   margin: ${({ margin }) => margin ?? "0px"};
   box-sizing: border-box;
   font-size: 12px;

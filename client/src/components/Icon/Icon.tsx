@@ -23,8 +23,6 @@ function Icon({ name, className, style }: IconProps) {
 };
 
 export default styled(Icon)`
-/* width: 17px;
-height: 15px; */
 cursor: pointer;
 /* color: #152a69; */
 color: #BDBDBD;

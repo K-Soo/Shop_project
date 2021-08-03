@@ -103,7 +103,12 @@ export const GlobalStyle = createGlobalStyle`
     color: inherit;
   }
   
-
+  input:focus {
+    outline: none;
+  }
+  textarea:focus {
+    outline: none;
+  }
   article,
   aside,
   details,

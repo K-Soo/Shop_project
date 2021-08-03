@@ -11,6 +11,8 @@ import Label from "components/style/Label";
 import Select from "components/style/Select";
 import DaumPost from 'components/Common/DaumPost';
 import FieldsetTos from 'components/Auth/Register/FieldsetTos';
+import useScrollFadeIn from 'hooks/useScrollFadeIn';
+
 interface IRegister {
   className?: string;
   isModal: boolean;
@@ -28,6 +30,8 @@ const Register: React.FC<IRegister> = ({ className, onClick, isModal }) => {
           </Link>
         ))}
       </Breadcrumb>
+  
+
       <article className='container'>
         <Title level={2} textAlign='left'>회원가입</Title>
         <form className='form-box'>
@@ -36,23 +40,23 @@ const Register: React.FC<IRegister> = ({ className, onClick, isModal }) => {
             <div className='form-box__input-wrap'>
               <Label htmlFor='loginId' required>아이디</Label>
               <div className='id-box'>
-                <Input width='150' placeholder='영문소문자/숫자, 4~16자' name='' required={true} id='loginId' handleChange={() => { }} />
+                <Input width='150px' placeholder='영문소문자/숫자, 4~16자' name='' required={true} id='loginId' handleChange={() => { }} />
                 <Button width='80px' height='40px' fontSize='11px'>중복확인</Button>
               </div>
             </div>
             <div className='form-box__input-wrap'>
               <Label htmlFor='password' required>비밀번호</Label>
-              <Input type='password' width='250' placeholder='비밀번호' name='' id='password' value='' handleChange={() => { }} />
+              <Input type='password' width='250px' placeholder='비밀번호' name='' id='password' value='' handleChange={() => { }} />
             </div>
 
             <div className='form-box__input-wrap'>
               <Label htmlFor='loginId' required>비밀번호 확인</Label>
-              <Input type='password' width='250' placeholder='비밀번호' name='' value='' handleChange={() => { }} />
+              <Input type='password' width='250px' placeholder='비밀번호' name='' value='' handleChange={() => { }} />
             </div>
 
             <div className='form-box__input-wrap'>
               <Label htmlFor='loginId' required>이름</Label>
-              <Input width='150' placeholder='이름' name='' value='' handleChange={() => { }} />
+              <Input width='150px' placeholder='이름' name='' value='' handleChange={() => { }} />
             </div>
 
             <div className='form-box__input-wrap'>
@@ -61,14 +65,14 @@ const Register: React.FC<IRegister> = ({ className, onClick, isModal }) => {
                 <option>010</option>
               </Select>
               <span className='tests'>-</span>
-              <Input width='80' placeholder='휴대전화' name='' value='' handleChange={() => { }} />
+              <Input width='80px' placeholder='휴대전화' name='' value='' handleChange={() => { }} />
               <span className='tests'>-</span>
-              <Input width='80' placeholder='휴대전화' name='' value='' handleChange={() => { }} />
+              <Input width='80px' placeholder='휴대전화' name='' value='' handleChange={() => { }} />
             </div>
 
             <div className='form-box__input-wrap'>
               <Label htmlFor='loginId' required>이메일</Label>
-              <Input width='250' placeholder='이메일' name='' value='' handleChange={() => { }} />
+              <Input width='250px' placeholder='이메일' name='' value='' handleChange={() => { }} />
             </div>
 
             <div className='form-box__input-wrap'>
@@ -78,11 +82,11 @@ const Register: React.FC<IRegister> = ({ className, onClick, isModal }) => {
               <div className='form-box__input-wrap address-box'>
                 <div className='address-box__inner'>
                   <DaumPost isModal={isModal} />
-                  <Input width='150' name='' value='' handleChange={() => { }} />
+                  <Input width='150px' name='' value='' handleChange={() => { }} />
                   <Button type='button' width='80px' height='40px' fontSize='12px' onClick={onClick}>우편번호</Button>
                 </div>
-                <Input width='250' placeholder='기본주소' name='' value='' handleChange={() => { }} margin="0 0 15px 0" />
-                <Input width='250' placeholder='나머지 주소' name='' value='' handleChange={() => { }} />
+                <Input width='250px' placeholder='기본주소' name='' value='' handleChange={() => { }} margin="0 0 15px 0" />
+                <Input width='250px' placeholder='나머지 주소' name='' value='' handleChange={() => { }} />
               </div>
             </div>
           </fieldset>
@@ -93,7 +97,7 @@ const Register: React.FC<IRegister> = ({ className, onClick, isModal }) => {
               <Label htmlFor='loginId' required>
                 생년월일
               </Label>
-              <Input width='250' placeholder='주소' name='' value='' handleChange={() => { }} />
+              <Input width='250px' placeholder='주소' name='' value='' handleChange={() => { }} />
             </div>
 
             <div className='form-box__input-wrap'>
@@ -105,7 +109,7 @@ const Register: React.FC<IRegister> = ({ className, onClick, isModal }) => {
               </Select>
             </div>
           </fieldset>
-
+       
           <fieldset>
             <legend>이용약관</legend>
             <FieldsetTos />

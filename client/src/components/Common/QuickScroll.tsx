@@ -2,17 +2,19 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useScroll } from 'hooks/useScroll';
 import Icon from 'components/Icon/Icon';
-
 interface IQuickScroll {
   className?: string;
 }
 
 const S = {
   Wrapper: styled.div<{ scrollActive: boolean }>`
-    display: ${props => (props.scrollActive ? 'block' : 'none')};
     position: fixed;
     bottom: 5%;
-    right: 1%;
+    right: -10%;
+    ${props => props.scrollActive &&`
+      right: 1%;
+      transition: all .5s ease;
+    `}
     ul{
       li{
         font-size: 0;
@@ -32,9 +34,8 @@ const S = {
   `,
 }
 
-
 const QuickScroll: React.FC<IQuickScroll> = ({ className }) => {
-  const [scrollActive, setScrollActive] = useState(false);
+  const [scrollActive, setScrollActive] = useState<boolean>(false);
   const { scrollY } = useScroll();
 
   useEffect(() => {
