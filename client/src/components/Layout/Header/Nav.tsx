@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled, { css } from "styled-components";
 import Link from "next/link";
 import { NAV_MENU } from "../../../../utils/constants/header";
 import Icon from 'components/Icon/Icon';
 import NavSearchBar from 'components/Layout/Header/NavSearchBar';
+import HamburgerIcon from 'components/HamburgerMenu/HamburgerIcon';
 interface INav {
   className?: string;
   ScrollActive: boolean;
@@ -26,6 +27,9 @@ const S = {
       top: 40px;
       border-top: none;
     `}
+    ${({ theme }) => theme.mobile`
+      height: auto;
+    `}
   `,
   container: styled.div`
     position:relative;
@@ -33,18 +37,102 @@ const S = {
     max-width: 1200px;
     margin: 0 auto;
   `,
-  ItemBox: styled.ul`
+  ItemBox: styled.div`
     display: flex;
-    flex-wrap: nowrap;
-    justify-content: space-around;
+    justify-content: space-between;
     height: 100%;
     align-items: center;
+    ${({ theme }) => theme.mobile`
+      height: auto;
+      flex-wrap: wrap;
+      ul:first-child{
+        order: 2;
+      }
+    `}
+  `,
+  SearchGroup: styled.ul<{ toggle: boolean }>`
+    height: 50px;
+    width:50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    ${props => props.toggle && css`
+      justify-content: flex-end;
+    `}
+    ${({ theme }) => theme.mobile`
+      flex-grow: 1;
+      height: auto;
+      width:100%;
+      height: 40px;
+    `}
+    .hamburger-btn{
+      display: none;
+      width: 40px;
+      height: 100%;
+      border-width: 0px 1px 0px 0px;
+      align-items: center;
+      ${({ theme }) => theme.mobile`
+        display: ${({ toggle }: any) => toggle ? 'none' : 'flex'}
+      `}
+    }
+    .search-btn{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      width: 50px;
+      span{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 40px;
+        width: 40px;
+        border-radius: 50%;
+        cursor: pointer;
+        &:hover{
+          background-color: #e8e8e8;
+        }
+        svg{
+          width: 18px;
+          color: #222;
+        }
+      }
+      ${({ theme }) => theme.mobile`
+        width: 40px;
+        border: solid #e8e8e8;
+        border-width: 0px 0px 0px 1px;
+        ${(props: any) => props.toggle && css`
+          display: none;
+        `}
+        span{
+          height: 32px;
+          width: 32px;
+        }
+        svg{
+          width: 15px;
+        }
+      `}
+    }
+  `,
+  NavGroup: styled.ul`
+    height:100%;
+    display:flex;
+    align-items: center;
+    flex-grow: 1;
+    ${({ theme }) => theme.mobile`
+      flex-wrap: wrap;
+    `}
   `,
   Item: styled.li`
+    flex-grow: 1;
     display: inline-block;
     text-align: center;
     font-size: 13px;
-    flex: 1;
+    ${({ theme }) => theme.mobile`
+      flex-basis:40%;
+      padding: 5px;
+      border: 1px solid #e8e8e8;
+    `}
     a {
       display: inline-block;
       padding: 0 10px;
@@ -55,55 +143,38 @@ const S = {
       }
     }
   `,
-  Search: styled.li<{ toggle: boolean }>`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 50px;
-    width:50px;
-    font-size: 0;
-    span{
-      display: inline-block;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 40px;
-      width: 40px;
-      border-radius: 50%;
-      cursor: pointer;
-      &:hover{
-        background-color: #EAEAEA;
-      }
-    }
-    svg{
-      color: #222;
-    }
-  `,
 }
 
 const Nav: React.FC<INav> = ({ className, ScrollActive }) => {
   const [toggle, setToggle] = useState<boolean>(false);
-  console.log('toggle: ', toggle);
+  const [openMenu, setOpenMenu] = useState<boolean>(false);
 
   return (
     <S.wrapper className={className} ScrollActive={ScrollActive} >
       <S.container >
         <S.ItemBox >
-          {NAV_MENU.map(d => (
-            <S.Item key={d.label}>
-              <Link href={d.url}>
-                <a>{d.label}</a>
-              </Link>
-            </S.Item>
-          ))}
-          <S.Search toggle={toggle}>
-            <span onClick={() => setToggle(!toggle)}>
-              {toggle ? <Icon name='close' /> : <Icon name='search' />}
-            </span>
-          </S.Search>
-        </S.ItemBox>
-      <NavSearchBar toggle={toggle}/>
+          <S.NavGroup className='nav-menu'>
+            {NAV_MENU.map(d => (
+              <S.Item key={d.label}>
+                <Link href={d.url}>
+                  <a>{d.label}</a>
+                </Link>
+              </S.Item>
+            ))}
+          </S.NavGroup>
 
+          <S.SearchGroup className='search-menu' toggle={toggle} >
+            <li className='hamburger-btn' onClick={() => setOpenMenu(!openMenu)}>
+            <HamburgerIcon open={openMenu}/>
+            </li>
+            <NavSearchBar handleToggle={() => setToggle(!toggle)} toggle={toggle} />
+            <li className='search-btn' >
+              <span onClick={() => setToggle(!toggle)}>
+                {toggle ? <Icon name='close' /> : <Icon name='search' />}
+              </span>
+            </li>
+          </S.SearchGroup>
+        </S.ItemBox>
       </S.container>
     </S.wrapper>
   );

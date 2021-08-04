@@ -21,7 +21,6 @@ const Common = css<{ ScrollActive?: boolean }>`
   align-items: center;
   font-size: 12px;
   letter-spacing: 0.5px;
-  /* border: 1px solid red; */
   flex:1;
   .right{
   border: 1px solid red;
@@ -78,10 +77,10 @@ const Right = styled.ul`
 `;
 
 const MyShop = styled.div`
-    width: 50px;
+    height: 40px;
+    width: 40px;
     border-left: 1px solid #e8e8e8;
     border-right: 1px solid #e8e8e8;
-    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -100,8 +99,8 @@ const MyCart = styled.div`
   ${({ theme }) => theme.mobile`
     transform: translateY(0%);
     transition: transform 0.5s ease;
-    width:50px;
-    height:40px;
+    height: 40px;
+    width: 40px;
     display: flex;
     align-items: center;
     justify-content: center;

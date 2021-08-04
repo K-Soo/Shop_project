@@ -13,7 +13,7 @@ const Footer: React.FC<IFooter> = ({ className }) => {
   return (
     <footer className={className}>
       <SubTop />
-      <Top />
+      {/* <Top /> */}
       <Bottom />
       <QuickScroll />
     </footer>

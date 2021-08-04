@@ -25,7 +25,7 @@ export const MAIN_MENU :IMAIN= {
   ],
   right: [
     { label: "로그인", value: "login", url: "/shop-info/company" },
-    { label: "회원가입", value: "register", url: "/shop-info/agreement" },
+    { label: "회원가입", value: "register", url: "/auth/register" },
     { label: "주문조회", value: "개인정보", url: "/shop-info/privacy" },
     { label: "마이쇼핑", value: "개인2정보", url: "/shop-info/privacy" },
   ]

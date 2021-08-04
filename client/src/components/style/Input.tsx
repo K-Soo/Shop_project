@@ -24,7 +24,6 @@ interface IInput {
   disabled?: boolean;
   height?: string;
   margin?: string;
-  ref?: React.LegacyRef<HTMLInputElement> | undefined
 }
 
 let Input: React.FC<IInput> = ({
@@ -48,7 +47,6 @@ let Input: React.FC<IInput> = ({
   margin,
   id,
   width,
-  ref
 }) => {
   return (
     <input
@@ -69,7 +67,6 @@ let Input: React.FC<IInput> = ({
       title={title}
       disabled={disabled}
       id={id}
-      ref={ref}
     />
   );
 };

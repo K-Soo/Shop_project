@@ -30,7 +30,6 @@ const Register: React.FC<IRegister> = ({ className, onClick, isModal }) => {
           </Link>
         ))}
       </Breadcrumb>
-  
 
       <article className='container'>
         <Title level={2} textAlign='left'>회원가입</Title>
