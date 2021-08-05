@@ -5,18 +5,22 @@ import ImageBox from "components/Layout/Header/ImageBox";
 import Menu from "components/Layout/Header/Menu";
 import TopMenu from "components/Layout/Header/TopMenu";
 import {useScroll} from 'hooks/useScroll';
+import SideMenu from 'components/SideMenu';
 
 interface IHeader {
   className?: string;
 }
 
-const StyledHeader = styled.header<{ ScrollActive: boolean }>`
+const S = {
+  wrapper: styled.header<{ ScrollActive: boolean }>`
   ${props =>
     props.ScrollActive &&
     css`
       margin-bottom: 50px;
     `}
-`;
+`,
+}
+
 
 const Header: React.FC<IHeader> = ({ className }) => {
   const [scrollActive, setScrollActive] = useState(false);
@@ -31,11 +35,12 @@ const Header: React.FC<IHeader> = ({ className }) => {
   },[scrollY])
 
   return (
-    <StyledHeader className={className} ScrollActive={scrollActive}>
+    <S.wrapper className={className} ScrollActive={scrollActive}>
       <Menu ScrollActive={scrollActive} />
       <ImageBox />
       <Nav ScrollActive={scrollActive} />
-    </StyledHeader>
+      <SideMenu />
+    </S.wrapper>
   );
 };
 

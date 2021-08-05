@@ -18,19 +18,17 @@ interface IProduct {
 
 const MainContainer: React.FC<IMainContainer> = ({ className }) => {
   const [items, setItems] = useState<IProduct[] | null>(null);
-  console.log("items: ", items);
   const [posts, setPosts] = useState<PostType[]>();
-  console.log("posts: ", posts);
 
   useEffect(() => {
     Get.products()
       .then(data => {
+        console.log('data: ', data);
         setItems(data);
       })
       .catch(err => {
         // setIsError(true);
       });
-    return () => {};
   }, []);
 
   // useEffect(() => {

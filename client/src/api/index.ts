@@ -1,15 +1,10 @@
 import axios, { AxiosResponse } from 'axios';
 import { PostType } from '../models/post.interface';
 
-const url = process.env.REACT_APP_SERVER_URL
-console.log('url: ', url);
-
 const instance = axios.create({
-	// baseURL: process.env.REACT_APP_SERVER_URL,
-	baseURL: 'http://localhost:8000',
+	baseURL: process.env.NEXT_PUBLIC_SERVER_URL,
 	timeout: 15000,
 });
-console.log(process.env.REACT_APP_SERVER_URL);
 const responseBody = (response: AxiosResponse) => response.data;
 
 const requests = {

@@ -1,17 +1,20 @@
-import React, { useState } from "react";
+import React, { useState,useContext } from "react";
 import styled, { css } from "styled-components";
 import Link from "next/link";
 import { NAV_MENU } from "../../../../utils/constants/header";
 import Icon from 'components/Icon/Icon';
 import NavSearchBar from 'components/Layout/Header/NavSearchBar';
-import HamburgerIcon from 'components/HamburgerMenu/HamburgerIcon';
+import SideMenuIcon from 'components/SideMenu/SideMenuIcon';
+import SideMenu from 'components/SideMenu';
+import { AppContext } from 'pages/_app';
+
 interface INav {
   className?: string;
   ScrollActive: boolean;
 }
 
 const S = {
-  wrapper: styled.div<{ ScrollActive: boolean }>`
+  wrapper: styled.nav<{ ScrollActive: boolean }>`
     height: 50px;
     color: #222;
     width: 100%;
@@ -147,7 +150,8 @@ const S = {
 
 const Nav: React.FC<INav> = ({ className, ScrollActive }) => {
   const [toggle, setToggle] = useState<boolean>(false);
-  const [openMenu, setOpenMenu] = useState<boolean>(false);
+
+  const global = useContext(AppContext);
 
   return (
     <S.wrapper className={className} ScrollActive={ScrollActive} >
@@ -164,8 +168,8 @@ const Nav: React.FC<INav> = ({ className, ScrollActive }) => {
           </S.NavGroup>
 
           <S.SearchGroup className='search-menu' toggle={toggle} >
-            <li className='hamburger-btn' onClick={() => setOpenMenu(!openMenu)}>
-            <HamburgerIcon open={openMenu}/>
+            <li className='hamburger-btn' onClick={global.action.setToggle}>
+            <SideMenuIcon />
             </li>
             <NavSearchBar handleToggle={() => setToggle(!toggle)} toggle={toggle} />
             <li className='search-btn' >

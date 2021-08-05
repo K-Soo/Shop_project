@@ -136,7 +136,7 @@ const Menu: React.FC<IMenu> = ({ className, ScrollActive }) => {
     setTooltipVisible(true);
   }, [])
   return (
-    <div className={className}>
+    <nav className={className}>
       <div className='container'>
         <Left ScrollActive={ScrollActive}>
           <li className='home-link'>
@@ -179,7 +179,7 @@ const Menu: React.FC<IMenu> = ({ className, ScrollActive }) => {
           </MyCart>
         </Right>
       </div>
-    </div>
+    </nav>
   );
 };
 

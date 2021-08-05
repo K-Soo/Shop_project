@@ -10,7 +10,6 @@
     "noEmit": true,
     "esModuleInterop": true,
     "noImplicitAny": true,
-    "noImplicitReturns": true, 
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
