@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { AppContext } from 'pages/_app';
 import DarkBackground from 'components/Common/DarkBackground';
 import CloseButton from 'components/style/CloseButton';
@@ -11,11 +11,15 @@ interface ILeftSide {
 
 const S = {
   wrapper: styled.nav<{ openSideMenu: boolean }>`
-    /* display: ${props => props.openSideMenu ? 'block' : 'none'}; */
+    visibility: ${props => props.openSideMenu ? 'visible' : 'hidden'};
     height: 100vh;
     width: 70%;
     background-color: #fff;
-    border: 1px solid red;
+    transform: translateX(-100%);
+    ${props => props.openSideMenu && css`
+      transform: translateX(0%);
+      transition: all 0.5s ease;
+    `}
   `,
   container: styled.div`
     border: 1px solid red;
@@ -28,7 +32,9 @@ const S = {
   `,
 }
 
-const LeftSide: React.FC<ILeftSide> = ({ className,swap }) => {
+const LeftSide: React.FC<ILeftSide> = ({ className, swap }) => {
+
+
   const global = useContext(AppContext);
 
   return (
@@ -36,7 +42,7 @@ const LeftSide: React.FC<ILeftSide> = ({ className,swap }) => {
       <S.container>
         <CloseButton onClick={global.action.setToggle} />
         <S.swap>
-
+          asd
         </S.swap>
       </S.container>
     </S.wrapper>
