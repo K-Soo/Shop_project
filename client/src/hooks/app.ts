@@ -11,7 +11,7 @@ export interface IApp {
 
 export interface IAppState {
   status: { loading: boolean };
-  toggleSideMenu : boolean
+  openSideMenu : boolean
 }
 
 export const appDefaultValue: IApp = {
@@ -19,14 +19,14 @@ export const appDefaultValue: IApp = {
   action: null,
   state: {
     status: { loading: false },
-    toggleSideMenu : false
+    openSideMenu : false
   },
 };
 
 const initializer = (props: any) => {
   const state: IAppState = {
     status: { loading: false },
-    toggleSideMenu : false
+    openSideMenu : false
   };
 
   return state;
@@ -40,7 +40,7 @@ const generateAction = (update: (recipe: (draft: IAppState) => void) => void) =>
 
   const setToggle = () => {
     update((draft)=> {
-      draft.toggleSideMenu = !draft.toggleSideMenu;
+      draft.openSideMenu = !draft.openSideMenu;
     })
   }
 

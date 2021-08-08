@@ -42,7 +42,7 @@ export default styled(Button)`
   ${props =>
     props.login &&
     css`
-      background: #000002;
+      background: #333;
       &:hover {
         background: #2a2b2d;
       }

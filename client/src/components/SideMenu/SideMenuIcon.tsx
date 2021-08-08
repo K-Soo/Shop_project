@@ -40,7 +40,7 @@ const SideMenuIcon: React.FC<ISideMenuIcon> = ({ className }) => {
 
   return (
     <>
-      <Wrapper className={className} openSideMenu={global.state.toggleSideMenu}>
+      <Wrapper className={className} openSideMenu={global.state.openSideMenu}>
         <span className='line' />
         <span className='line' />
         <span className='line' />

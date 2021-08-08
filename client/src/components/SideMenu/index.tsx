@@ -1,6 +1,5 @@
-import React, { useContext,useState,useEffect } from "react";
+import React, { useContext, useState, useCallback,useEffect } from "react";
 import { AppContext } from 'pages/_app';
-import SideMenuIcon from 'components/SideMenu/SideMenuIcon';
 import LeftSide from 'components/SideMenu/LeftSide';
 import RightSide from 'components/SideMenu/RightSide';
 import DarkBackground from 'components/Common/DarkBackground';
@@ -11,16 +10,29 @@ interface ISideMenu {
 }
 
 const SideMenu: React.FC<ISideMenu> = ({ className }) => {
-  const [swap ,setSwap] = useState<boolean>(false);
+  const [directionSwap, setDirectionSwap] = useState<boolean>(true);
+  console.log('directionSwap: ', directionSwap);
   const global = useContext(AppContext);
+  console.log('global: ', global.state.openSideMenu);
+
+  const handler = useCallback(() => {
+    setDirectionSwap(!directionSwap);
+  },[directionSwap])
+
+  useEffect(() => {
+    if(!global.state.openSideMenu){
+      setDirectionSwap(true);
+    }
+
+  },[global.state.openSideMenu])
 
   return (
     <>
-    <DarkBackground active={global.state.toggleSideMenu}>
-      <LeftSide swap={swap}/>
-      {/* <RightSide /> */}
-    </DarkBackground >
-</>
+      <DarkBackground active={global.state.openSideMenu}>
+        <LeftSide onClick={handler} directionSwap={directionSwap}/>
+        <RightSide onClick={handler} directionSwap={directionSwap}/>
+      </DarkBackground >
+    </>
   );
 };
 
