@@ -6,7 +6,12 @@ import DarkBackground from 'components/Common/DarkBackground';
 import CloseButton from 'components/style/CloseButton';
 import Button from 'components/style/Button';
 import Icon from 'components/Icon/Icon';
-import {ACCOUNT_INFO} from '../../../utils/constants/footer';
+import { ACCOUNT_INFO } from '../../../utils/constants/footer';
+import Info from 'components/SideMenu/common/Info';
+import Copyright from 'components/SideMenu/common/Copyright';
+import QuickIcon from 'components/SideMenu/common/QuickIcon';
+import DropDown from 'components/SideMenu/common/DropDown';
+
 interface ILeftSide {
   className?: string;
   directionSwap: boolean;
@@ -82,101 +87,21 @@ const S = {
       width: 48%;
     }
   `,
-  Nav: styled.nav`
-    border: 1px solid red;
-    margin: 10px 0;
-    ul{
-      display: flex;
-      flex-wrap: wrap;
-      li{
-        flex-basis: 25%;
-        border: 2px solid #000;
-        text-align: center;
-        padding: 10px 0;
-        span{
-          display:inline-block;
-          width: 100%;
-          font-size: 12px;
-          border: 1px solid red;
-        }
-      }
-    }
-  
-  `,
-  Bottom: styled.div`
-    border: 1px solid red;
-  `,
-  Info: styled.div<{ text: string }>`
-    margin: 20px 0;
-  .info-category{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-    li{
-      text-align: center;
-      flex-basis: 50%;
-      font-size: 14px;
-      padding: 5px 0;
-      font-size: 13px;
-    }
-    .customer{
-      border: solid #666;
-      border-width: ${props => props.text === 'customer' ? '1px 1px 0 1px' : '0 0 1px 0'};
-    }
-    .account{
-      border: solid #666;
-      border-width: ${props => props.text === 'account' ? '1px 1px 0 1px' : '0 0 1px 0'};
-    }
-  }
-  .info-desc{
-    font-size: 12px;
-    color: #444;
-    p{
-      margin-bottom: 5px;
-    }
-    p:last-child{
-      margin-bottom: 0px;
-    }
-  }
-  `,
   Copyright: styled.div`
-    font-size: 11px;
-  `,
+  font-size: 11px;
+`,
 }
-const Category = [
-  { label: '상품문의', value: '1', icon: 'bed' },
-  { label: '상품후기', value: 's2am' },
-  { label: '공지사항', value: 'sa3m' },
-  { label: '고객센터', value: 'sam4' },
-  { label: '마이쇼핑', value: 'sam5' },
-  { label: '키작남 어플', value: 'sam6' },
-  { label: '장바구니', value: 'sam7' },
-  { label: '배송조회', value: 'sdam7' },
-]
+
 
 const LeftSide: React.FC<ILeftSide> = ({ className, directionSwap, onClick }) => {
-  console.log('onClick: ', onClick);
-  const [text, setText] = useState<string>('customer')
-  console.log('text: ', text);
   const global = useContext(AppContext);
-
-  const thisYear = () => {
-    const year = new Date().getFullYear();
-    return year;
-  };
-
-  const handleText = (e:any) => {
-    const { className } = e.target;
-    setText(className);
-  }
 
   return (
     <S.LeftSide className={className} openSideMenu={global.state.openSideMenu} directionSwap={directionSwap}>
       <S.Container>
         <S.Panel>
           <div className='swap'>
-            <span className='swap-slider'/>
+            <span className='swap-slider' />
             <button onClick={onClick}>SHOP</button>
             <button onClick={onClick}>CART</button>
           </div>
@@ -190,45 +115,10 @@ const LeftSide: React.FC<ILeftSide> = ({ className, directionSwap, onClick }) =>
           <Button login height='35px' fontSize='12px'>로그인</Button>
           <Button height='25' fontSize='12px'>회원가입</Button>
         </S.Top>
-        <S.Nav>
-          <ul>
-            {Category.map((d) => (
-              <li key={d.value}>
-                <Icon name='bed' />
-                <span>{d.label}</span>
-              </li>
-            ))}
-          </ul>
-        </S.Nav>
-        <S.Bottom>
-          bottom
-        </S.Bottom>
-        <S.Info text={text}>
-          <ul className='info-category'>
-            <li onClick={handleText} className='customer'>고객센터</li>
-            <li onClick={handleText} className='account'>계좌정보</li>
-          </ul>
-          <div className='info-desc'>
-            {text === 'customer' ? (
-              <div>
-                <p>월요일 - 금요일 10:00 - 17:00</p>
-                <p>점심시간 13:00 - 14:00</p>
-                <p>[주말/공휴일휴무]</p>
-              </div>
-            ) : (
-              <div>
-                {ACCOUNT_INFO.map(d => (
-                  <p key={d.label}>{d.label} : {d.value}</p>
-                ))}
-              </div>
-            )}
-          </div>
-        </S.Info>
-        <S.Copyright>
-          <p>
-            Copyright &copy; <span>{thisYear()}</span> Shop Co. All rights reserved.
-          </p>
-        </S.Copyright>
+        <QuickIcon />
+        <DropDown />
+        <Info />
+        <Copyright />
       </S.Container>
     </S.LeftSide>
   )

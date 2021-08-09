@@ -24,9 +24,7 @@ function Icon({ name, className, style }: IconProps) {
 
 export default styled(Icon)`
 cursor: pointer;
-/* color: #152a69; */
 color: #BDBDBD;
-overflow: hidden;
 ${props =>
     props.TosIcon &&
     css`

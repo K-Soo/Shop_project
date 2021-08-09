@@ -11,7 +11,6 @@ interface ISideMenu {
 
 const SideMenu: React.FC<ISideMenu> = ({ className }) => {
   const [directionSwap, setDirectionSwap] = useState<boolean>(true);
-  console.log('directionSwap: ', directionSwap);
   const global = useContext(AppContext);
   console.log('global: ', global.state.openSideMenu);
 
