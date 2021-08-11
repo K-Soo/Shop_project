@@ -3,56 +3,66 @@ import styled from 'styled-components';
 import Icon from 'components/Icon/Icon';
 import Link from "next/link";
 import {QUICK_ICON_MENU} from '../../../../utils/constants/header';
-interface IQuickIcon {
-  className?: string;
-}
 
 const S ={
   QuickIcon: styled.div`
-  margin: 10px 0;
-  ul{
+    /* margin: 30px 0; */
+  `,
+  List: styled.ul`
     display: flex;
     flex-wrap: wrap;
-    li{
-      flex-basis: 25%;
-      border: 1px solid #e8e8e8;
-      border-collapse: collapse;
-      text-align: center;
-      padding: 10px 0;
-      margin-top: -1px;
-      margin-left: -1px;
-      a{
-        display:inline-block;
-        width: 100%;
-        font-size: 10px;
-        color: #555;
-      }
-      svg{
-        border: 1px solid red;
-      }
-    }
-  }
-`,
+    justify-content: space-between;
+  `,
+  Item: styled.li`
+     flex-basis: 24%;
+     border: 1px solid #e8e8e8;
+     text-align: center;
+     padding: 10px 0;
+     border-radius: 5px;
+     cursor: pointer;
+     display: flex;
+     flex-direction: column;
+     &:hover{
+      background-color: #fafafa;
+      border: 1px solid #999;
+      color: #999;
+      box-shadow: inset 0 0 5px #fafafa, 0 0 5px #999;
+      transform: scale(1.1);
+      transition: transform 0.1s ease;
+     }
+     &:nth-child(n + 5){
+       margin-top: 4px;
+     }
+     a{
+       display:inline-block;
+       width: 100%;
+       font-size: 10px;
+       color: #555;
+     }
+  `,
 }
 
-const QuickIcon: React.FC<IQuickIcon> = (props) => {
+export default function QuickIcon() {
   return (
     <S.QuickIcon>
-    <ul>
+    <S.List>
       {QUICK_ICON_MENU.map((d) => (
-        <li key={d.url}>
-        <Icon name='bed' />
+        <S.Item key={d.url}>
+        <Link href={d.url}>
+           <a>
+           <Icon name='bed' />
+           </a>
+          </Link>
+
          <Link href={d.url}>
            <a>
            {d.label}
            </a>
           </Link>
-        </li>
+        </S.Item>
       ))}
-    </ul>
+    </S.List>
   </S.QuickIcon>
   )
 };
 
-
-export default QuickIcon;

@@ -38,7 +38,7 @@ const generateAction = (update: (recipe: (draft: IAppState) => void) => void) =>
       draft.status.loading = status;
     });
 
-  const setToggle = () => {
+  const setToggleSideMenu = () => {
     update((draft)=> {
       draft.openSideMenu = !draft.openSideMenu;
     })
@@ -46,7 +46,7 @@ const generateAction = (update: (recipe: (draft: IAppState) => void) => void) =>
 
   return {
     setIsNav,
-    setToggle
+    setToggleSideMenu
   };
 };
 

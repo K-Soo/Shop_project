@@ -1,14 +1,13 @@
 export const NAV_MENU: readonly { label: string; value: string; url: string }[] = [
-  { label: "목걸이", value: "login", url: "/shop-info/company" },
-  { label: "귀걸이", value: "register", url: "/shop-info/agreement" },
-  { label: "반지", value: "개인정보", url: "/shop-info/privacy" },
-  { label: "팔찌", value: "이용안내", url: "/shop-info/guide" },
-  { label: "발찌", value: "이용안내", url: "/shop-info/guide" },
-  { label: "플래티늄", value: "이용안내", url: "/shop-info/guide" },
-  { label: "커플링", value: "이용안내", url: "/shop-info/guide" },
-  { label: "세트", value: "이용안내", url: "/shop-info/guide" },
+  { label: "목걸이", value: "login", url: "/product/necklace" },
+  { label: "귀걸이", value: "register", url: "/product/earring" },
+  { label: "반지", value: "개인정보", url: "/product/ring" },
+  { label: "팔찌", value: "이용안내", url: "/product/bracelet" },
+  { label: "발찌", value: "이용안내", url: "/product/anklet" },
+  { label: "순금", value: "이용안내", url: "/product/gold" },
+  { label: "다이아몬드", value: "이용안내", url: "/product/diamond" },
+  { label: "커플링", value: "이용안내", url: "/product/coupling" },
 ];
-
 
 interface IMAIN {
   readonly [name: string]: {

@@ -11,13 +11,14 @@ interface IButton {
   margin?: string;
   fontSize?: string;
   fontWeight?: string;
+  name?: string
   onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   type?: "button" | "submit" | "reset" | undefined;
 }
 
-const Button: React.FC<IButton> = ({ className, children, onClick, type }) => {
+const Button: React.FC<IButton> = ({ className, children, onClick, type, name }) => {
   return (
-    <button className={className} onClick={onClick} type={type}>
+    <button className={className} onClick={onClick} type={type} name={name}>
       {children}
     </button>
   );

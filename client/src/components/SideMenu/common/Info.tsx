@@ -15,7 +15,7 @@ const Info: React.FC<IInfo> = ({ className }) => {
   }
   const S = {
     Info: styled.div<{ text: string }>`
-    margin: 20px 0;
+    /* margin: 20px 0; */
   .info-category{
     display: flex;
     justify-content: space-between;

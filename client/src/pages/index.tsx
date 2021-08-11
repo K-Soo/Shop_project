@@ -8,7 +8,7 @@ export default function Home(props: InferGetServerSidePropsType<typeof getServer
   return (
     <>
       <Head>
-        <title>쇼핑몰</title>
+        <title>쥬얼리 | 메인</title>
         <meta name="description" content="메인 페이지" />
         <link rel="icon" href="/favicon.ico" />
       </Head>

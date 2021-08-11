@@ -7,5 +7,4 @@ export const DROPDOWN_CATEGORY: readonly { label: string; goToMenu: string; left
   { label: "순금", goToMenu: "gold", leftIcon: "bed", rightIcon: 'heart' },
   { label: "다이아몬드", goToMenu: "diamond", leftIcon: "bed", rightIcon: 'heart' },
   { label: "커플링", goToMenu: "coupling", leftIcon: "bed", rightIcon: 'heart' },
-
 ];

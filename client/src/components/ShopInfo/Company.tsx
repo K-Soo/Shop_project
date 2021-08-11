@@ -23,7 +23,6 @@ const Company: React.FC<ICompany> = ({ className }) => {
 
 export default styled(Company)`
   max-width: 1200px;
-  border: 1px solid red;
   margin: 0 auto;
   padding: 0 20px;
 `;

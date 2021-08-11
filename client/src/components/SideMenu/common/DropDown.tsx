@@ -4,6 +4,7 @@ import Link from "next/link";
 import Icon from 'components/Icon/Icon';
 import { CSSTransition } from 'react-transition-group';
 import {DROPDOWN_CATEGORY} from '../../../../utils/constants/dropdown';
+import Title from 'components/style/Title';
 
 interface IDropDownItem {
   leftIcon?: any;
@@ -67,8 +68,10 @@ const S = {
       svg{
         width: 18px;
         height: 18px;
-        :hover{
+        &:hover{
           color: crimson;
+          transform: scale(1.1);
+          transition: transform 0.1s ease;
         }
       }
     }
@@ -82,7 +85,7 @@ const S = {
     }
   `,
 }
-function DropDown () {
+export default function DropDown () {
   const [activeMenu, setActiveMenu] = useState<string>('main');
   const [menuHeight, setMenuHeight] = useState<string | null>(null);
 
@@ -111,10 +114,13 @@ function DropDown () {
         onEnter={calcHeight}
       >
         <ul className='menu'>
-          <DropDownItem >카테고리</DropDownItem>
+          <Title level={6} size='14'  color='#555'>
+            카테고리
+          </Title>
           {DROPDOWN_CATEGORY.map((d) => (
           <>
             <DropDownItem 
+              key={d.label}
               leftIcon={<Icon name={d.leftIcon} />} 
               rightIcon={<Icon name={d.rightIcon} />} 
               goToMenu={d.goToMenu}
@@ -164,15 +170,9 @@ function DropDown () {
           <DropDownItem >ring</DropDownItem>
         </ul>
       </CSSTransition>
-
-
     </S.DropDown>
   )
 };
 
 
 
-
-export default styled(DropDown)`
-
-`;

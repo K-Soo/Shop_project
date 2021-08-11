@@ -6,8 +6,9 @@ import { PostType } from "models/post.interface"; //add
 import { Post, Get } from "api";
 interface IMainContainer {
   className?: string;
+  children: React.ReactNode;
+  arry?: number[]
 }
-
 interface IProduct {
   id: number;
   floor: string;
@@ -16,7 +17,7 @@ interface IProduct {
   // roomType2: string;
 }
 
-const MainContainer: React.FC<IMainContainer> = ({ className }) => {
+function MainContainer({ className, children }: IMainContainer) {
   const [items, setItems] = useState<IProduct[] | null>(null);
   const [posts, setPosts] = useState<PostType[]>();
 
@@ -44,7 +45,8 @@ const MainContainer: React.FC<IMainContainer> = ({ className }) => {
       {/* {items && items.map((d) => (
         <Product key={d.id}/>
       ))} */}
-      <Product items={items} />
+      {/* <Product items={items} /> */}
+      {children}
     </main>
   );
 };
@@ -55,4 +57,7 @@ export default styled(MainContainer)`
   margin: 0 auto;
   border: 1px solid #000;
   height: 700px;
+  ${({ theme }) => theme.mobile`
+    padding: 0;
+  `}
 `;

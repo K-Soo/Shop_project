@@ -19,6 +19,7 @@ const S = {
     width: 70%;
     visibility: ${props => props.openSideMenu && props.directionSwap === false  ? 'visible' : 'hidden'};
     background-color: #fff;
+    /* transform: translateX(-100%); */
     padding: 20px;
     ${props => props.openSideMenu && props.directionSwap === false  ? css`
       transform: translateX(0%);
@@ -46,7 +47,7 @@ const RightSide: React.FC<IRightSide> = ({ className, directionSwap, onClick }) 
   return (
     <S.RightSide className={className} openSideMenu={global.state.openSideMenu} directionSwap={directionSwap}>
       <S.Container>
-        <CloseButton onClick={global.action.setToggle} />
+        <CloseButton onClick={global.action.setToggleSideMenu} />
         <button onClick={onClick}>
           asd
         </button>

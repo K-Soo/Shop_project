@@ -11,6 +11,8 @@ import Info from 'components/SideMenu/common/Info';
 import Copyright from 'components/SideMenu/common/Copyright';
 import QuickIcon from 'components/SideMenu/common/QuickIcon';
 import DropDown from 'components/SideMenu/common/DropDown';
+import Link from "next/link";
+import { useRouter } from 'next/router';
 
 interface ILeftSide {
   className?: string;
@@ -20,7 +22,7 @@ interface ILeftSide {
 
 const S = {
   LeftSide: styled.nav<{ openSideMenu: boolean, directionSwap: boolean }>`
-    border: 2px solid #000;
+    border: 1px solid #000;
     position: fixed;
     top: 0;
     left: 0;
@@ -39,13 +41,13 @@ const S = {
   Container: styled.div`
     height: 100%;
   `,
-  Panel: styled.div`
+  Panel: styled.div<{ openSideMenu: boolean, directionSwap: boolean }>`
     font-size: 0;
     border: 1px solid red;
     margin-bottom: 15px;
     display: flex;
     justify-content: space-between;
-    padding: 20px 0px;
+    /* padding: 20px 0px; */
     .swap{
       position: relative;
       border: 1px solid #eaeaea;
@@ -55,10 +57,20 @@ const S = {
       span{
         position: absolute;
         top: 0;
-        top: 50%;
         transform: translateY(-50%);
-        /* left: 50%; */
-        right: 50%;
+        top: 50%;
+        left: 50%;
+        /* right: 50%; */
+        /* ${(props) => props.openSideMenu && props.directionSwap ? css`
+          left: 50%;
+          transition: all 5s ease;` : css`
+          right: 50%;
+          transition: all 5s ease;
+        `} */
+        ${props => props.openSideMenu && css `
+          right: 50%;
+          transition: right 5s ease;
+        `}
         display: inline-block;
         border: 1px solid #000;
         width: 50px;
@@ -77,14 +89,25 @@ const S = {
     }
   `,
   Banner: styled.div`
-  img{
-  }
+    font-size: 0;
+    /* margin-bottom: 15px; */
+    img{
+      width: 100%;
+    }
   `,
   Top: styled.div`
     display: flex;
     justify-content: space-between;
     button{
       width: 48%;
+      padding: 0;
+    }
+    a{
+      display: inline-block;
+      height: 100%;
+      line-height: 35px;
+      width: 100%;
+      flex: 1;
     }
   `,
   Copyright: styled.div`
@@ -95,25 +118,37 @@ const S = {
 
 const LeftSide: React.FC<ILeftSide> = ({ className, directionSwap, onClick }) => {
   const global = useContext(AppContext);
+  const router = useRouter();
+
+  const handleRouter = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>):void => {
+    const {name} = e.currentTarget
+    console.log('name: ', name);
+    global.action.setToggleSideMenu();
+    router.push(`/auth/${name}`);
+  }
 
   return (
     <S.LeftSide className={className} openSideMenu={global.state.openSideMenu} directionSwap={directionSwap}>
       <S.Container>
-        <S.Panel>
+        <S.Panel openSideMenu={global.state.openSideMenu} directionSwap={directionSwap}>
           <div className='swap'>
             <span className='swap-slider' />
             <button onClick={onClick}>SHOP</button>
             <button onClick={onClick}>CART</button>
           </div>
-          <CloseButton onClick={global.action.setToggle} />
+          <CloseButton onClick={global.action.setToggleSideMenu} />
         </S.Panel>
         <S.Banner>
-          {/* <img src="http://placehold.it/250x100" alt='1' /> */}
+          <img src="/images/side.jpg" alt='1' />
           {/* <Image src="http://placehold.it" width={100} height={200}/> */}
         </S.Banner>
         <S.Top>
-          <Button login height='35px' fontSize='12px'>로그인</Button>
-          <Button height='25' fontSize='12px'>회원가입</Button>
+          <Button login height='35px' fontSize='12px' name='login' onClick={handleRouter}>
+            로그인
+          </Button>
+          <Button height='35px' fontSize='12px' name='register' onClick={handleRouter}> 
+            회원가입
+          </Button>
         </S.Top>
         <QuickIcon />
         <DropDown />

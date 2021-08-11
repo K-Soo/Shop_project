@@ -168,7 +168,7 @@ const Nav: React.FC<INav> = ({ className, ScrollActive }) => {
           </S.NavGroup>
 
           <S.SearchGroup className='search-menu' toggle={toggle} >
-            <li className='hamburger-btn' onClick={global.action.setToggle}>
+            <li className='hamburger-btn' onClick={global.action.setToggleSideMenu}>
             <SideMenuIcon />
             </li>
             <NavSearchBar handleToggle={() => setToggle(!toggle)} toggle={toggle} />

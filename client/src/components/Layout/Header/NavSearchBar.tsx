@@ -1,6 +1,7 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import Icon from 'components/Icon/Icon';
+import JSON_SEARCH from 'mock/MOCK_SEARCH.json';
 
 interface INavSearchBar {
   className?: string;
@@ -91,6 +92,13 @@ const S = {
         }
       }
     }
+    .search-data{
+      border: 1px solid red;
+      height: 200px;
+      width: 100%;
+      color: #222;
+      overflow-y: scroll;
+    }
     .bottom-field{
       display: none;
       font-size: 0;
@@ -116,23 +124,42 @@ const S = {
 
 const NavSearchBar: React.FC<INavSearchBar> = ({ className, handleToggle, toggle }) => {
   const InputFocus = useRef<HTMLInputElement | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  console.log('searchTerm: ', searchTerm);
 
   useEffect(() => {
     if (toggle) setTimeout(() => InputFocus.current?.focus(), 1000);
   }, [toggle]);
 
-  const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log('hh');
   };
+
+  const data = JSON_SEARCH.filter((d) => {
+    if(searchTerm === ""){
+      return;
+    }else if(d.first_name.toLowerCase().includes(searchTerm.toLowerCase())){
+      return d;
+    }
+  })
   return (
     <S.wrapper className={className} toggle={toggle}>
       <S.form toggle={toggle} onSubmit={handleSubmit}>
         <fieldset className='search-field'>
-          <input className='search-area' ref={InputFocus} type='text' />
+          <input className='search-area' ref={InputFocus} type='text' placeholder='...' onChange={(e) => setSearchTerm(e.target.value)} />
           <button className='search-btn' type='submit'>
             <Icon name='search' />
           </button>
+        </fieldset>
+        <fieldset className='search-data'>
+          <div>
+            {data && data.map(d => (
+              <p key={d.id}>
+                {d.first_name}
+              </p>
+            ))}
+          </div>
         </fieldset>
         <fieldset className='bottom-field'>
           <button className='close-btn' type='button' onClick={handleToggle}>
