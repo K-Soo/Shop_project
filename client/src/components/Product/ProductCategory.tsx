@@ -3,8 +3,9 @@ import styled from "styled-components";
 import { category, categoryType } from 'components/Product';
 import Title from 'components/style/Title';
 import { PRODUCT } from '../../../utils/constants/product';
-import HamburgerIcon from 'components/Product/Common/HamburgerIcon';
 import HamburgerMenuList from 'components/Product/Common/HamburgerMenuList';
+import SideMenuIcon from 'components/SideMenu/SideMenuIcon';
+import HamburgerIcon from 'components/Common/HamburgerIcon';
 
 interface IProductCategory {
   currentProduct: categoryType
@@ -82,7 +83,7 @@ export default function ProductCategory({ currentProduct, keyName }: IProductCat
     <S.ProductCategory>
       <S.SubTitle>
         <Title level={3} size='24' textAlign='left'>{currentProduct}</Title>
-        <HamburgerIcon onClick={() => setToggleSubMenu(!toggleSubMenu)} toggleSubMenu={toggleSubMenu}/>
+        <HamburgerIcon onClick={() => setToggleSubMenu(!toggleSubMenu)} toggle={toggleSubMenu}/>
         <HamburgerMenuList productSubList={PRODUCT[keyName]} toggleSubMenu={toggleSubMenu}/>
       </S.SubTitle>
       <S.CategorySubList>

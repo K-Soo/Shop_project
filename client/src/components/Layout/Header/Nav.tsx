@@ -4,7 +4,7 @@ import Link from "next/link";
 import { NAV_MENU } from "../../../../utils/constants/header";
 import Icon from 'components/Icon/Icon';
 import NavSearchBar from 'components/Layout/Header/NavSearchBar';
-import SideMenuIcon from 'components/SideMenu/SideMenuIcon';
+import HamburgerIcon from 'components/Common/HamburgerIcon';
 import SideMenu from 'components/SideMenu';
 import { AppContext } from 'pages/_app';
 
@@ -169,7 +169,7 @@ const Nav: React.FC<INav> = ({ className, ScrollActive }) => {
 
           <S.SearchGroup className='search-menu' toggle={toggle} >
             <li className='hamburger-btn' onClick={global.action.setToggleSideMenu}>
-            <SideMenuIcon />
+            <HamburgerIcon toggle={global.state.openSideMenu}/>
             </li>
             <NavSearchBar handleToggle={() => setToggle(!toggle)} toggle={toggle} />
             <li className='search-btn' >

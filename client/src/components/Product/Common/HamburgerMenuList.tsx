@@ -1,7 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components";
 import Link from 'next/link';
-
 interface IHamburgerMenuList {
   productSubList: any;
   toggleSubMenu: boolean;
@@ -9,6 +8,7 @@ interface IHamburgerMenuList {
 
 const S = {
   HamburgerMenuList: styled.div<{ toggleSubMenu: boolean }>`
+    z-index: 10;
     position: absolute;
     border:1px solid #f0f0f0;
     top: 35px;

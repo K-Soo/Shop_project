@@ -106,7 +106,7 @@ export default function DropDown () {
 
   return (
     <S.DropDown menuHeight={menuHeight}>
-      <CSSTransition
+      {/* <CSSTransition
         in={activeMenu === 'main'}
         timeout={500}
         unmountOnExit
@@ -120,7 +120,7 @@ export default function DropDown () {
           {DROPDOWN_CATEGORY.map((d) => (
           <>
             <DropDownItem 
-              key={d.label}
+              key={d.goToMenu}
               leftIcon={<Icon name={d.leftIcon} />} 
               rightIcon={<Icon name={d.rightIcon} />} 
               goToMenu={d.goToMenu}
@@ -130,7 +130,7 @@ export default function DropDown () {
           </>
           ))}
         </ul>
-      </CSSTransition>
+      </CSSTransition> */}
 
       <CSSTransition
         in={activeMenu === 'necklace'}

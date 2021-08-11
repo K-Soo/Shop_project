@@ -6,8 +6,7 @@ import { PostType } from "models/post.interface"; //add
 import { Post, Get } from "api";
 interface IMainContainer {
   className?: string;
-  children: React.ReactNode;
-  arry?: number[]
+  children?: React.ReactNode;
 }
 interface IProduct {
   id: number;

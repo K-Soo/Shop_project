@@ -27,6 +27,7 @@ const InputStyle = css`
 
 const S = {
   wrapper: styled.div<{ toggle: boolean }>`
+    z-index: 10;
     position: absolute;
     visibility: hidden;
     border: 1px solid #e8e8e8;

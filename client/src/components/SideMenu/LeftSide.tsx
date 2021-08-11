@@ -67,7 +67,7 @@ const S = {
           right: 50%;
           transition: all 5s ease;
         `} */
-        ${props => props.openSideMenu && css `
+        ${props => props.openSideMenu && css`
           right: 50%;
           transition: right 5s ease;
         `}
@@ -120,9 +120,8 @@ const LeftSide: React.FC<ILeftSide> = ({ className, directionSwap, onClick }) =>
   const global = useContext(AppContext);
   const router = useRouter();
 
-  const handleRouter = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>):void => {
-    const {name} = e.currentTarget
-    console.log('name: ', name);
+  const handleRouter = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
+    const { name } = e.currentTarget
     global.action.setToggleSideMenu();
     router.push(`/auth/${name}`);
   }
@@ -139,14 +138,14 @@ const LeftSide: React.FC<ILeftSide> = ({ className, directionSwap, onClick }) =>
           <CloseButton onClick={global.action.setToggleSideMenu} />
         </S.Panel>
         <S.Banner>
-          <img src="/images/side.jpg" alt='1' />
+          {/* <img src="/images/side.jpg" alt='1' /> */}
           {/* <Image src="http://placehold.it" width={100} height={200}/> */}
         </S.Banner>
         <S.Top>
           <Button login height='35px' fontSize='12px' name='login' onClick={handleRouter}>
             로그인
           </Button>
-          <Button height='35px' fontSize='12px' name='register' onClick={handleRouter}> 
+          <Button height='35px' fontSize='12px' name='register' onClick={handleRouter}>
             회원가입
           </Button>
         </S.Top>

@@ -5,9 +5,10 @@ import ProductList from 'components/Product/ProductList';
 import ProductCategory from 'components/Product/ProductCategory';
 import { PRODUCT } from '../../../utils/constants/product';
 import { useRouter } from 'next/router';
+import moduleName from 'module';
 interface IProduct {
   className?: string;
-  items?: any;
+  item?: any;
 }
 
 export enum category {
@@ -17,24 +18,29 @@ export enum category {
 
 export type categoryType = `${category}`;
 
-function Product(props: IProduct) {
-  console.log(PRODUCT);
+const S = {
+  Product: styled.section`
+    width: 100%;
+    height: 100%;
+  `,
+}
+
+export default function Product({ item, className }: IProduct) {
+  console.log('item: ', item);
   const router = useRouter();
   const { pathname } = router
   const keyName = pathname.split('/')[2] as keyof typeof category;
   const currentProduct: categoryType = category[keyName]
 
+
   return (
-    <section className={props.className}>
-      <ProductCategory currentProduct={currentProduct} keyName={keyName}/>
-      <BestProducts />
+    <S.Product>
+      <ProductCategory currentProduct={currentProduct} keyName={keyName} />
+      <BestProducts item={item}/>
       <ProductList />
-    </section>
+    </S.Product>
   )
 };
 
 
-export default styled(Product)`
-  width: 100%;
-  height: 100%;
-`;
+

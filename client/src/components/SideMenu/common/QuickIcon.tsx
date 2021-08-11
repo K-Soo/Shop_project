@@ -53,7 +53,6 @@ export default function QuickIcon() {
            <Icon name='bed' />
            </a>
           </Link>
-
          <Link href={d.url}>
            <a>
            {d.label}
