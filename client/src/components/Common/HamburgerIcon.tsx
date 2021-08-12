@@ -4,6 +4,7 @@ import styled from "styled-components";
 interface IHamburgerIcon {
   toggle: boolean
   onClick?: React.MouseEventHandler<HTMLDivElement> | undefined;
+  className?: string;
 }
 
 const S = {
@@ -36,9 +37,9 @@ const S = {
   `,
 }
 
-export default function HamburgerIcon({ toggle, onClick }: IHamburgerIcon) {
+export default function HamburgerIcon({ toggle, onClick,className }: IHamburgerIcon) {
   return (
-    <S.HamburgerIcon toggle={toggle} onClick={onClick}>
+    <S.HamburgerIcon toggle={toggle} onClick={onClick} className={className}>
       <span className='line' />
       <span className='line' />
       <span className='line' />

@@ -11,10 +11,9 @@ export default function BraceletPage() {
   return (
     <>
       <Head>
-        <title>쥬얼리 | 발찌</title>
+        <title>쥬얼리 | 팔찌</title>
       </Head>
       <MainContainer >
-      BraceletPage
         <Product />
       </MainContainer>
     </>

@@ -2,6 +2,7 @@ import React, { useState, useEffect,useRef,useCallback } from "react";
 import styled, { css } from "styled-components";
 import Nav from "components/Layout/Header/Nav";
 import ImageBox from "components/Layout/Header/ImageBox";
+import MainLogo from "components/Layout/Header/MainLogo";
 import Menu from "components/Layout/Header/Menu";
 import TopMenu from "components/Layout/Header/TopMenu";
 import {useScroll} from 'hooks/useScroll';
@@ -12,7 +13,7 @@ interface IHeader {
 }
 
 const S = {
-  wrapper: styled.header<{ ScrollActive: boolean }>`
+  Header: styled.header<{ ScrollActive: boolean }>`
   ${props =>
     props.ScrollActive &&
     css`
@@ -35,12 +36,12 @@ const Header: React.FC<IHeader> = ({ className }) => {
   },[scrollY])
 
   return (
-    <S.wrapper className={className} ScrollActive={scrollActive}>
+    <S.Header className={className} ScrollActive={scrollActive}>
       <Menu ScrollActive={scrollActive} />
-      <ImageBox />
+      <MainLogo />
       <Nav ScrollActive={scrollActive} />
       <SideMenu />
-    </S.wrapper>
+    </S.Header>
   );
 };
 

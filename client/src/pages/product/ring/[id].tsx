@@ -14,7 +14,6 @@ export default function RingDetail() {
         <title>쥬얼리 | 반지</title>
       </Head>
       <MainContainer >
-      RingDetail
         <Product />
       </MainContainer>
     </>

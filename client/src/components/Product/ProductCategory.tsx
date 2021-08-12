@@ -23,6 +23,7 @@ const S = {
     border-bottom: 2px solid #e8e8e8;
     margin-bottom: 10px;
     height: 35px;
+
     ${Title}{
       position: relative;
       &::after{
@@ -36,17 +37,20 @@ const S = {
       }
     }
     ${({ theme }) => theme.mobile`
-        justify-content: center;
-        height: 60px;
-        align-items: center;
-        border-bottom: none;
-        margin-bottom: 0px;
-        ${Title}{
-          font-size: 20px;
-          &::after{
-            content: none;
-          }
+      justify-content: center;
+      height: 60px;
+      align-items: center;
+      border-bottom: none;
+      margin-bottom: 0px;
+      ${Title}{
+        font-size: 20px;
+        &::after{
+          content: none;
         }
+      }
+      .hamburger-icon{
+        display: none;
+      }
     `}
   `,
   CategorySubList: styled.div`
@@ -82,7 +86,7 @@ export default function ProductCategory({ currentProduct, keyName }: IProductCat
     <S.ProductCategory>
       <S.SubTitle>
         <Title level={3} size='24' textAlign='left'>{currentProduct}</Title>
-        <HamburgerIcon onClick={() => setToggleSubMenu(!toggleSubMenu)} toggle={toggleSubMenu}/>
+        <HamburgerIcon onClick={() => setToggleSubMenu(!toggleSubMenu)} toggle={toggleSubMenu} className='hamburger-icon'/>
         <HamburgerMenuList productSubList={PRODUCT[keyName]} toggleSubMenu={toggleSubMenu}/>
       </S.SubTitle>
       <S.CategorySubList>

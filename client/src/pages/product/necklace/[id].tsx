@@ -14,7 +14,6 @@ export default function NecklaceDetail() {
         <title>쥬얼리 | 목걸이</title>
       </Head>
       <MainContainer >
-      NecklaceDetail
         <Product />
       </MainContainer>
     </>

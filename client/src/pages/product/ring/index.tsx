@@ -14,7 +14,6 @@ export default function RingPage() {
         <title>쥬얼리 | 반지</title>
       </Head>
       <MainContainer >
-      RingPage
         <Product />
       </MainContainer>
     </>

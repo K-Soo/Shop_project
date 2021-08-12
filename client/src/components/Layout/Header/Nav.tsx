@@ -1,11 +1,11 @@
-import React, { useState,useContext } from "react";
+import React, { useState, useContext } from "react";
 import styled, { css } from "styled-components";
 import Link from "next/link";
+import { useRouter } from 'next/router';
 import { NAV_MENU } from "constants/header";
 import Icon from 'components/Icon/Icon';
 import NavSearchBar from 'components/Layout/Header/NavSearchBar';
 import HamburgerIcon from 'components/Common/HamburgerIcon';
-import SideMenu from 'components/SideMenu';
 import { AppContext } from 'pages/_app';
 
 interface INav {
@@ -14,7 +14,7 @@ interface INav {
 }
 
 const S = {
-  wrapper: styled.nav<{ ScrollActive: boolean }>`
+  Nav: styled.nav<{ ScrollActive: boolean }>`
     height: 50px;
     color: #222;
     width: 100%;
@@ -52,6 +52,36 @@ const S = {
         order: 2;
       }
     `}
+  `,
+  CategoryGroup: styled.ul<{ pathname: string }>`
+    height:100%;
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    ${({ theme }) => theme.mobile`
+      display: ${(props:any) => props.pathname === '/' ? 'flex' : 'none' };
+      flex-wrap: wrap;
+    `}
+  `,
+  Item: styled.li`
+    flex-grow: 1;
+    display: inline-block;
+    text-align: center;
+    font-size: 13px;
+    ${({ theme }) => theme.mobile`
+      flex-basis:40%;
+      padding: 5px;
+      border: 1px solid #e8e8e8;
+    `}
+    a {
+      display: inline-block;
+      padding: 0 10px;
+      width: 100%;
+      vertical-align: bottom;
+      &:hover {
+        color: red;
+      }
+    }
   `,
   SearchGroup: styled.ul<{ toggle: boolean }>`
     height: 50px;
@@ -117,47 +147,19 @@ const S = {
       `}
     }
   `,
-  NavGroup: styled.ul`
-    height:100%;
-    display:flex;
-    align-items: center;
-    flex-grow: 1;
-    ${({ theme }) => theme.mobile`
-      flex-wrap: wrap;
-    `}
-  `,
-  Item: styled.li`
-    flex-grow: 1;
-    display: inline-block;
-    text-align: center;
-    font-size: 13px;
-    ${({ theme }) => theme.mobile`
-      flex-basis:40%;
-      padding: 5px;
-      border: 1px solid #e8e8e8;
-    `}
-    a {
-      display: inline-block;
-      padding: 0 10px;
-      width: 100%;
-      vertical-align: bottom;
-      &:hover {
-        color: red;
-      }
-    }
-  `,
+
 }
 
 const Nav: React.FC<INav> = ({ className, ScrollActive }) => {
   const [toggle, setToggle] = useState<boolean>(false);
-
   const global = useContext(AppContext);
+  const router = useRouter();
 
   return (
-    <S.wrapper className={className} ScrollActive={ScrollActive} >
+    <S.Nav className={className} ScrollActive={ScrollActive} >
       <S.container >
         <S.ItemBox >
-          <S.NavGroup className='nav-menu'>
+          <S.CategoryGroup pathname={router.pathname}>
             {NAV_MENU.map(d => (
               <S.Item key={d.label}>
                 <Link href={d.url}>
@@ -165,11 +167,11 @@ const Nav: React.FC<INav> = ({ className, ScrollActive }) => {
                 </Link>
               </S.Item>
             ))}
-          </S.NavGroup>
+          </S.CategoryGroup>
 
-          <S.SearchGroup className='search-menu' toggle={toggle} >
+          <S.SearchGroup toggle={toggle} >
             <li className='hamburger-btn' onClick={global.action.setToggleSideMenu}>
-            <HamburgerIcon toggle={global.state.openSideMenu}/>
+              <HamburgerIcon toggle={global.state.openSideMenu} />
             </li>
             <NavSearchBar handleToggle={() => setToggle(!toggle)} toggle={toggle} />
             <li className='search-btn' >
@@ -180,7 +182,7 @@ const Nav: React.FC<INav> = ({ className, ScrollActive }) => {
           </S.SearchGroup>
         </S.ItemBox>
       </S.container>
-    </S.wrapper>
+    </S.Nav>
   );
 };
 

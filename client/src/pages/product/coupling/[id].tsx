@@ -14,7 +14,6 @@ export default function CouplingDetail() {
         <title>쥬얼리 | 커플링</title>
       </Head>
       <MainContainer >
-      CouplingDetail
         <Product />
       </MainContainer>
     </>

@@ -10,7 +10,6 @@ export default function CouplingPage() {
         <title>쥬얼리 | 커플링</title>
       </Head>
       <MainContainer >
-      CouplingPage
         <Product />
       </MainContainer>
     </>

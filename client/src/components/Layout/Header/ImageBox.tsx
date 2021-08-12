@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useRouter } from "next/router";
 import Link from 'next/link';
+import Image from "next/image";
 import PAGE  from 'constants/path';
 
 
@@ -17,7 +18,7 @@ const ImageBox: React.FC<IImageBox> = ({ className }) => {
     <div className={className}>
       <Link href={PAGE.MAIN.path}>
         <a>
-          ImageBox
+          <Image src="/images/main_logo.jpeg" width={100} height={100}/>
         </a>
       </Link>
     </div>

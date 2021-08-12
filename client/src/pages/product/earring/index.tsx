@@ -13,7 +13,6 @@ export default function EarringPage() {
         <title>쥬얼리 | 귀걸이</title>
       </Head>
       <MainContainer >
-        EarringPage
         <Product />
       </MainContainer>
     </>

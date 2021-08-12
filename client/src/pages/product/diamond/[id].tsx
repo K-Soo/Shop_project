@@ -10,7 +10,6 @@ export default function DiamondDetail() {
         <title>쥬얼리 | 다이아몬드</title>
       </Head>
       <MainContainer >
-      DiamondDetail
         <Product />
       </MainContainer>
     </>

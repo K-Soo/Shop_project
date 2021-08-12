@@ -10,7 +10,6 @@ export default function DiamondPage() {
         <title>쥬얼리 | 다이아몬드</title>
       </Head>
       <MainContainer >
-      DiamondPage
         <Product />
       </MainContainer>
     </>

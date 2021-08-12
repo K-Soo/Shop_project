@@ -12,7 +12,6 @@ export default function NecklacePage() {
         <title>쥬얼리 | 목걸이</title>
       </Head>
       <MainContainer >
-      NecklacePage
         <Product />
       </MainContainer>
     </>

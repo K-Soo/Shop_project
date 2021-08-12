@@ -14,7 +14,6 @@ export default function EarringDetail() {
         <title>쥬얼리 | 귀걸이</title>
       </Head>
       <MainContainer >
-      EarringDetail
         <Product />
       </MainContainer>
     </>

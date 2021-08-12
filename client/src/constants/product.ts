@@ -29,11 +29,37 @@ export const PRODUCT = {
     { label: '진주 귀걸이', value: '' },
     { label: '실버 귀걸이', value: '' },
   ],
+  ring: [
+    { label: '심플링', value: '' },
+    { label: '미스링', value: '' },
+    { label: '옴므링', value: '' },
+    { label: '애끼링', value: '' },
+    { label: '이니셜', value: '' },
+    { label: '탄생석 원석반지', value: '' },
+    { label: '실버 반지', value: '' },
+    { label: '진주 반지', value: '' },
+    { label: '묵주 반지', value: '' },
+    { label: '프리사이즈', value: '' },
+    { label: '다이아몬드 반지', value: '' },
+    { label: '다이아몬드 프로포즈링', value: '' },
+  ],
+  bracelet: [
+    { label: '팔찌', value: '' },
+  ],
+  anklet: [
+    { label: '발찌', value: '' },
+  ],
   gold: [
     { label: '순금 돌선물', value: '' },
     { label: '순금 목걸이', value: '' },
     { label: '순금 팔찌', value: '' },
     { label: '순금 카드상패', value: '' },
     { label: '순금 기념품', value: '' },
+  ],
+  diamond: [
+    { label: '다이아몬드', value: '' },
+  ],
+  coupling: [
+    { label: '커플링', value: '' },
   ]
 }
