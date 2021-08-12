@@ -3,7 +3,7 @@ import { useRef, useEffect, useCallback } from 'react';
 const useScrollFadeIn = (direction = 'up', duration = 1, delay = 0) => {
   const element = useRef();
 
-  const handleDirection = (name:any) => {
+  const handleDirection = (name: any) => {
     switch (name) {
       case 'up':
         return 'translate3d(0, 50%, 0)';
@@ -20,7 +20,7 @@ const useScrollFadeIn = (direction = 'up', duration = 1, delay = 0) => {
 
   const onScroll = useCallback(
     ([entry]) => {
-      const { current }:any = element;
+      const { current }: any = element;
       console.log('current: ', current);
       if (entry.isIntersecting) {
         current.style.transitionProperty = 'all';
@@ -35,7 +35,7 @@ const useScrollFadeIn = (direction = 'up', duration = 1, delay = 0) => {
   );
 
   useEffect(() => {
-    let observer:any;
+    let observer: any;
 
     if (element.current) {
       observer = new IntersectionObserver(onScroll, { threshold: 0.7 });

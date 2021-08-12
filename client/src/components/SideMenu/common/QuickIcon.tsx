@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Icon from 'components/Icon/Icon';
 import Link from "next/link";
-import {QUICK_ICON_MENU} from '../../../../utils/constants/header';
+import {QUICK_ICON_MENU} from 'constants/header';
 
 const S ={
   QuickIcon: styled.div`

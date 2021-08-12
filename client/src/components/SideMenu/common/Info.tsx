@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import styled from 'styled-components';
-import {ACCOUNT_INFO} from '../../../../utils/constants/footer';
+import {ACCOUNT_INFO} from 'constants/footer';
 
 interface IInfo {
   className?: string;

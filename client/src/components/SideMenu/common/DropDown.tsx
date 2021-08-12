@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Link from "next/link";
 import Icon from 'components/Icon/Icon';
 import { CSSTransition } from 'react-transition-group';
-import {DROPDOWN_CATEGORY} from '../../../../utils/constants/dropdown';
+import {DROPDOWN_CATEGORY} from 'constants/dropdown';
 import Title from 'components/style/Title';
 
 interface IDropDownItem {

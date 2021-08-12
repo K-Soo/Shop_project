@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styled, { css } from "styled-components";
 import Link from "next/link";
-import PAGE from "../../../../utils/path";
-import { MAIN_MENU } from "../../../../utils/constants/header";
+import PAGE from "constants/path";
+import { MAIN_MENU } from "constants/header";
 import Icon from 'components/Icon/Icon';
 // import ReactTooltip from 'react-tooltip';
 import dynamic from "next/dynamic";

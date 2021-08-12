@@ -6,7 +6,7 @@ import {
   FAVORITE_MENU,
   CUSTOMER_CENTER,
   RETURN_EXCHANGE,
-} from "../../../../utils/constants/footer";
+} from "constants/footer";
 // import Gicon from '../../Icon/Gicon';
 interface ITop {
   className?: string;

@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Link from "next/link";
-import { SUB_TOP_LISTS } from "../../../../utils/constants/footer";
+import { SUB_TOP_LISTS } from "constants/footer";
 
 interface ISubTop {
   className?: string;

@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import Footer from "components/Layout/Footer";
 import Header from "components/Layout/Header";
-
 interface ILayout {
   className?: string;
 }

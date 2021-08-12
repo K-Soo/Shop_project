@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { COMPANY_INFO } from "../../../../utils/constants/footer";
+import { COMPANY_INFO } from "constants/footer";
 
 interface IBottom {
   className?: string;

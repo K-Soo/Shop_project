@@ -4,7 +4,9 @@ import { useRouter } from 'next/router';
 import MainContainer from 'containers/MainContainer';
 import Product from 'components/Product';
 
-export default function NecklacePage() {
+export default function NecklaceDetail() {
+  const router = useRouter();
+  const {id} = router.query;
   
   return (
     <>
@@ -12,7 +14,7 @@ export default function NecklacePage() {
         <title>쥬얼리 | 목걸이</title>
       </Head>
       <MainContainer >
-      NecklacePage
+      NecklaceDetail
         <Product />
       </MainContainer>
     </>

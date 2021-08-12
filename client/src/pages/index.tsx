@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import { InferGetServerSidePropsType, GetServerSideProps } from 'next';
-import MainContainer from 'container/MainContainer';
+import MainContainer from 'containers/MainContainer';
 import { Post, Get } from "api";
 
 export default function Home(props: InferGetServerSidePropsType<typeof getServerSideProps>) {

@@ -3,7 +3,7 @@ import styled, { css } from "styled-components";
 import Link from "next/link";
 import Button from "components/style/Button";
 import { useRouter } from "next/router";
-import PAGE from "../../../../utils/path";
+import PAGE from "constants/path";
 import Breadcrumb from "components/Common/Breadcrumb";
 import Title from "components/style/Title";
 import Member from "components/Auth/Login/Member";

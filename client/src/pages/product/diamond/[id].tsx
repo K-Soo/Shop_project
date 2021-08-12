@@ -1,18 +1,16 @@
 import React from "react";
 import Head from "next/head";
-import { useRouter } from 'next/router';
 import MainContainer from 'containers/MainContainer';
 import Product from 'components/Product';
 
-export default function NecklacePage() {
-  
+export default function DiamondDetail() {
   return (
     <>
       <Head>
-        <title>쥬얼리 | 목걸이</title>
+        <title>쥬얼리 | 다이아몬드</title>
       </Head>
       <MainContainer >
-      NecklacePage
+      DiamondDetail
         <Product />
       </MainContainer>
     </>

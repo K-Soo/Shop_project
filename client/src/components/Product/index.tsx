@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import BestProducts from 'components/Product/BestProducts';
 import ProductList from 'components/Product/ProductList';
 import ProductCategory from 'components/Product/ProductCategory';
-import { PRODUCT } from '../../../utils/constants/product';
+import { PRODUCT } from 'constants/product';
 import { useRouter } from 'next/router';
 import moduleName from 'module';
 interface IProduct {

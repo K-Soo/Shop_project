@@ -1,4 +1,7 @@
 import React from "react";
+import Image from 'next/image'
+import Link from 'next/link'
+import {useRouter} from 'next/router'
 import styled from "styled-components";
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
@@ -25,6 +28,10 @@ const S = {
           width: 100%;
           height: 100%;
           object-fit: cover;
+          :hover{
+            transform: scale(1.1);
+            transition: all .5s ease;
+          }
         }
       }
       .desc-box{
@@ -45,7 +52,9 @@ const S = {
       }
     }
   `,
-  Color: styled.p<{productColors:any}>`
+  NewIcon: styled.span`
+  `,
+  ColorBox: styled.p<{ productColors: any }>`
     display: ${props => props.productColors.length > 1 ? 'block' : 'none'};
     text-align: center;
     margin-bottom: 10px;
@@ -90,12 +99,13 @@ const settings = {
 };
 
 export default function ImageSlider({ item }: IImageSlider) {
-
+  const router = useRouter();
+  const {pathname} = router;
 
   return (
     <S.ImageSlider>
       <Slider {...settings}>
-        {/* <S.Card> 원본
+        {/* <S.Card> 원본 
           <div className='card-inner'>
             <div className='img-box'>
               <img src="https://via.placeholder.com/150" alt="" />
@@ -112,29 +122,36 @@ export default function ImageSlider({ item }: IImageSlider) {
           </div>
         </S.Card> */}
 
-        {item && item.map((d) => (
+        {item && item.map((d:any) => (
           <S.Card key={d.id}>
             <div className='card-inner'>
+              <Link href={`${pathname}/${d.id}`}>
+              <a>
               <div className='img-box'>
-                <img src={d.image_link} alt="" />
+                <Image
+                  src={d.image_link}
+                  alt="Picture of the author"
+                  width={500}
+                  height={500}
+                />
               </div>
-
+              </a>
+              </Link>
               <div className='desc-box'>
-                <S.Color productColors={d.product_colors}>
+                <S.ColorBox productColors={d.product_colors}>
                   {d.product_colors.map((val: any) => (
                     <S.ColorIcon className='color-icon' key={val.hex_value} color={val.hex_value} />
                   ))}
-                </S.Color>
-                <Title level={5}>{d.name}</Title>
+                </S.ColorBox>
+                <Title level={5}>{d.name.slice(0, 20)}</Title>
                 <p className='desc-box__short-desc'>{d.description.slice(0, 30)}</p>
                 <span className='desc-box__consumer-price'>소비자 가격</span>
                 <span className='desc-box__sale-price'>{d.price}</span>
                 <span className='desc-box__discount'>할인 가격</span>
-                <span className='desc-box__icon'>new</span>
+                <S.NewIcon >new</S.NewIcon>
               </div>
             </div>
           </S.Card>
-
         ))}
       </Slider>
     </S.ImageSlider>

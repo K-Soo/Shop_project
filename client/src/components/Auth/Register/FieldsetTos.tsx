@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import TextArea from "components/style/TextArea";
-import { Text } from "../../../../utils/constants/register";
+import { Text } from "constants/register";
 import Title from "components/style/Title";
 import Icon from 'components/Icon/Icon';
 

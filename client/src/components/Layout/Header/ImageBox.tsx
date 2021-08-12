@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useRouter } from "next/router";
 import Link from 'next/link';
-import PAGE  from '../../../../utils/path';
+import PAGE  from 'constants/path';
 
 
 

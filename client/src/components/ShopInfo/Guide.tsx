@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Breadcrumb from "components/Common/Breadcrumb";
 import Link from "next/link";
-import PAGE from "../../../utils/path";
+import PAGE from "constants/path";
 interface IGuide {
   className?: string;
 }

@@ -1,6 +1,6 @@
 import React from "react";
 import Head from "next/head";
-import RegisterContainer from "container/Auth/RegisterContainer";
+import RegisterContainer from "containers/Auth/RegisterContainer";
 
 interface IRegister {
   className?: string;

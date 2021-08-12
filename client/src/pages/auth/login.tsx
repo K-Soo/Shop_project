@@ -1,6 +1,6 @@
 import React from "react";
 import Head from "next/head";
-import LoginContainer from "container/Auth/LoginContainer";
+import LoginContainer from "containers/Auth/LoginContainer";
 
 interface ILogin {
   className?: string;

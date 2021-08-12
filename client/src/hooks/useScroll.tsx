@@ -6,11 +6,11 @@ export function useScroll() {
 
   const listener = useCallback(() => {
     setScrollY(window.pageYOffset);
-  },[]);
+  }, []);
 
-  const  delay:number = 15;
+  const delay: number = 15;
   useEffect(() => {
-    window.addEventListener("scroll", debounce(listener,delay));
+    window.addEventListener("scroll", debounce(listener, delay));
     return () => {
       window.removeEventListener("scroll", listener);
     };

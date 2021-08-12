@@ -6,7 +6,7 @@ import DarkBackground from 'components/Common/DarkBackground';
 import CloseButton from 'components/style/CloseButton';
 import Button from 'components/style/Button';
 import Icon from 'components/Icon/Icon';
-import { ACCOUNT_INFO } from '../../../utils/constants/footer';
+import { ACCOUNT_INFO } from 'constants/footer';
 import Info from 'components/SideMenu/common/Info';
 import Copyright from 'components/SideMenu/common/Copyright';
 import QuickIcon from 'components/SideMenu/common/QuickIcon';

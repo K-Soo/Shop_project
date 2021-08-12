@@ -1,7 +1,7 @@
 import React, { useState,useContext } from "react";
 import styled, { css } from "styled-components";
 import Link from "next/link";
-import { NAV_MENU } from "../../../../utils/constants/header";
+import { NAV_MENU } from "constants/header";
 import Icon from 'components/Icon/Icon';
 import NavSearchBar from 'components/Layout/Header/NavSearchBar';
 import HamburgerIcon from 'components/Common/HamburgerIcon';

@@ -3,11 +3,11 @@ import styled from "styled-components";
 import Input from "components/style/Input";
 import Button from "components/style/Button";
 
-interface Imember {
+interface IMember {
   className?: string;
 }
 
-const member: React.FC<Imember> = ({ className }) => {
+const member: React.FC<IMember> = ({ className }) => {
   return (
     <form action='submit' className={className}>
       <fieldset className='login-info'>

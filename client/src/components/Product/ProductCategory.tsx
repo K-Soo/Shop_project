@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { category, categoryType } from 'components/Product';
 import Title from 'components/style/Title';
-import { PRODUCT } from '../../../utils/constants/product';
+import { PRODUCT } from '../../constants/product';
 import HamburgerMenuList from 'components/Product/Common/HamburgerMenuList';
-import SideMenuIcon from 'components/SideMenu/SideMenuIcon';
 import HamburgerIcon from 'components/Common/HamburgerIcon';
 
 interface IProductCategory {
