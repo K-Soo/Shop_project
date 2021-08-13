@@ -184,6 +184,7 @@ const Menu: React.FC<IMenu> = ({ className, ScrollActive }) => {
 };
 
 export default styled(Menu)`
+  z-index: 10;
   height: 40px;
   position: fixed;
   top: 0;

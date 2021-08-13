@@ -3,25 +3,35 @@ import styled from "styled-components";
 
 interface IBreadcrumb {
   className?: string;
+  children: React.ReactNode;
 }
 
-const BreadcrumbBlock = styled.ol`
-  display: flex;
-  font-size: 11px;
-  color: #666666;
-  li {
-    padding: 0 5px;
-    a {
-      display: inline-block;
+const S = {
+  Breadcrumb: styled.nav`
+    max-width: 1200px;
+    margin: 15px auto;
+    display: flex;
+    justify-content: flex-end;
+  `,
+  BreadcrumbLists: styled.ol`
+    display: flex;
+    font-size: 11px;
+    color: #666666;
+    li {
+      padding: 0 5px;
+      a {
+        display: inline-block;
+      }
+      &:last-child {
+        font-weight: 600;
+        color: #000;
+      }
     }
-    &:last-child {
-      font-weight: 600;
-      color: #000;
-    }
-  }
-`;
+  `,
+}
 
-const Breadcrumb: React.FC<IBreadcrumb> = props => {
+export default function Breadcrumb (props:IBreadcrumb) {
+
   const BreadcrumbItem: React.FC = props => (
     <li className='breadcrumb-item'>{props.children}</li>
   );
@@ -45,15 +55,10 @@ const Breadcrumb: React.FC<IBreadcrumb> = props => {
   }, []);
 
   return (
-    <div className={props.className}>
-      <BreadcrumbBlock>{children}</BreadcrumbBlock>
-    </div>
+    <S.Breadcrumb className={props.className}>
+      <S.BreadcrumbLists>{children}</S.BreadcrumbLists>
+    </S.Breadcrumb>
   );
 };
 
-export default styled(Breadcrumb)`
-  max-width: 1200px;
-  margin: 15px auto;
-  display: flex;
-  justify-content: flex-end;
-`;
+
