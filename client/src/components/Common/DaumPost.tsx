@@ -1,22 +1,23 @@
 import React from 'react';
 import DaumPostcode, { AddressData } from 'react-daum-postcode';
 import styled from "styled-components";
-
+import { useRegisterContext } from 'context/RegisterProvider';
 
 interface IDaumPost {
-  className?: string;
   isModal: boolean;
 }
 
-const StyledDaumPost = styled.div`
+const S = {
+  DaumPost: styled.div`
   position: fixed;
   top: 30%;
   left: 50%;
   transform: translate(-50%);
   border: 1px solid #999;
-`;
-
-const DaumPost: React.FC<IDaumPost> = (props) => {
+`,
+}
+export default function DaumPost(props: IDaumPost) {
+  const { action } = useRegisterContext()
   const postCodeStyle = {
     // display: "block",
     // top: "50px",
@@ -27,7 +28,8 @@ const DaumPost: React.FC<IDaumPost> = (props) => {
 
 
   const handleComplete = (data: AddressData) => {
-    const { address, addressType, bname, buildingName } = data;
+    const { address, addressType, bname, buildingName, zonecode } = data;
+    console.log('data: ', data);
 
     let fullAddress = address;
     let extraAddress = '';
@@ -41,17 +43,17 @@ const DaumPost: React.FC<IDaumPost> = (props) => {
       }
       fullAddress += (extraAddress !== '' ? ` (${extraAddress})` : '');
     }
-    // console.log(fullAddress);  // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
+    action.setData('zonecode',zonecode);
+    action.setData('addr1',fullAddress);
   }
 
   return (
     <>
       {props.isModal && (
-        <StyledDaumPost>
+        <S.DaumPost>
           <DaumPostcode onComplete={handleComplete} autoClose={true} style={postCodeStyle} autoResize={false} />
-        </StyledDaumPost>
+        </S.DaumPost>
       )}
     </>
   );
 }
-export default DaumPost;

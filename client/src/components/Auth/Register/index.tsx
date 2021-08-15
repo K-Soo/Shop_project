@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import Breadcrumb from "components/Common/Breadcrumb";
 import Link from "next/link";
 import PAGE from "constants/path";
 import { Text } from "constants/register";
@@ -12,6 +11,7 @@ import Select from "components/style/Select";
 import DaumPost from 'components/Common/DaumPost';
 import FieldsetTos from 'components/Auth/Register/FieldsetTos';
 import useScrollFadeIn from 'hooks/useScrollFadeIn';
+import { useRegisterContext } from 'context/RegisterProvider';
 
 interface IRegister {
   className?: string;
@@ -19,46 +19,80 @@ interface IRegister {
   onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
 }
 
-const Register: React.FC<IRegister> = ({ className, onClick, isModal }) => {
+const S = {
+  Register: styled.section`
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    .container {
+      margin: 0 auto;
+      .form-box {
+        legend {
+          border-bottom: 1px solid #e7e7e7;
+          color: #2e2e2e;
+          width: 100%;
+          padding: 10px 0;
+          margin-bottom: 20px;
+        }
+      }
+  }
+  `,
+  Group: styled.div`
+    margin-bottom: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    .id-box {
+      display: flex;
+      justify-content: space-between;
+      width: 300px;
+    }
+    .address-box {
+      display: flex;
+      flex-direction: column;
+      &__inner{
+        margin-bottom: 15px;
+        display: flex;
+        justify-content: space-between;
+      }
+    }`,
+
+}
+
+export default function Register({ className, onClick, isModal }: IRegister) {
+  const { state, action } = useRegisterContext()
 
   return (
-    <main className={className}>
-      <Breadcrumb>
-        {[PAGE.MAIN, PAGE.REGISTER].map(({ path, tag }) => (
-          <Link key={path} href={path}>
-            {tag}
-          </Link>
-        ))}
-      </Breadcrumb>
-
+    <S.Register className={className}>
       <article className='container'>
         <Title level={2} textAlign='left'>회원가입</Title>
         <form className='form-box'>
           <fieldset>
             <legend>기본정보</legend>
-            <div className='form-box__input-wrap'>
+            <S.Group >
               <Label htmlFor='loginId' required>아이디</Label>
               <div className='id-box'>
-                <Input width='150px' placeholder='영문소문자/숫자, 4~16자' name='' required={true} id='loginId' handleChange={() => { }} />
+                <Input width='170px' placeholder='영문소문자/숫자, 4~16자' name='userId' required={true} id='loginId' handleChange={action.setFormData} />
                 <Button width='80px' height='40px' fontSize='11px'>중복확인</Button>
               </div>
-            </div>
-            <div className='form-box__input-wrap'>
+            </S.Group>
+
+            <S.Group >
               <Label htmlFor='password' required>비밀번호</Label>
-              <Input type='password' width='250px' placeholder='비밀번호' name='' id='password' value='' handleChange={() => { }} />
-            </div>
+              <Input type='password' width='300px' placeholder='비밀번호' name='password' id='password' value={state.password} handleChange={action.setFormData} />
+            </S.Group>
 
-            <div className='form-box__input-wrap'>
+            <S.Group>
               <Label htmlFor='loginId' required>비밀번호 확인</Label>
-              <Input type='password' width='250px' placeholder='비밀번호' name='' value='' handleChange={() => { }} />
-            </div>
+              <Input type='password' width='300px' placeholder='비밀번호' name='passwordConfirm' value={state.passwordConfirm} handleChange={action.setFormData} />
+            </S.Group>
 
-            <div className='form-box__input-wrap'>
+            <S.Group >
               <Label htmlFor='loginId' required>이름</Label>
-              <Input width='150px' placeholder='이름' name='' value='' handleChange={() => { }} />
-            </div>
+              <Input width='300px' placeholder='이름' name='userName' value={state.userName} handleChange={action.setFormData} />
+            </S.Group>
 
-            <div className='form-box__input-wrap'>
+            <S.Group >
               <Label htmlFor='loginId' required>휴대전화</Label>
               <Select width='70'>
                 <option>010</option>
@@ -67,94 +101,54 @@ const Register: React.FC<IRegister> = ({ className, onClick, isModal }) => {
               <Input width='80px' placeholder='휴대전화' name='' value='' handleChange={() => { }} />
               <span className='tests'>-</span>
               <Input width='80px' placeholder='휴대전화' name='' value='' handleChange={() => { }} />
-            </div>
+            </S.Group>
 
-            <div className='form-box__input-wrap'>
+            <S.Group >
               <Label htmlFor='loginId' required>이메일</Label>
-              <Input width='250px' placeholder='이메일' name='' value='' handleChange={() => { }} />
-            </div>
+              <Input width='300px' placeholder='이메일' name='email' value={state.email} handleChange={action.setFormData} />
+            </S.Group>
 
-            <div className='form-box__input-wrap'>
+            <S.Group >
               <Label htmlFor='loginId' required>
                 주소
               </Label>
               <div className='form-box__input-wrap address-box'>
                 <div className='address-box__inner'>
                   <DaumPost isModal={isModal} />
-                  <Input width='150px' name='' value='' handleChange={() => { }} />
+                  <Input width='150px' name='zoneCode' value={state.zonecode} readOnly />
                   <Button type='button' width='80px' height='40px' fontSize='12px' onClick={onClick}>우편번호</Button>
                 </div>
-                <Input width='250px' placeholder='기본주소' name='' value='' handleChange={() => { }} margin="0 0 15px 0" />
-                <Input width='250px' placeholder='나머지 주소' name='' value='' handleChange={() => { }} />
+                <Input width='300px' placeholder='기본주소' name='addr1' value={state.addr1}  readOnly margin="0 0 15px 0" />
+                <Input width='300px' placeholder='나머지 주소' name='addr2' handleChange={action.setFormData} value={state.addr2} />
               </div>
-            </div>
+            </S.Group>
           </fieldset>
 
           <fieldset>
             <legend>추가정보</legend>
-            <div className='form-box__input-wrap'>
-              <Label htmlFor='loginId' required>
-                생년월일
-              </Label>
+            <S.Group >
+              <Label htmlFor='loginId' required>생년월일</Label>
               <Input width='250px' placeholder='주소' name='' value='' handleChange={() => { }} />
-            </div>
+            </S.Group>
 
-            <div className='form-box__input-wrap'>
-              <Label htmlFor='loginId' >
-                지역
-              </Label>
+            <S.Group >
+              <Label htmlFor='loginId' >지역</Label>
               <Select width='250'>
                 <option>as</option>
               </Select>
-            </div>
+            </S.Group>
           </fieldset>
-       
-          <fieldset>
+
+          {/* <fieldset>
             <legend>이용약관</legend>
             <FieldsetTos />
-          </fieldset>
+          </fieldset> */}
         </form>
       </article>
-    </main>
+
+
+    </S.Register>
   );
 };
 
 
-export default styled(Register)`
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
-  .container {
-    margin: 0 auto;
-    .form-box {
-      legend {
-        border-bottom: 1px solid #e7e7e7;
-        color: #2e2e2e;
-        width: 100%;
-        padding: 10px 0;
-        margin-bottom: 20px;
-      }
-      &__input-wrap {
-        margin-bottom: 15px;
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        .id-box {
-          display: flex;
-          justify-content: space-between;
-          width: 250px;
-        }
-        .address-box {
-          display: flex;
-          flex-direction: column;
-          &__inner{
-            margin-bottom: 15px;
-            display: flex;
-            width: 100%;
-            justify-content: space-between;
-          }
-        }
-      }
-    }
-  }
-`;

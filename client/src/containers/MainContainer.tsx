@@ -21,7 +21,19 @@ interface IProduct {
   // roomType2: string;
 }
 
-function MainContainer({ className, children }: IMainContainer) {
+const S = {
+  MainContainer: styled.section`
+    max-width: 1200px;
+  padding: 0 20px;
+  margin: 0 auto;
+  height: 700px;
+  ${({ theme }) => theme.mobile`
+    padding: 0;
+  `}
+  `,
+}
+
+export default function MainContainer({ className, children }: IMainContainer) {
   const [items, setItems] = useState<IProduct[] | null>(null);
   const [posts, setPosts] = useState<PostType[]>();
   const router = useRouter();
@@ -47,7 +59,7 @@ function MainContainer({ className, children }: IMainContainer) {
   // },[]);
 
   return (
-    <main className={className}>
+    <S.MainContainer className={className}>
       <Breadcrumb>
         {[PAGE.MAIN].map(({ path, tag }) => (
           <Link key={path} href={path}>
@@ -56,16 +68,7 @@ function MainContainer({ className, children }: IMainContainer) {
         ))}
       </Breadcrumb>
       {children}
-    </main>
+    </S.MainContainer>
   );
 };
 
-export default styled(MainContainer)`
-  max-width: 1200px;
-  padding: 0 20px;
-  margin: 0 auto;
-  height: 700px;
-  ${({ theme }) => theme.mobile`
-    padding: 0;
-  `}
-`;
