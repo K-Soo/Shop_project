@@ -105,23 +105,6 @@ export default function ImageSlider({ item }: IImageSlider) {
   return (
     <S.ImageSlider>
       <Slider {...settings}>
-        {/* <S.Card> 원본 
-          <div className='card-inner'>
-            <div className='img-box'>
-              <img src="https://via.placeholder.com/150" alt="" />
-            </div>
-            <div className='desc-box'>
-              <Title level={5}>제목</Title>
-              <span className='desc-box__color-chip'>색상</span>
-              <p className='desc-box'>상품 요약설명</p>
-              <span className='desc-box__consumer-price'>소비자 가격</span>
-              <span className='desc-box__sale-price'>판매 가격</span>
-              <span className='desc-box__discount'>할인 가격</span>
-              <span className='desc-box__icon'>new</span>
-            </div>
-          </div>
-        </S.Card> */}
-
         {item && item.map((d:any) => (
           <S.Card key={d.id}>
             <div className='card-inner'>
@@ -134,6 +117,7 @@ export default function ImageSlider({ item }: IImageSlider) {
                   width={500}
                   height={500}
                 />
+                {/* <img src={d.image_link} alt="" /> */}
               </div>
               </a>
               </Link>

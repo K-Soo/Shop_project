@@ -18,8 +18,9 @@ export default function Home(props: InferGetServerSidePropsType<typeof getServer
 }
 
 export const getServerSideProps: GetServerSideProps = async ctx => {
-  const res = await Get.products();
+  // const res = await Get.products();
   return {
-    props: { items: res },
+    props: {},
   };
 };
+

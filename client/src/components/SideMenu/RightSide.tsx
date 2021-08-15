@@ -1,6 +1,6 @@
-import React, { useContext } from "react";
+import React from "react";
 import styled, { css } from 'styled-components';
-import { AppContext } from 'pages/_app';
+import { useAppContext } from 'context/AppProvider';
 import DarkBackground from 'components/Common/DarkBackground';
 import CloseButton from 'components/style/CloseButton';
 
@@ -41,13 +41,12 @@ const S = {
   `,
 }
 const RightSide: React.FC<IRightSide> = ({ className, directionSwap, onClick }) => {
-  const global = useContext(AppContext);
-
+  const {action, state} = useAppContext();
 
   return (
-    <S.RightSide className={className} openSideMenu={global.state.openSideMenu} directionSwap={directionSwap}>
+    <S.RightSide className={className} openSideMenu={state.openSideMenu} directionSwap={directionSwap}>
       <S.Container>
-        <CloseButton onClick={global.action.setToggleSideMenu} />
+        <CloseButton onClick={action.setToggleSideMenu} />
         <button onClick={onClick}>
           asd
         </button>

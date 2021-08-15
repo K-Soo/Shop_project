@@ -1,6 +1,5 @@
 import React, { useContext, useState } from "react";
 import styled, { css } from 'styled-components';
-import { AppContext } from 'pages/_app';
 import Image from "next/image";
 import DarkBackground from 'components/Common/DarkBackground';
 import CloseButton from 'components/style/CloseButton';
@@ -13,6 +12,7 @@ import QuickIcon from 'components/SideMenu/common/QuickIcon';
 import DropDown from 'components/SideMenu/common/DropDown';
 import Link from "next/link";
 import { useRouter } from 'next/router';
+import { useAppContext } from 'context/AppProvider';
 
 interface ILeftSide {
   className?: string;
@@ -117,25 +117,25 @@ const S = {
 
 
 const LeftSide: React.FC<ILeftSide> = ({ className, directionSwap, onClick }) => {
-  const global = useContext(AppContext);
+  const { action, state } = useAppContext();
   const router = useRouter();
 
   const handleRouter = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
     const { name } = e.currentTarget
-    global.action.setToggleSideMenu();
+    action.setToggleSideMenu();
     router.push(`/auth/${name}`);
   }
 
   return (
-    <S.LeftSide className={className} openSideMenu={global.state.openSideMenu} directionSwap={directionSwap}>
+    <S.LeftSide className={className} openSideMenu={state.openSideMenu} directionSwap={directionSwap}>
       <S.Container>
-        <S.Panel openSideMenu={global.state.openSideMenu} directionSwap={directionSwap}>
+        <S.Panel openSideMenu={state.openSideMenu} directionSwap={directionSwap}>
           <div className='swap'>
             <span className='swap-slider' />
             <button onClick={onClick}>SHOP</button>
             <button onClick={onClick}>CART</button>
           </div>
-          <CloseButton onClick={global.action.setToggleSideMenu} />
+          <CloseButton onClick={action.setToggleSideMenu} />
         </S.Panel>
         <S.Banner>
           {/* <img src="/images/side.jpg" alt='1' /> */}

@@ -28,6 +28,5 @@ const ImageBox: React.FC<IImageBox> = ({ className }) => {
 
 export default styled(ImageBox)`
   height: 80px;
-  /* border: 1px solid red; */
   text-align: center;
 `;

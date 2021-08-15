@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import styled, { css } from "styled-components";
 import Link from "next/link";
 import { useRouter } from 'next/router';
@@ -6,7 +6,7 @@ import { NAV_MENU } from "constants/header";
 import Icon from 'components/Icon/Icon';
 import NavSearchBar from 'components/Layout/Header/NavSearchBar';
 import HamburgerIcon from 'components/Common/HamburgerIcon';
-import { AppContext } from 'pages/_app';
+import { useAppContext } from 'context/AppProvider';
 
 interface INav {
   className?: string;
@@ -59,7 +59,7 @@ const S = {
     align-items: center;
     flex-grow: 1;
     ${({ theme }) => theme.mobile`
-      display: ${(props:any) => props.pathname === '/' ? 'flex' : 'none' };
+      display: ${(props: any) => props.pathname === '/' ? 'flex' : 'none'};
       flex-wrap: wrap;
     `}
   `,
@@ -152,8 +152,8 @@ const S = {
 
 const Nav: React.FC<INav> = ({ className, ScrollActive }) => {
   const [toggle, setToggle] = useState<boolean>(false);
-  const global = useContext(AppContext);
   const router = useRouter();
+  const { action, state } = useAppContext();
 
   return (
     <S.Nav className={className} ScrollActive={ScrollActive} >
@@ -170,8 +170,8 @@ const Nav: React.FC<INav> = ({ className, ScrollActive }) => {
           </S.CategoryGroup>
 
           <S.SearchGroup toggle={toggle} >
-            <li className='hamburger-btn' onClick={global.action.setToggleSideMenu}>
-              <HamburgerIcon toggle={global.state.openSideMenu} />
+            <li className='hamburger-btn' onClick={action.setToggleSideMenu}>
+              <HamburgerIcon toggle={state.openSideMenu} />
             </li>
             <NavSearchBar handleToggle={() => setToggle(!toggle)} toggle={toggle} />
             <li className='search-btn' >

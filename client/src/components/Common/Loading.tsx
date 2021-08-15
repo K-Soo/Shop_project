@@ -10,16 +10,17 @@ interface ILoading {
 
 const S = {
   Loading: styled.div<{ isLoading: boolean }>`
-    display: none;
+    /* display: none;
     position: fixed; 
     z-index: 999;
     left: 0;
     top: 0;
     width: 100%; 
     height: 100%;
-    overflow: auto;
+    overflow: auto; */
     background-color: rgb(0, 0, 0); 
     background-color: rgba(0, 0, 0, 0.4); 
+    background-color: #000;
     ._loading_overlay_content{
         position: absolute;
         top: 300px;

@@ -1,22 +1,31 @@
-import React from "react";
 import Head from "next/head";
-import { useRouter } from 'next/router';
+import { InferGetServerSidePropsType, GetServerSideProps } from 'next';
+import Axios from 'axios';
 import MainContainer from 'containers/MainContainer';
+import ProductDetail from 'components/ProductDetail';
 
-export default function Gold() {
-  const router = useRouter();
-  const {id} = router.query;
+export default function Gold({ item }: InferGetServerSidePropsType<typeof getServerSideProps>) {
 
   return (
     <>
       <Head>
-        <title>순금</title>
+        <title>{item.name}</title>
+        <meta name="description" content={item.description} />
       </Head>
       <MainContainer >
-      <div>
-        {id}
-      </div>
+        <ProductDetail item={[item]}/>
       </MainContainer>
     </>
   );
+}
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { id } = context.query;
+  const URL = `http://makeup-api.herokuapp.com/api/v1/products/${id}.json`
+  const res = await Axios.get(URL);
+  return {
+    props: {
+      item: res.data,
+    }
+  }
 }

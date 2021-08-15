@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import Link from "next/link";
 import axios, { AxiosResponse } from "axios";
 import Product from "components/Product";
 import { PostType } from "models/post.interface"; //add
 import { Post, Get } from "api";
+import Breadcrumb from "components/Common/Breadcrumb";
+import { useRouter } from 'next/router';
+import PAGE from "constants/path";
+
 interface IMainContainer {
   className?: string;
   children?: React.ReactNode;
@@ -19,6 +24,8 @@ interface IProduct {
 function MainContainer({ className, children }: IMainContainer) {
   const [items, setItems] = useState<IProduct[] | null>(null);
   const [posts, setPosts] = useState<PostType[]>();
+  const router = useRouter();
+  const { pathname } = router;
 
   useEffect(() => {
     Get.products()
@@ -41,10 +48,13 @@ function MainContainer({ className, children }: IMainContainer) {
 
   return (
     <main className={className}>
-      {/* {items && items.map((d) => (
-        <Product key={d.id}/>
-      ))} */}
-      {/* <Product items={items} /> */}
+      <Breadcrumb>
+        {[PAGE.MAIN].map(({ path, tag }) => (
+          <Link key={path} href={path}>
+            {tag}
+          </Link>
+        ))}
+      </Breadcrumb>
       {children}
     </main>
   );

@@ -9,11 +9,10 @@ import NextApp, { AppProps, AppContext as NextAppContext } from "next/app";
 import { QueryClient, QueryClientProvider } from 'react-query'
 // import {ReactQueryDevtools} from 'react-query-devtools';
 import { ReactQueryDevtools } from 'react-query/devtools'
-export const AppContext = createContext(appDefaultValue);
+import AppProvider from 'context/AppProvider';
 
 export default function App(props: AppProps) {
   const queryClient = new QueryClient()
-  const app = useApp(props);
 
   return (
     <>
@@ -21,7 +20,7 @@ export default function App(props: AppProps) {
         <title>앱인데</title>
       </Head>
       <GlobalStyle />
-      <AppContext.Provider value={app}>
+      <AppProvider AppProps={props}>
         <QueryClientProvider client={queryClient}>
           <Theme>
             <Layout>
@@ -30,7 +29,7 @@ export default function App(props: AppProps) {
           </Theme>
       <ReactQueryDevtools initialIsOpen={false}/>
         </QueryClientProvider>
-      </AppContext.Provider>
+      </AppProvider>
     </>
   );
 }

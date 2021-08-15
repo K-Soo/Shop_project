@@ -13,12 +13,10 @@ type Character = {
 
 export default function GoldPage() {
   const { data, isLoading, isSuccess, isError, status, error }: UseQueryResult<Character, Error> = useQuery('gold', async () => { return await axios.get(URL) });
-
-  const test = useQuery('gold', async () => { return await axios.get(URL) });
-  console.log('test: ', test);
-  if (isLoading) {
-    return <Loading isLoading={isLoading} text='loading' />
-  }
+  // if (isLoading) {
+  //   // return <Loading isLoading={isLoading} text='loading' />
+  //   return <h1>loading</h1>
+  // }
 
   if (isError) {
     return <h1>error..</h1>
@@ -28,9 +26,10 @@ export default function GoldPage() {
     <>
       <Head>
         <title>쥬얼리 | 순금</title>
+        <meta name="description" content="순금 페이지" />
       </Head>
       <MainContainer >
-        <Product item={data?.data.slice(0, 9)} />
+       {isSuccess && <Product item={data?.data.slice(0, 9)} />} 
       </MainContainer>
     </>
   );
