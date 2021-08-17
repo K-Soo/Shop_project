@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import produce from "immer";
+import useDidMountEffect from 'hooks/useDidMountEffect';
 
 type TAppAction = typeof generateAction extends (...args: any[]) => infer R ? R : never;
 
@@ -80,6 +81,12 @@ const generateAction = (update: (recipe: (draft: IAppState) => void) => void) =>
       else if (keyArray.length === 3) draft[keyArray[0]][keyArray[1]][keyArray[2]] = value;
     });
 
+    const InitData = (stateName: string, initValue?: any) =>
+    update(draft => {
+      let valueDefault = '';
+      if (initValue) valueDefault = initValue;
+      draft[stateName] = valueDefault;
+    });
 
   const setIsNav = (status: boolean) =>
     update((draft) => {
@@ -89,7 +96,8 @@ const generateAction = (update: (recipe: (draft: IAppState) => void) => void) =>
   return {
     setIsNav,
     setFormData,
-    setData
+    setData,
+    InitData
   };
 };
 
@@ -103,6 +111,10 @@ const useRegister = (props: any) => {
   const action = generateAction(update);
 
   const app = { props, state, action };
+
+  useEffect(() => {
+    app.action.InitData('addr2');
+  },[app.state.addr1])
 
   return app;
 };

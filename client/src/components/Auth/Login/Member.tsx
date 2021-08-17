@@ -3,43 +3,40 @@ import styled from "styled-components";
 import Input from "components/style/Input";
 import Button from "components/style/Button";
 
-interface IMember {
-  className?: string;
+const S = {
+  Member: styled.form`
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    .security{
+      margin: 10px 0;
+      font-size: 13px;
+      display: flex;
+      justify-content: space-between;
+      &__save-id{
+        margin-right: 5px;
+      }
+    }
+  `,
 }
 
-const member: React.FC<IMember> = ({ className }) => {
+export default function Member() {
   return (
-    <form action='submit' className={className}>
-      <fieldset className='login-info'>
+    <S.Member action='submit' >
+      <fieldset >
         <Input placeholder='아이디' margin='0 0 10px 0' />
         <Input placeholder='비밀번호' />
       </fieldset>
 
-      <fieldset className='security'>
-        <span className='security--connection'>보안접속</span>
-        <span className='security--save-id'>아이디 저장</span>
+      <fieldset  className='security'>
+        <span >보안접속</span>
+        <span className='security__save-id'>아이디 저장</span>
       </fieldset>
 
       <fieldset className='login'>
         <Button login>로그인</Button>
       </fieldset>
-    </form>
+    </S.Member>
   );
 };
 
-export default styled(member)`
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 10px;
-  .login-info {
-  }
-  .security {
-    margin: 10px 0;
-    font-size: 13px;
-    display: flex;
-    justify-content: space-between;
-    &--save-id {
-      margin-right: 5px;
-    }
-  }
-`;

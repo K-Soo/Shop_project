@@ -2,13 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import Input from "components/style/Input";
 import Button from "components/style/Button";
-interface INoMember {
-  className?: string;
-}
 
-const NoMember: React.FC<INoMember> = ({ className }) => {
+export default function NoMember ()  {
   return (
-    <form action='submit' className={className}>
+    <form action='submit' >
       <fieldset className='login-info'>
         <Input placeholder='주문자명' margin='0 0 10px 0' height='40' />
         <Input placeholder='아이디' margin='0 0 10px 0' height='40' />
@@ -21,5 +18,3 @@ const NoMember: React.FC<INoMember> = ({ className }) => {
     </form>
   );
 };
-
-export default styled(NoMember)``;

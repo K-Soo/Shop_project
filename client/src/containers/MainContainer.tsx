@@ -22,14 +22,14 @@ interface IProduct {
 }
 
 const S = {
-  MainContainer: styled.section`
+  MainContainer: styled.main`
     max-width: 1200px;
-  padding: 0 20px;
-  margin: 0 auto;
-  height: 700px;
-  ${({ theme }) => theme.mobile`
-    padding: 0;
-  `}
+    padding: 0 20px;
+    margin: 0 auto;
+    height: 700px;
+    ${({ theme }) => theme.mobile`
+      padding: 0;
+    `}
   `,
 }
 

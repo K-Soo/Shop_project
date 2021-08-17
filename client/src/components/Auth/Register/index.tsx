@@ -70,30 +70,30 @@ export default function Register({ className, onClick, isModal }: IRegister) {
           <fieldset>
             <legend>기본정보</legend>
             <S.Group >
-              <Label htmlFor='loginId' required>아이디</Label>
+              <Label htmlFor='idFor' required>아이디</Label>
               <div className='id-box'>
-                <Input width='170px' placeholder='영문소문자/숫자, 4~16자' name='userId' required={true} id='loginId' handleChange={action.setFormData} />
+                <Input width='170px' placeholder='영문소문자/숫자, 4~16자' name='userId' required={true} id='idFor' handleChange={action.setFormData} />
                 <Button width='80px' height='40px' fontSize='11px'>중복확인</Button>
               </div>
             </S.Group>
 
             <S.Group >
-              <Label htmlFor='password' required>비밀번호</Label>
-              <Input type='password' width='300px' placeholder='비밀번호' name='password' id='password' value={state.password} handleChange={action.setFormData} />
+              <Label htmlFor='passwordFor' required>비밀번호</Label>
+              <Input type='password' width='300px' placeholder='비밀번호' name='password' id='passwordFor' value={state.password} handleChange={action.setFormData} />
             </S.Group>
 
             <S.Group>
-              <Label htmlFor='loginId' required>비밀번호 확인</Label>
-              <Input type='password' width='300px' placeholder='비밀번호' name='passwordConfirm' value={state.passwordConfirm} handleChange={action.setFormData} />
+              <Label htmlFor='passwordConfirmFor' required>비밀번호 확인</Label>
+              <Input type='password' width='300px' placeholder='비밀번호' name='passwordConfirm' id='passwordConfirmFor' value={state.passwordConfirm} handleChange={action.setFormData} />
             </S.Group>
 
             <S.Group >
-              <Label htmlFor='loginId' required>이름</Label>
-              <Input width='300px' placeholder='이름' name='userName' value={state.userName} handleChange={action.setFormData} />
+              <Label htmlFor='nameFor' required>이름</Label>
+              <Input width='300px' placeholder='이름' id='nameFor' name='userName' value={state.userName} handleChange={action.setFormData} />
             </S.Group>
 
             <S.Group >
-              <Label htmlFor='loginId' required>휴대전화</Label>
+              <Label htmlFor='phoneFor' required>휴대전화</Label>
               <Select width='70'>
                 <option>010</option>
               </Select>
@@ -104,12 +104,12 @@ export default function Register({ className, onClick, isModal }: IRegister) {
             </S.Group>
 
             <S.Group >
-              <Label htmlFor='loginId' required>이메일</Label>
-              <Input width='300px' placeholder='이메일' name='email' value={state.email} handleChange={action.setFormData} />
+              <Label htmlFor='emailFor' required>이메일</Label>
+              <Input width='300px' placeholder='이메일' name='email' id='emailFor' value={state.email} handleChange={action.setFormData} />
             </S.Group>
 
             <S.Group >
-              <Label htmlFor='loginId' required>
+              <Label htmlFor='addrFor' required>
                 주소
               </Label>
               <div className='form-box__input-wrap address-box'>
@@ -118,8 +118,8 @@ export default function Register({ className, onClick, isModal }: IRegister) {
                   <Input width='150px' name='zoneCode' value={state.zonecode} readOnly />
                   <Button type='button' width='80px' height='40px' fontSize='12px' onClick={onClick}>우편번호</Button>
                 </div>
-                <Input width='300px' placeholder='기본주소' name='addr1' value={state.addr1}  readOnly margin="0 0 15px 0" />
-                <Input width='300px' placeholder='나머지 주소' name='addr2' handleChange={action.setFormData} value={state.addr2} />
+                <Input width='300px' placeholder='기본주소' name='addr1' value={state.addr1} readOnly margin="0 0 15px 0" />
+                <Input width='300px' placeholder='나머지 주소' name='addr2' id='addrFor'  handleChange={action.setFormData} value={state.addr2} />
               </div>
             </S.Group>
           </fieldset>

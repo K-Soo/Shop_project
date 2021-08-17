@@ -1,6 +1,7 @@
 import React from "react";
 import Head from "next/head";
 import LoginContainer from "containers/Auth/LoginContainer";
+import MainContainer from 'containers/MainContainer';
 
 interface ILogin {
   className?: string;
@@ -12,7 +13,9 @@ export default function login() {
       <Head>
         <title>로그인</title>
       </Head>
-      <LoginContainer />
+      <MainContainer>
+        <LoginContainer />
+      </MainContainer>
     </>
   );
 }
