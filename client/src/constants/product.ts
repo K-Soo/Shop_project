@@ -1,9 +1,9 @@
 export const PRODUCT = {
   necklace: [
-    { label: '18K 목걸이', value: '' },
-    { label: '18K 팬던트', value: '' },
-    { label: '18K 체인목걸이', value: '' },
-    { label: '24K 순금목걸이', value: '' },
+    { label: '18k 목걸이', value: '' },
+    { label: '18k 팬던트', value: '' },
+    { label: '18k 체인목걸이', value: '' },
+    { label: '24k 순금목걸이', value: '' },
     { label: '탄생석/원석', value: '' },
     { label: '별자리/룬 목걸이', value: '' },
     { label: '이니셜 목걸이', value: '' },

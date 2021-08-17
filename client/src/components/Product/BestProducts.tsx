@@ -14,7 +14,6 @@ const S = {
 }
 
 export default function BestProducts({ item }: IBestProducts) {
-  console.log('BestProducts -> item: ', item)
 
   const bestItems = useCallback(() => {
    return item?.filter(d => d.best_product);

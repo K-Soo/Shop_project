@@ -7,7 +7,7 @@ interface IApp {
   AppProps: AppProps;
 }
 
-export const AppContext = createContext(appDefaultValue);
+const AppContext = createContext(appDefaultValue);
 export const useAppContext = () =>  useContext(AppContext);
 
 export default function AppProvider(props: IApp) {

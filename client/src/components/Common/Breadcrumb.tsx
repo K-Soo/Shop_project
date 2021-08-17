@@ -12,6 +12,9 @@ const S = {
     margin: 15px auto;
     display: flex;
     justify-content: flex-end;
+    ${({ theme }) => theme.mobile`
+      display: none;
+    `};
   `,
   BreadcrumbLists: styled.ol`
     display: flex;

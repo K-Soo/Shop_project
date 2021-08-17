@@ -17,7 +17,7 @@ const S = {
 `,
 }
 export default function DaumPost(props: IDaumPost) {
-  const { action } = useRegisterContext()
+  const { action } = useRegisterContext();
   const postCodeStyle = {
     // display: "block",
     // top: "50px",
@@ -43,8 +43,8 @@ export default function DaumPost(props: IDaumPost) {
       }
       fullAddress += (extraAddress !== '' ? ` (${extraAddress})` : '');
     }
-    action.setData('zonecode',zonecode);
-    action.setData('addr1',fullAddress);
+    action.setData('zonecode', zonecode);
+    action.setData('addr1', fullAddress);
   }
 
   return (

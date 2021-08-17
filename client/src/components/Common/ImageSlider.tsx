@@ -20,12 +20,10 @@ const S = {
   `,
   Card: styled.div`
     padding: 0 15px;
-    /* height: 600px; */
     .card-inner{
       margin: 0 auto;
       max-width: 350px;
       .img-box{
-        /* max-height: 300px; */
         img{
           width: 100%;
           height: 100%;
