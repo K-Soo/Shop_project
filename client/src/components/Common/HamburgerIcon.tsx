@@ -15,6 +15,7 @@ const S = {
     justify-content: space-around;
     align-items: center;
     flex-flow: column nowrap;
+    overflow: hidden;
     .line {
       margin: 0 auto;
       width: 25px;
@@ -22,6 +23,7 @@ const S = {
       background-color: ${({ toggle }) => toggle ? "#ccc" : "#333"};
       border-radius: 10px;
       transform-origin: 1px;
+      overflow: hidden;
       transition: all 0.3s linear;
       &:nth-child(1) {
         transform: ${({ toggle }) => toggle ? "rotate(45deg)" : "rotate(0)"};
@@ -37,7 +39,7 @@ const S = {
   `,
 }
 
-export default function HamburgerIcon({ toggle, onClick,className }: IHamburgerIcon) {
+export default function HamburgerIcon({ toggle, onClick, className }: IHamburgerIcon) {
   return (
     <S.HamburgerIcon toggle={toggle} onClick={onClick} className={className}>
       <span className='line' />

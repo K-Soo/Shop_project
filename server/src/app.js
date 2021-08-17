@@ -1,14 +1,11 @@
-dotenv.config();
-import dotenv from 'dotenv';
 import express from 'express';
 import path from 'path';
 import mongoose from 'mongoose';
 import api from './api/routes';
 import compression from 'compression';
 import cors from 'cors';
+import config from './config';
 
-const { PORT,MONGO_URI } = process.env;
-console.log('MONGO_URI: ', MONGO_URI);
 const app = express();
 
 // const prod = process.env.NODE_ENV === 'production';
@@ -20,7 +17,7 @@ app.use(cors({ origin: true, credentials: true }));
 app.use('/api', api);
 
 mongoose
-  .connect(MONGO_URI, {
+  .connect(config.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
@@ -34,5 +31,5 @@ mongoose
 
 //서버연결
 app.listen(8000, () => {
-  console.log(`server port ${PORT} successfully!`);
+  console.log(`server port ${config.PORT} successfully!`);
 });

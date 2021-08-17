@@ -13,8 +13,8 @@ const S = {
     border:1px solid #f0f0f0;
     top: 35px;
     left: 0;
-    right: 0;
     height: auto;
+    width: 100%;
     background-color: #fff;
     padding: 30px;
     box-shadow: 0 30px 30px -50px rgb(0 0 0);
@@ -47,7 +47,7 @@ export default function HamburgerMenuList({ productSubList, toggleSubMenu }: IHa
     <S.HamburgerMenuList toggleSubMenu={toggleSubMenu}>
       <ul className='sub-category-box'>
         <li className='sub-category-box__item all'>전체</li>
-        {productSubList.map((d) => (
+        {productSubList && productSubList.map((d) => (
           <li key={d.label} className='sub-category-box__item'>
             {d.label}
           </li>

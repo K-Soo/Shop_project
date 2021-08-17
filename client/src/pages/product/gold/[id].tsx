@@ -23,6 +23,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const { id } = context.query;
   const URL = `http://makeup-api.herokuapp.com/api/v1/products/${id}.json`
   const res = await Axios.get(URL);
+  console.log('res: ', res);
   return {
     props: {
       item: res.data,

@@ -14,6 +14,7 @@ interface IProductCategory {
 const S = {
   ProductCategory: styled.article`
     margin-bottom: 15px;
+    width: 100%;
   `,
   SubTitle: styled.div`
     position: relative;
@@ -23,7 +24,9 @@ const S = {
     border-bottom: 2px solid #e8e8e8;
     margin-bottom: 10px;
     height: 35px;
-
+    width: 100%;
+    margin: 0 auto;
+    /* padding: 0 5px; */
     ${Title}{
       position: relative;
       &::after{
@@ -80,7 +83,6 @@ const S = {
 
 export default function ProductCategory({ currentProduct, keyName }: IProductCategory) {
   const [toggleSubMenu, setToggleSubMenu] = useState<boolean>(false);
-  console.log('toggleSubMenu: ', toggleSubMenu);
 
   return (
     <S.ProductCategory>
@@ -92,7 +94,7 @@ export default function ProductCategory({ currentProduct, keyName }: IProductCat
       <S.CategorySubList>
         <ul className='list'>
           <li className='list__item'>ALL</li>
-          {PRODUCT[keyName].map(d => (
+          {keyName && PRODUCT[keyName].map(d => (
             <li key={d.label} className='list__item'>
               {d.label}
             </li>

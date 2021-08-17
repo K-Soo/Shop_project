@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useCallback } from "react";
 import styled from "styled-components";
 import ImageSlider from 'components/Common/ImageSlider';
+import { IProduct } from 'interfaces/IProduct';
 
 interface IBestProducts {
-  item?: any;
+  item?: IProduct[];
 }
 
 const S = {
@@ -13,9 +14,15 @@ const S = {
 }
 
 export default function BestProducts({ item }: IBestProducts) {
+  console.log('BestProducts -> item: ', item)
+
+  const bestItems = useCallback(() => {
+   return item?.filter(d => d.best_product);
+  }, [item]);
+
   return (
     <S.BestProducts>
-      <ImageSlider item={item}/>
+      <ImageSlider item={bestItems()} />
     </S.BestProducts>
   );
 }

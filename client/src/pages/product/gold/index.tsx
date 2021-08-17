@@ -13,6 +13,7 @@ type Character = {
 
 export default function GoldPage() {
   const { data, isLoading, isSuccess, isError, status, error }: UseQueryResult<Character, Error> = useQuery('gold', async () => { return await axios.get(URL) });
+  console.log('data: ', data);
   // if (isLoading) {
   //   // return <Loading isLoading={isLoading} text='loading' />
   //   return <h1>loading</h1>

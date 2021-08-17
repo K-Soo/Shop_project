@@ -2,8 +2,8 @@ import React from "react";
 import styled, { css } from "styled-components";
 interface ISelect {
   className?: string;
-  marginright?: string;
-  marginleft?: string;
+  marginRight?: string;
+  marginLeft?: string;
   width?: string;
   height?: string;
   name?: string;
@@ -43,12 +43,16 @@ let Select: React.FunctionComponent<ISelect> = ({
 Select = styled(Select)`
   box-sizing: border-box;
   width: ${({ width }) => `${width}px` ?? "100%"};
-  margin-left: ${({ marginleft }) => `${marginleft}px` ?? "0"};
-  margin-right: ${({ marginright }) => `${marginright}px` ?? "0"};
-  height: ${props => (props.height ? `${props.height}px` : "40px")};
+  margin-left: ${({ marginLeft }) => `${marginLeft}px` ?? "0"};
+  margin-right: ${({ marginRight }) => `${marginRight}px` ?? "0"};
+  height: ${props => (props.height ? `${props.height}px` : "100%")};
   font-size: 14px;
-  padding-left: 10px;
+  padding-left: 15px;
   border: 1px solid #dee2e6;
+  cursor: pointer;
+  :hover{
+    border: 1px solid #333;
+  }
   ${props =>
     props.disabled &&
     css`

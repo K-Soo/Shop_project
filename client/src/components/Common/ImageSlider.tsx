@@ -1,20 +1,22 @@
 import React from "react";
 import Image from 'next/image'
 import Link from 'next/link'
-import {useRouter} from 'next/router'
+import { useRouter } from 'next/router'
 import styled from "styled-components";
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Title from 'components/style/Title';
+import { TColor, IProduct } from 'interfaces/IProduct';
+import {PriceComma} from 'utils';
 
 interface IImageSlider {
-  item?: any;
+  item?: IProduct[]
 }
 
 const S = {
   ImageSlider: styled.div`
-  border: 1px solid red;
+    overflow: hidden;
   `,
   Card: styled.div`
     padding: 0 15px;
@@ -53,9 +55,16 @@ const S = {
     }
   `,
   NewIcon: styled.span`
+    margin-top: 10px;
+    padding: 2px 5px;
+    color: #718FC5;
+    font-size: 14px;
+    background-color: #FFEF36;
+    letter-spacing: 1px;
   `,
-  ColorBox: styled.p<{ productColors: any }>`
-    display: ${props => props.productColors.length > 1 ? 'block' : 'none'};
+
+  ColorBox: styled.p<{ productColors: number }>`
+    display: ${props => props.productColors > 1 ? 'block' : 'none'};
     text-align: center;
     margin-bottom: 10px;
   `,
@@ -68,7 +77,6 @@ const S = {
     background-color: ${props => props.color ? `${props.color};` : 'none'};
   `,
 }
-
 
 const settings = {
   infinite: true,
@@ -100,39 +108,41 @@ const settings = {
 
 export default function ImageSlider({ item }: IImageSlider) {
   const router = useRouter();
-  const {pathname} = router;
+  const { category } = router.query;
+  console.log('router: ', router);
 
   return (
     <S.ImageSlider>
       <Slider {...settings}>
-        {item && item.map((d:any) => (
-          <S.Card key={d.id}>
+        {item && item.map((d: IProduct) => (
+          <S.Card key={d.seq}>
             <div className='card-inner'>
-              <Link href={`${pathname}/${d.id}`}>
-              <a>
-              <div className='img-box'>
-                <Image
-                  src={d.image_link}
-                  alt="Picture of the author"
-                  width={500}
-                  height={500}
-                />
-                {/* <img src={d.image_link} alt="" /> */}
-              </div>
-              </a>
+              <Link href={`${category}/${d.seq}`}>
+                <a>
+                  <div className='img-box'>
+                    <Image
+                      src='https://via.placeholder.com/150'
+                      alt="Picture of the author"
+                      width={500}
+                      height={500}
+                    />
+                  </div>
+                </a>
               </Link>
               <div className='desc-box'>
-                <S.ColorBox productColors={d.product_colors}>
-                  {d.product_colors.map((val: any) => (
-                    <S.ColorIcon className='color-icon' key={val.hex_value} color={val.hex_value} />
+                <S.ColorBox productColors={d.product_colors.length}>
+                  {d.product_colors?.map((d: TColor) => (
+                    <S.ColorIcon className='color-icon' key={d.color_name} color={d.hex_value} />
                   ))}
                 </S.ColorBox>
                 <Title level={5}>{d.name.slice(0, 20)}</Title>
                 <p className='desc-box__short-desc'>{d.description.slice(0, 30)}</p>
-                <span className='desc-box__consumer-price'>소비자 가격</span>
-                <span className='desc-box__sale-price'>{d.price}</span>
+                <span className='desc-box__consumer-price'>
+                  <del>{PriceComma(d.consumer_price)}원</del>
+                </span>
+                <span className='desc-box__sale-price'>{PriceComma(d.product_price)}원</span>
                 <span className='desc-box__discount'>할인 가격</span>
-                <S.NewIcon >new</S.NewIcon>
+                {d.new_product && <S.NewIcon >new</S.NewIcon>}
               </div>
             </div>
           </S.Card>

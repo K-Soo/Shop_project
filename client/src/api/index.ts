@@ -15,36 +15,11 @@ const requests = {
 };
 
 export const Get = {
-	products: () => requests.get('/api/category/list'),
+	products: () => requests.get('/api/product/list'),
 	getAPost: (id: number): Promise<PostType> => requests.get(`posts/${id}`),
 	createPost: (post: PostType): Promise<PostType> =>
 		requests.post('posts', post),
 	updatePost: (post: PostType, id: number): Promise<PostType> =>
 		requests.put(`posts/${id}`, post),
 	deletePost: (id: number): Promise<void> => requests.delete(`posts/${id}`),
-};
-
-
-const test = axios.create({
-	baseURL: 'http://jsonplaceholder.typicode.com/',
-	timeout: 15000,
-});
-
-
-const test_requests = {
-	get: (url: string) => test.get(url).then(responseBody),
-	post: (url: string, body: {}) => test.post(url, body).then(responseBody),
-	put: (url: string, body: {}) => test.put(url, body).then(responseBody),
-	delete: (url: string) => test.delete(url).then(responseBody),
-};
-
-
-export const Post = {
-	getPosts: (): Promise<PostType[]> => test_requests.get('posts'),
-	getAPost: (id: number): Promise<PostType> => test_requests.get(`posts/${id}`),
-	createPost: (post: PostType): Promise<PostType> =>
-		test_requests.post('posts', post),
-	updatePost: (post: PostType, id: number): Promise<PostType> =>
-		test_requests.put(`posts/${id}`, post),
-	deletePost: (id: number): Promise<void> => test_requests.delete(`posts/${id}`),
 };

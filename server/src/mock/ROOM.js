@@ -1,4 +1,4 @@
-let data = [
+export const room = [
   {
     id: 0,
     floor: 'LowFloor',
@@ -11,7 +11,5 @@ let data = [
     roomType: '스탠다드',
     name: '슈페리어 트윈 룸',
   },
-
 ];
 
-export let Lists = data;
