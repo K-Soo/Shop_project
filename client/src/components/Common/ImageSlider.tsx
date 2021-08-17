@@ -8,7 +8,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Title from 'components/style/Title';
 import { TColor, IProduct } from 'interfaces/IProduct';
-import {PriceComma} from 'utils';
+import { PriceComma } from 'utils';
 
 interface IImageSlider {
   item?: IProduct[]
@@ -39,7 +39,6 @@ const S = {
       .desc-box{
         display: flex;
         flex-direction: column;
-        /* max-height: 300px; */
         align-items: center;
         ${Title}{
           display: block;
@@ -47,20 +46,42 @@ const S = {
         }
         &__short-desc{
           margin: 10px 0;
-          border: 1px solid red;
+        }
+        &__discount-percentage{
+          font-size: 12px;
+        }
+        &__product-price{
+          color: #999;
         }
         &__consumer-price{
+          margin-top: 2px;
+          color: #4d4d4d;
         }
       }
     }
   `,
-  NewIcon: styled.span`
-    margin-top: 10px;
-    padding: 2px 5px;
-    color: #718FC5;
-    font-size: 14px;
-    background-color: #FFEF36;
-    letter-spacing: 1px;
+
+
+  IconBox:styled.p`
+    margin-top: 5px;
+    i{
+      margin: 0 5px;
+      border-radius: 3px;
+    }
+    .new-icon{
+      padding: 1px 5px;
+      color: #718FC5;
+      font-size: 14px;
+      background-color: #FFEF36;
+      letter-spacing: 1px;
+    }
+    .best-icon{
+      padding: 1px 5px;
+      color: #fff;
+      font-size: 14px;
+      background-color: #1B5DF6;
+      letter-spacing: 1px;
+    }
   `,
 
   ColorBox: styled.p<{ productColors: number }>`
@@ -137,12 +158,13 @@ export default function ImageSlider({ item }: IImageSlider) {
                 </S.ColorBox>
                 <Title level={5}>{d.name.slice(0, 20)}</Title>
                 <p className='desc-box__short-desc'>{d.description.slice(0, 30)}</p>
-                <span className='desc-box__consumer-price'>
-                  <del>{PriceComma(d.consumer_price)}원</del>
-                </span>
-                <span className='desc-box__sale-price'>{PriceComma(d.product_price)}원</span>
-                <span className='desc-box__discount'>할인 가격</span>
-                {d.new_product && <S.NewIcon >new</S.NewIcon>}
+                <span className='desc-box__product-price'><del>{PriceComma(d.product_price)}원</del></span>
+                <span className='desc-box__consumer-price'>{PriceComma(d.consumer_price)}원</span>
+                <span className='desc-box__discount-percentage'>(29%할인)</span>
+                <S.IconBox >
+                  {d.new_product && <i className='new-icon' >new</i>}
+                  {d.best_product && <i className='best-icon' >best</i>}
+                </S.IconBox>
               </div>
             </div>
           </S.Card>
