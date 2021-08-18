@@ -1,9 +1,8 @@
 import React from "react";
 import styled from "styled-components";
+import { useAppContext } from 'context/AppProvider';
 
 interface IHamburgerIcon {
-  toggle: boolean
-  onClick?: React.MouseEventHandler<HTMLDivElement> | undefined;
   className?: string;
 }
 
@@ -39,9 +38,11 @@ const S = {
   `,
 }
 
-export default function HamburgerIcon({ toggle, onClick, className }: IHamburgerIcon) {
+export default function HamburgerIcon({ className }: IHamburgerIcon) {
+  const { action,state } = useAppContext();
+
   return (
-    <S.HamburgerIcon toggle={toggle} onClick={onClick} className={className}>
+    <S.HamburgerIcon toggle={state.openSubMenu} onClick={action.setToggleSubMenu} className={className}>
       <span className='line' />
       <span className='line' />
       <span className='line' />

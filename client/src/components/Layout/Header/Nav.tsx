@@ -58,6 +58,7 @@ const S = {
     display: flex;
     align-items: center;
     flex-grow: 1;
+    justify-content: space-between;
     ${({ theme }) => theme.mobile`
       display: ${(props: any) => props.pathname === '/' ? 'flex' : 'none'};
       flex-wrap: wrap;
@@ -69,7 +70,6 @@ const S = {
     text-align: center;
     font-size: 13px;
     height: 100%;
-
     a {
       display: inline-block;
       padding: 0 10px;

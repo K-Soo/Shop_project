@@ -94,28 +94,26 @@ const S = {
 }
 
 export default function ProductCategory({ currentProduct, keyName }: IProductCategory) {
-  const [toggleSubMenu, setToggleSubMenu] = useState<boolean>(false);
-  const [category, setCategory] = useState('all');
-  const { action } = useAppContext();
+  const { action,state } = useAppContext();
 
   const handleCategory = (e:React.MouseEvent<HTMLLIElement>) => {
     const { name } = (e.target as HTMLLIElement).dataset;
-    setCategory(name);
     action.setCategory(name);
   }
+
 
   return (
     <S.ProductCategory>
       <S.SubTitle>
         <Title level={3} size='24' textAlign='left'>{currentProduct}</Title>
-        <HamburgerIcon onClick={() => setToggleSubMenu(!toggleSubMenu)} toggle={toggleSubMenu} className='hamburger-icon' />
-        <HamburgerMenuList productSubList={PRODUCT[keyName]} toggleSubMenu={toggleSubMenu} />
+        <HamburgerIcon className='hamburger-icon' />
+        <HamburgerMenuList productSubList={PRODUCT[keyName]} />
       </S.SubTitle>
-      <S.CategorySubList category={category}>
+      <S.CategorySubList category={state.targetCategory}>
         <ul className='list'>
-          <li className='list__item' data-name='all' data-active={'all' === category} onClick={handleCategory} >ALL</li>
+          <li className='list__item' data-name='all' data-active={'all' === state.targetCategory} onClick={action.setCategory} >ALL</li>
           {keyName && PRODUCT[keyName].map(d => (
-            <li key={d.label} className='list__item' data-name={d.label} data-active={d.label === category} onClick={handleCategory} >
+            <li key={d.label} className='list__item' data-name={d.label} data-active={d.label === state.targetCategory} onClick={action.setCategory} >
               {d.label}
             </li>
           ))}

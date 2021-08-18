@@ -15,7 +15,7 @@ const requests = {
 };
 
 export const Get = {
-	products: () => requests.get('/api/product/list'),
+	products: (productType: string | string[]) => requests.get(`/api/product/${productType}`),
 	getAPost: (id: number): Promise<PostType> => requests.get(`posts/${id}`),
 	createPost: (post: PostType): Promise<PostType> =>
 		requests.post('posts', post),
@@ -23,3 +23,4 @@ export const Get = {
 		requests.put(`posts/${id}`, post),
 	deletePost: (id: number): Promise<void> => requests.delete(`posts/${id}`),
 };
+

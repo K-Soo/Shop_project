@@ -29,8 +29,7 @@ const S = {
     `}
   `,
   ProductCount: styled.div`
-    border: 1px solid #333;
-    color: #222;
+  color: #222;
     width: 100px;
     font-weight: 400;
     text-align: center;
@@ -39,7 +38,6 @@ const S = {
     align-items: center;
     strong{
       font-size: 18px;
-      /* text-align: center; */
       width: 100%;
       &::after{
         content: '개 상품'

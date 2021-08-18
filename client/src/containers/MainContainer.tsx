@@ -1,24 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import Link from "next/link";
-import axios, { AxiosResponse } from "axios";
-import Product from "components/Product";
-import { PostType } from "models/post.interface"; //add
-import { Post, Get } from "api";
 import Breadcrumb from "components/Common/Breadcrumb";
-import { useRouter } from 'next/router';
 import PAGE from "constants/path";
 
 interface IMainContainer {
   className?: string;
   children?: React.ReactNode;
-}
-interface IProduct {
-  id: number;
-  floor: string;
-  name: string;
-  roomType: string;
-  // roomType2: string;
 }
 
 const S = {
@@ -33,22 +21,6 @@ const S = {
 }
 
 export default function MainContainer({ className, children }: IMainContainer) {
-  const [items, setItems] = useState<IProduct[] | null>(null);
-  const [posts, setPosts] = useState<PostType[]>();
-  const router = useRouter();
-  const { pathname } = router;
-
-  useEffect(() => {
-    Get.products()
-      .then(data => {
-        console.log('data: ', data);
-        setItems(data);
-      })
-      .catch(err => {
-        // setIsError(true);
-      });
-  }, []);
-
   return (
     <S.MainContainer className={className}>
       <Breadcrumb>

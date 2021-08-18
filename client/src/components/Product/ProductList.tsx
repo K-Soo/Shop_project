@@ -123,7 +123,7 @@ export default function ProductList({ item }: IProductList) {
             <div className='desc-box'>
               <S.ColorBox productColors={d.product_colors.length}>
                 {d.product_colors?.map((d: TColor) => (
-                  <S.ColorIcon className='color-icon' key={d.color_name} color={d.hex_value} />
+                  <S.ColorIcon key={d.hex_value} className='color-icon' color={d.hex_value} />
                 ))}
               </S.ColorBox>
               <Title level={5}>{d.name.slice(0, 20)}</Title>
