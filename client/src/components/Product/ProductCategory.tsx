@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import {NextRouter, useRouter} from 'next/router';
 import styled from "styled-components";
 import { category, categoryType } from 'components/Product';
 import Title from 'components/style/Title';
@@ -6,6 +7,7 @@ import { PRODUCT } from '../../constants/product';
 import HamburgerMenuList from 'components/Product/Common/HamburgerMenuList';
 import HamburgerIcon from 'components/Common/HamburgerIcon';
 import { useAppContext } from 'context/AppProvider';
+import Icon from 'components/Icon/Icon';
 
 
 interface IProductCategory {
@@ -28,7 +30,12 @@ const S = {
     height: 35px;
     width: 100%;
     margin: 0 auto;
-    /* padding: 0 5px; */
+    .redirect-icon{
+      display: none;
+      position: absolute;
+      font-size: 0;
+      left: 10px;
+    }
     ${Title}{
       position: relative;
       &::after{
@@ -47,6 +54,9 @@ const S = {
       align-items: center;
       border-bottom: none;
       margin-bottom: 0px;
+      .redirect-icon{
+        display: block;
+      }
       ${Title}{
         font-size: 20px;
         &::after{
@@ -87,24 +97,22 @@ const S = {
         } */
       }
     }
-  ${({ theme }) => theme.mobile`
-        display: block;
+    ${({ theme }) => theme.mobile`
+      display: block;
     `}
   `,
 }
 
 export default function ProductCategory({ currentProduct, keyName }: IProductCategory) {
   const { action,state } = useAppContext();
-
-  const handleCategory = (e:React.MouseEvent<HTMLLIElement>) => {
-    const { name } = (e.target as HTMLLIElement).dataset;
-    action.setCategory(name);
-  }
-
+  const router:NextRouter = useRouter();
 
   return (
     <S.ProductCategory>
       <S.SubTitle>
+        <i className='redirect-icon' onClick={() => router.back()}>
+          <Icon name='BigArrowLeft' />
+        </i>
         <Title level={3} size='24' textAlign='left'>{currentProduct}</Title>
         <HamburgerIcon className='hamburger-icon' />
         <HamburgerMenuList productSubList={PRODUCT[keyName]} />

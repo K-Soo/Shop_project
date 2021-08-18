@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import { PostType } from '../models/post.interface';
+import { IProduct } from 'interfaces/IProduct';
 
 const instance = axios.create({
 	baseURL: process.env.NEXT_PUBLIC_SERVER_URL,
@@ -15,7 +16,7 @@ const requests = {
 };
 
 export const Get = {
-	products: (productType: string | string[]) => requests.get(`/api/product/${productType}`),
+	products: (productType: string | string[]):Promise<IProduct> => requests.get(`/api/product/${productType}`),
 	getAPost: (id: number): Promise<PostType> => requests.get(`posts/${id}`),
 	createPost: (post: PostType): Promise<PostType> =>
 		requests.post('posts', post),

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import styled, { css } from "styled-components";
 import Link from "next/link";
 import { NextRouter, useRouter } from 'next/router';
@@ -76,7 +76,7 @@ const S = {
       width: 100%;
       line-height: 48px;
       height: 100%;
-      /* vertical-align: bottom; */
+      vertical-align: bottom;
       &[data-active=true] {
         color: #000;
         border-bottom: solid 2px #000;
@@ -85,11 +85,18 @@ const S = {
         color: #000;
       }
       ${({ theme }) => theme.mobile`
-        flex-basis:40%;
-        padding: 5px;
-        border: 1px solid #e8e8e8;
-      `}
+        line-height: normal;
+          &[data-active=true] {
+            color: #000;
+            border: none;
+          };
+      `};
     }
+    ${({ theme }) => theme.mobile`
+      flex-basis:40%;
+      padding: 5px;
+      border: 1px solid #e8e8e8;
+    `};
   `,
   SearchGroup: styled.ul<{ toggle: boolean }>`
     height: 50px;
@@ -167,7 +174,11 @@ const Nav: React.FC<INav> = ({ className, ScrollActive }) => {
   const handleItem = (e: React.MouseEvent<HTMLAnchorElement>) => {
     const { name } = (e.target as HTMLAnchorElement).dataset;
     setDatasetName(name);
-  }
+  };
+
+  useEffect(() => {
+    if(!(router.pathname === "/product/[category]"))setDatasetName('');
+  },[router.pathname]);
 
   return (
     <S.Nav className={className} ScrollActive={ScrollActive} >

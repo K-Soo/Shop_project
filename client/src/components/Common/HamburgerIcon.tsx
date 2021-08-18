@@ -4,6 +4,7 @@ import { useAppContext } from 'context/AppProvider';
 
 interface IHamburgerIcon {
   className?: string;
+  toggle?: boolean;
 }
 
 const S = {

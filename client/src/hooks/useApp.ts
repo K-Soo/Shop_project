@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import produce from "immer";
-import {useRouter} from 'next/router';
+import { useRouter } from 'next/router';
 import useDidMountEffect from 'hooks/useDidMountEffect';
 
 type TAppAction = typeof generateAction extends (...args: any[]) => infer R ? R : never;
@@ -59,48 +59,48 @@ const generateAction = (update: (recipe: (draft: IAppState) => void) => void) =>
 
   const setCategory = (e: React.MouseEvent<HTMLLIElement>) => {
     update((draft) => {
-      const {name} = (e.target as HTMLLIElement).dataset;
+      const { name } = (e.target as HTMLLIElement).dataset;
       console.log('name: ', name);
       draft.targetCategory = name;
     });
   }
 
   const InitData = (stateName: string, initValue?: any) =>
-  update(draft => {
-    let valueDefault = '';
-    if (initValue) valueDefault = initValue;
-    draft[stateName] = valueDefault;
-  });
+    update(draft => {
+      let valueDefault = '';
+      if (initValue) valueDefault = initValue;
+      draft[stateName] = valueDefault;
+    });
 
 
-    return {
-      setIsNav,
-      setToggleSideMenu,
-      setCategory,
-      setToggleSubMenu,
-      InitData
-    };
+  return {
+    setIsNav,
+    setToggleSideMenu,
+    setCategory,
+    setToggleSubMenu,
+    InitData
   };
+};
 
-  const useApp = (props: any) => {
-    const [state, setAppState] = useState(() => initializer(props));
-    console.log('state: ', state);
-    const update = (recipe: (draft: IAppState) => void) =>
-      setAppState((prev) => produce(prev, recipe));
-    const router = useRouter();
-    console.log('router: ', router);
-    const action = generateAction(update);
-    const app = { props, state, action };
+const useApp = (props: any) => {
+  const [state, setAppState] = useState(() => initializer(props));
+  console.log('state: ', state);
+  const update = (recipe: (draft: IAppState) => void) =>
+    setAppState((prev) => produce(prev, recipe));
+  const router = useRouter();
+  console.log('router: ', router);
+  const action = generateAction(update);
+  const app = { props, state, action };
 
-    useEffect(() => {
-      app.action.InitData('openSubMenu',false);
-    },[app.state.targetCategory])
+  useEffect(() => {
+    app.action.InitData('openSubMenu', false);
+  }, [app.state.targetCategory])
 
-    useDidMountEffect(() => {
-      app.action.InitData('targetCategory','all');
-    },[router.asPath])
-    
-    return app;
-  };
+  useDidMountEffect(() => {
+    app.action.InitData('targetCategory', 'all');
+  }, [router.asPath])
 
-  export default useApp;
+  return app;
+};
+
+export default useApp;

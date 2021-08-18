@@ -54,7 +54,7 @@ export default function HamburgerMenuList({ productSubList }: IHamburgerMenuList
   return (
     <S.HamburgerMenuList toggleSubMenu={state.openSubMenu}>
       <ul className='sub-category-box'>
-        <li className='sub-category-box__item all'>전체</li>
+        <li className='sub-category-box__item all' data-name='all' onClick={action.setCategory}>전체</li>
         {productSubList && productSubList.map((d) => (
           <li key={d.label} data-name={d.label} className='sub-category-box__item' onClick={action.setCategory}>
             {d.label}

@@ -9,21 +9,10 @@ import Loading from 'components/Common/Loading';
 import { IProduct } from 'interfaces/IProduct';
 import { Get } from "api";
 
-const params = 'necklace'
-const URL = `http://127.0.0.1:8000/api/product/${params}`
-
-const fechdata = async (key:any) => {
-  console.log('key: ', key);
-  const res = await axios.get(URL).then(res => res.data);
-  return res;
-}
-
-
 export default function ProductType() {
   const router: NextRouter = useRouter();
-
   const { category } = router.query;
-  const { data, isLoading, isSuccess, isError, status, error } = useQuery(['product',category], async () => await Get.products(category));
+  const { data, isLoading, isSuccess, isError, status, error } = useQuery<IProduct>(['product',category], async () => await Get.products(category));
 
   // const [item, setItem] = useState<IProduct[] | null>(null);
 
@@ -40,14 +29,14 @@ export default function ProductType() {
   //   fetchData()
   // }, [])
 
-  // if (isLoading) {
-  //   // return <Loading isLoading={isLoading} text='loading' />
-  //   return <h1>loading</h1>
-  // }
+  if (isLoading) {
+    // return <Loading isLoading={isLoading} text='loading' />
+    return <h1>loading</h1>
+  }
 
-  // if (isError) {
-  //   return <h1>error..</h1>
-  // }
+  if (isError) {
+    return <h1>error..</h1>
+  }
 
   return (
     <>
