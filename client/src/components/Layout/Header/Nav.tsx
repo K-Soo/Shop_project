@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled, { css } from "styled-components";
 import Link from "next/link";
-import { useRouter } from 'next/router';
+import { NextRouter, useRouter } from 'next/router';
 import { NAV_MENU } from "constants/header";
 import Icon from 'components/Icon/Icon';
 import NavSearchBar from 'components/Layout/Header/NavSearchBar';
@@ -54,7 +54,7 @@ const S = {
     `}
   `,
   CategoryGroup: styled.ul<{ pathname: string }>`
-    height:100%;
+    height: 100%;
     display: flex;
     align-items: center;
     flex-grow: 1;
@@ -68,19 +68,27 @@ const S = {
     display: inline-block;
     text-align: center;
     font-size: 13px;
-    ${({ theme }) => theme.mobile`
-      flex-basis:40%;
-      padding: 5px;
-      border: 1px solid #e8e8e8;
-    `}
+    height: 100%;
+
     a {
       display: inline-block;
       padding: 0 10px;
       width: 100%;
-      vertical-align: bottom;
-      &:hover {
-        color: red;
+      line-height: 48px;
+      height: 100%;
+      /* vertical-align: bottom; */
+      &[data-active=true] {
+        color: #000;
+        border-bottom: solid 2px #000;
       }
+      &:hover {
+        color: #000;
+      }
+      ${({ theme }) => theme.mobile`
+        flex-basis:40%;
+        padding: 5px;
+        border: 1px solid #e8e8e8;
+      `}
     }
   `,
   SearchGroup: styled.ul<{ toggle: boolean }>`
@@ -152,8 +160,14 @@ const S = {
 
 const Nav: React.FC<INav> = ({ className, ScrollActive }) => {
   const [toggle, setToggle] = useState<boolean>(false);
-  const router = useRouter();
+  const [dataSetName, setDatasetName] = useState<string>('');
+  const router: NextRouter = useRouter();
   const { action, state } = useAppContext();
+
+  const handleItem = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const { name } = (e.target as HTMLAnchorElement).dataset;
+    setDatasetName(name);
+  }
 
   return (
     <S.Nav className={className} ScrollActive={ScrollActive} >
@@ -161,9 +175,9 @@ const Nav: React.FC<INav> = ({ className, ScrollActive }) => {
         <S.ItemBox >
           <S.CategoryGroup pathname={router.pathname}>
             {NAV_MENU.map(d => (
-              <S.Item key={d.label}>
-                <Link href={d.url}>
-                  <a>{d.label}</a>
+              <S.Item key={d.label} >
+                <Link href={d.url} >
+                  <a onClick={handleItem} data-name={d.label} data-active={d.label === dataSetName}>{d.label}</a>
                 </Link>
               </S.Item>
             ))}

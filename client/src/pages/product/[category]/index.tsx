@@ -42,8 +42,6 @@ export default function ProductType() {
   //   return <h1>error..</h1>
   // }
 
-
-
   return (
     <>
       <Head>

@@ -128,7 +128,6 @@ const settings = {
 export default function ImageSlider({ item }: IImageSlider) {
   const router = useRouter();
   const { category } = router.query;
-  console.log('router: ', router);
 
   return (
     <S.ImageSlider>

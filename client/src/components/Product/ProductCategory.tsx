@@ -98,7 +98,6 @@ export default function ProductCategory({ currentProduct, keyName }: IProductCat
   const [category, setCategory] = useState('all');
   const { action } = useAppContext();
 
-
   const handleCategory = (e:React.MouseEvent<HTMLLIElement>) => {
     const { name } = (e.target as HTMLLIElement).dataset;
     setCategory(name);

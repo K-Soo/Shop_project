@@ -103,7 +103,6 @@ const generateAction = (update: (recipe: (draft: IAppState) => void) => void) =>
 
 const useRegister = (props: any) => {
   const [state, setAppState] = useState(() => initializer(props));
-  console.log('state: ', state);
 
   const update = (recipe: (draft: IAppState) => void) =>
     setAppState((prev) => produce(prev, recipe));
