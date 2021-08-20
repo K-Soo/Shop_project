@@ -34,7 +34,6 @@ const S = {
 }
 
 export default function Product({ item }: IProduct) {
-  console.log('product -> item: ', item);
   const router = useRouter();
   const keyName = router.query.category as keyof typeof category
   const currentProduct: categoryType = category[keyName]

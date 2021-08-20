@@ -126,7 +126,6 @@ const S = {
 const NavSearchBar: React.FC<INavSearchBar> = ({ className, handleToggle, toggle }) => {
   const InputFocus = useRef<HTMLInputElement | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
-  console.log('searchTerm: ', searchTerm);
 
   useEffect(() => {
     if (toggle) setTimeout(() => InputFocus.current?.focus(), 1000);

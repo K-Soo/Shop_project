@@ -11,5 +11,10 @@ import { ReactComponent as arrowLeft } from "./arrowLeft.svg";
 // import { ReactComponent as necklace } from "./necklace.svg";
 import { ReactComponent as heart } from "./heart.svg";
 import { ReactComponent as BigArrowLeft } from "./BigArrowLeft.svg";
+import { ReactComponent as cartAdd } from "./cartAdd.svg";
+import { ReactComponent as plus } from "./plus.svg";
+import { ReactComponent as minus } from "./minus.svg";
+import { ReactComponent as info } from "./info.svg";
+import { ReactComponent as closeSmall } from "./closeSmall.svg";
 
-export { bed, check, human, cart, search, bookmark, arrowTop, arrowBottom, arrowLeft, close, heart, BigArrowLeft };
+export { bed, check, human, cart, search, bookmark, arrowTop, arrowBottom, arrowLeft, close, heart, BigArrowLeft, cartAdd, plus, minus,info ,closeSmall};

@@ -1,8 +1,8 @@
 import express from 'express';
-import product from './product';
+import products from './products';
 
 const api = express.Router();
-
-api.use('/product', product);
+// api ->
+api.use('/products', products);
 
 export default api;

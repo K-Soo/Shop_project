@@ -99,7 +99,6 @@ const S = {
 }
 
 export default function ProductList({ item }: IProductList) {
-  console.log('ProductList -> item: ', item);
   const router = useRouter();
   // const { category } = router.query;
 

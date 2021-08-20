@@ -5,16 +5,16 @@ export type TColor = {
 
 export interface IProduct {
   best_product: boolean;
-  category: string;
-  consumer_price: string;
-  description: string;
-  name: string;
   new_product: boolean;
-  product_colors: TColor[];
-  product_price: string;
   product_type: string;
-  seq: number;
+  category: string;
+  name: string;
+  product_price: string;
+  consumer_price: string;
   summary_description:  string;
+  description: string;
+  product_colors: TColor[];
+  seq: number;
   __v: number;
   _id: string;
 }

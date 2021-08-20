@@ -2,17 +2,25 @@ import React from "react";
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Title from 'components/style/Title';
 import { TColor, IProduct } from 'interfaces/IProduct';
 import { PriceComma } from 'utils';
+import Icon from 'components/Icon/Icon';
 
 interface IImageSlider {
   item?: IProduct[]
 }
+
+const CommonIcon = css`
+  padding: 1px 5px;
+  color: #718FC5;
+  font-size: 14px;
+  letter-spacing: 1px;
+`;
 
 const S = {
   ImageSlider: styled.div`
@@ -28,7 +36,7 @@ const S = {
           width: 100%;
           height: 100%;
           object-fit: cover;
-          :hover{
+          &:hover{
             transform: scale(1.1);
             transition: all .5s ease;
           }
@@ -37,16 +45,16 @@ const S = {
       .desc-box{
         display: flex;
         flex-direction: column;
-        align-items: center;
+        align-items: flex-start;
+        font-size: 12px;
         ${Title}{
           display: block;
-          font-size: 16px;
+          font-size: 13px;
+          width: 100%;
+          text-align: left;
+          /* border-bottom: 1px solid #f0f0f0; */
         }
         &__short-desc{
-          margin: 10px 0;
-        }
-        &__discount-percentage{
-          font-size: 12px;
         }
         &__product-price{
           color: #999;
@@ -56,32 +64,41 @@ const S = {
           color: #4d4d4d;
         }
       }
+      &:hover{
+        S.Line{
+          background: #000;
+          transition: all 0.5s ease;
+        }
+      }
     }
   `,
-
-
-  IconBox:styled.p`
+  Line: styled.hr`
+    border: 0;
+    color: #f0f0f0;
+    width: 100%;
+    height: 1px;
+    background: #f0f0f0;
+    S.Card{
+      border: 1px solid red;
+    }
+  `,
+  IconBox: styled.p`
     margin-top: 5px;
     i{
-      margin: 0 5px;
       border-radius: 3px;
+      :first-child{
+        margin-right: 5px;
+      }
     }
     .new-icon{
-      padding: 1px 5px;
-      color: #718FC5;
-      font-size: 14px;
+      ${CommonIcon}
       background-color: #FFEF36;
-      letter-spacing: 1px;
     }
     .best-icon{
-      padding: 1px 5px;
-      color: #fff;
-      font-size: 14px;
+      ${CommonIcon}
       background-color: #1B5DF6;
-      letter-spacing: 1px;
     }
   `,
-
   ColorBox: styled.p<{ productColors: number }>`
     display: ${props => props.productColors > 1 ? 'block' : 'none'};
     text-align: center;
@@ -95,7 +112,7 @@ const S = {
     margin: 0 5px;
     background-color: ${props => props.color ? `${props.color};` : 'none'};
   `,
-}
+};
 
 const settings = {
   infinite: true,
@@ -103,7 +120,7 @@ const settings = {
   slidesToScroll: 5,
   autoplay: true,
   speed: 1000,
-  autoplaySpeed: 5000,
+  autoplaySpeed: 500,
   cssEase: 'linear',
   focusOnSelect: true,
   responsive: [
@@ -135,7 +152,7 @@ export default function ImageSlider({ item }: IImageSlider) {
         {item && item.map((d: IProduct) => (
           <S.Card key={d.seq}>
             <div className='card-inner'>
-              <Link href={`${category}/${d.seq}`}>
+              <Link href={category + "/" + d.seq}>
                 <a>
                   <div className='img-box'>
                     <Image
@@ -147,22 +164,27 @@ export default function ImageSlider({ item }: IImageSlider) {
                   </div>
                 </a>
               </Link>
+
               <div className='desc-box'>
                 <S.ColorBox productColors={d.product_colors.length}>
                   {d.product_colors?.map((d: TColor) => (
                     <S.ColorIcon className='color-icon' key={d.hex_value} color={d.hex_value} />
                   ))}
                 </S.ColorBox>
-                <Title level={5}>{d.name.slice(0, 20)}</Title>
+                <Title level={6} className='title'>{d.name.slice(0, 20)}</Title>
+                <S.Line />
                 <p className='desc-box__short-desc'>{d.description.slice(0, 30)}</p>
                 <span className='desc-box__product-price'><del>{PriceComma(d.product_price)}원</del></span>
-                <span className='desc-box__consumer-price'>{PriceComma(d.consumer_price)}원</span>
-                <span className='desc-box__discount-percentage'>(29%할인)</span>
+                <b className='desc-box__consumer-price'>{PriceComma(d.consumer_price)}원</b>
                 <S.IconBox >
                   {d.new_product && <i className='new-icon' >new</i>}
                   {d.best_product && <i className='best-icon' >best</i>}
                 </S.IconBox>
+                <i className='cart-icon'>
+                  <Icon name='cartAdd' />
+                </i>
               </div>
+
             </div>
           </S.Card>
         ))}
