@@ -213,7 +213,7 @@ const S = {
   `,
   CurrentProducts: styled.div`
     max-height: 200px;
-    overflow-y: auto;
+    overflow: auto;
     li{
       height: 65px;
       margin-bottom: 5px;
@@ -268,40 +268,47 @@ const S = {
     }
   `,
 }
+interface ISelectProduct extends IProduct {
+  selectColor: string;
+  qty: number;
+}
 
 export default function ProductDetail({ item }: IProductDetail) {
   const [showSpec, setShowSpec] = useState<boolean>(false);
-  const [count, setCount] = useState<number>(1);
-  const [val, setVal] = useState({asd:'aa'});
-  console.log('val: ', val);
+  const [selectItems, setSelectItems] = useState<ISelectProduct[]>([]);
 
-  const handleCount = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target as HTMLInputElement
-    if (!Number(value)) {
-      return alert('최소 주문수량은 1개 입니다.');
-    }
-    setCount(+value);
-  }
+  const handleCount = (e: React.ChangeEvent<HTMLInputElement>, currentQty:ISelectProduct) => {
+    const exist = selectItems.find(x => x.selectColor === currentQty.selectColor)
+  
+    const { value } = e.target as HTMLInputElement;
+    exist.qty = +value;
+    
+    if (!Number(exist.qty)) return alert('최소 주문수량은 1개 입니다.');
+    if(exist.qty === 10) return alert('최대 주문수량은 10개 입니다.');
+    
+    setSelectItems([...selectItems]);
+  };
 
-  const handleAddItem = (e) => {
+  const handleAddItem = (e, currentItem: IProduct) => {
     const { color } = e.target.dataset;
     const {
       ...rest
-    } = item[0]
+    } = currentItem[0];
+    rest.selectColor = color;
+    const exist = selectItems.find(x => x.selectColor == rest.selectColor);
+    if (exist) {
+      return alert('이미 선택하셨습니다.')
+    }
+    setSelectItems(prev => {
+      return [...prev, { ...rest, qty: 1 }];
+    })
+  };
 
-    const obj = {
-      selectColor: color,
-      selectColorName: '검정',
-      cnt: 1,
-      ...rest,
-    } as any;
 
-    console.log('obj: ', obj);
-
-    setVal(prev => {
-      return Object.assign({},prev,{a:'tls'})
-    });
-  }
+  const handleRemoveItem = (currentItem:ISelectProduct) => {
+    const filterItem = selectItems.filter(d => d.selectColor !== currentItem.selectColor);
+    setSelectItems(filterItem);
+  };
 
   return (
     <S.ProductDetail>
@@ -369,11 +376,10 @@ export default function ProductDetail({ item }: IProductDetail) {
               <div className='radio-box'>
                 {d.product_colors.length > 0 && d.product_colors.map((d, i) => (
                   <div key={d.i}>
-                    <Radio className='color-item' name='오렌지' dataSetColor="#1111" title='오렌지' onClick={handleAddItem} />
-                    <Radio className='color-item' name='오렌지' dataSetColor="#2222" title='오렌지' onClick={handleAddItem} />
-                    <Radio className='color-item' name='오렌지' dataSetColor="#3333" title='오렌지' onClick={handleAddItem} />
-                    <Radio className='color-item' name='오렌지' dataSetColor="#4444" title='오렌지' onClick={handleAddItem} />
-                    <Radio className='color-item' name='오렌지' dataSetColor="#5555" title='오렌지' onClick={handleAddItem} />
+                    <Radio className='color-item' name='오렌지' dataSetColor="#1111" title='검' onClick={(e) => handleAddItem(e, item)} />
+                    <Radio className='color-item' name='오렌지' dataSetColor="#2222" title='빨' onClick={(e) => handleAddItem(e, item)} />
+                    <Radio className='color-item' name='오렌지' dataSetColor="#3333" title='노' onClick={(e) => handleAddItem(e, item)} />
+
                   </div>
                 ))}
 
@@ -382,19 +388,21 @@ export default function ProductDetail({ item }: IProductDetail) {
 
             <S.CurrentProducts>
               <ul>
-                <li>
-                  <div className='current-title'>
-                    <span className='current-title__name'>고양이팬던트</span>
-                    <b className='current-title__color'>오렌지</b>
-                  </div>
-                  <div className='current-quantity'>
-                    <input type='number' value={count} name='' onChange={handleCount} />
-                  </div>
-                  <span className='current-price'>{PriceComma(300000)}원</span>
-                  <button type='button' name='close'>
-                    <Icon name='closeSmall' />
-                  </button>
-                </li>
+                {selectItems.map((d:ISelectProduct) => (
+                  <li key={d.selectColor}>
+                    <div className='current-title'>
+                      <span className='current-title__name'>{d.name}</span>
+                      <b className='current-title__color'>{d.selectColor}</b>
+                    </div>
+                    <div className='current-quantity'>
+                      <input type='number' value={d.qty} name='qtyCount' onChange={(e) => handleCount(e,d)} />
+                    </div>
+                    <span className='current-price'>{PriceComma(d.consumer_price)}원</span>
+                    <button type='button' name='close' onClick={() => handleRemoveItem(d)}>
+                      <Icon name='closeSmall' />
+                    </button>
+                  </li>
+                ))}
               </ul>
             </S.CurrentProducts>
 
