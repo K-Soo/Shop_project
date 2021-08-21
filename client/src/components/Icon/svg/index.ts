@@ -16,5 +16,6 @@ import { ReactComponent as plus } from "./plus.svg";
 import { ReactComponent as minus } from "./minus.svg";
 import { ReactComponent as info } from "./info.svg";
 import { ReactComponent as closeSmall } from "./closeSmall.svg";
+import { ReactComponent as user } from "./user.svg";
 
-export { bed, check, human, cart, search, bookmark, arrowTop, arrowBottom, arrowLeft, close, heart, BigArrowLeft, cartAdd, plus, minus,info ,closeSmall};
+export { bed, check, human, cart, search, bookmark, arrowTop, arrowBottom, arrowLeft, close, heart, BigArrowLeft, cartAdd, plus, minus,info ,closeSmall, user};

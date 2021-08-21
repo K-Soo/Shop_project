@@ -16,7 +16,8 @@ const DarkBackground: React.FC<IDarkBackground> = ({ className, children, active
 
 
 export default styled(DarkBackground)`
-  visibility:hidden;
+  /* visibility:hidden; */
+  display: none;
   position: fixed; 
   top: 0;
   right: 0;
@@ -30,6 +31,7 @@ export default styled(DarkBackground)`
   ${props =>
     props.active &&
     css`
-      visibility:visible;
+      /* visibility:visible; */
+      display: block;
   `}
 `;

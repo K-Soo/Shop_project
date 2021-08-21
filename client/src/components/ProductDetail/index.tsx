@@ -7,6 +7,7 @@ import { PriceComma } from 'utils/PriceComma';
 import Icon from 'components/Icon/Icon';
 import Radio from 'components/style/Radio';
 import Button from 'components/style/Button';
+import BasketModal from 'components/ProductDetail/BasketModal';
 interface IProductDetail {
   item: IProduct[];
 }
@@ -267,7 +268,34 @@ const S = {
       }
     }
   `,
+  EtcBox: styled.div`
+    margin-top: 15px;
+    display: flex;
+    justify-content: flex-end;
+    span{
+      border-bottom: 2px solid #333;
+      cursor: pointer;
+      &:hover{
+        color: #707070;
+      }
+    }
+    .basket-add{
+      &::before{
+        content: '+';
+        margin-right: 5px;
+      }
+    }
+    .wishlist{
+      margin-left: 15px;
+      &::before{
+        content: '+';
+        margin-right: 5px;
+      }
+    }
+
+  `,
 }
+
 interface ISelectProduct extends IProduct {
   selectColor: string;
   qty: number;
@@ -276,10 +304,9 @@ interface ISelectProduct extends IProduct {
 export default function ProductDetail({ item }: IProductDetail) {
   const [showSpec, setShowSpec] = useState<boolean>(false);
   const [selectItems, setSelectItems] = useState<ISelectProduct[]>([]);
-
+  const [open, setOpen] = useState<boolean>(false);
   const handleCount = (e: React.ChangeEvent<HTMLInputElement>, currentQty:ISelectProduct) => {
     const exist = selectItems.find(x => x.selectColor === currentQty.selectColor)
-  
     const { value } = e.target as HTMLInputElement;
     exist.qty = +value;
     
@@ -289,8 +316,8 @@ export default function ProductDetail({ item }: IProductDetail) {
     setSelectItems([...selectItems]);
   };
 
-  const handleAddItem = (e, currentItem: IProduct) => {
-    const { color } = e.target.dataset;
+  const handleAddItem = (e:React.MouseEvent<HTMLInputElement>, currentItem:any ) => {
+    const { color } = (e.target as HTMLInputElement).dataset;
     const {
       ...rest
     } = currentItem[0];
@@ -304,12 +331,15 @@ export default function ProductDetail({ item }: IProductDetail) {
     })
   };
 
-
   const handleRemoveItem = (currentItem:ISelectProduct) => {
     const filterItem = selectItems.filter(d => d.selectColor !== currentItem.selectColor);
     setSelectItems(filterItem);
   };
-
+  const handleAddLocalStorage = () => {
+  if(!selectItems.length) return alert('필수 옵션을 선택해주세요.')
+    localStorage.setItem('basket',JSON.stringify(selectItems));
+    setOpen(true);
+  }
   return (
     <S.ProductDetail>
       {item && item.map((d: IProduct) => (
@@ -375,11 +405,10 @@ export default function ProductDetail({ item }: IProductDetail) {
               </div>
               <div className='radio-box'>
                 {d.product_colors.length > 0 && d.product_colors.map((d, i) => (
-                  <div key={d.i}>
+                  <div key={d.hex_value}>
                     <Radio className='color-item' name='오렌지' dataSetColor="#1111" title='검' onClick={(e) => handleAddItem(e, item)} />
                     <Radio className='color-item' name='오렌지' dataSetColor="#2222" title='빨' onClick={(e) => handleAddItem(e, item)} />
                     <Radio className='color-item' name='오렌지' dataSetColor="#3333" title='노' onClick={(e) => handleAddItem(e, item)} />
-
                   </div>
                 ))}
 
@@ -406,7 +435,6 @@ export default function ProductDetail({ item }: IProductDetail) {
               </ul>
             </S.CurrentProducts>
 
-
             <S.Guide>
               <p className='cnt'><Icon name='info' /></p>
               <p className='box-select'><Icon name='info' /></p>
@@ -417,6 +445,11 @@ export default function ProductDetail({ item }: IProductDetail) {
               <strong>60000원</strong>
             </S.TotalPrice>
             <Button>구매하기</Button>
+            <S.EtcBox>
+              <span className='basket-add' onClick={handleAddLocalStorage}>장바구니 담기</span>
+              <span className='wishlist'>관심상품 추가</span>
+            </S.EtcBox>
+            <BasketModal open={open} onClick={() => setOpen(!open)}/>
           </div>
         </S.Card>
       ))}

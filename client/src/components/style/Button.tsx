@@ -12,6 +12,7 @@ interface IButton {
   fontSize?: string;
   fontWeight?: string;
   name?: string
+  white?: boolean;
   onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   type?: "button" | "submit" | "reset" | undefined;
 }
@@ -36,6 +37,7 @@ export default styled(Button)`
   color: #ffffff;
   border: none;
   letter-spacing: 2px;
+  white-space: nowrap;
   &:hover {
     transition: all 0.3s ease-in-out;
     background: #00003e;
@@ -56,5 +58,19 @@ export default styled(Button)`
       &:hover {
         background: #ffff6e;
       }
+    `}
+    ${props =>
+      props.white &&
+      css`
+        background: linear-gradient(to bottom,#ffffff 40%,  #f6f6f6 100%);
+        padding: 0 10px;
+        color: #333;
+        border: 1px solid #ebebeb;
+        border-bottom-color: #c6c6c6;
+        box-shadow: 0 2px 2px rgb(0 0 0 / 4%);
+        text-shadow: 0 0 2px rgb(255 255 255);
+        &:hover {
+           background: #fff;
+        }
     `}
 `;
