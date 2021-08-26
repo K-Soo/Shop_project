@@ -42,7 +42,6 @@ export const create = async (req, res) => {
   try {
     const product = new Product(req.body);
     await product.save();
-
     res.json(product)
   } catch (error) {
     console.error('/list error', error);

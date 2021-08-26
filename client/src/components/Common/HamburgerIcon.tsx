@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-import { useAppContext } from 'context/AppProvider';
 
 interface IHamburgerIcon {
   className?: string;
-  toggle?: boolean;
+  toggle: boolean;
+  onClick?: React.MouseEventHandler<HTMLDivElement>;
 }
 
 const S = {
@@ -39,11 +39,10 @@ const S = {
   `,
 }
 
-export default function HamburgerIcon({ className }: IHamburgerIcon) {
-  const { action,state } = useAppContext();
+export default function HamburgerIcon({ className,toggle,onClick }: IHamburgerIcon) {
 
   return (
-    <S.HamburgerIcon toggle={state.openSubMenu} onClick={action.setToggleSubMenu} className={className}>
+    <S.HamburgerIcon toggle={toggle} onClick={onClick} className={className}>
       <span className='line' />
       <span className='line' />
       <span className='line' />

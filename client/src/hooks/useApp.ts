@@ -16,6 +16,10 @@ export interface IAppState {
   openSideMenu: boolean;
   openSubMenu: boolean,
   targetCategory: string;
+  layout: {
+    isHeader: boolean,
+    isFooter: boolean,
+  },
 }
 
 export const appDefaultValue: IApp = {
@@ -25,7 +29,11 @@ export const appDefaultValue: IApp = {
     status: { loading: false },
     openSideMenu: false,
     openSubMenu: false,
-    targetCategory: 'all'
+    targetCategory: 'all',
+    layout: {
+      isHeader: true,
+      isFooter: true,
+    },
   },
 };
 
@@ -34,7 +42,11 @@ const initializer = (props: any) => {
     status: { loading: false },
     openSideMenu: false,
     openSubMenu: false,
-    targetCategory: 'all'
+    targetCategory: 'all',
+    layout: {
+      isHeader: true,
+      isFooter: true,
+    },
   };
   return state;
 };
@@ -56,6 +68,15 @@ const generateAction = (update: (recipe: (draft: IAppState) => void) => void) =>
       draft.openSubMenu = !draft.openSubMenu;
     })
   }
+  const setIsHeader = (status: boolean) =>
+  update((draft) => {
+    draft.layout.isHeader = status;
+  }); 
+
+const setIsFooter = (status: boolean) =>
+  update((draft) => {
+    draft.layout.isFooter = status;
+  });
 
   const setCategory = (e: React.MouseEvent<HTMLLIElement>) => {
     update((draft) => {
@@ -78,7 +99,9 @@ const generateAction = (update: (recipe: (draft: IAppState) => void) => void) =>
     setToggleSideMenu,
     setCategory,
     setToggleSubMenu,
-    InitData
+    InitData,
+    setIsHeader,
+    setIsFooter
   };
 };
 

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import BestProducts from 'components/Product/BestProducts';
 import ProductList from 'components/Product/ProductList';
 import ProductCategory from 'components/Product/ProductCategory';
-import { PRODUCT } from 'constants/product';
+import { PRODUCT, CategoryEnum} from 'constants/product';
 import { useRouter } from 'next/router';
 import OrderTap from 'components/Product/Common/OrderTap';
 import { useAppContext } from 'context/AppProvider';
@@ -14,18 +14,7 @@ interface IProduct {
   item?: any;
 }
 
-export enum category {
-  necklace = '목걸이',
-  earring = '귀걸이',
-  ring = '반지',
-  bracelet = '팔찌',
-  anklet = '발찌',
-  gold = '순금',
-  diamond = '다이아몬드',
-  coupling = '커플링'
-}
-
-export type categoryType = `${category}`;
+export type categoryType = `${CategoryEnum}`;
 
 const S = {
   Product: styled.section`
@@ -35,8 +24,8 @@ const S = {
 
 export default function Product({ item }: IProduct) {
   const router = useRouter();
-  const keyName = router.query.category as keyof typeof category
-  const currentProduct: categoryType = category[keyName]
+  const keyName = router.query.category as keyof typeof CategoryEnum
+  const currentProduct: categoryType = CategoryEnum[keyName]
   const result = useSelectCategory(item);
 
   return (

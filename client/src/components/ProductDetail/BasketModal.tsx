@@ -1,15 +1,24 @@
-import React from "react";
-import styled from "styled-components";
+import React, { useEffect, useState } from "react";
+import styled, { css } from "styled-components";
 import Title from 'components/style/Title';
 import Icon from 'components/Icon/Icon';
 import Button from 'components/style/Button';
 import Link from 'next/link';
 import DarkBackground from 'components/Common/DarkBackground';
+import { PriceComma } from 'utils/PriceComma';
+import { ISelectProduct } from 'components/ProductDetail';
 
 interface IBasketModal {
   open: boolean;
   onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
+
+const CommonIcon = css`
+  padding: 1px 5px;
+  font-size: 12px;
+  letter-spacing: 1px;
+`;
+
 
 const S = {
   BasketModal: styled.article<{ open: boolean }>`
@@ -50,17 +59,46 @@ const S = {
       caption{
         display: none;
       }
-      th{
-      border-top: 1px solid #f0f0f0;
-      border-bottom: 1px solid #f0f0f0;
-      padding: 10px 0;
-      }
-      td{
-        padding: 10px 0;
-        border-bottom: 1px solid #f0f0f0;
-        text-align: center;
+      thead{
+        tr{
+          th{
+            border-top: 1px solid #f0f0f0;
+            border-bottom: 1px solid #f0f0f0;
+            padding: 10px 0;
+          }
+        }
       }
       tbody{
+        .row{
+          td{
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+            text-align: center;
+          }
+          .option-info{
+            text-align: left;
+            p{
+              margin-bottom:5px;
+              display: flex;
+              align-items: flex-end;
+              .name{margin-right: 5px;}
+              i{
+                border-radius: 3px;
+                margin-right: 5px;
+              }
+              .new-icon{
+                ${CommonIcon}
+                color: #718FC5;
+                background-color: #FFEF36;
+              }
+              .best-icon{
+                ${CommonIcon}
+                color: #000;
+                background-color: #1B5DF6;
+              }
+            }
+          }
+        }
       }
     }
   `,
@@ -84,10 +122,17 @@ const S = {
       }
     }
   `,
-
 }
 
 export default function BasketModal({ open, onClick }: IBasketModal) {
+  const [storage, setStorage] = useState<ISelectProduct[]>([])
+  console.log('storage: ', storage);
+
+  useEffect(() => {
+    const result = JSON.parse(localStorage.getItem("basket"))
+    setStorage(result);
+  }, [])
+
   return (
     <DarkBackground active={open}>
       <S.BasketModal open={open} >
@@ -114,26 +159,26 @@ export default function BasketModal({ open, onClick }: IBasketModal) {
               </tr>
             </thead>
             <tbody>
-              <tr className='record'>
-                <td>1</td>
-                <td>1</td>
-                <td>1</td>
-              </tr>
-              <tr className='record'>
-                <td>1</td>
-                <td>1</td>
-                <td>1</td>
-              </tr>
-              <tr className='record'>
-                <td>1</td>
-                <td>1</td>
-                <td>1</td>
-              </tr>
-              <tr className='record'>
-                <td>1</td>
-                <td>1</td>
-                <td>1</td>
-              </tr>
+              {storage && storage.map((d) =>
+                <tr className='row' key={d._id}>
+                  <td>1</td>
+                  <td className='option-info'>
+                    <p>
+                      <span className='name'>{d.name}</span>
+                      {d.new_product && <i className='new-icon' >new</i>}
+                      {d.best_product && <i className='best-icon' >best</i>}
+                      <span>({d.qty}개)</span>
+                    </p>
+                    <span>[옵션:{d.selectColor}]</span>
+                  </td>
+                  <td>
+                    <del>
+                      {PriceComma(d.product_price)}원
+                    </del>
+                    {PriceComma(d.consumer_price)}원
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
           <S.Pagination>페이지</S.Pagination>

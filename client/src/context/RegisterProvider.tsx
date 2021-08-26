@@ -1,5 +1,5 @@
 import { createContext,useContext } from "react";
-import useRegister, { appDefaultValue } from 'hooks/useRegister';
+import useRegister, { registerDefaultValue } from 'hooks/useRegister';
 import { AppProps } from "next/app";
 
 interface IApp {
@@ -7,16 +7,16 @@ interface IApp {
   AppProps?: AppProps;
 }
 
-export const AppContext = createContext(appDefaultValue);
-export const useRegisterContext = () =>  useContext(AppContext);
+export const RegisterContext = createContext(registerDefaultValue);
+export const useRegisterContext = () =>  useContext(RegisterContext);
 
 export default function RegisterProvider(props: IApp) {
   const app = useRegister(props.AppProps);
 
   return (
-    <AppContext.Provider value={app}>
+    <RegisterContext.Provider value={app}>
       {props.children}
-    </AppContext.Provider>
+    </RegisterContext.Provider>
   );
 }
 

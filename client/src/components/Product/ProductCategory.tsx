@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import {NextRouter, useRouter} from 'next/router';
+import { NextRouter, useRouter } from 'next/router';
 import styled from "styled-components";
-import { category, categoryType } from 'components/Product';
+import { categoryType } from 'components/Product';
 import Title from 'components/style/Title';
-import { PRODUCT } from '../../constants/product';
+import { PRODUCT ,CategoryEnum } from '../../constants/product';
 import HamburgerMenuList from 'components/Product/Common/HamburgerMenuList';
 import HamburgerIcon from 'components/Common/HamburgerIcon';
 import { useAppContext } from 'context/AppProvider';
@@ -12,7 +12,7 @@ import Icon from 'components/Icon/Icon';
 
 interface IProductCategory {
   currentProduct: categoryType
-  keyName: keyof typeof category;
+  keyName: keyof typeof CategoryEnum;
 }
 
 const S = {
@@ -104,8 +104,8 @@ const S = {
 }
 
 export default function ProductCategory({ currentProduct, keyName }: IProductCategory) {
-  const { action,state } = useAppContext();
-  const router:NextRouter = useRouter();
+  const { action, state } = useAppContext();
+  const router: NextRouter = useRouter();
 
   return (
     <S.ProductCategory>
@@ -114,7 +114,7 @@ export default function ProductCategory({ currentProduct, keyName }: IProductCat
           <Icon name='BigArrowLeft' />
         </i>
         <Title level={3} size='24' textAlign='left'>{currentProduct}</Title>
-        <HamburgerIcon className='hamburger-icon' />
+        <HamburgerIcon className='hamburger-icon' toggle={state.openSubMenu} onClick={action.setToggleSubMenu}/>
         <HamburgerMenuList productSubList={PRODUCT[keyName]} />
       </S.SubTitle>
       <S.CategorySubList category={state.targetCategory}>

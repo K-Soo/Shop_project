@@ -22,12 +22,14 @@ const Label: React.FC<ILabel> = ({ className, children, htmlFor }) => {
 
 export default styled(Label)`
   color: ${({ color }) => color ?? "#222"};
-  display: inline-block;
+  display: flex;
   margin: ${({ margin }) => `${margin}` ?? "0px"};
   margin-bottom: ${({ marginBottom }) => `${marginBottom}` ?? "0px"};
   width: ${({ width }) => width ?? "100px"};
+  display: inline-block;
   height: 100%;
   font-size: 14px;
+  border: 1px solid red;
   ${props =>
     props.required &&
     css`
@@ -36,7 +38,6 @@ export default styled(Label)`
         color: red;
       }
     `}
-
   ${({ theme }) => theme.mobile`
     font-size: 11px;
     width: 80px;

@@ -42,7 +42,7 @@ let Select: React.FunctionComponent<ISelect> = ({
 
 Select = styled(Select)`
   box-sizing: border-box;
-  width: ${({ width }) => `${width}px` ?? "100%"};
+  width: ${({ width }) => `${width}` ?? "100%" };
   margin-left: ${({ marginLeft }) => `${marginLeft}px` ?? "0"};
   margin-right: ${({ marginRight }) => `${marginRight}px` ?? "0"};
   height: ${props => (props.height ? `${props.height}px` : "100%")};

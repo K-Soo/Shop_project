@@ -17,5 +17,8 @@ import { ReactComponent as minus } from "./minus.svg";
 import { ReactComponent as info } from "./info.svg";
 import { ReactComponent as closeSmall } from "./closeSmall.svg";
 import { ReactComponent as user } from "./user.svg";
+import { ReactComponent as home } from "./home.svg";
+import { ReactComponent as arrowNoTailTop } from "./arrowNoTailTop.svg";
+import { ReactComponent as arrowNoTailBottom } from "./arrowNoTailBottom.svg";
 
-export { bed, check, human, cart, search, bookmark, arrowTop, arrowBottom, arrowLeft, close, heart, BigArrowLeft, cartAdd, plus, minus,info ,closeSmall, user};
+export { bed, check, human, cart, search, bookmark, arrowTop, arrowBottom, arrowLeft, close, heart, BigArrowLeft, cartAdd, plus, minus, info, closeSmall, user, home, arrowNoTailBottom, arrowNoTailTop };

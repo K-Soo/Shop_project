@@ -34,6 +34,10 @@ const PAGE: IPage= {
     path: "/shop-info/guide",
     tag: "이용안내",
   },
+  ADMIN_MAIN: {
+    path: "/admin",
+    tag: "관리자 메인",
+  },
 }
 
 export default PAGE;

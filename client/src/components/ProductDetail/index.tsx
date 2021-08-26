@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import Image from 'next/image'
 import Title from 'components/style/Title';
@@ -296,7 +296,7 @@ const S = {
   `,
 }
 
-interface ISelectProduct extends IProduct {
+export interface ISelectProduct extends IProduct {
   selectColor: string;
   qty: number;
 }
@@ -304,23 +304,23 @@ interface ISelectProduct extends IProduct {
 export default function ProductDetail({ item }: IProductDetail) {
   const [showSpec, setShowSpec] = useState<boolean>(false);
   const [selectItems, setSelectItems] = useState<ISelectProduct[]>([]);
+  console.log('selectItems: ', selectItems);
   const [open, setOpen] = useState<boolean>(false);
-  const handleCount = (e: React.ChangeEvent<HTMLInputElement>, currentQty:ISelectProduct) => {
+  const [localData, setLocalData] = useState<ISelectProduct[]>([]);
+  console.log('localData: ', localData);
+
+  const handleCount = (e: React.ChangeEvent<HTMLInputElement>, currentQty: ISelectProduct) => {
     const exist = selectItems.find(x => x.selectColor === currentQty.selectColor)
-    const { value } = e.target as HTMLInputElement;
-    exist.qty = +value;
-    
-    if (!Number(exist.qty)) return alert('최소 주문수량은 1개 입니다.');
-    if(exist.qty === 10) return alert('최대 주문수량은 10개 입니다.');
-    
+    const cnt = Number(e.target.value);
+    if (!cnt) return alert('최소 주문수량은 1개 입니다.');
+    if (cnt > 10) return alert('최대 주문수량은 10개 입니다.');
+    exist.qty = cnt;
     setSelectItems([...selectItems]);
   };
 
-  const handleAddItem = (e:React.MouseEvent<HTMLInputElement>, currentItem:any ) => {
+  const handleAddItem = (e: React.MouseEvent<HTMLInputElement>, currentItem: IProduct) => {
     const { color } = (e.target as HTMLInputElement).dataset;
-    const {
-      ...rest
-    } = currentItem[0];
+    const { ...rest } = currentItem[0];
     rest.selectColor = color;
     const exist = selectItems.find(x => x.selectColor == rest.selectColor);
     if (exist) {
@@ -331,15 +331,39 @@ export default function ProductDetail({ item }: IProductDetail) {
     })
   };
 
-  const handleRemoveItem = (currentItem:ISelectProduct) => {
+  const TotalCnt = useMemo(() => {
+    const cnt = selectItems.reduce((pre, cur) => {
+      return pre + cur.qty;
+    }, 0);
+    return cnt;
+  }, [selectItems]);
+
+  const TotalPrice = useMemo(() => {
+    return selectItems.reduce((acc, cur) => {
+      return (cur.qty * Number(cur.consumer_price)) + acc;
+    }, 0);
+  }, [selectItems]);
+
+  const handleRemoveItem = (currentItem: ISelectProduct) => {
     const filterItem = selectItems.filter(d => d.selectColor !== currentItem.selectColor);
     setSelectItems(filterItem);
   };
+
   const handleAddLocalStorage = () => {
-  if(!selectItems.length) return alert('필수 옵션을 선택해주세요.')
-    localStorage.setItem('basket',JSON.stringify(selectItems));
-    setOpen(true);
+    if (!selectItems.length) return alert('필수 옵션을 선택해주세요.');
+    setLocalData([...localData, ...selectItems]);
   }
+
+  useEffect(() => {
+    if (localData.length) {
+      localStorage.setItem('basket', JSON.stringify(localData));
+    setOpen(true);
+
+    }
+  }, [localData])
+
+
+
   return (
     <S.ProductDetail>
       {item && item.map((d: IProduct) => (
@@ -417,16 +441,16 @@ export default function ProductDetail({ item }: IProductDetail) {
 
             <S.CurrentProducts>
               <ul>
-                {selectItems.map((d:ISelectProduct) => (
+                {selectItems.map((d: ISelectProduct) => (
                   <li key={d.selectColor}>
                     <div className='current-title'>
                       <span className='current-title__name'>{d.name}</span>
                       <b className='current-title__color'>{d.selectColor}</b>
                     </div>
                     <div className='current-quantity'>
-                      <input type='number' value={d.qty} name='qtyCount' onChange={(e) => handleCount(e,d)} />
+                      <input type='number' value={d.qty} name='qtyCount' onChange={(e) => handleCount(e, d)} />
                     </div>
-                    <span className='current-price'>{PriceComma(d.consumer_price)}원</span>
+                    <span className='current-price'>{PriceComma(Number(d.consumer_price) * d.qty)}원</span>
                     <button type='button' name='close' onClick={() => handleRemoveItem(d)}>
                       <Icon name='closeSmall' />
                     </button>
@@ -441,15 +465,15 @@ export default function ProductDetail({ item }: IProductDetail) {
             </S.Guide>
 
             <S.TotalPrice>
-              <em> (1개)</em>
-              <strong>60000원</strong>
+              <em> {TotalCnt}개</em>
+              <strong>{PriceComma(TotalPrice)}원</strong>
             </S.TotalPrice>
             <Button>구매하기</Button>
             <S.EtcBox>
               <span className='basket-add' onClick={handleAddLocalStorage}>장바구니 담기</span>
               <span className='wishlist'>관심상품 추가</span>
             </S.EtcBox>
-            <BasketModal open={open} onClick={() => setOpen(!open)}/>
+            <BasketModal open={open} onClick={() => setOpen(!open)} />
           </div>
         </S.Card>
       ))}
@@ -459,3 +483,45 @@ export default function ProductDetail({ item }: IProductDetail) {
 
 
 
+  // const handleAddLocalStorage = () => {
+  //   if (!selectItems.length) return alert('필수 옵션을 선택해주세요.');
+
+  //   const results = selectItems.filter(({ selectColor: color1 }) => localData.some(({ selectColor: color2 }) => color2 === color1));
+  //   const diff = selectItems.filter(({ selectColor: color1 }) => !localData.some(({ selectColor: color2 }) => color2 === color1));
+
+  //   console.log('results: ', results);
+  //   console.log('diff: ', diff);
+
+  //   if (results.length) {
+  //     if (confirm("이미동일한 상품이있습니다 추가하시겠습니끼??")) {
+  //       setLocalData(prev => {
+  //         const sameItem = prev.filter(({ selectColor: preColor }) => results.some(({ selectColor: resultColor }) => resultColor === preColor));
+  //         console.log('sameItem: ', sameItem);
+
+  //         if (sameItem) {
+  //           const cur = prev.map(preItem => {
+  //             console.log('preItem: ', preItem.qty);
+  //             let fil = sameItem.find(x => x.selectColor === preItem.selectColor);
+  //             console.log('fil: ', fil);
+  //             return fil ? { ...preItem, qty: fil.qty + preItem.qty } : { ...preItem }
+
+  //             //  return {...preItem, qty : sameItem.find( x => x.selectColor === preItem.selectColor).qty + preItem.qty}
+  //             //  const va = sameItem.map(x => x.selectColor === preItem.selectColor ? {...preItem, qty : preItem.qty + x.qty}: preItem)
+  //             //  {...preItem, qty : sameItem.find( x.selectcolor === )}
+  //             //  console.log('va: ', va);
+  //             //  return {...va}
+  //           }
+  //           );
+  //           console.log('cur: ', cur);
+  //           return [...cur, ...diff]
+  //         }
+  //       })
+
+  //     } else {
+  //       return
+  //     }
+  //   } else {
+  //     setLocalData([...localData, ...selectItems]);
+  //   }
+  //   setOpen(true);
+  // }

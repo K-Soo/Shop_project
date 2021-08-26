@@ -1,4 +1,10 @@
-export const PRODUCT = {
+export interface IProductProps {
+  readonly [index: string]: {
+    label: string, value: string
+  }[]
+}
+
+export const PRODUCT: IProductProps = {
   necklace: [
     { label: '18k 목걸이', value: '' },
     { label: '18k 팬던트', value: '' },
@@ -62,4 +68,15 @@ export const PRODUCT = {
   coupling: [
     { label: '커플링', value: '' },
   ]
+}
+
+export enum CategoryEnum {
+  necklace = '목걸이',
+  earring = '귀걸이',
+  ring = '반지',
+  bracelet = '팔찌',
+  anklet = '발찌',
+  gold = '순금',
+  diamond = '다이아몬드',
+  coupling = '커플링'
 }

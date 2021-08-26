@@ -26,7 +26,7 @@ export interface IAppState {
   lunarCalendar: boolean;
 }
 
-export const appDefaultValue: IApp = {
+export const registerDefaultValue: IApp = {
   props: null,
   action: null,
   state: {
