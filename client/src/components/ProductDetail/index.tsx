@@ -319,9 +319,10 @@ export default function ProductDetail({ item }: IProductDetail) {
   };
 
   const handleAddItem = (e: React.MouseEvent<HTMLInputElement>, currentItem: IProduct) => {
-    const { color } = (e.target as HTMLInputElement).dataset;
+    const { colorName } = (e.target as HTMLInputElement).dataset;
+    const {value} = e.target as HTMLInputElement;
     const { ...rest } = currentItem[0];
-    rest.selectColor = color;
+    rest.selectColor = colorName;
     const exist = selectItems.find(x => x.selectColor == rest.selectColor);
     if (exist) {
       return alert('이미 선택하셨습니다.')
@@ -430,9 +431,7 @@ export default function ProductDetail({ item }: IProductDetail) {
               <div className='radio-box'>
                 {d.product_colors.length > 0 && d.product_colors.map((d, i) => (
                   <div key={d.hex_value}>
-                    <Radio className='color-item' name='오렌지' dataSetColor="#1111" title='검' onClick={(e) => handleAddItem(e, item)} />
-                    <Radio className='color-item' name='오렌지' dataSetColor="#2222" title='빨' onClick={(e) => handleAddItem(e, item)} />
-                    <Radio className='color-item' name='오렌지' dataSetColor="#3333" title='노' onClick={(e) => handleAddItem(e, item)} />
+                    <Radio className='color-item' name='오렌지' value={d.hex_value} dataColorName={d.color_name} dataColorHex={d.hex_value} title={d.color_name} onClick={(e) => handleAddItem(e, item)} />
                   </div>
                 ))}
 

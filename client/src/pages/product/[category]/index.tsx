@@ -12,10 +12,9 @@ import { Get } from "api";
 export default function ProductType() {
   const router: NextRouter = useRouter();
   const { category } = router.query as { category: string };
-  const { data, isLoading, isSuccess, isError, status, error } = useQuery<IProduct>(['product', category], async () => await Get.products(category),{
+  const { data, isLoading, isSuccess, isError, status, error,refetch } = useQuery<IProduct>(['product', category], async () => await Get.products(category),{
     retry: 0,
   });
-  console.log('error: ', error);
 
   // const [item, setItem] = useState<IProduct[] | null>(null);
 

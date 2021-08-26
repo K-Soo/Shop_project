@@ -13,7 +13,7 @@ interface IRadioButtonProps {
   minWidth?: string;
   disabled?:boolean;
   required?: boolean;
-  dataSetColor?: string;
+  dataColorName?: string;
 }
 
 const RadioButton: React.FunctionComponent<IRadioButtonProps> = ({
@@ -28,7 +28,7 @@ const RadioButton: React.FunctionComponent<IRadioButtonProps> = ({
   disabled,
   required,
   onClick,
-  dataSetColor
+  dataColorName,
 }) => {
   return (
     <label className={className}>
@@ -41,7 +41,7 @@ const RadioButton: React.FunctionComponent<IRadioButtonProps> = ({
         checked={checked}
         onClick={onClick}
         disabled={disabled}
-        data-color={dataSetColor}
+        data-color-name={dataColorName}
       />
       <span dangerouslySetInnerHTML={{ __html: title?.replace('/n', '<br />') }} />
     </label>

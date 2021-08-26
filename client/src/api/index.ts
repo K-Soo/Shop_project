@@ -19,10 +19,13 @@ export const Get = {
   products: (category: string): Promise<IProduct> => requests.get(`/api/products/${category}`),
   getProduct: (category: string, id: string): Promise<IProduct> => requests.get(`/api/products/${category}/${id}`),
   getAPost: (id: number): Promise<PostType> => requests.get(`posts/${id}`),
-  createPost: (post: PostType): Promise<PostType> =>
-    requests.post('posts', post),
-  updatePost: (post: PostType, id: number): Promise<PostType> =>
-    requests.put(`posts/${id}`, post),
+  createPost: (post: PostType): Promise<PostType> => requests.post('posts', post),
+  updatePost: (post: PostType, id: number): Promise<PostType> => requests.put(`posts/${id}`, post),
   deletePost: (id: number): Promise<void> => requests.delete(`posts/${id}`),
 };
+
+export const Post = {
+  createProduct: (body: PostType): Promise<PostType> => requests.post('/api/products', body),
+};
+
 

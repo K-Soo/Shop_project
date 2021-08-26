@@ -38,11 +38,10 @@ export const getProductItem = async (req, res) => {
 
 
 export const create = async (req, res) => {
-  console.log('req: ', req);
   try {
     const product = new Product(req.body);
     await product.save();
-    res.json(product)
+    res.json({msg:'등록완료'})
   } catch (error) {
     console.error('/list error', error);
   }

@@ -25,8 +25,11 @@ const CommonIcon = css`
 const S = {
   ImageSlider: styled.div`
     overflow: hidden;
+    border: 1px solid red;
   `,
   Card: styled.div`
+    border: 1px solid red;
+
     padding: 0 15px;
     .card-inner{
       margin: 0 auto;
@@ -143,13 +146,14 @@ const settings = {
 };
 
 export default function ImageSlider({ item }: IImageSlider) {
+  console.log('item: ', item);
   const router = useRouter();
   const { category } = router.query;
 
   return (
     <S.ImageSlider>
       <Slider {...settings}>
-        {item && item.map((d: IProduct) => (
+        {item.map((d: IProduct) => (
           <S.Card key={d.seq}>
             <div className='card-inner'>
               <Link href={category + "/" + d.seq}>

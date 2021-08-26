@@ -100,14 +100,14 @@ const S = {
 
 export default function ProductList({ item }: IProductList) {
   const router = useRouter();
-  // const { category } = router.query;
+  const { category } = router.query;
 
   return (
     <S.ProductList>
       {item && item.map((d: IProduct) => (
         <S.Card key={d.seq}>
           <div className='card-inner'>
-            <Link href="">
+          <Link href={category + "/" + d.seq}>
               <a>
                 <div className='img-box'>
                   <Image

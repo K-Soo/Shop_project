@@ -12,7 +12,7 @@ interface IInput {
   defaultValue?: number;
   value?: string | number;
   readOnly?: boolean;
-  handleChange?: React.ChangeEventHandler<HTMLInputElement>;
+  onChange?: React.ChangeEventHandler<HTMLInputElement>;
   pattern?: string;
   type?: string;
   maxLength?: number;
@@ -30,7 +30,7 @@ let Input: React.FC<IInput> = ({
   className,
   placeholder,
   defaultValue,
-  handleChange,
+  onChange,
   name,
   value,
   readOnly,
@@ -57,7 +57,7 @@ let Input: React.FC<IInput> = ({
       className={className}
       // defaultValue={defaultValue}
       value={value}
-      onChange={handleChange}
+      onChange={onChange}
       pattern={pattern}
       maxLength={maxLength}
       minLength={minLength}
@@ -73,7 +73,6 @@ let Input: React.FC<IInput> = ({
 
 Input = styled(Input)`
   height: ${({ height }) => (height ? `${height}px` : "40px")};
-  /* width: ${({ width }) => (width ? `${width}` : "100%")}; */
   width: ${props => props.width ?  props.width : '100%'};
   margin: ${({ margin }) => margin ?? "0px"};
   box-sizing: border-box;

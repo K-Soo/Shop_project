@@ -11,13 +11,16 @@ export type IconProps = {
   className?: string
   TosIcon?:boolean;
   style?: React.CSSProperties | undefined;
+  onClick?: any;
+  data?: any;
 }
 
-function Icon({ name, className, style }: IconProps) {
+function Icon({ name, className, style,onClick }: IconProps) {
   return (
     React.createElement(svg[name], {
       className,
       style,
+      onClick,
     })
   )
 };

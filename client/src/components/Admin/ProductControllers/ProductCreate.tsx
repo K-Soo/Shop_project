@@ -1,63 +1,180 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Button from 'components/style/Button';
 import Select from 'components/style/Select';
 import Input from 'components/style/Input';
+import TextArea from 'components/style/TextArea';
 import Label from 'components/style/Label';
 import Title from 'components/style/Title';
+import CheckBox from 'components/style/CheckBox';
 import { PRODUCT, CategoryEnum } from 'constants/product';
-import {useAdminContext} from 'context/AdminProvider';
+import { useAdminContext } from 'context/AdminProvider';
+import { PriceComma, onlyNum } from 'utils';
+import Icon from 'components/Icon/Icon';
+import { Post } from "api";
+import { useMutation } from 'react-query';
+
 interface IProductCreate {
 
 }
 
 const S = {
   ProductCreate: styled.div`
-    border: 1px solid red;
   `,
   Group: styled.div`
     display: flex;
     margin-bottom: 15px;
     height: 100%;
-    /* flex-wrap: wrap; */
-    label{
-      /* width: 100px; */
+    flex-wrap: wrap;
+    .color-box{
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+      &--add {
+        display: flex;
+        justify-content: space-between;
+        .wrapper{
+          display: flex;
+          position: relative;
+          width: 50px;
+          label{
+            z-index: 10;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+          }
+        .plus-icon{
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%,-50%);
+          font-size: 0;
+        }
+        }
+      }
+      &__list{
+        margin-top: 10px;
+        display: flex;
+        &--item{
+          position: relative;
+          display: flex;
+          align-items: center;
+          font-size: 12px;
+          margin: 0 10px 5px 0;
+          border: 1px solid #dee2e6;
+          padding: 2px 0;
+          span:first-child {
+            margin-right: 5px;
+          }
+          i{
+            font-size: 0;
+            margin-left: 5px;
+            cursor: pointer;
+            width:20px;
+            height: 100%;
+          }
+          svg{
+            color: crimson;
+            &:hover{
+              color: red;
+            }
+          }
+        }
+      }
+    }
+    ${Label}{
       margin-right: 10px;
     }
   `,
+  ColorItem: styled.span<{ hexValue: string, colorValue: string }>`
+    background-color: ${props => props.hexValue};
+    display: inline-block;
+    border-radius: 5px;
+    height: 20px;
+    line-height: 12px;
+    padding: 5px 10px;
+    font-size: 14px;
+    text-align: center;
+  `,
+  InputColor: styled.input`
+    all: unset;
+    -webkit-appearance: none;
+    padding: 0;
+    margin: 0;
+    height: auto;
+    width: 50px;
+    cursor: pointer;
+    border: 1px solid #dee2e6;
+    position: relative;
+  `,
+}
+type TColorProps = {
+  hex_value: string,
+  color_name: string,
 }
 
-// {
-//   "new_product": true,
-//   "best_product": true,
-//   "product_type": "necklace",
-//   "category": "1부 다이아몬드 목걸이",
-//   "name": "다이아",
-//   "consumer_price": "10000",
-//   "product_price": "1000",
-//   "summary_description": "예쁩니다",
-//   "description": "다이아 ",
-//   "product_colors": [
-//       {
-//           "hex_value": "#000",
-//           "color_name": "orange"
-//       }
-//   ]
-// }
+const colorInit: TColorProps = { hex_value: '', color_name: '' };
 
 export default function ProductCreate(props: IProductCreate) {
-  const { state,action} = useAdminContext();
+  const { state, action } = useAdminContext();
+  const { product_type } = state.create;
+  const [color, setColor] = useState(colorInit)
+
+  const handleColor = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target as HTMLInputElement;
+    setColor({ ...color, [name]: value })
+  }
+
+  const handleColorAdd = () => {
+    if ([color.hex_value, color.color_name].includes('')) {
+      setColor(colorInit)
+      return alert('색상을 선택해주세요');
+    }
+    const exist = state.create.product_colors.filter(d => d === color);
+    console.log('exist: ', exist);
+    if (exist.length) {
+      setColor(colorInit)
+      return alert('색상이 중복되었습니다.');
+    }
+    action.setColorArray(color);
+  }
+
+  const handleColorRemove = (e: React.MouseEvent<HTMLElement>) => {
+    const { colors } = (e.target as HTMLElement).dataset;
+    const result = state.create.product_colors.filter(d => d.color_name !== colors);
+    action.setRemoveColor(result);
+  }
+
+  const handleSubmit = (e) => {
+    if (!confirm("확인(예) 또는 취소(아니오)를 선택해주세요.")) {
+      return;
+    } else {
+      e.preventDefault();
+      (async () => {
+        console.log('실행');
+        const res = await Post.createProduct(state.create);
+        console.log('res: ', res);
+      })();
+    }
+
+
+  }
   return (
     <S.ProductCreate>
       <Title level={1} >상품추가</Title>
-      <form action="">
+      <form onSubmit={handleSubmit}>
         <S.Group>
           <Label htmlFor='' >옵션 선택</Label>
-          <Select width='200'>
-            <option value=''>선택</option>
-            <option value='new'>NEW</option>
-            <option value='best'>BEST</option>
-          </Select>
+          <label>
+          <CheckBox name='create.new_product' onChange={action.setFormData} checked={state.create.new_product}/>
+          </label>
+          <span>NEW</span>
+        <label>
+          <CheckBox name='create.best_product' onChange={action.setFormData} checked={state.create.best_product}/>
+        </label>
+          <span>BEST</span>
+
         </S.Group>
 
         <S.Group>
@@ -70,36 +187,73 @@ export default function ProductCreate(props: IProductCreate) {
               </option>
             ))}
           </Select>
-          {/* <Input name='product_type' value='' width='200' placeholder='상품 타입' onChange={() => {}}/> */}
         </S.Group>
 
         <S.Group>
-          <Label htmlFor='' >카테고리</Label>
-          {/* <Input name='product_type' value='' width='200' placeholder='카테고리' /> */}
+          <Label htmlFor=''>카테고리</Label>
+          <Select height='40' width='200px' name='create.category' onChange={action.setFormData}>
+            <option value=''>선택</option>
+            {PRODUCT[product_type]?.map((d) => (
+              <option value={d.label} key={d.label}>
+                {d.label}
+              </option>
+            ))}
+          </Select>
         </S.Group>
 
         <S.Group>
           <Label htmlFor=''>상품 이름</Label>
-          {/* <Input name='product_type' value='' placeholder='상품 타입' /> */}
-        </S.Group>
-
-        <S.Group>
-          <Label htmlFor=''>소비자 가격</Label>
-          {/* <Input name='product_type' value='' placeholder='소비자 가격' /> */}
+          <Input required name='create.name' placeholder='상품 타입' width='300px' value={state.create.name} onChange={action.setFormData} />
         </S.Group>
 
         <S.Group>
           <Label htmlFor=''>상품 가격</Label>
-          {/* <Input name='product_type' value='' placeholder='상품 가격' /> */}
+          <Input required name='create.product_price' placeholder='상품 가격' width='300px' value={PriceComma(state.create.product_price)} onChange={e => onlyNum(e, action.setFormData)} />
         </S.Group>
 
         <S.Group>
-          <Label htmlFor=''>상품 타입</Label>
-          {/* <Input name='product_type' value='' placeholder='상품 타입' /> */}
+          <Label htmlFor=''>소비자 가격</Label>
+          <Input required name='create.consumer_price' placeholder='소비자 가격' width='300px' value={PriceComma(state.create.consumer_price)} onChange={e => onlyNum(e, action.setFormData)} />
         </S.Group>
 
-        <Button>등록</Button>
+        <S.Group>
+          <Label htmlFor=''>상품 색상</Label>
+          <div className='color-box'>
+            <div className='color-box--add'>
+              <div className='color-box-add wrapper'>
+                <label htmlFor="color-label">
+                  <Icon name='plus' className='plus-icon' />
+                </label>
+                <S.InputColor className='color-input' id='color-label' required name='hex_value' value={color.hex_value || '#ffffff'} width='100px' type='color' onChange={handleColor} />
+
+              </div>
+              <Input required name='color_name' maxLength={5} value={color.color_name} placeholder='색상 이름' width='100px' onChange={handleColor} />
+              <Button type='button' width='80px' fontSize='14px' height='40px' onClick={handleColorAdd}>색상추가</Button>
+            </div>
+            <ul className='color-box__list'>
+              {state.create?.product_colors?.map(d => (
+                <li key={d.hex_value} className='color-box__list--item'  >
+                  <S.ColorItem colorValue={d.color_name} hexValue={d.hex_value} /><span>{d.color_name}</span>
+                  <i onClick={handleColorRemove} data-colors={d.color_name}>
+                  </i>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </S.Group>
+
+        <S.Group>
+          <Label htmlFor=''>상품요약 설명</Label>
+          <Input required name='create.summary_description' placeholder='요약 설명' width='300px' value={state.create.summary_description} onChange={action.setFormData} />
+        </S.Group>
+
+        <S.Group>
+          <Label htmlFor=''>상품 설명</Label>
+          <TextArea required name='create.description' width='300' placeholder='요약 설명' value={state.create.description} onChange={action.setFormData} />
+        </S.Group>
+
+        <Button >등록</Button>
       </form>
     </S.ProductCreate>
   );
-}
+};
