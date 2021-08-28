@@ -26,6 +26,7 @@ export const Get = {
 
 export const Post = {
   createProduct: (body: PostType): Promise<PostType> => requests.post('/api/products', body),
+  createProductImage: (body: any) => requests.post('/api/products/image', body),
 };
 
 

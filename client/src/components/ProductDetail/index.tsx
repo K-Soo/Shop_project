@@ -3,11 +3,11 @@ import styled, { css } from 'styled-components';
 import Image from 'next/image'
 import Title from 'components/style/Title';
 import { TColor, IProduct } from 'interfaces/IProduct';
-import { PriceComma } from 'utils/PriceComma';
 import Icon from 'components/Icon/Icon';
 import Radio from 'components/style/Radio';
 import Button from 'components/style/Button';
 import BasketModal from 'components/ProductDetail/BasketModal';
+import {PriceComma} from 'utils';
 interface IProductDetail {
   item: IProduct[];
 }
@@ -297,8 +297,8 @@ const S = {
 }
 
 export interface ISelectProduct extends IProduct {
-  selectColor: string;
-  qty: number;
+  selectColor?: { colorName: string, hexValue: string };
+  qty?: number;
 }
 
 export default function ProductDetail({ item }: IProductDetail) {
@@ -309,27 +309,27 @@ export default function ProductDetail({ item }: IProductDetail) {
   const [localData, setLocalData] = useState<ISelectProduct[]>([]);
   console.log('localData: ', localData);
 
-  const handleCount = (e: React.ChangeEvent<HTMLInputElement>, currentQty: ISelectProduct) => {
-    const exist = selectItems.find(x => x.selectColor === currentQty.selectColor)
-    const cnt = Number(e.target.value);
-    if (!cnt) return alert('최소 주문수량은 1개 입니다.');
-    if (cnt > 10) return alert('최대 주문수량은 10개 입니다.');
-    exist.qty = cnt;
-    setSelectItems([...selectItems]);
-  };
-
-  const handleAddItem = (e: React.MouseEvent<HTMLInputElement>, currentItem: IProduct) => {
+  const handleAddItem = (e: React.MouseEvent<HTMLInputElement>, currentItem: IProduct[]) => {
+    const { value } = e.target as HTMLInputElement;
     const { colorName } = (e.target as HTMLInputElement).dataset;
-    const {value} = e.target as HTMLInputElement;
-    const { ...rest } = currentItem[0];
-    rest.selectColor = colorName;
-    const exist = selectItems.find(x => x.selectColor == rest.selectColor);
-    if (exist) {
+    const rest: ISelectProduct = currentItem[0];
+    rest.selectColor = { colorName: colorName, hexValue: value };
+    const exist = selectItems.filter(x => x.selectColor.colorName === rest.selectColor.colorName);
+    if (exist.length) {
       return alert('이미 선택하셨습니다.')
     }
     setSelectItems(prev => {
       return [...prev, { ...rest, qty: 1 }];
     })
+  };
+
+  const handleCount = (e: React.ChangeEvent<HTMLInputElement>, currentQty: ISelectProduct) => {
+    // const exist = selectItems.find(x => x.selectColor === currentQty.selectColor)
+    const cnt = Number(e.target.value);
+    if (!cnt) return alert('최소 주문수량은 1개 입니다.');
+    if (cnt > 10) return alert('최대 주문수량은 10개 입니다.');
+    currentQty.qty = cnt;
+    setSelectItems([...selectItems]);
   };
 
   const TotalCnt = useMemo(() => {
@@ -352,16 +352,33 @@ export default function ProductDetail({ item }: IProductDetail) {
 
   const handleAddLocalStorage = () => {
     if (!selectItems.length) return alert('필수 옵션을 선택해주세요.');
-    setLocalData([...localData, ...selectItems]);
+    const results = selectItems.filter(({ selectColor: color1 }) => localData.some(({ selectColor: color2 }) => color2 === color1));
+
+    if (results.length) {
+      if (confirm("이미동일한 상품이있습니다 추가하시겠습니끼??")) {
+        setLocalData((prev: any) => {
+          // const test = prev.filter(el => {
+          //  selectItems.map(d => d.selectColor.colorName === el.selectColor.colorName ? {...prev, el.qty = d.qty} : el;
+          // })
+        });
+      }
+    } else {
+      setLocalData([...localData, ...selectItems]);
+    }
   }
 
   useEffect(() => {
-    if (localData.length) {
+    if (localData?.length) {
       localStorage.setItem('basket', JSON.stringify(localData));
-    setOpen(true);
-
+      setOpen(true);
     }
   }, [localData])
+
+
+
+
+
+
 
 
 
@@ -371,7 +388,7 @@ export default function ProductDetail({ item }: IProductDetail) {
         <S.Card key={d.seq}>
           <div className='top'>
             <Image
-              src='https://via.placeholder.com/800'
+              src={d.imageUrl[0].url}
               alt={d.name}
               width={600}
               height={600}
@@ -416,8 +433,8 @@ export default function ProductDetail({ item }: IProductDetail) {
               </div>
               <div className='area'>
                 <ul className='area__info'>
-                  <li><del>{d.product_price}원</del></li>
-                  <li>{d.consumer_price}원</li>
+                  <li><del>{PriceComma(d.product_price)}원</del></li>
+                  <li>{PriceComma(d.consumer_price)}원</li>
                   <li>{d.description}</li>
                 </ul>
               </div>
@@ -431,7 +448,7 @@ export default function ProductDetail({ item }: IProductDetail) {
               <div className='radio-box'>
                 {d.product_colors.length > 0 && d.product_colors.map((d, i) => (
                   <div key={d.hex_value}>
-                    <Radio className='color-item' name='오렌지' value={d.hex_value} dataColorName={d.color_name} dataColorHex={d.hex_value} title={d.color_name} onClick={(e) => handleAddItem(e, item)} />
+                    <Radio className='color-item' name='radioGroup' dataColorName={d.color_name} value={d.hex_value} title={d.color_name} onClick={(e) => handleAddItem(e, item)} />
                   </div>
                 ))}
 
@@ -441,15 +458,15 @@ export default function ProductDetail({ item }: IProductDetail) {
             <S.CurrentProducts>
               <ul>
                 {selectItems.map((d: ISelectProduct) => (
-                  <li key={d.selectColor}>
+                  <li key={d.selectColor.hexValue}>
                     <div className='current-title'>
                       <span className='current-title__name'>{d.name}</span>
-                      <b className='current-title__color'>{d.selectColor}</b>
+                      <b className='current-title__color'>{d.selectColor.colorName}</b>
                     </div>
                     <div className='current-quantity'>
                       <input type='number' value={d.qty} name='qtyCount' onChange={(e) => handleCount(e, d)} />
                     </div>
-                    <span className='current-price'>{PriceComma(Number(d.consumer_price) * d.qty)}원</span>
+                    <span className='current-price'>{PriceComma(Number(d.consumer_price))}원</span>
                     <button type='button' name='close' onClick={() => handleRemoveItem(d)}>
                       <Icon name='closeSmall' />
                     </button>
@@ -472,7 +489,7 @@ export default function ProductDetail({ item }: IProductDetail) {
               <span className='basket-add' onClick={handleAddLocalStorage}>장바구니 담기</span>
               <span className='wishlist'>관심상품 추가</span>
             </S.EtcBox>
-            <BasketModal open={open} onClick={() => setOpen(!open)} />
+            {/* <BasketModal open={open} onClick={() => setOpen(!open)} /> */}
           </div>
         </S.Card>
       ))}

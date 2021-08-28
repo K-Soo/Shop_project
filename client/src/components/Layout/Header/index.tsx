@@ -22,7 +22,6 @@ const S = {
 `,
 }
 
-
 const Header: React.FC<IHeader> = ({ className }) => {
   const [scrollActive, setScrollActive] = useState(false);
   const {scrollY} = useScroll();

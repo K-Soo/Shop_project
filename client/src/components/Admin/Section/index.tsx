@@ -56,7 +56,7 @@ const HeaderStyle = styled.header`
 const MainStyle = styled.main`
   width: calc(100% - 56px );
   margin-left: 56px;
-  height: 100%;
+  /* height: 100%; */
   padding: 20px;
   background-color: #F0F3F7;
   ${({ theme }) => theme.mobile`

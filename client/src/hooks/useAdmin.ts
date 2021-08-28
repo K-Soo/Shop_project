@@ -23,7 +23,8 @@ export interface IAppState {
     product_price: string,
     summary_description: string,
     description: string,
-    product_colors: { hex_value: string, color_name: string }[]
+    product_colors: { hex_value: string, color_name: string }[],
+    imageUrl: { url: string }[],
   }
 }
 
@@ -43,7 +44,8 @@ export const adminDefaultValue: IUseAdmin = {
       product_price: '',
       summary_description: '',
       description: '',
-      product_colors: []
+      product_colors: [],
+      imageUrl: [],
     }
   },
 };
@@ -62,7 +64,8 @@ const initializer = (props: any) => {
       product_price: '',
       summary_description: '',
       description: '',
-      product_colors: []
+      product_colors: [],
+      imageUrl: [],
     }
   };
 
@@ -96,14 +99,22 @@ const generateAction = (update: (recipe: (draft: IAppState) => void) => void) =>
       let replaceValue = value.replace(/,/g, '');
       const keyArray = name.split('.');
       let label = e.nativeEvent.target[selectedIndex]?.text;
-
       if (type === 'checkbox') {
         if (keyArray.length === 1) draft[keyArray[0]] = checked;
         else if (keyArray.length === 2) draft[keyArray[0]][keyArray[1]] = checked;
-      }else{
+      } else {
         if (keyArray.length === 1) draft[keyArray[0]] = replaceValue;
         else if (keyArray.length === 2) draft[keyArray[0]][keyArray[1]] = replaceValue;
       }
+    });
+
+  const setData = (stateName: string, value: any) =>
+    update(draft => {
+      const keyArray = stateName.split('.');
+
+      if (keyArray.length === 1) draft[keyArray[0]] = value;
+      else if (keyArray.length === 2) draft[keyArray[0]][keyArray[1]] = value;
+      else if (keyArray.length === 3) draft[keyArray[0]][keyArray[1]][keyArray[2]] = value;
     });
 
   const setColorArray = (result: { hex_value: string, color_name: string }) => update(draft => {
@@ -115,7 +126,8 @@ const generateAction = (update: (recipe: (draft: IAppState) => void) => void) =>
     sideOpen,
     setFormData,
     setColorArray,
-    setRemoveColor
+    setRemoveColor,
+    setData
   };
 };
 

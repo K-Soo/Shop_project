@@ -73,7 +73,7 @@ let Input: React.FC<IInput> = ({
 
 Input = styled(Input)`
   height: ${({ height }) => (height ? `${height}px` : "40px")};
-  width: ${props => props.width ?  props.width : '100%'};
+  width: ${({width}) => width ? `${width}px` : '100%'};
   margin: ${({ margin }) => margin ?? "0px"};
   box-sizing: border-box;
   font-size: 12px;

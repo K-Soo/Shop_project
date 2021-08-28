@@ -29,7 +29,6 @@ export default styled(Label)`
   display: inline-block;
   height: 100%;
   font-size: 14px;
-  border: 1px solid red;
   ${props =>
     props.required &&
     css`

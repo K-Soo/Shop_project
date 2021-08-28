@@ -24,21 +24,21 @@ const CommonIcon = css`
 
 const S = {
   ImageSlider: styled.div`
-    overflow: hidden;
-    border: 1px solid red;
   `,
   Card: styled.div`
-    border: 1px solid red;
-
+    height: 100%;
     padding: 0 15px;
     .card-inner{
       margin: 0 auto;
       max-width: 350px;
+      display: flex;
+      flex-direction: column;
       .img-box{
         img{
           width: 100%;
           height: 100%;
           object-fit: cover;
+          z-index: -1;
           &:hover{
             transform: scale(1.1);
             transition: all .5s ease;
@@ -55,7 +55,6 @@ const S = {
           font-size: 13px;
           width: 100%;
           text-align: left;
-          /* border-bottom: 1px solid #f0f0f0; */
         }
         &__short-desc{
         }
@@ -119,11 +118,11 @@ const S = {
 
 const settings = {
   infinite: true,
-  slidesToShow: 5,
-  slidesToScroll: 5,
+  slidesToShow: 3,
+  slidesToScroll: 3,
   autoplay: true,
-  speed: 1000,
-  autoplaySpeed: 500,
+  speed: 2000,
+  autoplaySpeed: 3000,
   cssEase: 'linear',
   focusOnSelect: true,
   responsive: [
@@ -160,7 +159,7 @@ export default function ImageSlider({ item }: IImageSlider) {
                 <a>
                   <div className='img-box'>
                     <Image
-                      src='https://via.placeholder.com/150'
+                      src={d.imageUrl[0].url}
                       alt="Picture of the author"
                       width={500}
                       height={500}

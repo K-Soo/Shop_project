@@ -1,7 +1,7 @@
 import { room } from '../mock';
 import Product from '../models/Product';
 
-export const list = async (req, res) => {
+const list = async (req, res) => {
   try {
     res.json(room);
   } catch (error) {
@@ -9,7 +9,7 @@ export const list = async (req, res) => {
   }
 };
 
-export const getProductLists = async (req, res) => {
+const getProductLists = async (req, res) => {
   const { product_type } = req.params;
   try {
     const exist = await Product.find({ product_type });
@@ -19,7 +19,7 @@ export const getProductLists = async (req, res) => {
   }
 };
 
-export const getProductItem = async (req, res) => {
+const getProductItem = async (req, res) => {
   const { id, product_type } = req.params;
   console.log('product_type: ', product_type);
   console.log('id: ', id);
@@ -27,7 +27,7 @@ export const getProductItem = async (req, res) => {
     const exist = await Product.findOne({ product_type, seq: id });
     if (!exist) {
       res.status(404).send();
-     }
+    }
     res.json(exist);
   } catch (error) {
     console.error('/ProductType', error);
@@ -37,15 +37,28 @@ export const getProductItem = async (req, res) => {
 
 
 
-export const create = async (req, res) => {
+const create = async (req, res) => {
+  console.log('req: ', req.body);
   try {
     const product = new Product(req.body);
-    await product.save();
-    res.json({msg:'등록완료'})
+    product.save();
+    res.json({ msg: '등록완료' })
   } catch (error) {
     console.error('/list error', error);
   }
 };
 
+const Images = async (req, res) => {
+  console.log('file: ', req.file.location);
+  try {
+    const data = [{ url: req.file.location }]
+    res.json(data)
+  } catch (error) {
+    console.error('/list error', error);
+  }
+};
+
+
+export default { list, getProductLists, getProductItem, create, Images }
 
 

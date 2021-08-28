@@ -14,10 +14,8 @@ const S = {
 }
 
 export default function BestProducts({ item }: IBestProducts) {
-  console.log('호출한곳: ', item);
-
   const bestItems = useCallback(() => {
-   return item?.filter(d => d.best_product);
+    return item?.filter(d => d.best_product);
   }, [item]);
 
   return (

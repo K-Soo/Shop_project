@@ -6,7 +6,6 @@ import PAGE from "constants/path";
 import AdminProvider from 'context/AdminProvider';
 import Section from 'components/Admin/Section';
 import Aside from 'components/Admin/Aside';
-import Nav from 'components/Admin/Nav';
 import AdminNav from 'components/Admin/AdminNav';
 
 

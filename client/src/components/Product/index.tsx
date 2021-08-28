@@ -27,7 +27,6 @@ export default function Product({ item }: IProduct) {
   const keyName = router.query.category as keyof typeof CategoryEnum
   const currentProduct: categoryType = CategoryEnum[keyName]
   const result = useSelectCategory(item);
-  console.log('result: ', result);
 
   return (
     <S.Product>

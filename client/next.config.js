@@ -4,7 +4,7 @@ module.exports = {
 
 module.exports = {
   images: {
-    domains: ["d3t32hsnjxo7q6.cloudfront.net", "via.placeholder.com"],
+    domains: ["d3t32hsnjxo7q6.cloudfront.net", "via.placeholder.com","shop-product.s3.ap-northeast-2.amazonaws.com"],
     // deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
   },
   typescript: {

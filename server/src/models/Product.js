@@ -39,18 +39,23 @@ const ProductSchema = new mongoose.Schema(
         color_name: String,
       }
     ],
+    imageUrl: [
+      {
+        url: String,
+      }
+    ],
     seq: {
       type: Number,
       default: 0
     },
   },
-  );
-  ProductSchema.plugin(autoIncrement.plugin,
-    {
-      model: 'Product',
-      field: 'seq',
-      startAt: 0,
-      increment: 1
+);
+ProductSchema.plugin(autoIncrement.plugin,
+  {
+    model: 'Product',
+    field: 'seq',
+    startAt: 0,
+    increment: 1
   });
 
 

@@ -12,6 +12,7 @@ import { useAdminContext } from 'context/AdminProvider';
 import { PriceComma, onlyNum } from 'utils';
 import Icon from 'components/Icon/Icon';
 import { Post } from "api";
+import FileUpload from 'components/Common/FileUpload';
 import { useMutation } from 'react-query';
 
 interface IProductCreate {
@@ -20,6 +21,10 @@ interface IProductCreate {
 
 const S = {
   ProductCreate: styled.div`
+    input,textarea{
+      font-size: 12px;
+      color: #000;
+    }
   `,
   Group: styled.div`
     display: flex;
@@ -27,12 +32,13 @@ const S = {
     height: 100%;
     flex-wrap: wrap;
     .color-box{
-    width: 300px;
+    width: 250;
     display: flex;
     flex-direction: column;
       &--add {
         display: flex;
         justify-content: space-between;
+        width: 250px;
         .wrapper{
           display: flex;
           position: relative;
@@ -120,6 +126,8 @@ export default function ProductCreate(props: IProductCreate) {
   const { state, action } = useAdminContext();
   const { product_type } = state.create;
   const [color, setColor] = useState(colorInit)
+  const [content, setContent] = useState();
+  console.log('content: ', content);
 
   const handleColor = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target as HTMLInputElement;
@@ -157,29 +165,41 @@ export default function ProductCreate(props: IProductCreate) {
         console.log('res: ', res);
       })();
     }
-
-
   }
+
+  const handleDrop = (image:any) => {
+    const formData = new FormData();
+    formData.append('image', image[0]);
+    (async () => {
+      try {
+        const res = await Post.createProductImage(formData);
+        action.setData('create.imageUrl',res)
+      } catch (error) {
+        console.error('image-error: ', error.response.data);
+        alert(error.response.data.message);
+      }
+    })();
+  }
+
   return (
     <S.ProductCreate>
-      <Title level={1} >상품추가</Title>
+      <Title level={1} textAlign='left' marginB='20' >상품추가</Title>
       <form onSubmit={handleSubmit}>
         <S.Group>
           <Label htmlFor='' >옵션 선택</Label>
           <label>
-          <CheckBox name='create.new_product' onChange={action.setFormData} checked={state.create.new_product}/>
+            <CheckBox name='create.new_product' onChange={action.setFormData} checked={state.create.new_product} />
           </label>
           <span>NEW</span>
-        <label>
-          <CheckBox name='create.best_product' onChange={action.setFormData} checked={state.create.best_product}/>
-        </label>
+          <label>
+            <CheckBox name='create.best_product' onChange={action.setFormData} checked={state.create.best_product} />
+          </label>
           <span>BEST</span>
-
         </S.Group>
 
         <S.Group>
-          <Label htmlFor='' >상품 타입</Label>
-          <Select height='40' width='200px' name='create.product_type' onChange={action.setFormData}>
+          <Label htmlFor='' required>상품 타입</Label>
+          <Select height='30' width='200px' name='create.product_type' onChange={action.setFormData}>
             <option value="">선택</option>
             {Object.entries(PRODUCT).map((d) => (
               <option key={d[0]} value={d[0]}>
@@ -190,8 +210,8 @@ export default function ProductCreate(props: IProductCreate) {
         </S.Group>
 
         <S.Group>
-          <Label htmlFor=''>카테고리</Label>
-          <Select height='40' width='200px' name='create.category' onChange={action.setFormData}>
+          <Label htmlFor='' required>카테고리</Label>
+          <Select height='30' width='200px' name='create.category' onChange={action.setFormData}>
             <option value=''>선택</option>
             {PRODUCT[product_type]?.map((d) => (
               <option value={d.label} key={d.label}>
@@ -202,22 +222,22 @@ export default function ProductCreate(props: IProductCreate) {
         </S.Group>
 
         <S.Group>
-          <Label htmlFor=''>상품 이름</Label>
-          <Input required name='create.name' placeholder='상품 타입' width='300px' value={state.create.name} onChange={action.setFormData} />
+          <Label htmlFor='' required>상품 이름</Label>
+          <Input height='30' required name='create.name' width='250' value={state.create.name} onChange={action.setFormData} />
         </S.Group>
 
         <S.Group>
-          <Label htmlFor=''>상품 가격</Label>
-          <Input required name='create.product_price' placeholder='상품 가격' width='300px' value={PriceComma(state.create.product_price)} onChange={e => onlyNum(e, action.setFormData)} />
+          <Label htmlFor='' required>상품 가격</Label>
+          <Input height='30' maxLength={10} required name='create.product_price' placeholder='숫자만 입력가능' width='250' value={PriceComma(state.create.product_price)} onChange={e => onlyNum(e, action.setFormData)} />
         </S.Group>
 
         <S.Group>
-          <Label htmlFor=''>소비자 가격</Label>
-          <Input required name='create.consumer_price' placeholder='소비자 가격' width='300px' value={PriceComma(state.create.consumer_price)} onChange={e => onlyNum(e, action.setFormData)} />
+          <Label htmlFor='' required>소비자 가격</Label>
+          <Input height='30' maxLength={10}required name='create.consumer_price' placeholder='숫자만 입력가능' width='250' value={PriceComma(state.create.consumer_price)} onChange={e => onlyNum(e, action.setFormData)} />
         </S.Group>
 
         <S.Group>
-          <Label htmlFor=''>상품 색상</Label>
+          <Label htmlFor='' required>상품 색상</Label>
           <div className='color-box'>
             <div className='color-box--add'>
               <div className='color-box-add wrapper'>
@@ -227,8 +247,8 @@ export default function ProductCreate(props: IProductCreate) {
                 <S.InputColor className='color-input' id='color-label' required name='hex_value' value={color.hex_value || '#ffffff'} width='100px' type='color' onChange={handleColor} />
 
               </div>
-              <Input required name='color_name' maxLength={5} value={color.color_name} placeholder='색상 이름' width='100px' onChange={handleColor} />
-              <Button type='button' width='80px' fontSize='14px' height='40px' onClick={handleColorAdd}>색상추가</Button>
+              <Input height='30' required name='color_name' maxLength={5} value={color.color_name} placeholder='색상 이름' width='100' onChange={handleColor} />
+              <Button type='button' width='80px' fontSize='14px' height='30px' onClick={handleColorAdd}>색상추가</Button>
             </div>
             <ul className='color-box__list'>
               {state.create?.product_colors?.map(d => (
@@ -243,13 +263,18 @@ export default function ProductCreate(props: IProductCreate) {
         </S.Group>
 
         <S.Group>
-          <Label htmlFor=''>상품요약 설명</Label>
-          <Input required name='create.summary_description' placeholder='요약 설명' width='300px' value={state.create.summary_description} onChange={action.setFormData} />
+          <Label htmlFor='' required>상품요약 설명</Label>
+          <Input height='30' required name='create.summary_description' width='250' value={state.create.summary_description} onChange={action.setFormData} />
         </S.Group>
 
         <S.Group>
-          <Label htmlFor=''>상품 설명</Label>
-          <TextArea required name='create.description' width='300' placeholder='요약 설명' value={state.create.description} onChange={action.setFormData} />
+          <Label htmlFor='' required>상품 설명</Label>
+          <TextArea required name='create.description' width='250' value={state.create.description} onChange={action.setFormData} />
+        </S.Group>
+
+        <S.Group>
+          <Label htmlFor='' required>상품 이미지</Label>
+          <FileUpload handleDrop={handleDrop}/>
         </S.Group>
 
         <Button >등록</Button>
