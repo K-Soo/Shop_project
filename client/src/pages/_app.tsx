@@ -22,12 +22,12 @@ export default function App(props: AppProps) {
       <GlobalStyle />
       <AppProvider AppProps={props}>
         <QueryClientProvider client={queryClient}>
-        <Hydrate state={props.pageProps.dehydratedState}>
-          <Theme>
-            <Layout>
-              <props.Component {...props.pageProps} />
-            </Layout>
-          </Theme>
+          <Hydrate state={props.pageProps.dehydratedState}>
+            <Theme>
+              <Layout>
+                <props.Component {...props.pageProps} />
+              </Layout>
+            </Theme>
           </Hydrate>
           <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
@@ -36,14 +36,16 @@ export default function App(props: AppProps) {
   );
 }
 
-// App.getInitialProps = async ({ Component, ctx }): Promise<{ pageProps: {} }> => {
-//   let pageProps = {};
-//   // 하위 컴포넌트에 getInitialProps가 있다면 추가 (각 개별 컴포넌트에서 사용할 값 추가)
-//   if (Component.getInitialProps) {
-//     pageProps = await Component.getInitialProps(ctx);
-//   }
-
-//   // _app에서 props 추가 (모든 컴포넌트에서 공통적으로 사용할 값 추가)
-//   pageProps = { ...pageProps, posttt: { title: 11111, content: 3333 } };
-//   return { pageProps };
-// };
+App.getInitialProps = async (context) => {
+  const { ctx, Component } = context;
+  console.log('isServer: ', ctx.isServer);
+  let pageProps = {};
+  // 하위 컴포넌트에 getInitialProps가 있다면 추가 (각 개별 컴포넌트에서 사용할 값 추가)
+  if (Component.getInitialProps) {
+    pageProps = await Component.getInitialProps(ctx);
+  }
+//  console.log(Object.keys(ctx));
+  // _app에서 props 추가 (모든 컴포넌트에서 공통적으로 사용할 값 추가)
+  pageProps = { ...pageProps, posttt: { title: 11111, content: 3333 } };
+  return { pageProps };
+};

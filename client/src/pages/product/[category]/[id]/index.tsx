@@ -17,7 +17,8 @@ interface TS {
 }
 export default function ProductDetailPage(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
   console.log('props: ', props);
-  const { item } = props as { item: IProduct }
+  // const { item } = props as { item: IProduct }
+  const { item } = props;
   const router: NextRouter = useRouter();
   const { category, id } = router.query as { category: string, id: string };
 
@@ -66,10 +67,17 @@ export default function ProductDetailPage(props: InferGetServerSidePropsType<typ
 
 export const getServerSideProps: GetServerSideProps = async (context): Promise<{ props: { item: IProduct } }> => {
   const { category, id } = context.query as { category: string, id: string };
-  const res = await Get.getProduct(category, id);
-  return {
-    props: {
-      item: res,
-    },
+  // console.log('xxxxx: ', context.req.headers);
+  try {
+    const res = await Get.getProduct(category, id);
+    // console.log('res: ', res);
+    return {
+      props: {
+        item: res,
+      },
+    }
+  } catch (error) {
+    // console.log('error: ', error);
+    throw error; 
   }
 }

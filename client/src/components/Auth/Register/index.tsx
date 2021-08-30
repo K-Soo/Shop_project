@@ -12,6 +12,7 @@ import DaumPost from 'components/Common/DaumPost';
 import FieldsetTos from 'components/Auth/Register/FieldsetTos';
 import useScrollFadeIn from 'hooks/useScrollFadeIn';
 import { useRegisterContext } from 'context/RegisterProvider';
+import {Post} from 'api';
 
 interface IRegister {
   className?: string;
@@ -60,7 +61,19 @@ const S = {
 }
 
 export default function Register({ className, onClick, isModal }: IRegister) {
-  const { state, action } = useRegisterContext()
+  const { state, action } = useRegisterContext();
+
+  const handleSubmit = (e:React.SyntheticEvent) => {
+    e.preventDefault();
+    try {
+      (async () => {
+        const res = await Post.register({userId: "llssll",password:'llssll'});
+        console.log('res: ', res.headers);
+      })();
+    } catch (error) {
+      console.log('login: ', error);
+    }
+  };
 
   return (
     <S.Register className={className}>
@@ -143,9 +156,12 @@ export default function Register({ className, onClick, isModal }: IRegister) {
             <legend>이용약관</legend>
             <FieldsetTos />
           </fieldset> */}
+
+        <Button login>가입</Button>
+
+
         </form>
       </article>
-
 
     </S.Register>
   );

@@ -10,10 +10,12 @@ const upload = multer({
   dest : 'uploads/'
 });
 
-// api/auth
 users.post('/register', UserController.register);
 
+users.post('/login',  UserController.logIn);
+
 users.post('/login', body("name").isLength({ min: 2 }), validateRequestSchema, UserController.logIn);
+
 
 // users.post('/check', '');
 // users.post('/logout', '');

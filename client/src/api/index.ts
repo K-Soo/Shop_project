@@ -27,6 +27,8 @@ export const Get = {
 export const Post = {
   createProduct: (body: PostType): Promise<PostType> => requests.post('/api/products', body),
   createProductImage: (body: any) => requests.post('/api/products/image', body),
+  login: (body: any) => requests.post('/api/users/login', body),
+  register: (body: any) => requests.post('/api/users/register', body),
 };
 
 

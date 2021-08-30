@@ -7,7 +7,7 @@ import PAGE from "constants/path";
 import Title from "components/style/Title";
 import Member from "components/Auth/Login/Member";
 import NoMember from "components/Auth/Login/NoMember";
-
+import { Post } from 'api';
 
 const S = {
   Login: styled.section`
@@ -30,14 +30,14 @@ const S = {
     }
     .member {
       border-bottom: 2px solid #222;
-      ${({toggle}) => toggle === "noMember" &&
+      ${({ toggle }) => toggle === "noMember" &&
       css`
         border-bottom: 2px solid #dfdfdf;
       `}
     }
     .no-member {
       border-bottom: 2px solid #dfdfdf;
-      ${({toggle}) => toggle === "noMember" &&
+      ${({ toggle }) => toggle === "noMember" &&
       css`
         border-bottom: 2px solid #222;
       `}
@@ -63,6 +63,22 @@ export default function Login() {
   const [toggle, setToggle] = useState<TLogin>("member");
   const router = useRouter();
 
+
+  const handleSubmit = (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    try {
+      (async () => {
+        const res = await Post.login({ userId: "llssll", password: 'llssll' });
+        console.log('res: ', res);
+
+      })();
+    } catch (error) {
+      console.log('login: ', error.response);
+    }
+  };
+  console.log('document.cookie',document.cookie);
+
+
   return (
     <S.Login >
       <div className='container'>
@@ -75,7 +91,7 @@ export default function Login() {
             비회원 로그인
           </li>
         </S.LoginMenu>
-        {toggle === "member" ? <Member /> : <NoMember />}
+        {toggle === "member" ? <Member handleSubmit={handleSubmit} /> : <NoMember />}
         {toggle === "member" && (
           <>
             <Button kakao>카카오로 시작하기</Button>

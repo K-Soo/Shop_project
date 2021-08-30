@@ -3,6 +3,10 @@ import styled from "styled-components";
 import Input from "components/style/Input";
 import Button from "components/style/Button";
 
+interface IMember {
+  handleSubmit?: React.FormEventHandler<HTMLFormElement>
+}
+
 const S = {
   Member: styled.form`
     display: flex;
@@ -20,9 +24,11 @@ const S = {
   `,
 }
 
-export default function Member() {
+export default function Member({handleSubmit}:IMember) {
+
+
   return (
-    <S.Member action='submit' >
+    <S.Member onSubmit={handleSubmit} >
       <fieldset >
         <Input placeholder='아이디' margin='0 0 10px 0' />
         <Input placeholder='비밀번호' />

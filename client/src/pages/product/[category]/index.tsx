@@ -12,10 +12,21 @@ import { Get } from "api";
 export default function ProductType() {
   const router: NextRouter = useRouter();
   const { category } = router.query as { category: string };
-  const { data, isLoading, isSuccess, isError, status, error,refetch } = useQuery<IProduct>(['product', category], async () => await Get.products(category),{
+  const { data, isLoading, isSuccess, isError, status, error,refetch } = useQuery<IProduct,Error>(['product', category], async () => await Get.products(category),{
     retry: 0,
   });
+  
+  console.log('error: ', error);
+  // const result = useQuery<IProduct>(['product', category], async () => await Get.products(category),{
+  //   retry: 0,
+  // });
+  // console.log('result: ', result);
 
+  if (error instanceof Error){
+    console.log('프론트',error.response);
+}
+
+  
   // const [item, setItem] = useState<IProduct[] | null>(null);
 
   // useEffect(() => {
@@ -30,15 +41,16 @@ export default function ProductType() {
   //   }
   //   fetchData()
   // }, [])
+  if (isError) {
+    return <h1>error..</h1>
+  }
 
   if (isLoading) {
     // return <Loading isLoading={isLoading} text='loading' />
     return <h1>loading</h1>
   }
 
-  if (isError) {
-    return <h1>error..</h1>
-  }
+ 
 
   return (
     <>
