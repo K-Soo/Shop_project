@@ -8,7 +8,7 @@ interface IFinalAmount {
 const S = {
   FinalAmount: styled.div`
     border: 1px solid #333;
-    margin: 30px 0;
+    /* margin: 30px 0; */
     table{
       width: 100%;
       text-align: center;
@@ -16,11 +16,14 @@ const S = {
       caption{
         display: none;
       }
+      th,td {
+        vertical-align: middle;
+        border: 1px solid #f0f0f0;
+      }
       thead{
-        background-color: #F9F9F9;
         th{
+          background-color: #F9F9F9;
           padding: 14px 0;
-          border: 1px solid #f0f0f0;
           font-size: 13px;
           font-weight: 400;
         }
@@ -30,7 +33,6 @@ const S = {
           font-size: 23px;
           padding: 30px 0;
           color: #353535;
-          border: 1px solid #f0f0f0;
           b{
             &::after{
               content: '원';
@@ -54,7 +56,23 @@ const S = {
           }
         }
       }
+      ${({ theme }) => theme.mobile`
+      thead{
+        th{
+          padding: 14px 0;
+          font-size: 12px;
+          font-weight: 400;
+        }
+      }
+      tbody{
+        td{
+          font-size: 12px;
+        }
+      }
+      `}
     }
+
+    
   `,
 }
 
@@ -64,10 +82,10 @@ export default function FinalAmount({}:IFinalAmount) {
       <table>
         <caption>총 주문금액</caption>
         <colgroup>
-          <col width="15%" />
-          <col width="15%" />
-          <col width="15%" />
-          <col width="55%" />
+          <col width="20%" />
+          <col width="20%" />
+          <col width="20%" />
+          <col width="40%" />
         </colgroup>
         <thead>
           <tr>
@@ -79,14 +97,13 @@ export default function FinalAmount({}:IFinalAmount) {
         </thead>
         <tbody>
           <tr>
-            <td><b>+  3000</b></td>
-            <td><b>+  3000</b></td>
-            <td><b>+  3000</b></td>
+            <td><b>+3000</b></td>
+            <td><b>+3000</b></td>
+            <td><b>+3000</b></td>
             <td><strong>= 3000</strong></td>
           </tr>
         </tbody>
       </table>
-
     </S.FinalAmount>
   );
 }

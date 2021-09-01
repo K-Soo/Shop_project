@@ -7,6 +7,7 @@ import PAGE from "constants/path";
 interface IMainContainer {
   className?: string;
   children?: React.ReactNode;
+  global?: any;
 }
 
 const S = {
@@ -20,9 +21,9 @@ const S = {
   `,
 }
 
-export default function MainContainer({ className, children }: IMainContainer) {
+export default function MainContainer(props: IMainContainer) {
   return (
-    <S.MainContainer className={className}>
+    <S.MainContainer >
       <Breadcrumb>
         {[PAGE.MAIN].map(({ path, tag }) => (
           <Link key={path} href={path}>
@@ -30,7 +31,11 @@ export default function MainContainer({ className, children }: IMainContainer) {
           </Link>
         ))}
       </Breadcrumb>
-      {children}
+      <div>
+      {props.global?.userId && props.global.userId}
+      </div>
+
+      {props.children}
     </S.MainContainer>
   );
 };

@@ -2,12 +2,12 @@ import React from "react";
 import styled from "styled-components";
 import Button from 'components/style/Button';
 import Icon from 'components/Icon/Icon';
-interface INonLogin {
+interface IUserInfo {
 
 }
 
 const S = {
-  NonLogin: styled.div`
+  UserInfo: styled.div`
     border: 5px solid #f5f5f5;
     padding: 30px;
     font-size: 13px;
@@ -21,7 +21,6 @@ const S = {
           width: 50px;
         }
         }
-      
       }
       .info{
         border-left: 1px solid red;
@@ -42,9 +41,9 @@ const S = {
   `,
 }
 
-export default function NonLogin({ }: INonLogin) {
+export default function UserInfo({ }: IUserInfo) {
   return (
-    <S.NonLogin>
+    <S.UserInfo>
       <div className='wrapper'>
         <div className='icon-box'>
           <i><Icon name='user' /></i>
@@ -58,6 +57,6 @@ export default function NonLogin({ }: INonLogin) {
           </div>
         </div>
       </div>
-    </S.NonLogin>
+    </S.UserInfo>
   );
 }

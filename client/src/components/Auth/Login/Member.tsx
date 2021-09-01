@@ -31,7 +31,7 @@ export default function Member({handleSubmit}:IMember) {
     <S.Member onSubmit={handleSubmit} >
       <fieldset >
         <Input placeholder='아이디' margin='0 0 10px 0' />
-        <Input placeholder='비밀번호' />
+        <Input placeholder='비밀번호' type='password'/>
       </fieldset>
 
       <fieldset  className='security'>

@@ -73,7 +73,7 @@ UserSchema.methods.generateToken = function () {
     payload,
     config.JWT_SECRET_KEY,
     {
-      expiresIn: 3600,
+      expiresIn: 10,
     }
   );
   return token;

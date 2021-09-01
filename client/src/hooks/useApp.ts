@@ -2,8 +2,11 @@ import { useState, useEffect } from "react";
 import produce from "immer";
 import { useRouter } from 'next/router';
 import useDidMountEffect from 'hooks/useDidMountEffect';
+import NextApp, { AppProps, AppContext as NextAppContext } from "next/app";
 
 type TAppAction = typeof generateAction extends (...args: any[]) => infer R ? R : never;
+
+
 
 export interface IApp {
   props: null;
@@ -15,11 +18,16 @@ export interface IAppState {
   status: { loading: boolean };
   openSideMenu: boolean;
   openSubMenu: boolean,
+  openSearch: boolean,
+  testValue: string,
   targetCategory: string;
   layout: {
     isHeader: boolean,
     isFooter: boolean,
   },
+  userInfo: {
+    userId: string,
+  }
 }
 
 export const appDefaultValue: IApp = {
@@ -29,24 +37,36 @@ export const appDefaultValue: IApp = {
     status: { loading: false },
     openSideMenu: false,
     openSubMenu: false,
+    openSearch: false,
+    testValue: '',
     targetCategory: 'all',
     layout: {
       isHeader: true,
       isFooter: true,
+    },
+    userInfo: {
+      userId: '',
     },
   },
 };
 
-const initializer = (props: any) => {
+const initializer = (props) => {
+  console.log('initializer: ', props);
+
   const state: IAppState = {
     status: { loading: false },
     openSideMenu: false,
     openSubMenu: false,
+    openSearch: false,
+    testValue: '',
     targetCategory: 'all',
     layout: {
       isHeader: true,
       isFooter: true,
     },
+    userInfo: {
+      userId: props.userInfo.userId ?? '',
+    }
   };
   return state;
 };
@@ -68,15 +88,20 @@ const generateAction = (update: (recipe: (draft: IAppState) => void) => void) =>
       draft.openSubMenu = !draft.openSubMenu;
     })
   }
+  const setToggleSearch = () => {
+    update((draft) => {
+      draft.openSearch = !draft.openSearch;
+    })
+  }
   const setIsHeader = (status: boolean) =>
-  update((draft) => {
-    draft.layout.isHeader = status;
-  }); 
+    update((draft) => {
+      draft.layout.isHeader = status;
+    });
 
-const setIsFooter = (status: boolean) =>
-  update((draft) => {
-    draft.layout.isFooter = status;
-  });
+  const setIsFooter = (status: boolean) =>
+    update((draft) => {
+      draft.layout.isFooter = status;
+    });
 
   const setCategory = (e: React.MouseEvent<HTMLLIElement>) => {
     update((draft) => {
@@ -88,9 +113,12 @@ const setIsFooter = (status: boolean) =>
 
   const InitData = (stateName: string, initValue?: any) =>
     update(draft => {
+      const keyArray = stateName.split('.');
       let valueDefault = '';
       if (initValue) valueDefault = initValue;
-      draft[stateName] = valueDefault;
+
+      if (keyArray.length === 1) draft[keyArray[0]] = valueDefault;
+      else if (keyArray.length === 2) draft[keyArray[0]][keyArray[1]] = valueDefault;
     });
 
 
@@ -99,19 +127,26 @@ const setIsFooter = (status: boolean) =>
     setToggleSideMenu,
     setCategory,
     setToggleSubMenu,
+    setToggleSearch,
     InitData,
     setIsHeader,
-    setIsFooter
+    setIsFooter,
   };
 };
 
-const useApp = (props: any) => {
-  const [state, setAppState] = useState(() => initializer(props));
+const useApp = (props) => {
+  console.log('useApp props: ', props);
+  const [state, setAppState] = useState(initializer(props));
+  console.log('useApp state: ', state);
   const update = (recipe: (draft: IAppState) => void) =>
     setAppState((prev) => produce(prev, recipe));
   const router = useRouter();
   const action = generateAction(update);
   const app = { props, state, action };
+
+  useEffect(() => {
+    app.action.InitData('userInfo.userId', props.userInfo.userId);
+  }, [props])
 
   useEffect(() => {
     app.action.InitData('openSubMenu', false);
@@ -120,6 +155,8 @@ const useApp = (props: any) => {
   useDidMountEffect(() => {
     app.action.InitData('targetCategory', 'all');
   }, [router.asPath])
+
+
 
   return app;
 };

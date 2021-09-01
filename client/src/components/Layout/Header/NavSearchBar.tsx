@@ -2,12 +2,7 @@ import React, { useRef, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import Icon from 'components/Icon/Icon';
 import JSON_SEARCH from 'mock/MOCK_SEARCH.json';
-
-interface INavSearchBar {
-  className?: string;
-  toggle: boolean;
-  handleToggle: React.MouseEventHandler<HTMLButtonElement> | undefined;
-}
+import { useAppContext } from 'context/AppProvider';
 
 const InputStyle = css`
   all: unset;
@@ -26,7 +21,7 @@ const InputStyle = css`
 `;
 
 const S = {
-  wrapper: styled.div<{ toggle: boolean }>`
+  NavSearchBar: styled.div<{ toggle: boolean }>`
     z-index: 10;
     position: absolute;
     visibility: hidden;
@@ -123,13 +118,14 @@ const S = {
   `,
 }
 
-const NavSearchBar: React.FC<INavSearchBar> = ({ className, handleToggle, toggle }) => {
+export default function NavSearchBar() {
   const InputFocus = useRef<HTMLInputElement | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const { action, state } = useAppContext();
 
   useEffect(() => {
-    if (toggle) setTimeout(() => InputFocus.current?.focus(), 1000);
-  }, [toggle]);
+    if (state.openSearch) setTimeout(() => InputFocus.current?.focus(), 1000);
+  }, [state.openSearch]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -143,9 +139,10 @@ const NavSearchBar: React.FC<INavSearchBar> = ({ className, handleToggle, toggle
       return d;
     }
   })
+
   return (
-    <S.wrapper className={className} toggle={toggle}>
-      <S.form toggle={toggle} onSubmit={handleSubmit}>
+    <S.NavSearchBar toggle={state.openSearch}>
+      <S.form toggle={state.openSearch} onSubmit={handleSubmit}>
         <fieldset className='search-field'>
           <input className='search-area' ref={InputFocus} type='text' placeholder='...' onChange={(e) => setSearchTerm(e.target.value)} />
           <button className='search-btn' type='submit'>
@@ -162,13 +159,12 @@ const NavSearchBar: React.FC<INavSearchBar> = ({ className, handleToggle, toggle
           </div>
         </fieldset>
         <fieldset className='bottom-field'>
-          <button className='close-btn' type='button' onClick={handleToggle}>
+          <button className='close-btn' type='button' onClick={action.setToggleSearch}>
             <Icon name='close' />
           </button>
         </fieldset>
       </S.form>
-    </S.wrapper>
+    </S.NavSearchBar>
   )
 };
 
-export default NavSearchBar;

@@ -6,6 +6,10 @@ import { MAIN_MENU } from "constants/header";
 import Icon from 'components/Icon/Icon';
 // import ReactTooltip from 'react-tooltip';
 import dynamic from "next/dynamic";
+import { useRouter } from "next/router";
+import { useAppContext } from 'context/AppProvider';
+import {customCookie} from 'utils';
+
 
 const ReactTooltip = dynamic(() => import("react-tooltip"), {
   ssr: false,
@@ -14,6 +18,7 @@ const ReactTooltip = dynamic(() => import("react-tooltip"), {
 interface IMenu {
   className?: string;
   ScrollActive: boolean;
+  userInfo?: any;
 }
 
 const Common = css<{ ScrollActive?: boolean }>`
@@ -37,6 +42,7 @@ const Common = css<{ ScrollActive?: boolean }>`
     text-align: center;
     padding: 0 5px;
     color: #323232;
+    cursor: pointer;
     &:last-child{
       border: none;
     }
@@ -131,10 +137,21 @@ const SubBanner = styled.div<{ ScrollActive: boolean }>`
 
 const Menu: React.FC<IMenu> = ({ className, ScrollActive }) => {
   const [tooltipVisible, setTooltipVisible] = useState(false);
+  const router = useRouter();
+  const { state: { userInfo } } = useAppContext();
 
   useEffect(() => {
     setTooltipVisible(true);
   }, [])
+
+  const handleLogOut = () => {
+    if(confirm('로그아웃 하시겠습니까?')){
+      customCookie.remove('access_token');
+      return router.push('/');
+    }
+  }
+ 
+
   return (
     <nav className={className}>
       <div className='container'>
@@ -157,13 +174,42 @@ const Menu: React.FC<IMenu> = ({ className, ScrollActive }) => {
         </SubBanner>
         <Right >
           <div className='inner'>
-            {MAIN_MENU.right.map(d => (
-              <li key={d.value} className='item'>
-                <Link href={d.url}>
-                  <a>{d.label}</a>
-                </Link>
-              </li>
-            ))}
+            {userInfo.userId && (
+              <>
+                <li className='item'>
+                  {`${userInfo.userId}님`}
+                </li>
+                <li className='item' onClick={handleLogOut}>
+                    로그아웃
+                </li>
+              </>
+            )}
+
+            {!userInfo.userId && (
+              <>
+                <li className='item'>
+                  <Link href="/auth/login">
+                    <a>로그인</a>
+                  </Link>
+                </li>
+                <li className='item'>
+                  <Link href="/auth/register">
+                    <a>회원가입</a>
+                  </Link>
+                </li>
+              </>
+            )}
+
+            <li className='item'>
+              <Link href="/auth/login">
+                <a>주문조회</a>
+              </Link>
+            </li>
+            <li className='item'>
+              <Link href='/auth/register'>
+                <a>마이쇼핑</a>
+              </Link>
+            </li>
           </div>
           <MyShop >
             <a data-tip data-for='happyFace' data-border={true} >

@@ -8,44 +8,80 @@ import useApp, { appDefaultValue } from 'hooks/useApp';
 import NextApp, { AppProps, AppContext as NextAppContext } from "next/app";
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
-import AppProvider from 'context/AppProvider';
 import { Hydrate } from 'react-query/hydration'
+import cookies from 'next-cookies'
+import axios from 'axios';
+import jwt from "jsonwebtoken";
+import AppProvider,{useAppContext} from 'context/AppProvider';
 
 export default function App(props: AppProps) {
-  const queryClient = new QueryClient()
+  const {state,action} = useAppContext();
 
+  console.log('_App props: ', props);
+  const queryClient = new QueryClient()
+  // useApp(props.pageProps.userId);
   return (
     <>
       <Head>
         <title>앱인데</title>
       </Head>
       <GlobalStyle />
-      <AppProvider AppProps={props}>
+      <AppProvider AppProps={props.pageProps}>
         <QueryClientProvider client={queryClient}>
-          <Hydrate state={props.pageProps.dehydratedState}>
+          {/* <Hydrate state={props.pageProps.dehydratedState}> */}
             <Theme>
-              <Layout>
+              <Layout >
                 <props.Component {...props.pageProps} />
               </Layout>
             </Theme>
-          </Hydrate>
-          <ReactQueryDevtools initialIsOpen={false} />
+          {/* </Hydrate> */}
+          {/* <ReactQueryDevtools initialIsOpen={false} /> */}
         </QueryClientProvider>
       </AppProvider>
     </>
   );
 }
 
-App.getInitialProps = async (context) => {
+App.getInitialProps = async (context: NextAppContext) => {
   const { ctx, Component } = context;
-  console.log('isServer: ', ctx.isServer);
+  const { access_token } =  cookies(ctx);
+  const decodedJwt = access_token && jwt.decode(access_token) as any;
+  console.log('decodedJwt: ', decodedJwt);
+
   let pageProps = {};
-  // 하위 컴포넌트에 getInitialProps가 있다면 추가 (각 개별 컴포넌트에서 사용할 값 추가)
   if (Component.getInitialProps) {
     pageProps = await Component.getInitialProps(ctx);
   }
-//  console.log(Object.keys(ctx));
+
+  const userId = decodedJwt ? decodedJwt.userId : '';
+
+  const userInfo = {
+    userId
+  }
+  pageProps = { ...pageProps, userInfo };
+
+  console.log('userId: ', userId);
+  // const cookie = ctx.req ? ctx.req.headers.cookie : '';
+
+  // axios.defaults.headers.Cookie = access_token;
+  // if(access_token){
+  //   ctx.res.writeHead(307, { Location: '/' })
+  //   ctx.res.end()
+  // }
+
+
+ 
+  // console.log('scr', document?.cookie);
+
+
+  //  console.log(Object.keys(ctx));
   // _app에서 props 추가 (모든 컴포넌트에서 공통적으로 사용할 값 추가)
-  pageProps = { ...pageProps, posttt: { title: 11111, content: 3333 } };
+
+  // const cookie = ctx.isServer ? ctx.req.headers.cookie : '';
+
+  // if (ctx.isServer && cookie) { 
+  //   Axios.defaults.headers.Cookie = cookie;
+  // }
+
   return { pageProps };
 };

@@ -126,7 +126,6 @@ const S = {
 
 export default function BasketModal({ open, onClick }: IBasketModal) {
   const [storage, setStorage] = useState<ISelectProduct[]>([])
-  console.log('storage: ', storage);
 
   useEffect(() => {
     const result = JSON.parse(localStorage.getItem("basket"))
@@ -159,7 +158,7 @@ export default function BasketModal({ open, onClick }: IBasketModal) {
               </tr>
             </thead>
             <tbody>
-              {storage && storage.map((d) =>
+              {/* {storage && storage.map((d) =>
                 <tr className='row' key={d._id}>
                   <td>1</td>
                   <td className='option-info'>
@@ -178,7 +177,7 @@ export default function BasketModal({ open, onClick }: IBasketModal) {
                     {PriceComma(d.consumer_price)}원
                   </td>
                 </tr>
-              )}
+              )}; */}
             </tbody>
           </table>
           <S.Pagination>페이지</S.Pagination>

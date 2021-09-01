@@ -50,7 +50,7 @@ let Input: React.FC<IInput> = ({
 }) => {
   return (
     <input
-      type={type || "text"}
+      type={type}
       readOnly={readOnly}
       placeholder={placeholder}
       name={name}

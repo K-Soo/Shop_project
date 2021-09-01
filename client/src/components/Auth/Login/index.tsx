@@ -8,6 +8,7 @@ import Title from "components/style/Title";
 import Member from "components/Auth/Login/Member";
 import NoMember from "components/Auth/Login/NoMember";
 import { Post } from 'api';
+import {customCookie} from 'utils';
 
 const S = {
   Login: styled.section`
@@ -63,21 +64,19 @@ export default function Login() {
   const [toggle, setToggle] = useState<TLogin>("member");
   const router = useRouter();
 
-
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
     try {
       (async () => {
         const res = await Post.login({ userId: "llssll", password: 'llssll' });
-        console.log('res: ', res);
-
+        customCookie.set("access_token", res.token);
+        router.push("/");
+        // router.reload(window.location)
       })();
     } catch (error) {
       console.log('login: ', error.response);
     }
   };
-  console.log('document.cookie',document.cookie);
-
 
   return (
     <S.Login >

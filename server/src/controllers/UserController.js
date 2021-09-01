@@ -33,7 +33,7 @@ const register = async (req, res, next) => {
 
 
 const logIn = async (req, res, next) => {
-  console.log('req: ', req.headers);
+  // console.log('req: ', req.headers);
   const { userId, password } = req.body;
 
   try {
@@ -42,6 +42,7 @@ const logIn = async (req, res, next) => {
     if (!exist) return throwError({ statusCode: 401,msg: '아이디를 확인해주세요.' });
     // password check
     const valid = await exist.checkPassword(password);
+    console.log('valid: ', valid);
     if (!valid) return throwError({ statusCode: 401 })
 
     const token = exist.generateToken();
@@ -49,9 +50,11 @@ const logIn = async (req, res, next) => {
     res.cookie('access_token', token, {
       maxAge: 1000 * 60 * 2,
       httpOnly: false,
+      sameSite: "none",
+      secure: true,
     });
 
-    return res.json({ success : true, message : "로그인 성공" });
+    return res.json({ success : true, message : "로그인 성공" ,token});
 
 
   } catch (error) {
@@ -59,7 +62,6 @@ const logIn = async (req, res, next) => {
     console.log('error-logIn: ', error);
   }
 };
-
 
 export {
   register,

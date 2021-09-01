@@ -9,7 +9,8 @@ import Loading from 'components/Common/Loading';
 import { IProduct } from 'interfaces/IProduct';
 import { Get } from "api";
 
-export default function ProductType() {
+export default function ProductType(props) {
+  console.log('ProductType: ', props);
   const router: NextRouter = useRouter();
   const { category } = router.query as { category: string };
   const { data, isLoading, isSuccess, isError, status, error,refetch } = useQuery<IProduct,Error>(['product', category], async () => await Get.products(category),{

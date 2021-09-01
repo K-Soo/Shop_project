@@ -6,15 +6,14 @@ interface IApp {
   children: React.ReactNode;
   AppProps: AppProps;
 }
-
-const AppContext = createContext(appDefaultValue);
+export const AppContext = createContext(appDefaultValue);
 export const useAppContext = () =>  useContext(AppContext);
 
 export default function AppProvider(props: IApp) {
-  const app = useApp(props.AppProps);
+  const providerValue = useApp(props.AppProps);
 
   return (
-    <AppContext.Provider value={app}>
+    <AppContext.Provider value={providerValue}>
       {props.children}
     </AppContext.Provider>
   );

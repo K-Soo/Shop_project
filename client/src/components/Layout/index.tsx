@@ -5,7 +5,6 @@ import { useAppContext } from 'context/AppProvider';
 import { NextRouter, useRouter } from 'next/router';
 import styled from "styled-components";
 
-
 interface ILayout {
   children?: React.ReactNode;
   className?: string;
@@ -16,7 +15,7 @@ const S = {
   `,
 }
 
-export default function Layout({ children, className }: ILayout) {
+export default function Layout(props: ILayout) {
   const router: NextRouter = useRouter();
   const { action, state } = useAppContext();
   const { isFooter, isHeader } = state.layout;
@@ -30,9 +29,9 @@ export default function Layout({ children, className }: ILayout) {
   }, [router]);
 
   return (
-    <S.Layout className={className}>
+    <S.Layout>
       {state.layout.isHeader && <Header />}
-      {children}
+      {props.children}
       {state.layout.isFooter && <Footer />}
     </S.Layout>
   );

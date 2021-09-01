@@ -299,21 +299,52 @@ const S = {
 export interface ISelectProduct extends IProduct {
   selectColor?: { colorName: string, hexValue: string };
   qty?: number;
+  totalProductPrice?: string;
+  totalConsumerPrice?: string;
 }
 
 export default function ProductDetail({ item }: IProductDetail) {
+  const [open, setOpen] = useState<boolean>(false);
   const [showSpec, setShowSpec] = useState<boolean>(false);
   const [selectItems, setSelectItems] = useState<ISelectProduct[]>([]);
-  console.log('selectItems: ', selectItems);
-  const [open, setOpen] = useState<boolean>(false);
   const [localData, setLocalData] = useState<ISelectProduct[]>([]);
+  const [getStorage, setGetStorage] = useState<ISelectProduct[]>([]);
+  console.log('selectItems: ', selectItems);
   console.log('localData: ', localData);
+  console.log('getStorage: ', getStorage);
+
+  // useEffect(() => {
+  //   if (localData?.length) {
+  //     localStorage.setItem('basket', JSON.stringify(localData));
+  //   }
+  // }, [localData]);
+
+  // useEffect(() => {
+  //   const result = JSON.parse(localStorage.getItem("basket"));
+  //   if(result) setLocalData(result);
+  // }, []);
+
+  const handleAddCart = () => {
+    if (!selectItems.length) return alert('필수 옵션을 선택해주세요.');
+    const result = selectItems.filter(({ selectColor: color1 }) => localData.some(({ selectColor: color2 }) => color2 === color1 ));
+    console.log('result: ', result);
+    
+    if (result.length) {
+      alert("이미동일한 상품이 장바구니에 있습니다.\n장바구니에서 확인 후 다시 추가해주세요.");
+      return;
+    } else {
+      setLocalData([...localData, ...selectItems]);
+      setOpen(true);
+    }
+  };
 
   const handleAddItem = (e: React.MouseEvent<HTMLInputElement>, currentItem: IProduct[]) => {
     const { value } = e.target as HTMLInputElement;
     const { colorName } = (e.target as HTMLInputElement).dataset;
     const rest: ISelectProduct = currentItem[0];
     rest.selectColor = { colorName: colorName, hexValue: value };
+    rest.totalConsumerPrice =  rest.consumer_price;
+    rest.totalProductPrice =  rest.product_price;
     const exist = selectItems.filter(x => x.selectColor.colorName === rest.selectColor.colorName);
     if (exist.length) {
       return alert('이미 선택하셨습니다.')
@@ -323,12 +354,21 @@ export default function ProductDetail({ item }: IProductDetail) {
     })
   };
 
-  const handleCount = (e: React.ChangeEvent<HTMLInputElement>, currentQty: ISelectProduct) => {
-    // const exist = selectItems.find(x => x.selectColor === currentQty.selectColor)
-    const cnt = Number(e.target.value);
+  const ProductAllPriceCalc = useMemo(() => {
+    return selectItems.reduce((acc:number, cur:ISelectProduct) => {
+      const result = (cur.qty * Number(cur.consumer_price)) + acc;
+      return result;
+    }, 0);
+  }, [selectItems]);
+  
+  const handleCount = (e: React.ChangeEvent<HTMLInputElement>, targetItem: ISelectProduct) => {
+    // const exist = selectItems.find(x => x.selectColor === targetItem.selectColor)
+    const cnt = +e.target.value;
     if (!cnt) return alert('최소 주문수량은 1개 입니다.');
     if (cnt > 10) return alert('최대 주문수량은 10개 입니다.');
-    currentQty.qty = cnt;
+    targetItem.qty = cnt;
+    targetItem.totalConsumerPrice = String(+targetItem.consumer_price * cnt);
+    targetItem.totalProductPrice = String(+targetItem.totalProductPrice * cnt);
     setSelectItems([...selectItems]);
   };
 
@@ -339,44 +379,10 @@ export default function ProductDetail({ item }: IProductDetail) {
     return cnt;
   }, [selectItems]);
 
-  const TotalPrice = useMemo(() => {
-    return selectItems.reduce((acc, cur) => {
-      return (cur.qty * Number(cur.consumer_price)) + acc;
-    }, 0);
-  }, [selectItems]);
-
   const handleRemoveItem = (currentItem: ISelectProduct) => {
     const filterItem = selectItems.filter(d => d.selectColor !== currentItem.selectColor);
     setSelectItems(filterItem);
   };
-
-  const handleAddLocalStorage = () => {
-    if (!selectItems.length) return alert('필수 옵션을 선택해주세요.');
-    const results = selectItems.filter(({ selectColor: color1 }) => localData.some(({ selectColor: color2 }) => color2 === color1));
-
-    if (results.length) {
-      if (confirm("이미동일한 상품이있습니다 추가하시겠습니끼??")) {
-        setLocalData((prev: any) => {
-          // const test = prev.filter(el => {
-          //  selectItems.map(d => d.selectColor.colorName === el.selectColor.colorName ? {...prev, el.qty = d.qty} : el;
-          // })
-        });
-      }
-    } else {
-      setLocalData([...localData, ...selectItems]);
-    }
-  }
-
-  useEffect(() => {
-    if (localData?.length) {
-      localStorage.setItem('basket', JSON.stringify(localData));
-      setOpen(true);
-    }
-  }, [localData])
-
-
-
-
 
 
 
@@ -482,14 +488,14 @@ export default function ProductDetail({ item }: IProductDetail) {
 
             <S.TotalPrice>
               <em> {TotalCnt}개</em>
-              <strong>{PriceComma(TotalPrice)}원</strong>
+              <strong>{PriceComma(ProductAllPriceCalc)}원</strong>
             </S.TotalPrice>
             <Button>구매하기</Button>
             <S.EtcBox>
-              <span className='basket-add' onClick={handleAddLocalStorage}>장바구니 담기</span>
+              <span className='basket-add' onClick={handleAddCart}>장바구니 담기</span>
               <span className='wishlist'>관심상품 추가</span>
             </S.EtcBox>
-            {/* <BasketModal open={open} onClick={() => setOpen(!open)} /> */}
+            <BasketModal open={open} onClick={() => setOpen(!open)} />
           </div>
         </S.Card>
       ))}
@@ -499,7 +505,7 @@ export default function ProductDetail({ item }: IProductDetail) {
 
 
 
-  // const handleAddLocalStorage = () => {
+  // const handleAddCart = () => {
   //   if (!selectItems.length) return alert('필수 옵션을 선택해주세요.');
 
   //   const results = selectItems.filter(({ selectColor: color1 }) => localData.some(({ selectColor: color2 }) => color2 === color1));

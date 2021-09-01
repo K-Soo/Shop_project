@@ -1,34 +1,40 @@
 import React from "react";
 import styled from "styled-components";
-import NonLogin from 'components/Basket/NonLogin';
-import Title from 'components/style/Title';
-import BasketList from 'components/Basket/BasketList';
 import FinalAmount from 'components/Forms/FinalAmount';
 import FormBox from 'components/Forms/FormBox';
 import DeliveryInfo from 'components/Forms/DeliveryInfo';
 import OrderList from 'components/Forms/OrderList';
 import UserInfo from 'components/Forms/UserInfo';
-import PageTitle from 'components/Common/PageTitle';
-interface IBasket {
+import Payment from 'components/Forms/Payment';
+
+interface IOrderForm {
 
 }
 
 const S = {
-  Basket: styled.div`
+  OrderForm: styled.div`
   `,
 }
 
-export default function Basket({ }: IBasket) {
+export default function OrderForm({ }: IOrderForm) {
   return (
-    <S.Basket>
-      <PageTitle TitleText='장바구니'/>
+    <S.OrderForm>
       <UserInfo />
-      <FormBox title='장바구니 목록'>
-        <OrderList caption='장바구니 목록' />
+      <FormBox title='주문내역'>
+        <OrderList caption='주문내역 목록' />
       </FormBox>
+
       <FormBox title='결제예정금액'>
         <FinalAmount />
       </FormBox>
-    </S.Basket>
+      <FormBox title='배송정보'>
+        <DeliveryInfo />
+      </FormBox>
+
+      <FormBox title='결제'>
+        <Payment />
+      </FormBox>
+
+    </S.OrderForm>
   );
 }

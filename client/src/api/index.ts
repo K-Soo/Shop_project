@@ -2,15 +2,24 @@ import axios, { AxiosResponse } from 'axios';
 import { PostType } from '../models/post.interface';
 import { IProduct } from 'interfaces/IProduct';
 
+axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+
 const instance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_SERVER_URL,
-  timeout: 15000,
+  // timeout: 15000,
+  withCredentials: true,
 });
 const responseBody = (response: AxiosResponse) => response.data;
 
+// headers: {
+//   'Access-Control-Allow-Origin': '*',
+//   'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+//   'Access-Control-Allow-Credentials': 'true',
+// },
+
 const requests = {
   get: (url: string) => instance.get(url).then(responseBody),
-  post: (url: string, body: {}) => instance.post(url, body).then(responseBody),
+  post: (url: string, body: {}) => instance.post(url, body,{  withCredentials: true,}).then(responseBody),
   put: (url: string, body: {}) => instance.put(url, body).then(responseBody),
   delete: (url: string) => instance.delete(url).then(responseBody),
 };

@@ -11,10 +11,6 @@ import { InferGetServerSidePropsType, GetServerSideProps } from 'next';
 import { Get } from "api";
 import { AppContext, AppInitialProps, AppProps } from "next/app"
 
-interface TS {
-  category: any;
-  id: string
-}
 export default function ProductDetailPage(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
   console.log('props: ', props);
   // const { item } = props as { item: IProduct }
@@ -78,6 +74,6 @@ export const getServerSideProps: GetServerSideProps = async (context): Promise<{
     }
   } catch (error) {
     // console.log('error: ', error);
-    throw error; 
+    throw error;
   }
 }

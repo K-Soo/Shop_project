@@ -174,7 +174,7 @@ export default function ImageSlider({ item }: IImageSlider) {
                     <S.ColorIcon className='color-icon' key={d.hex_value} color={d.hex_value} />
                   ))}
                 </S.ColorBox>
-                <Title level={6} className='title'>{d.name.slice(0, 20)}</Title>
+                <Title level={6} className='title'>{d.name}</Title>
                 <S.Line />
                 <p className='desc-box__short-desc'>{d.description.slice(0, 30)}</p>
                 <span className='desc-box__product-price'><del>{PriceComma(d.product_price)}원</del></span>

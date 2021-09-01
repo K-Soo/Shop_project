@@ -124,7 +124,6 @@ export default function BasketList({ }: IBasketList) {
             <td>
               ddd
             </td>
-
           </tr>
         </tfoot>
       </table>
