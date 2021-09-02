@@ -20,3 +20,9 @@ export interface IProduct {
   __v: number;
   _id: string;
 }
+export interface ICartItem extends IProduct {
+  selectColor?: { colorName: string, hexValue: string }[];
+  qty?: number;
+  totalProductPrice?: string;
+  totalConsumerPrice?: string;
+}

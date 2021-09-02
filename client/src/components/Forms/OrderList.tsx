@@ -42,9 +42,14 @@ const S = {
       display: flex;
       &__left{
         margin-right: 10px;
-        border: 1px solid red;
+        /* border: 1px solid red; */
         img{
-          /* height: 100%; */
+
+        }
+        .img{
+          height: 100%;
+        border: 1px solid red;
+        background-color: #000;
         }
       }
       &__right{
@@ -169,7 +174,6 @@ const Mock = [
 export default function OrderList({ caption }: IOrderList) {
   return (
     <S.OrderList>
-
       {Mock.map((d) => (
         <S.Item key={d.seq}>
           <S.MainContent>
@@ -179,6 +183,7 @@ export default function OrderList({ caption }: IOrderList) {
             <div className='product-info'>
               <div className='product-info__left'>
                 <Image
+                  className='img'
                   src={d.imageUrl[0].url}
                   alt="Picture of the author"
                   width={100}
@@ -225,9 +230,6 @@ export default function OrderList({ caption }: IOrderList) {
           </S.ButtonBox>
         </S.Item>
       ))}
-
-
-
     </S.OrderList>
   );
 }

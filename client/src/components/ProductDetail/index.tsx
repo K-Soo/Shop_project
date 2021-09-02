@@ -1,13 +1,19 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import styled, { css } from 'styled-components';
 import Image from 'next/image'
 import Title from 'components/style/Title';
-import { TColor, IProduct } from 'interfaces/IProduct';
+import { TColor, IProduct, ICartItem } from 'interfaces/IProduct';
 import Icon from 'components/Icon/Icon';
 import Radio from 'components/style/Radio';
 import Button from 'components/style/Button';
+import CheckBoxColor from 'components/style/CheckBoxColor';
 import BasketModal from 'components/ProductDetail/BasketModal';
-import {PriceComma} from 'utils';
+import { PriceComma } from 'utils';
+import { Post } from 'api';
+import { useCartContext } from 'context/CartProvider';
+import { customCookie } from 'utils';
+import Cookie from "js-cookie";
+
 interface IProductDetail {
   item: IProduct[];
 }
@@ -292,76 +298,77 @@ const S = {
         margin-right: 5px;
       }
     }
-
   `,
 }
 
-export interface ISelectProduct extends IProduct {
-  selectColor?: { colorName: string, hexValue: string };
-  qty?: number;
-  totalProductPrice?: string;
-  totalConsumerPrice?: string;
-}
 
 export default function ProductDetail({ item }: IProductDetail) {
   const [open, setOpen] = useState<boolean>(false);
   const [showSpec, setShowSpec] = useState<boolean>(false);
-  const [selectItems, setSelectItems] = useState<ISelectProduct[]>([]);
-  const [localData, setLocalData] = useState<ISelectProduct[]>([]);
-  const [getStorage, setGetStorage] = useState<ISelectProduct[]>([]);
+  const [selectItems, setSelectItems] = useState<ICartItem[]>([]);
   console.log('selectItems: ', selectItems);
+  const [localData, setLocalData] = useState<ICartItem[]>([]);
+  const [duplicate,setDuplicate] = useState(false);
   console.log('localData: ', localData);
-  console.log('getStorage: ', getStorage);
+  const { action, state } = useCartContext();
+  const [localStorageData,setLocalStorageData] = useState(null);
+  console.log('localStorageData: ', localStorageData);
 
-  // useEffect(() => {
-  //   if (localData?.length) {
-  //     localStorage.setItem('basket', JSON.stringify(localData));
-  //   }
-  // }, [localData]);
+  useEffect(() => {
+    if(localData.length){
+      localStorage.setItem('basket',JSON.stringify(localData));
+    }
+  },[localData]);
 
-  // useEffect(() => {
-  //   const result = JSON.parse(localStorage.getItem("basket"));
-  //   if(result) setLocalData(result);
-  // }, []);
-
+  useEffect(() => {
+    const result = JSON.parse(localStorage.getItem("basket"));
+    setLocalStorageData(result);
+  },[]);
+  
   const handleAddCart = () => {
     if (!selectItems.length) return alert('필수 옵션을 선택해주세요.');
-    const result = selectItems.filter(({ selectColor: color1 }) => localData.some(({ selectColor: color2 }) => color2 === color1 ));
-    console.log('result: ', result);
+    // const result = JSON.parse(localStorage.getItem("basket"));
+    const result = localData.filter(({ selectColor: color1 }) => selectItems.some(({ selectColor: color2 }) => color1 === color2));
+    const result2 = selectItems.filter(({ selectColor: color1 }) => localStorageData.some(({ selectColor: color2 }) => color1 === color2));
     
+    console.log('same: ', result);
+    console.log('result2: ', result2);
     if (result.length) {
       alert("이미동일한 상품이 장바구니에 있습니다.\n장바구니에서 확인 후 다시 추가해주세요.");
       return;
     } else {
-      setLocalData([...localData, ...selectItems]);
+      setLocalData(prev => [...prev, ...selectItems]);
+      action.setItem(selectItems);
       setOpen(true);
     }
   };
 
-  const handleAddItem = (e: React.MouseEvent<HTMLInputElement>, currentItem: IProduct[]) => {
+  const handleAddItem = (e: React.ChangeEvent<HTMLInputElement>, currentItem: IProduct[]) => {
     const { value } = e.target as HTMLInputElement;
     const { colorName } = (e.target as HTMLInputElement).dataset;
-    const rest: ISelectProduct = currentItem[0];
-    rest.selectColor = { colorName: colorName, hexValue: value };
-    rest.totalConsumerPrice =  rest.consumer_price;
-    rest.totalProductPrice =  rest.product_price;
-    const exist = selectItems.filter(x => x.selectColor.colorName === rest.selectColor.colorName);
+    const { ...rest }: ICartItem = currentItem[0];
+
+    rest.selectColor = [{ colorName: colorName, hexValue: value }];
+    rest.totalConsumerPrice = currentItem[0].consumer_price;
+    rest.totalProductPrice = currentItem[0].product_price;
+    const exist = selectItems.filter(x => x.selectColor[0].colorName == rest.selectColor[0].colorName);
     if (exist.length) {
-      return alert('이미 선택하셨습니다.')
+      return alert('이미 선택하셨습니다. 아래에서 삭제후 다시 이용해주세요');
+    }else{
+      setSelectItems(prev => {
+        return [...prev, { ...rest, qty: 1 }];
+      });
     }
-    setSelectItems(prev => {
-      return [...prev, { ...rest, qty: 1 }];
-    })
   };
 
   const ProductAllPriceCalc = useMemo(() => {
-    return selectItems.reduce((acc:number, cur:ISelectProduct) => {
+    return selectItems.reduce((acc: number, cur: ICartItem) => {
       const result = (cur.qty * Number(cur.consumer_price)) + acc;
       return result;
     }, 0);
   }, [selectItems]);
-  
-  const handleCount = (e: React.ChangeEvent<HTMLInputElement>, targetItem: ISelectProduct) => {
+
+  const handleCount = (e: React.ChangeEvent<HTMLInputElement>, targetItem: ICartItem) => {
     // const exist = selectItems.find(x => x.selectColor === targetItem.selectColor)
     const cnt = +e.target.value;
     if (!cnt) return alert('최소 주문수량은 1개 입니다.');
@@ -379,14 +386,10 @@ export default function ProductDetail({ item }: IProductDetail) {
     return cnt;
   }, [selectItems]);
 
-  const handleRemoveItem = (currentItem: ISelectProduct) => {
+  const handleRemoveItem = (currentItem: ICartItem) => {
     const filterItem = selectItems.filter(d => d.selectColor !== currentItem.selectColor);
     setSelectItems(filterItem);
   };
-
-
-
-
 
   return (
     <S.ProductDetail>
@@ -452,22 +455,28 @@ export default function ProductDetail({ item }: IProductDetail) {
                 <strong className='required-check'>[필수]</strong>
               </div>
               <div className='radio-box'>
-                {d.product_colors.length > 0 && d.product_colors.map((d, i) => (
+                {d.product_colors.length  && d.product_colors.map((d, i) => (
                   <div key={d.hex_value}>
-                    <Radio className='color-item' name='radioGroup' dataColorName={d.color_name} value={d.hex_value} title={d.color_name} onClick={(e) => handleAddItem(e, item)} />
+                    <CheckBoxColor 
+                      className='color-item'
+                      name='checkbox-color' 
+                      checked={(selectItems as any).find((f:any) => f.selectColor[0].hexValue === d.hex_value) || false} 
+                      dataColorName={d.color_name} 
+                      value={d.hex_value} 
+                      title={d.color_name} 
+                      onChange={(e) => handleAddItem(e, item)} />
                   </div>
                 ))}
-
               </div>
             </S.ProductColorSelect>
 
             <S.CurrentProducts>
               <ul>
-                {selectItems.map((d: ISelectProduct) => (
-                  <li key={d.selectColor.hexValue}>
+                {selectItems.map((d: ICartItem) => (
+                  <li key={d.selectColor[0].hexValue}>
                     <div className='current-title'>
                       <span className='current-title__name'>{d.name}</span>
-                      <b className='current-title__color'>{d.selectColor.colorName}</b>
+                      <b className='current-title__color'>{d.selectColor[0].colorName}</b>
                     </div>
                     <div className='current-quantity'>
                       <input type='number' value={d.qty} name='qtyCount' onChange={(e) => handleCount(e, d)} />

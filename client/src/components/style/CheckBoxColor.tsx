@@ -1,54 +1,23 @@
-import React from 'react';
-import styled,{css} from 'styled-components';
+import React from "react";
+import styled, { css } from 'styled-components';
 
-interface IRadioButtonProps {
+interface ICheckBoxColor {
   className?: string;
   title: string;
   name: string;
   checked?: boolean;
   value?: string;
-  onClick?: React.MouseEventHandler<HTMLInputElement>;
+  onChange?: React.ChangeEventHandler<HTMLInputElement>;
   defaultChecked?: boolean;
   height?: string;
   minWidth?: string;
-  disabled?:boolean;
+  disabled?: boolean;
   required?: boolean;
   dataColorName?: string;
 }
 
-const RadioButton: React.FunctionComponent<IRadioButtonProps> = ({
-  className,
-  name,
-  title,
-  value,
-  checked,
-  defaultChecked,
-  height,
-  minWidth,
-  disabled,
-  required,
-  onClick,
-  dataColorName,
-}) => {
-  return (
-    <label className={className}>
-      <input
-        required={required}
-        type='checkbox'
-        name={name}
-        value={value}
-        defaultChecked={defaultChecked}
-        checked={checked}
-        onClick={onClick}
-        disabled={disabled}
-        data-color-name={dataColorName}
-      />
-      <span dangerouslySetInnerHTML={{ __html: title?.replace('/n', '<br />') }} />
-    </label>
-  );
-};
-
-export default styled(RadioButton)`
+const S = {
+  CheckBoxColor: styled.label<{ minWidth: string, height: string, disabled: boolean }>`
   box-sizing: border-box;
   input[type='checkbox'] {
     display: none;
@@ -87,4 +56,36 @@ export default styled(RadioButton)`
       cursor: default;
     `}
   }
-`;
+  `,
+}
+
+export default function CheckBoxColor({
+  className,
+  name,
+  title,
+  value,
+  checked,
+  defaultChecked,
+  height,
+  minWidth,
+  disabled,
+  required,
+  onChange,
+  dataColorName, }: ICheckBoxColor) {
+  return (
+    <S.CheckBoxColor className={className} minWidth={minWidth} height={height} disabled={disabled}>
+      <input
+        required={required}
+        type='checkbox'
+        name={name}
+        value={value}
+        defaultChecked={defaultChecked}
+        checked={checked}
+        onChange={onChange}
+        disabled={disabled}
+        data-color-name={dataColorName}
+      />
+      <span dangerouslySetInnerHTML={{ __html: title?.replace('/n', '<br />') }} />
+    </S.CheckBoxColor>
+  );
+}

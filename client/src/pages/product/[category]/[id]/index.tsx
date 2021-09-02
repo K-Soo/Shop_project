@@ -10,13 +10,15 @@ import ProductDetail from 'components/ProductDetail';
 import { InferGetServerSidePropsType, GetServerSideProps } from 'next';
 import { Get } from "api";
 import { AppContext, AppInitialProps, AppProps } from "next/app"
+import CartProvider, { useCartContext } from 'context/CartProvider';
+import cookies from 'next-cookies'
 
 export default function ProductDetailPage(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  console.log('props: ', props);
-  // const { item } = props as { item: IProduct }
-  const { item } = props;
+  const { item ,cookies} = props;
   const router: NextRouter = useRouter();
   const { category, id } = router.query as { category: string, id: string };
+
+
 
   // const { data, isLoading, isSuccess, isError, status, error } = useQuery<IProduct>(['productDetail', category, id], async () => await Get.getProduct(category, id), {
   //   retry: 0,
@@ -54,15 +56,18 @@ export default function ProductDetailPage(props: InferGetServerSidePropsType<typ
         <title>쥬얼리 | {item.name}</title>
         <meta name="description" content={item.description} />
       </Head>
-      <MainContainer >
-        <ProductDetail item={[item]} />
-      </MainContainer>
+      <CartProvider value={props}>
+        <MainContainer >
+          <ProductDetail item={[item]} />
+        </MainContainer>
+      </CartProvider>
     </>
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async (context): Promise<{ props: { item: IProduct } }> => {
+export const getServerSideProps: GetServerSideProps = async (context): Promise<{ props: { item: IProduct ,cookies?:any} }> => {
   const { category, id } = context.query as { category: string, id: string };
+  const parse = context.req ? cookies(context) : '';
   // console.log('xxxxx: ', context.req.headers);
   try {
     const res = await Get.getProduct(category, id);
@@ -70,10 +75,11 @@ export const getServerSideProps: GetServerSideProps = async (context): Promise<{
     return {
       props: {
         item: res,
+        cookies: parse,
       },
     }
   } catch (error) {
     // console.log('error: ', error);
     throw error;
   }
-}
+};

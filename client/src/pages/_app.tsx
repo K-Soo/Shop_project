@@ -16,8 +16,7 @@ import AppProvider,{useAppContext} from 'context/AppProvider';
 
 export default function App(props: AppProps) {
   const {state,action} = useAppContext();
-
-  console.log('_App props: ', props);
+  // console.log('_App props: ', props);
   const queryClient = new QueryClient()
   // useApp(props.pageProps.userId);
   return (
@@ -26,7 +25,7 @@ export default function App(props: AppProps) {
         <title>앱인데</title>
       </Head>
       <GlobalStyle />
-      <AppProvider AppProps={props.pageProps}>
+      <AppProvider AppProps={props}>
         <QueryClientProvider client={queryClient}>
           {/* <Hydrate state={props.pageProps.dehydratedState}> */}
             <Theme>
@@ -44,9 +43,11 @@ export default function App(props: AppProps) {
 
 App.getInitialProps = async (context: NextAppContext) => {
   const { ctx, Component } = context;
+  if(ctx.req){
+    console.log('req 있어!!!!!!!!!!');
+  }
   const { access_token } =  cookies(ctx);
   const decodedJwt = access_token && jwt.decode(access_token) as any;
-  console.log('decodedJwt: ', decodedJwt);
 
   let pageProps = {};
   if (Component.getInitialProps) {
@@ -83,5 +84,5 @@ App.getInitialProps = async (context: NextAppContext) => {
   //   Axios.defaults.headers.Cookie = cookie;
   // }
 
-  return { pageProps };
+  return { userInfo };
 };
