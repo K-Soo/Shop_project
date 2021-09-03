@@ -54,6 +54,7 @@ const generateAction = (update: (recipe: (draft: IUseCartState) => void) => void
 
 const useCart = (props: any) :IUseCart=> {
   const [state, setAppState] = useState(() => initializer(props));
+  console.log('state: ', state);
 
   const update = (recipe: (draft: IUseCartState) => void) =>
     setAppState((prev) => produce(prev, recipe));
@@ -61,12 +62,6 @@ const useCart = (props: any) :IUseCart=> {
   const action = generateAction(update);
 
   const app = { props, state, action };
-
-  useEffect(() => {
-    const result = JSON.parse(localStorage.getItem("basket"));
-    if(result) action.setItem(result);
-  }, []);
-
 
   return app;
 };

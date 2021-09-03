@@ -308,32 +308,51 @@ export default function ProductDetail({ item }: IProductDetail) {
   const [selectItems, setSelectItems] = useState<ICartItem[]>([]);
   console.log('selectItems: ', selectItems);
   const [localData, setLocalData] = useState<ICartItem[]>([]);
-  const [duplicate,setDuplicate] = useState(false);
   console.log('localData: ', localData);
   const { action, state } = useCartContext();
-  const [localStorageData,setLocalStorageData] = useState(null);
+  const [localStorageData, setLocalStorageData] = useState([]);
+  const [duplicate, setDuplicate] = useState(false);
+  console.log('duplicate: ', duplicate);
   console.log('localStorageData: ', localStorageData);
 
   useEffect(() => {
-    if(localData.length){
-      localStorage.setItem('basket',JSON.stringify(localData));
+    if (localData.length) {
+      console.log('셋 할때');
+      localStorage.setItem('basket', JSON.stringify(localData));
+      const result = JSON.parse(localStorage.getItem("basket"));
+      setLocalStorageData(result);
     }
-  },[localData]);
+  }, [localData]);
 
   useEffect(() => {
+    console.log('초기화될떄');
     const result = JSON.parse(localStorage.getItem("basket"));
-    setLocalStorageData(result);
-  },[]);
-  
+    if(result) setLocalStorageData(result);
+  }, []);
+
+  useEffect(() => {
+    if(localStorageData.length){
+      const result = localStorageData.filter(({ name: localName ,selectColor: color1 }) => selectItems.some(({ name: selectName,selectColor: color2 }) => color2[0].colorName == color1[0].colorName && localName === selectName));
+      if(result.length) {
+        setDuplicate(true);
+      }else{
+        setDuplicate(false);
+      }
+      console.log('맞아?: ', result);
+      // setDuplicate(result2);
+    }
+  },[selectItems]);
+
   const handleAddCart = () => {
     if (!selectItems.length) return alert('필수 옵션을 선택해주세요.');
     // const result = JSON.parse(localStorage.getItem("basket"));
     const result = localData.filter(({ selectColor: color1 }) => selectItems.some(({ selectColor: color2 }) => color1 === color2));
-    const result2 = selectItems.filter(({ selectColor: color1 }) => localStorageData.some(({ selectColor: color2 }) => color1 === color2));
-    
+    console.log('result: ', result);
+    // const result2 = localStorageData ? localStorageData.filter(({ selectColor: color1 }) => selectItems.some(({ selectColor: color2 }) => color1 === color2)) : null;
+
     console.log('same: ', result);
-    console.log('result2: ', result2);
-    if (result.length) {
+    // console.log('result2: ', result2);
+    if (result.length !== 0  || duplicate) {
       alert("이미동일한 상품이 장바구니에 있습니다.\n장바구니에서 확인 후 다시 추가해주세요.");
       return;
     } else {
@@ -354,7 +373,7 @@ export default function ProductDetail({ item }: IProductDetail) {
     const exist = selectItems.filter(x => x.selectColor[0].colorName == rest.selectColor[0].colorName);
     if (exist.length) {
       return alert('이미 선택하셨습니다. 아래에서 삭제후 다시 이용해주세요');
-    }else{
+    } else {
       setSelectItems(prev => {
         return [...prev, { ...rest, qty: 1 }];
       });
@@ -455,15 +474,15 @@ export default function ProductDetail({ item }: IProductDetail) {
                 <strong className='required-check'>[필수]</strong>
               </div>
               <div className='radio-box'>
-                {d.product_colors.length  && d.product_colors.map((d, i) => (
+                {d.product_colors.length && d.product_colors.map((d, i) => (
                   <div key={d.hex_value}>
-                    <CheckBoxColor 
+                    <CheckBoxColor
                       className='color-item'
-                      name='checkbox-color' 
-                      checked={(selectItems as any).find((f:any) => f.selectColor[0].hexValue === d.hex_value) || false} 
-                      dataColorName={d.color_name} 
-                      value={d.hex_value} 
-                      title={d.color_name} 
+                      name='checkbox-color'
+                      checked={(selectItems as any).find((f: any) => f.selectColor[0].hexValue === d.hex_value) || false}
+                      dataColorName={d.color_name}
+                      value={d.hex_value}
+                      title={d.color_name}
                       onChange={(e) => handleAddItem(e, item)} />
                   </div>
                 ))}
