@@ -147,6 +147,9 @@ const Menu: React.FC<IMenu> = ({ className, ScrollActive }) => {
   const handleLogOut = () => {
     if(confirm('로그아웃 하시겠습니까?')){
       customCookie.remove('access_token');
+      localStorage.removeItem('basket');
+      const result = customCookie.get('access_token');
+      console.log('result: ', result);
       return router.push('/');
     }
   }

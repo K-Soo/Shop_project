@@ -1,13 +1,13 @@
 import React from "react";
 import styled from "styled-components";
-
+import Button from 'components/style/Button';
+import Icon from 'components/Icon/Icon';
 interface IFinalAmount {
-  
+
 }
 
 const S = {
   FinalAmount: styled.div`
-    border: 1px solid #333;
     /* margin: 30px 0; */
     table{
       width: 100%;
@@ -71,12 +71,31 @@ const S = {
       }
       `}
     }
-
-    
+  `,
+  BasketButtons: styled.div`
+    margin-top: 15px;
+    display: flex;
+    justify-content: flex-end;
+    .button-wrapper{
+      display: flex;
+      max-width: 500px;
+      button{
+        height: 40px;
+      }
+      button:first-child{
+        margin-right: 15px;
+      }
+      ${({ theme }) => theme.mobile`
+        button{
+          height: 30px;
+          font-size: 12px;
+        }
+      `}
+    }
   `,
 }
 
-export default function FinalAmount({}:IFinalAmount) {
+export default function FinalAmount({ }: IFinalAmount) {
   return (
     <S.FinalAmount>
       <table>
@@ -104,6 +123,15 @@ export default function FinalAmount({}:IFinalAmount) {
           </tr>
         </tbody>
       </table>
+
+      <S.BasketButtons >
+        <div className='button-wrapper'>
+          <Button white fontSize='14px'>
+            선택상품 주문</Button>
+          <Button black fontSize='14px'>전체상품 주문</Button>
+        </div>
+      </S.BasketButtons>
+
     </S.FinalAmount>
   );
 }

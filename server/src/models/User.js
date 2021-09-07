@@ -63,7 +63,6 @@ UserSchema.methods.serialize = function () {
 };
 
 UserSchema.methods.generateToken = function () {
-
   const payload = { // access token에 들어갈 payload
     id: this.id,
     userId: this.userId,

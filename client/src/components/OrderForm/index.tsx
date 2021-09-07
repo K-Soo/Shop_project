@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import FinalAmount from 'components/Forms/FinalAmount';
-import FormBox from 'components/Forms/FormBox';
+import FormBox from 'components/Forms/FormFieldset';
 import DeliveryInfo from 'components/Forms/DeliveryInfo';
 import OrderList from 'components/Forms/OrderList';
 import UserInfo from 'components/Forms/UserInfo';
@@ -21,12 +21,13 @@ export default function OrderForm({ }: IOrderForm) {
     <S.OrderForm>
       <UserInfo />
       <FormBox title='주문내역'>
-        <OrderList caption='주문내역 목록' />
+        <OrderList />
       </FormBox>
 
       <FormBox title='결제예정금액'>
         <FinalAmount />
       </FormBox>
+      
       <FormBox title='배송정보'>
         <DeliveryInfo />
       </FormBox>

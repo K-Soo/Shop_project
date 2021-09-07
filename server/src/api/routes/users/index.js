@@ -1,5 +1,5 @@
 import express from 'express';
-import { UserController } from '../../../controllers';
+import { UserController,BasketController } from '../../../controllers';
 import {  body } from "express-validator";
 import {validateRequestSchema} from '../../middleware/validateRequestSchema';
 import multer from 'multer';
@@ -10,8 +10,11 @@ const upload = multer({
   dest : 'uploads/'
 });
 
-users.post('/register', UserController.register);
+users.get('/basket',  BasketController.list);
+users.put('/basket',  BasketController.update);
+users.delete('/basket/:user/:id',  BasketController.remove);
 
+users.post('/register', UserController.register);
 users.post('/login',  UserController.logIn);
 
 // users.post('/login', body("name").isLength({ min: 2 }), validateRequestSchema, UserController.logIn);

@@ -6,11 +6,15 @@ import Button from 'components/style/Button';
 import Link from 'next/link';
 import DarkBackground from 'components/Common/DarkBackground';
 import { PriceComma } from 'utils/PriceComma';
-import { ISelectProduct } from 'components/ProductDetail';
+import { useBasketContext } from 'context/BasketProvider';
+import { useAppContext } from 'context/AppProvider';
+import Image from 'next/image'
+import { TColor, IProduct, IBasketItem } from 'interfaces/IProduct';
+import { useRouter } from "next/router";
+
 
 interface IBasketModal {
-  open: boolean;
-  onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+
 }
 
 const CommonIcon = css`
@@ -74,6 +78,19 @@ const S = {
             padding: 10px 0;
             border-bottom: 1px solid #f0f0f0;
             text-align: center;
+            vertical-align: middle;
+          }
+          .img-td{
+            border: 1px solid red;
+            font-size: 0;
+            display: inline-block;
+            padding: 0;
+            /* height: 100%; */
+            /* width: 50px; */
+            .img{
+              /* height: 100%; */
+              /* width: 100%; */
+            }
           }
           .option-info{
             text-align: left;
@@ -124,25 +141,37 @@ const S = {
   `,
 }
 
-export default function BasketModal({ open, onClick }: IBasketModal) {
-  const [storage, setStorage] = useState<ISelectProduct[]>([])
+export default function BasketModal(props: IBasketModal) {
+  const [getLocalItem, setGetLocalItem] = useState<IBasketItem[]>([]);
+  const { action, state } = useBasketContext();
+  const App = useAppContext();
+  const router = useRouter();
 
   useEffect(() => {
-    const result = JSON.parse(localStorage.getItem("basket"))
-    setStorage(result);
-  }, [])
+    const result = JSON.parse(localStorage.getItem("basket"));
+    if(result) setGetLocalItem(result);
+  },[])
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const { name } = e.target;
+    const findAll = App.state.basket.basketList.filter(d => d._id === name);
+    App.action.setCurrentOrderItem(findAll);
+    router.push('/order/orderform');
+    console.log('name: ', name);
+  }
 
   return (
-    <DarkBackground active={open}>
-      <S.BasketModal open={open} >
+    <DarkBackground active={state.openModal}>
+      <S.BasketModal open={state.openModal} >
         <S.Header>
           <Title level={3} size="18">장바구니 담기</Title>
-          <i onClick={onClick}>
+          <i onClick={action.setOpenModal}>
             <Icon name='closeSmall' />
           </i>
         </S.Header>
         <S.Content>
-          <p className='total-cnt'>총 3개의 상품이 있습니다.</p>
+          <p className='total-cnt'>총 {App.state.basket.localStorageItem?.length ?? 0}개의 상품이 있습니다.</p>
           <table>
             <caption>장바구니 목록 확인</caption>
             <colgroup>
@@ -158,9 +187,19 @@ export default function BasketModal({ open, onClick }: IBasketModal) {
               </tr>
             </thead>
             <tbody>
-              {/* {storage && storage.map((d) =>
-                <tr className='row' key={d._id}>
-                  <td>1</td>
+              {App.state.basket.localStorageItem && App.state.basket.localStorageItem.map((d, i) =>
+                <tr className='row' key={d.selectColor[0].hexValue}>
+                  <td className='img-td'>
+                    <Image
+                      src={d.imageUrl[0].url}
+                      alt={d.name}
+                      width={50}
+                      height={30}
+                      // layout="fill"
+                      className='img'
+                      // objectFit="cover"
+                    />
+                  </td>
                   <td className='option-info'>
                     <p>
                       <span className='name'>{d.name}</span>
@@ -168,7 +207,7 @@ export default function BasketModal({ open, onClick }: IBasketModal) {
                       {d.best_product && <i className='best-icon' >best</i>}
                       <span>({d.qty}개)</span>
                     </p>
-                    <span>[옵션:{d.selectColor}]</span>
+                    <span>[옵션:{d.selectColor[0].colorName}]</span>
                   </td>
                   <td>
                     <del>
@@ -177,18 +216,18 @@ export default function BasketModal({ open, onClick }: IBasketModal) {
                     {PriceComma(d.consumer_price)}원
                   </td>
                 </tr>
-              )}; */}
+              )}
             </tbody>
           </table>
           <S.Pagination>페이지</S.Pagination>
         </S.Content>
         <S.Footer>
           <div className='button-group'>
-            <Button onClick={onClick} fontSize='13px' width='80px' white height='40px' margin='0 15px 0 0'><Icon name='close' />닫기</Button>
+            <Button onClick={action.setOpenModal} fontSize='13px' width='80px' white height='40px' margin='0 15px 0 0'><Icon name='close' />닫기</Button>
             <Button fontSize='13px' width='auto' white height='40px'>
               <Link href='/order/basket'><a >장바구니 이동</a></Link></Button>
           </div>
-          <Button margin='0 0 0 20px' fontSize='13px' login height='40px'>바로구매 하기</Button>
+          <Button margin='0 0 0 20px' fontSize='13px' login height='40px' onClick={handleSubmit}>바로구매 하기</Button>
         </S.Footer>
       </S.BasketModal>
     </DarkBackground>

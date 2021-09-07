@@ -12,6 +12,7 @@ interface ISelect {
   onChange?: React.ChangeEventHandler<HTMLSelectElement>;
   required?: boolean;
   id?: string;
+  maxWidth?:string;
   readOnly?: boolean;
 }
 
@@ -24,6 +25,7 @@ let Select: React.FunctionComponent<ISelect> = ({
   onChange,
   disabled,
   required,
+  maxWidth
 }) => {
   return (
     <select
@@ -42,7 +44,8 @@ let Select: React.FunctionComponent<ISelect> = ({
 
 Select = styled(Select)`
   box-sizing: border-box;
-  width: ${({ width }) => `${width}` ?? "100%" };
+  width: ${({width}) => width ? `${width}px` : '100%'};
+  max-width: ${({maxWidth}) => maxWidth ? `${maxWidth}px` : '100%'};
   margin-left: ${({ marginLeft }) => `${marginLeft}px` ?? "0"};
   margin-right: ${({ marginRight }) => `${marginRight}px` ?? "0"};
   height: ${props => (props.height ? `${props.height}px` : "100%")};

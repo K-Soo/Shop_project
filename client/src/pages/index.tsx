@@ -3,7 +3,7 @@ import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Head from 'next/head';
 
 
-export default function Home(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function Home(propss) {
   return (
     <>
       <Head>
@@ -16,14 +16,14 @@ export default function Home(props: InferGetServerSidePropsType<typeof getServer
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async ctx => {
-  // const res = await Get.products();
-  const value = process.env.NODE_ENV
+// export const getServerSideProps: GetServerSideProps = async ctx => {
+//   // const res = await Get.products();
+//   const value = process.env.NODE_ENV
 
-  return {
-    props: {
-      env: value,
-    },
-  };
-};
+//   return {
+//     props: {
+//       env: value,
+//     },
+//   };
+// };
 

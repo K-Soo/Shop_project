@@ -2,9 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import Link from "next/link";
 import Icon from 'components/Icon/Icon';
-
-interface ICartIcon{
-  className?:string;
+import { useAppContext } from 'context/AppProvider';
+interface ICartIcon {
+  className?: string;
 }
 
 const S = {
@@ -19,6 +19,26 @@ const S = {
     font-size: 0;
     border: solid #e8e8e8;
     border-width: 0px 0px 0px 1px;
+    .qty-text{
+      background-color: crimson;
+      color: #fff;
+      font-size: 14px;
+      text-align: center;
+      position: absolute;
+      top: 8px;
+      left: 50%;
+      transform: translateX(-85%);
+      width: 20px;
+      height: 20px;
+      line-height: 21px;
+      border-radius: 50%;
+      ${({ theme }) => theme.mobile`
+        top: 1px;
+        width: 18px;
+        height: 18px;
+        font-size: 12px;
+      `};
+    }
     svg{
       width: 30px;
       height: 30px;
@@ -28,34 +48,19 @@ const S = {
       width: 40px;
     `};
   `,
-  Cnt: styled.span`
-    background-color: crimson;
-    color: #fff;
-    font-size: 14px;
-    text-align: center;
-    position: absolute;
-    top: 8px;
-    left: 50%;
-    transform: translateX(-85%);
-    width: 20px;
-    height: 20px;
-    line-height: 21px;
-    border-radius: 50%;
-    ${({ theme }) => theme.mobile`
-      top: 1px;
-      width: 18px;
-      height: 18px;
-      font-size: 12px;
-    `};
-  `,
 }
 
-export default function CartIcon({className}:ICartIcon) {
+export default function CartIcon({ className }: ICartIcon) {
+  const { state } = useAppContext();
+
   return (
     <S.CartIcon className={className}>
-      <S.Cnt>
-        9
-      </S.Cnt>
+      <Link href="/order/basket">
+        <a className='qty-text'>
+          {state.basket.basketList?.length}
+        </a>
+      </Link>
+
       <Link href="/order/basket">
         <a><Icon name='cart' /></a>
       </Link>

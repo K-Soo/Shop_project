@@ -19,7 +19,7 @@ const responseBody = (response: AxiosResponse) => response.data;
 
 const requests = {
   get: (url: string) => instance.get(url).then(responseBody),
-  post: (url: string, body: {}) => instance.post(url, body,{  withCredentials: true,}).then(responseBody),
+  post: (url: string, body: {}) => instance.post(url, body, { withCredentials: true, }).then(responseBody),
   put: (url: string, body: {}) => instance.put(url, body).then(responseBody),
   delete: (url: string) => instance.delete(url).then(responseBody),
 };
@@ -36,9 +36,18 @@ export const Get = {
 export const Post = {
   createProduct: (body: PostType): Promise<PostType> => requests.post('/api/products', body),
   createProductImage: (body: any) => requests.post('/api/products/image', body),
-  createCart: (body: any) => requests.post('/api/products/cart', body),
+  createCart: (body: any) => requests.post('/api/users/cart', body),
   login: (body: any) => requests.post('/api/users/login', body),
   register: (body: any) => requests.post('/api/users/register', body),
+};
+
+export const Put = {
+  updateBasket: (body: any) => requests.put('/api/users/basket', body),
+  updateBasketQty: (body: any) => requests.put('/api/users/basket', body),
+};
+
+export const Delete = {
+  deleteBasket: (user: string, id: string) => requests.delete(`/api/users/basket/${user}/${id}`,),
 };
 
 

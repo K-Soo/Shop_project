@@ -52,10 +52,7 @@ const getProductItem = async (req, res) => {
   }
 };
 
-
-
 const create = async (req, res) => {
-  console.log('req: ', req.body);
   try {
     const product = new Product(req.body);
     product.save();
@@ -76,6 +73,6 @@ const Images = async (req, res) => {
 };
 
 
-export default { list, getProductLists, getProductItem, create, Images }
+export { list, getProductLists, getProductItem, create, Images }
 
 

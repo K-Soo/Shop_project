@@ -92,10 +92,6 @@ const generateAction = (update: (recipe: (draft: IAppState) => void) => void) =>
   const setFormData = (e: any) =>
     update(draft => {
       const { name, type, checked, value, maxLength, selectedIndex } = e.target;
-      console.log('type: ', type);
-      console.log('checked: ', checked);
-      console.log('value: ', value);
-      console.log('name: ', name);
       let replaceValue = value.replace(/,/g, '');
       const keyArray = name.split('.');
       let label = e.nativeEvent.target[selectedIndex]?.text;

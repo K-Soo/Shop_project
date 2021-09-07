@@ -154,29 +154,32 @@ export default function ProductCreate(props: IProductCreate) {
     action.setRemoveColor(result);
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
     if (!confirm("확인(예) 또는 취소(아니오)를 선택해주세요.")) {
       return;
     } else {
       e.preventDefault();
       (async () => {
-        console.log('실행');
-        const res = await Post.createProduct(state.create);
-        console.log('res: ', res);
+        try {
+          const res = await Post.createProduct(state.create);
+          alert('등록이 완료되었습니다.');
+        } catch (error) {
+          alert(error.response.data.message);
+        }
       })();
     }
   }
 
-  const handleDrop = (image:any) => {
+  const handleDrop = (image: any) => {
     const formData = new FormData();
     formData.append('image', image[0]);
     (async () => {
       try {
         const res = await Post.createProductImage(formData);
-        action.setData('create.imageUrl',res)
+        action.setData('create.imageUrl', res)
       } catch (error) {
-        console.error('image-error: ', error.response.data);
-        alert(error.response.data.message);
+        console.error('image-error: ', error);
+        // alert(error.response?.data.message);
       }
     })();
   }
@@ -233,7 +236,7 @@ export default function ProductCreate(props: IProductCreate) {
 
         <S.Group>
           <Label htmlFor='' required>소비자 가격</Label>
-          <Input height='30' maxLength={10}required name='create.consumer_price' placeholder='숫자만 입력가능' width='250' value={PriceComma(state.create.consumer_price)} onChange={e => onlyNum(e, action.setFormData)} />
+          <Input height='30' maxLength={10} required name='create.consumer_price' placeholder='숫자만 입력가능' width='250' value={PriceComma(state.create.consumer_price)} onChange={e => onlyNum(e, action.setFormData)} />
         </S.Group>
 
         <S.Group>
@@ -248,7 +251,7 @@ export default function ProductCreate(props: IProductCreate) {
 
               </div>
               <Input height='30' required name='color_name' maxLength={5} value={color.color_name} placeholder='색상 이름' width='100' onChange={handleColor} />
-              <Button type='button' width='80px' fontSize='14px' height='30px' onClick={handleColorAdd}>색상추가</Button>
+              <Button width='80px' fontSize='14px' height='30px' onClick={handleColorAdd}>색상추가</Button>
             </div>
             <ul className='color-box__list'>
               {state.create?.product_colors?.map(d => (
@@ -274,10 +277,10 @@ export default function ProductCreate(props: IProductCreate) {
 
         <S.Group>
           <Label htmlFor='' required>상품 이미지</Label>
-          <FileUpload handleDrop={handleDrop}/>
+          <FileUpload handleDrop={handleDrop} />
         </S.Group>
 
-        <Button >등록</Button>
+        <Button type='submit'>등록</Button>
       </form>
     </S.ProductCreate>
   );

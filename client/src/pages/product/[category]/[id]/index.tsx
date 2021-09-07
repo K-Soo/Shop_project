@@ -10,7 +10,7 @@ import ProductDetail from 'components/ProductDetail';
 import { InferGetServerSidePropsType, GetServerSideProps } from 'next';
 import { Get } from "api";
 import { AppContext, AppInitialProps, AppProps } from "next/app"
-import CartProvider, { useCartContext } from 'context/CartProvider';
+import BasketProvider from 'context/BasketProvider';
 import cookies from 'next-cookies'
 
 export default function ProductDetailPage(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
@@ -56,11 +56,11 @@ export default function ProductDetailPage(props: InferGetServerSidePropsType<typ
         <title>쥬얼리 | {item.name}</title>
         <meta name="description" content={item.description} />
       </Head>
-      <CartProvider value={props}>
+      <BasketProvider value={props}>
         <MainContainer >
           <ProductDetail item={[item]} />
         </MainContainer>
-      </CartProvider>
+      </BasketProvider>
     </>
   );
 }

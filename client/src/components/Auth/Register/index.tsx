@@ -13,6 +13,7 @@ import FieldsetTos from 'components/Auth/Register/FieldsetTos';
 import useScrollFadeIn from 'hooks/useScrollFadeIn';
 import { useRegisterContext } from 'context/RegisterProvider';
 import {Post} from 'api';
+import PageTitle from 'components/Common/PageTitle';
 
 interface IRegister {
   className?: string;
@@ -41,16 +42,20 @@ const S = {
   Group: styled.div`
     margin-bottom: 15px;
     display: flex;
-    flex-wrap: wrap;
+    /* flex-wrap: wrap; */
     align-items: center;
+    max-width: 400px;
+    /* border: 1px solid red; */
     .id-box {
       display: flex;
       justify-content: space-between;
-      width: 300px;
+      width: 100%;
     }
     .address-box {
       display: flex;
       flex-direction: column;
+      width: 100%;
+      border: 1px solid red;
       &__inner{
         margin-bottom: 15px;
         display: flex;
@@ -71,54 +76,59 @@ export default function Register({ className, onClick, isModal }: IRegister) {
         console.log('res: ', res.headers);
       })();
     } catch (error) {
-      console.log('login: ', error);
+      console.error('login: ', error);
     }
   };
 
   return (
     <S.Register className={className}>
       <article className='container'>
-        <Title level={2} textAlign='left'>회원가입</Title>
-        <form className='form-box'>
+      <PageTitle TitleText='회원가입'/>
+        <form className='form-box' onSubmit={handleSubmit}>
           <fieldset>
             <legend>기본정보</legend>
             <S.Group >
               <Label htmlFor='idFor' required>아이디</Label>
               <div className='id-box'>
-                <Input width='170px' placeholder='영문소문자/숫자, 4~16자' name='userId' required={true} id='idFor' onChange={action.setFormData} />
-                <Button width='80px' height='40px' fontSize='11px'>중복확인</Button>
+                <Input maxWidth='200' placeholder='영문소문자/숫자, 4~16자' name='userId' required={true} id='idFor' margin='0 20px 0 0' onChange={action.setFormData} />
+                <Button white width='80px' height='40px' fontSize='11px'>중복확인</Button>
               </div>
             </S.Group>
 
             <S.Group >
               <Label htmlFor='passwordFor' required>비밀번호</Label>
-              <Input type='password' width='300px' placeholder='비밀번호' name='password' id='passwordFor' value={state.password} onChange={action.setFormData} />
+              <Input type='password'  placeholder='비밀번호' name='password' id='passwordFor' value={state.password} onChange={action.setFormData} />
             </S.Group>
 
             <S.Group>
               <Label htmlFor='passwordConfirmFor' required>비밀번호 확인</Label>
-              <Input type='password' width='300px' placeholder='비밀번호' name='passwordConfirm' id='passwordConfirmFor' value={state.passwordConfirm} onChange={action.setFormData} />
+              <Input type='password'  placeholder='비밀번호' name='passwordConfirm' id='passwordConfirmFor' value={state.passwordConfirm} onChange={action.setFormData} />
             </S.Group>
 
             <S.Group >
               <Label htmlFor='nameFor' required>이름</Label>
-              <Input width='300px' placeholder='이름' id='nameFor' name='userName' value={state.userName} onChange={action.setFormData} />
+              <Input maxWidth='200' placeholder='이름' id='nameFor' name='userName' value={state.userName} onChange={action.setFormData} />
             </S.Group>
 
             <S.Group >
               <Label htmlFor='phoneFor' required>휴대전화</Label>
-              <Select width='70'>
-                <option>010</option>
+              <Select width='80px' height='40'>
+                <option value='010'>010</option>
+                <option value='011'>011</option>
+                <option value='016'>016</option>
+                <option value='017'>017</option>
+                <option value='018'>018</option>
+                <option value='019'>019</option>
               </Select>
               <span className='tests'>-</span>
-              <Input width='80px' placeholder='휴대전화' name='' value='' onChange={() => { }} />
+              <Input width='80' name='' value='' onChange={() => { }} />
               <span className='tests'>-</span>
-              <Input width='80px' placeholder='휴대전화' name='' value='' onChange={() => { }} />
+              <Input width='80' name='' value='' onChange={() => { }} />
             </S.Group>
 
             <S.Group >
               <Label htmlFor='emailFor' required>이메일</Label>
-              <Input width='300px' placeholder='이메일' name='email' id='emailFor' value={state.email} onChange={action.setFormData} />
+              <Input placeholder='이메일' name='email' id='emailFor' value={state.email} onChange={action.setFormData} />
             </S.Group>
 
             <S.Group >
@@ -128,38 +138,21 @@ export default function Register({ className, onClick, isModal }: IRegister) {
               <div className='form-box__input-wrap address-box'>
                 <div className='address-box__inner'>
                   <DaumPost isModal={isModal} />
-                  <Input width='150px' name='zoneCode' value={state.zonecode} readOnly />
-                  <Button type='button' width='80px' height='40px' fontSize='12px' onClick={onClick}>우편번호</Button>
+                  <Input name='zoneCode' maxWidth='200' margin='0 20px 0 0' value={state.zonecode} readOnly />
+                  <Button white width='80px' height='40px' fontSize='12px' onClick={onClick}>우편번호</Button>
                 </div>
-                <Input width='300px' placeholder='기본주소' name='addr1' value={state.addr1} readOnly margin="0 0 15px 0" />
-                <Input width='300px' placeholder='나머지 주소' name='addr2' id='addrFor'  onChange={action.setFormData} value={state.addr2} />
+                <Input placeholder='기본주소' name='addr1' value={state.addr1} readOnly margin="0 0 15px 0" />
+                <Input placeholder='나머지 주소' name='addr2' id='addrFor' onChange={action.setFormData} value={state.addr2} />
               </div>
             </S.Group>
           </fieldset>
 
           <fieldset>
-            <legend>추가정보</legend>
-            <S.Group >
-              <Label htmlFor='loginId' required>생년월일</Label>
-              <Input width='250px' placeholder='주소' name='' value='' onChange={() => { }} />
-            </S.Group>
-
-            <S.Group >
-              <Label htmlFor='loginId' >지역</Label>
-              <Select width='250'>
-                <option>as</option>
-              </Select>
-            </S.Group>
-          </fieldset>
-
-          {/* <fieldset>
             <legend>이용약관</legend>
             <FieldsetTos />
-          </fieldset> */}
+          </fieldset>
 
         <Button login>가입</Button>
-
-
         </form>
       </article>
 

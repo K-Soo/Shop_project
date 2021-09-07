@@ -24,6 +24,7 @@ interface IInput {
   disabled?: boolean;
   height?: string;
   margin?: string;
+  maxWidth?: string;
 }
 
 let Input: React.FC<IInput> = ({
@@ -47,6 +48,7 @@ let Input: React.FC<IInput> = ({
   margin,
   id,
   width,
+  maxWidth,
 }) => {
   return (
     <input
@@ -74,6 +76,7 @@ let Input: React.FC<IInput> = ({
 Input = styled(Input)`
   height: ${({ height }) => (height ? `${height}px` : "40px")};
   width: ${({width}) => width ? `${width}px` : '100%'};
+  max-width: ${({maxWidth}) => maxWidth ? `${maxWidth}px` : '100%'};
   margin: ${({ margin }) => margin ?? "0px"};
   box-sizing: border-box;
   font-size: 12px;

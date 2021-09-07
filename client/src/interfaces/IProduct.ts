@@ -20,7 +20,7 @@ export interface IProduct {
   __v: number;
   _id: string;
 }
-export interface ICartItem extends IProduct {
+export interface IBasketItem extends IProduct {
   selectColor?: { colorName: string, hexValue: string }[];
   qty?: number;
   totalProductPrice?: string;

@@ -33,12 +33,10 @@ const ProductSchema = new mongoose.Schema(
     description: {
       type: String,
     },
-    product_colors: [
-      {
-        hex_value: String,
-        color_name: String,
-      }
-    ],
+    product_colors: [{
+      hex_value: String,
+      color_name: String,
+    }],
     imageUrl: [
       {
         url: String,

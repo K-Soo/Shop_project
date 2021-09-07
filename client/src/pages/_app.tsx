@@ -16,9 +16,10 @@ import AppProvider,{useAppContext} from 'context/AppProvider';
 
 export default function App(props: AppProps) {
   const {state,action} = useAppContext();
-  // console.log('_App props: ', props);
+  console.log('_App props: ', props);
   const queryClient = new QueryClient()
   // useApp(props.pageProps.userId);
+
   return (
     <>
       <Head>
@@ -44,9 +45,11 @@ export default function App(props: AppProps) {
 App.getInitialProps = async (context: NextAppContext) => {
   const { ctx, Component } = context;
   if(ctx.req){
-    console.log('req 있어!!!!!!!!!!');
+    console.log('서버사이드');
+  }else{
+    console.log('클라이언트 사이드');
   }
-  const { access_token } =  cookies(ctx);
+  const { access_token } = cookies(ctx);
   const decodedJwt = access_token && jwt.decode(access_token) as any;
 
   let pageProps = {};
@@ -55,9 +58,11 @@ App.getInitialProps = async (context: NextAppContext) => {
   }
 
   const userId = decodedJwt ? decodedJwt.userId : '';
+  const idx = decodedJwt ? decodedJwt.id : '';
 
   const userInfo = {
-    userId
+    userId,
+    idx
   }
   pageProps = { ...pageProps, userInfo };
 

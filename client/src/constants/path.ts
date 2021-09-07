@@ -1,11 +1,11 @@
 export interface IPage {
-  [index:string]:{
+  [index: string]: {
     path: string;
     tag: string;
   }
 }
 
-const PAGE: IPage= {
+const PAGE: IPage = {
   MAIN: {
     path: "/",
     tag: "메인",
@@ -16,7 +16,7 @@ const PAGE: IPage= {
   },
   REGISTER: {
     path: "/auth/register",
-    tag: "회원가입",              
+    tag: "회원가입",
   },
   COMPANY: {
     path: "/shop-info/company",

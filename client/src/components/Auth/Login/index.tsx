@@ -9,6 +9,7 @@ import Member from "components/Auth/Login/Member";
 import NoMember from "components/Auth/Login/NoMember";
 import { Post } from 'api';
 import {customCookie} from 'utils';
+import {useAppContext} from 'context/AppProvider';
 
 const S = {
   Login: styled.section`
@@ -63,18 +64,23 @@ type TLogin = "member" | "noMember";
 export default function Login() {
   const [toggle, setToggle] = useState<TLogin>("member");
   const router = useRouter();
+  const {action} = useAppContext();
 
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
     try {
       (async () => {
         const res = await Post.login({ userId: "llssll", password: 'llssll' });
+        console.log('res: ', res);
         customCookie.set("access_token", res.token);
+        if(res?.basket?.items){
+          action.setLocalItems(res.basket.items);
+        }
         router.push("/");
         // router.reload(window.location)
       })();
     } catch (error) {
-      console.log('login: ', error.response);
+      console.error('login: ', error);
     }
   };
 

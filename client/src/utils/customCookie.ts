@@ -2,10 +2,13 @@ import Cookie from "js-cookie";
 
 
 export const customCookie = {
+  get: (name: string) => {
+    return Cookie.get(name);
+  },
   set: (name: string, token: string, days?: number) => {
     let date = new Date();
     date.setTime(date.getTime() + (60 * 1000));
-    return Cookie.set(name, token, { expires: date });
+    return Cookie.set(name, token);
     // const prevCookie = document.cookie ?? "path=/";
     // const ck = cookie.parse(prevCookie);
     // ck[name] = value;

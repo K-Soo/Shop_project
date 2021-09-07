@@ -40,7 +40,7 @@ export default function Member({handleSubmit}:IMember) {
       </fieldset>
 
       <fieldset className='login'>
-        <Button login>로그인</Button>
+        <Button login type='submit'>로그인</Button>
       </fieldset>
     </S.Member>
   );

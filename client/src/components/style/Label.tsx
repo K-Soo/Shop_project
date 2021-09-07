@@ -10,6 +10,7 @@ interface ILabel {
   height?: string;
   marginBottom?:string
   color?: string;
+  minWidth?:string
 }
 
 const Label: React.FC<ILabel> = ({ className, children, htmlFor }) => {
@@ -22,13 +23,14 @@ const Label: React.FC<ILabel> = ({ className, children, htmlFor }) => {
 
 export default styled(Label)`
   color: ${({ color }) => color ?? "#222"};
-  display: flex;
   margin: ${({ margin }) => `${margin}` ?? "0px"};
   margin-bottom: ${({ marginBottom }) => `${marginBottom}` ?? "0px"};
-  width: ${({ width }) => width ?? "100px"};
+  min-width: ${({ minWidth }) => minWidth ?? "80px"};
+  width: ${({ width }) => width ?? "80px"};
   display: inline-block;
   height: 100%;
-  font-size: 14px;
+  white-space: nowrap;
+  font-size: 12px;
   ${props =>
     props.required &&
     css`
@@ -39,6 +41,7 @@ export default styled(Label)`
     `}
   ${({ theme }) => theme.mobile`
     font-size: 11px;
-    width: 80px;
+    // width: 60px;
+    padding-right: 5px;
   `}
 `;

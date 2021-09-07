@@ -3,6 +3,7 @@ import produce from "immer";
 import { useRouter } from 'next/router';
 import useDidMountEffect from 'hooks/useDidMountEffect';
 import NextApp, { AppProps, AppContext as NextAppContext } from "next/app";
+import { IBasketItem } from 'interfaces/IProduct';
 
 type TAppAction = typeof generateAction extends (...args: any[]) => infer R ? R : never;
 
@@ -25,7 +26,13 @@ export interface IAppState {
   },
   userInfo: {
     userId: string,
+    idx: string,
   }
+  basket: {
+    localStorageItem: IBasketItem[],
+    basketList: IBasketItem[],
+  }
+  currentOrderItem: IBasketItem[],
 }
 
 export const appDefaultValue: IApp = {
@@ -44,12 +51,17 @@ export const appDefaultValue: IApp = {
     },
     userInfo: {
       userId: '',
+      idx: '',
     },
+    basket: {
+      localStorageItem: null,
+      basketList: [],
+    },
+    currentOrderItem: [],
   },
 };
 
 const initializer = (props) => {
-  // console.log('initializer: ', props);
   const state: IAppState = {
     status: { loading: false },
     openSideMenu: false,
@@ -62,8 +74,14 @@ const initializer = (props) => {
       isFooter: true,
     },
     userInfo: {
-      userId: props?.userInfo.userId ?? '',
-    }
+      userId: props.userInfo.userId,
+      idx: '',
+    },
+    basket: {
+      localStorageItem: null,
+      basketList: [],
+    },
+    currentOrderItem: [],
   };
   return state;
 };
@@ -117,6 +135,27 @@ const generateAction = (update: (recipe: (draft: IAppState) => void) => void) =>
       else if (keyArray.length === 2) draft[keyArray[0]][keyArray[1]] = valueDefault;
     });
 
+  const setLocalItems = (data: IBasketItem[]) =>
+    update((draft) => {
+      draft.basket.localStorageItem = data;
+    });
+
+  const setBasketList = (data: IBasketItem[]) =>
+    update((draft) => {
+      draft.basket.basketList = data;
+    });
+
+  const setCurrentOrderItem = (data: IBasketItem) =>
+    update((draft) => {
+      draft.currentOrderItem.push(data);
+    });
+
+  const setChangeQty = (e: React.ChangeEvent<HTMLInputElement>) =>
+    update((draft) => {
+      const { name, value } = e.target as HTMLInputElement;
+      draft.basket.basketList.find(d => d._id === name).qty = +value;
+    });
+
 
   return {
     setIsNav,
@@ -127,26 +166,41 @@ const generateAction = (update: (recipe: (draft: IAppState) => void) => void) =>
     InitData,
     setIsHeader,
     setIsFooter,
+    setLocalItems,
+    setBasketList,
+    setCurrentOrderItem,
+    setChangeQty
   };
 };
 
 const useApp = (props) => {
-  // console.log('useApp props: ', props);
-  const [state, setAppState] = useState(() => initializer(props));
-  // console.log('useApp state: ', state);
+  const [state, setAppState] = useState(initializer(props));
+  console.log('useApp state: ', state);
   const update = (recipe: (draft: IAppState) => void) =>
     setAppState((prev) => produce(prev, recipe));
   const router = useRouter();
   const action = generateAction(update);
   const app = { props, state, action };
 
-  useEffect(() => {
-    setAppState(() => initializer(props));
-  },[props]);
-
   // useEffect(() => {
-  //   app.action.InitData('userInfo.userId', props.userInfo.userId);
-  // }, [props])
+  //   setAppState(() => initializer(props));
+  // },[props]);
+
+  useEffect(() => {
+    if (app.state.basket.localStorageItem) {
+      localStorage.setItem('basket', JSON.stringify(app.state.basket.localStorageItem));
+    }
+  }, [app.state.basket.localStorageItem])
+
+  useEffect(() => {
+    const result = JSON.parse(localStorage.getItem("basket"));
+    action.setBasketList(result);
+  }, [app.state.basket.localStorageItem]);
+
+  useEffect(() => {
+    app.action.InitData('userInfo.userId', props.userInfo.userId);
+    app.action.InitData('userInfo.idx', props.userInfo.idx);
+  }, [props])
 
   useEffect(() => {
     app.action.InitData('openSubMenu', false);
@@ -155,8 +209,6 @@ const useApp = (props) => {
   useDidMountEffect(() => {
     app.action.InitData('targetCategory', 'all');
   }, [router.asPath])
-
-
 
   return app;
 };
