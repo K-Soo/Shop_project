@@ -29,7 +29,6 @@ export default function DaumPost(props: IDaumPost) {
 
   const handleComplete = (data: AddressData) => {
     const { address, addressType, bname, buildingName, zonecode } = data;
-    console.log('data: ', data);
 
     let fullAddress = address;
     let extraAddress = '';

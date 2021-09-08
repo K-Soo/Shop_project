@@ -11,11 +11,12 @@ export interface IApp {
 }
 
 export interface IOrderState {
-  currentOrderItem: IBasketItem[],
   directText: boolean,
+  TemporaryArray: IBasketItem[],
   orderForm: {
+    Products: IBasketItem[],
     recipient: string,
-    addr:{
+    addr: {
       zoneCode: string,
       addr1: string,
       addr2: string,
@@ -30,11 +31,13 @@ export const orderDefaultValue: IApp = {
   props: null,
   action: null,
   state: {
-    currentOrderItem: [],
     directText: false,
+    TemporaryArray: [],
+
     orderForm: {
+      Products: [],
       recipient: '',
-      addr:{
+      addr: {
         zoneCode: '',
         addr1: '',
         addr2: '',
@@ -48,11 +51,12 @@ export const orderDefaultValue: IApp = {
 
 const initializer = (props: any) => {
   const state: IOrderState = {
-    currentOrderItem: [],
     directText: false,
+    TemporaryArray: [],
     orderForm: {
+      Products: [],
       recipient: '',
-      addr:{
+      addr: {
         zoneCode: '',
         addr1: '',
         addr2: '',
@@ -67,31 +71,55 @@ const initializer = (props: any) => {
 };
 
 const generateAction = (update: (recipe: (draft: IOrderState) => void) => void) => {
-  const setCurrentOrderItem = (data: IBasketItem) =>
+
+  const setProducts = (data: IBasketItem) =>
     update((draft) => {
-      draft.currentOrderItem.push(data);
+      draft.orderForm.Products.push(data);
     });
 
-    const setFormData = (e: any) =>
+  const setEntireProducts = (items: IBasketItem[]) =>
+    update((draft) => {
+      draft.orderForm.Products = items
+    });
+
+  const setRemoveCheckedItem = (value: string) =>
+    update((draft) => {
+      draft.orderForm.Products = draft.orderForm.Products.filter(({ _id }) => _id !== value);
+    });
+
+  const setInitOrderForm = () =>
+    update((draft) => {
+      draft.orderForm = orderDefaultValue.state.orderForm;
+    });
+
+    const setTemporaryArray = (data:IBasketItem) =>
+    update((draft) => {
+      draft.TemporaryArray.push(data)
+    });
+
+    const setRemoveOrderItems = () =>
+    update((draft) => {
+      const result = draft.orderForm.Products.filter(({ _id: orderFormId}) => !draft.TemporaryArray.some(({ _id: TemporaryId }) => orderFormId== TemporaryId));
+     
+      draft.TemporaryArray = [];
+      draft.orderForm.Products = result;
+    });
+
+  const setFormData = (e: any) =>
     update(draft => {
       const { name, type, checked, value, maxLength, selectedIndex } = e.target;
-      console.log('type: ', type);
-      console.log('value: ', value);
-      console.log('name: ', name);
       let replaceValue = value.replace(/,/g, '');
       const keyArray = name.split('.');
       let label = e.nativeEvent.target[selectedIndex]?.text;
-      console.log('label: ', label);
 
-      if(type === 'select-one'){
-        if(label === '직접입력') {
+      if (type === 'select-one') {
+        if (label === '직접입력') {
           draft.directText = true;
         }
-        else{
+        else {
           draft.directText = false;
         }
       }
-
 
       if (type === 'checkbox') {
         if (keyArray.length === 1) draft[keyArray[0]] = checked;
@@ -102,10 +130,14 @@ const generateAction = (update: (recipe: (draft: IOrderState) => void) => void) 
       }
     });
 
-
   return {
-    setCurrentOrderItem,
-    setFormData
+    setProducts,
+    setFormData,
+    setInitOrderForm,
+    setRemoveCheckedItem,
+    setEntireProducts,
+    setTemporaryArray,
+    setRemoveOrderItems
   };
 };
 

@@ -3,7 +3,8 @@ import styled from "styled-components";
 import Button from 'components/style/Button';
 import Icon from 'components/Icon/Icon';
 interface IFinalAmount {
-
+  handleSelectedProduct?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
+  handleEntireProducts?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
 }
 
 const S = {
@@ -95,7 +96,7 @@ const S = {
   `,
 }
 
-export default function FinalAmount({ }: IFinalAmount) {
+export default function FinalAmount({ handleSelectedProduct, handleEntireProducts }: IFinalAmount) {
   return (
     <S.FinalAmount>
       <table>
@@ -126,9 +127,8 @@ export default function FinalAmount({ }: IFinalAmount) {
 
       <S.BasketButtons >
         <div className='button-wrapper'>
-          <Button white fontSize='14px'>
-            선택상품 주문</Button>
-          <Button black fontSize='14px'>전체상품 주문</Button>
+          <Button white fontSize='14px' onClick={handleSelectedProduct}>선택상품 주문</Button>
+          <Button black fontSize='14px'  onClick={handleEntireProducts}>전체상품 주문</Button>
         </div>
       </S.BasketButtons>
 

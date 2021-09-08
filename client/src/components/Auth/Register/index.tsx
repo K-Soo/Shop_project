@@ -12,7 +12,7 @@ import DaumPost from 'components/Common/DaumPost';
 import FieldsetTos from 'components/Auth/Register/FieldsetTos';
 import useScrollFadeIn from 'hooks/useScrollFadeIn';
 import { useRegisterContext } from 'context/RegisterProvider';
-import {Post} from 'api';
+import { Post } from 'api';
 import PageTitle from 'components/Common/PageTitle';
 
 interface IRegister {
@@ -68,11 +68,11 @@ const S = {
 export default function Register({ className, onClick, isModal }: IRegister) {
   const { state, action } = useRegisterContext();
 
-  const handleSubmit = (e:React.SyntheticEvent) => {
+  const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
     try {
       (async () => {
-        const res = await Post.register({userId: "llssll",password:'llssll'});
+        const res = await Post.register({ userId: "llssll", password: 'llssll' });
         console.log('res: ', res.headers);
       })();
     } catch (error) {
@@ -83,7 +83,7 @@ export default function Register({ className, onClick, isModal }: IRegister) {
   return (
     <S.Register className={className}>
       <article className='container'>
-      <PageTitle TitleText='회원가입'/>
+        <PageTitle TitleText='회원가입' />
         <form className='form-box' onSubmit={handleSubmit}>
           <fieldset>
             <legend>기본정보</legend>
@@ -97,12 +97,12 @@ export default function Register({ className, onClick, isModal }: IRegister) {
 
             <S.Group >
               <Label htmlFor='passwordFor' required>비밀번호</Label>
-              <Input type='password'  placeholder='비밀번호' name='password' id='passwordFor' value={state.password} onChange={action.setFormData} />
+              <Input type='password' placeholder='비밀번호' name='password' id='passwordFor' value={state.password} onChange={action.setFormData} />
             </S.Group>
 
             <S.Group>
               <Label htmlFor='passwordConfirmFor' required>비밀번호 확인</Label>
-              <Input type='password'  placeholder='비밀번호' name='passwordConfirm' id='passwordConfirmFor' value={state.passwordConfirm} onChange={action.setFormData} />
+              <Input type='password' placeholder='비밀번호' name='passwordConfirm' id='passwordConfirmFor' value={state.passwordConfirm} onChange={action.setFormData} />
             </S.Group>
 
             <S.Group >
@@ -152,7 +152,7 @@ export default function Register({ className, onClick, isModal }: IRegister) {
             <FieldsetTos />
           </fieldset>
 
-        <Button login>가입</Button>
+          <Button login>가입</Button>
         </form>
       </article>
 

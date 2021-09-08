@@ -1,18 +1,24 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import Image from 'next/image';
+import { useRouter, NextRouter } from 'next/router';
+import { IBasketItem } from 'interfaces/IProduct';
 import Button from 'components/style/Button';
 import Icon from 'components/Icon/Icon';
-import Image from 'next/image';
 import Title from 'components/style/Title';
 import Input from 'components/style/Input';
-import { PriceComma } from 'utils';
-import { IBasketItem } from 'interfaces/IProduct';
-import { Delete } from 'api';
 import { useAppContext } from 'context/AppProvider';
 import { useOrderContext } from 'context/OrderProvider';
-import { useRouter, NextRouter } from 'next/router';
+import { PriceComma } from 'utils';
+import CheckBox from 'components/style/CheckBox';
 
 interface IOrderList {
+  handleRemoveItem?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  handleOrderToOneProduct?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  item: IBasketItem[]
+  handleRouterBack?:  (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  handleCheckbox?: React.ChangeEventHandler<HTMLInputElement>;
+  handleSelectProductRemove?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
 }
 
 const S = {
@@ -90,16 +96,35 @@ const S = {
             align-items: center;
           }
           .consumer-price{
-            &::after{
-              content: '원';
-              padding-left: 2px;
-            }
-          }
-          .product-price{
+            font-size: 14px;
             font-weight: 600;
             &::after{
               content: '원';
-              padding-left: 2px;
+            }
+          }
+          .product-price{
+            color: #333;
+            &::after{
+              content: '원';
+            }
+          }
+          .point-price{
+            font-weight: 400;
+            color: #888;
+            margin-bottom: 3px;
+            &::before{
+              content: '적';
+              display: inline-block;
+              background-color: #B88CC5;
+              color: #fff;
+              padding: 1px;
+              margin-right: 2px;
+              font-size: 11px;
+              border-radius: 1px;
+              height: 9px;
+            }
+            &::after{
+              content: '원';
             }
           }
         }
@@ -163,39 +188,24 @@ const S = {
   `,
 }
 
-export default function OrderList({ }: IOrderList) {
-  const { state, action } = useAppContext();
-  // const Order = useOrderContext();
+export default function OrderList({ 
+  handleRemoveItem, 
+  handleOrderToOneProduct, 
+  handleRouterBack,
+  handleCheckbox,
+  handleSelectProductRemove,
+  item 
+}: IOrderList) {
+  const { action } = useAppContext();
   const router: NextRouter = useRouter();
-  console.log('router: ', router.asPath);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const { name } = e.target;
-    const findOne = state.basket.basketList.find(d => d._id === name);
-    action.setCurrentOrderItem(findOne);
-    router.push('/order/orderform');
-  }
-
-  const handleRemoveItem = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    const { name } = e.target as HTMLButtonElement;
-    if (confirm('선택하신 상품을 삭제하시겠습니까?')) {
-      try {
-        const res = await Delete.deleteBasket(state.userInfo.idx, name);
-        action.setLocalItems(res.items);
-      } catch (error) {
-        console.error('remove-error: ', error);
-      }
-    }
-  };
 
   return (
     <S.OrderList>
-      {state.basket.basketList.length ? (state.basket.basketList.map((d) => (
-        <S.Item key={d.selectColor[0].hexValue} asPath={router.asPath}>
+      {item.length ? (item.map((d) => (
+        <S.Item key={d._id} asPath={router.asPath}>
           <S.MainContent>
             <div className='icon-box'>
-              <Icon name='check' />
+              <CheckBox name='check' value={d._id} onChange={handleCheckbox}/>
             </div>
             <div className='product-info'>
               <div className='product-info__left'>
@@ -211,12 +221,12 @@ export default function OrderList({ }: IOrderList) {
                 <div className='product-info__right--desc'>
                   <div className='product-info__right--desc title'>
                     <Title level={6} size='14' className='title'>{d.name}</Title>
-                    <span>new</span>
-                    <span>new</span>
+                    {d.best_product && <span>BEST</span>}
+                    {d.new_product && <span>NEW</span>}
                   </div>
-                  <span>배송</span>
-                  <p className='consumer-price'><del>{PriceComma(d.product_price)}</del></p>
-                  <p className='product-price'>{PriceComma(d.consumer_price)}</p>
+                  <p className='point-price'>{PriceComma(d.point)}</p>
+                  <p className='product-price'><del>{PriceComma(d.product_price)}</del></p>
+                  <p className='consumer-price'>{PriceComma(d.consumer_price)}</p>
                 </div>
                 <div className='product-info__right--count'>
                   <Input type="number" height='30' width='70' value={d.qty} onChange={action.setChangeQty} name={d._id} />
@@ -244,7 +254,15 @@ export default function OrderList({ }: IOrderList) {
                 <Button white height='25px' name={d._id} onClick={handleRemoveItem}>삭제</Button>
                 <Button white height='25px'>관심상품</Button>
               </div>
-              <Button login height='25px' width='90px' type='submit' name={d._id} onClick={handleSubmit}>주문하기</Button>
+              <Button
+                login
+                height='25px'
+                width='90px'
+                name={d._id}
+                onClick={handleOrderToOneProduct}
+              >
+                주문하기
+              </Button>
             </S.BasketButtonBox>
           )}
         </S.Item>
@@ -261,13 +279,13 @@ export default function OrderList({ }: IOrderList) {
         <S.OrderButtonBox>
           <div>
             <p>선택상품을</p>
-            <Button white height='25px' onClick={handleRemoveItem}>삭제</Button>
+            <Button white height='25px' onClick={handleSelectProductRemove}>삭제</Button>
           </div>
           <Button
             white
             height='25px'
             width='100px'
-            onClick={() => router.back()}
+            onClick={handleRouterBack}
           >
             이전 페이지
           </Button>

@@ -59,9 +59,12 @@ const itemSchema = Schema({
     type: Number,
   },
   totalConsumerPrice: {
-    type: Number,
+    type: String,
   },
   totalProductPrice: {
+    type: String,
+  },
+  point: {
     type: Number,
   },
   selectColor: [{
@@ -76,7 +79,7 @@ const BasketSchema = new Schema(
   {
     BasketOwner: {
       type: ObjectId,
-      ref: 'User'
+      ref: 'User',
     },
     items: [itemSchema],
   },

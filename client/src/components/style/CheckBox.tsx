@@ -1,5 +1,5 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import Icon from 'components/Icon/Icon';
 interface ICheckBox {
   className?: string;
@@ -23,7 +23,7 @@ const CheckBoxInput: React.FunctionComponent<ICheckBox> = ({
   required
 }) => {
   return (
-    <div className={className}>
+    <label className={className}>
       <input
         type='checkbox'
         name={name}
@@ -36,7 +36,7 @@ const CheckBoxInput: React.FunctionComponent<ICheckBox> = ({
       <div>
         <Icon name='check' />
       </div>
-    </div>
+    </label>
   );
 };
 
@@ -50,10 +50,15 @@ export default styled(CheckBoxInput)`
   margin-left: ${({ marginleft }) => `${marginleft}px` ?? '0'};
   margin-right: ${({ marginright }) => `${marginright}px` ?? '0'};
   svg{
-      display: none;
+      color: #dee2e6;
+      width: 18px;
+      height: 18px;
+      padding-right: 1px;
+      padding-bottom: 2px;
   }
   input[type='checkbox'] {
     display: none;
+
   }
   input[type='checkbox'] + div {
     box-sizing: border-box;
@@ -66,13 +71,19 @@ export default styled(CheckBoxInput)`
     border: 2px solid #dee2e6;
     border-radius: 3px;
     cursor: pointer;
+    font-size: 0;
   }
   input[type='checkbox']:checked + div {
     border: #142a69;
     background-color: #142a69;
+    font-size: 0;
     svg{
-      display: block;
-      padding-top: 2px;
+      display: inline-block;
+      color: #fff;
+      font-size: 0;
+      width: 18px;
+      height: 18px;
+      padding-top: 3px;
       padding-left: 2px;
     }
   }

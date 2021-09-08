@@ -18,11 +18,11 @@ export default function BasketPage(props: IBasketPage) {
         <title>쥬얼리 | 장바구니</title>
         <meta name="description" content="메인 페이지" />
       </Head>
-      <OrderProvider value={props}>
+      {/* <OrderProvider value={props}> */}
         <MainContainer >
           <Basket />
         </MainContainer>
-      </OrderProvider>
+      {/* </OrderProvider> */}
     </>
   );
 };

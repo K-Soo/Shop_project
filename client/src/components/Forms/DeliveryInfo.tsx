@@ -7,6 +7,7 @@ import TextArea from "components/style/TextArea";
 import DaumPost from 'components/Common/DaumPost';
 import Input from "components/style/Input";
 import Button from "components/style/Button";
+import Icon from 'components/Icon/Icon';
 import { TAP_CATEGORY, DELIVERY_MESSAGE_LIST } from 'constants/ordrform';
 import { useOrderContext } from 'context/OrderProvider';
 
@@ -63,8 +64,19 @@ const S = {
       max-width: 200px;
       justify-content: space-between;
       margin-bottom: 15px;
+      button{
+        display: flex;
+        align-items: center;
+        i{
+          font-size: 0;
+        svg{
+          color: #000;
+          width: 18px;
+          height: 16px;
+        }
+        }
+      }
     }
-
   }
   `,
 }
@@ -72,10 +84,11 @@ type TToggleText = 'recently' | 'direct';
 
 export default function DeliveryInfo({ }: IDeliveryInfo) {
   const [toggleText, setToggleText] = useState<TToggleText>('recently');
+  const {isModal, setIsModal} = useState(false);
   const { state, action } = useOrderContext();
 
   const handleToggle = (e: React.MouseEvent<HTMLLIElement>) => {
-    const { className } = e.target;
+    const { className } = e.target as HTMLLIElement;
     setToggleText(className);
   }
 
@@ -96,9 +109,14 @@ export default function DeliveryInfo({ }: IDeliveryInfo) {
         <Label htmlFor='nameFor' required>주소</Label>
         <div className='addr'>
           <div className='addr-button'>
-            <Input name='zoneCode' maxWidth='100' readOnly />
-            <Button white height='40' fontSize='14px' width='40'>
-              우편번호
+            <Input name='zoneCode' maxWidth='80' readOnly />
+            <Button white height='40' fontSize='14px' width='40' onClick={() => setIsModal(!isModal)}>
+              <i>
+                <Icon name='location' />
+              </i>
+              <span>
+                우편번호
+              </span>
             </Button>
           </div>
           <Input name='zoneCode' maxWidth='300' margin='0 0 15px 0' readOnly />
@@ -113,7 +131,6 @@ export default function DeliveryInfo({ }: IDeliveryInfo) {
         <Input name='zoneCode' maxWidth='90' />
         <span style={{ width: '15px', textAlign: 'center' }}>-</span>
         <Input name='zoneCode' maxWidth='90' />
-
       </S.Group>
 
       <S.Group>
@@ -146,6 +163,7 @@ export default function DeliveryInfo({ }: IDeliveryInfo) {
           )}
         </div>
       </S.Group>
+      <DaumPost />
     </S.DeliveryInfo>
   );
 }

@@ -145,17 +145,16 @@ const generateAction = (update: (recipe: (draft: IAppState) => void) => void) =>
       draft.basket.basketList = data;
     });
 
-  const setCurrentOrderItem = (data: IBasketItem) =>
-    update((draft) => {
-      draft.currentOrderItem.push(data);
-    });
+  // const setCurrentOrderItem = (data: IBasketItem) =>
+  //   update((draft) => {
+  //     draft.currentOrderItem.push(data);
+  //   });
 
   const setChangeQty = (e: React.ChangeEvent<HTMLInputElement>) =>
     update((draft) => {
       const { name, value } = e.target as HTMLInputElement;
       draft.basket.basketList.find(d => d._id === name).qty = +value;
     });
-
 
   return {
     setIsNav,
@@ -168,7 +167,7 @@ const generateAction = (update: (recipe: (draft: IAppState) => void) => void) =>
     setIsFooter,
     setLocalItems,
     setBasketList,
-    setCurrentOrderItem,
+    // setCurrentOrderItem,
     setChangeQty
   };
 };

@@ -1,5 +1,5 @@
 import { ReactComponent as bed } from "./bed.svg";
-import { ReactComponent as check } from "./check.svg";
+import { ReactComponent as ovalCheck } from "./ovalCheck.svg";
 import { ReactComponent as human } from "./human.svg";
 import { ReactComponent as cart } from "./cart.svg";
 import { ReactComponent as search } from "./search.svg";
@@ -21,5 +21,7 @@ import { ReactComponent as home } from "./home.svg";
 import { ReactComponent as arrowNoTailTop } from "./arrowNoTailTop.svg";
 import { ReactComponent as arrowNoTailBottom } from "./arrowNoTailBottom.svg";
 import { ReactComponent as trashCan } from "./trashCan.svg";
+import { ReactComponent as check } from "./check.svg";
+import { ReactComponent as location } from "./location.svg";
 
-export { bed, check, human, cart, search, bookmark, arrowTop, arrowBottom, arrowLeft, close, heart, BigArrowLeft, cartAdd, plus, minus, info, closeSmall, user, home, arrowNoTailBottom, arrowNoTailTop, trashCan };
+export { bed, ovalCheck, human, cart, search, bookmark, arrowTop, arrowBottom, arrowLeft, close, heart, BigArrowLeft, cartAdd, plus, minus, info, closeSmall, user, home, arrowNoTailBottom, arrowNoTailTop, trashCan, check,location };

@@ -313,38 +313,10 @@ export default function ProductDetail({ item }: IProductDetail) {
   const [showSpec, setShowSpec] = useState<boolean>(false);
   const [selectItems, setSelectItems] = useState<IBasketItem[]>([]);
   console.log('selectItems: ', selectItems);
-  const [localData, setLocalData] = useState<IBasketItem[]>([]);
   const { action, state } = useBasketContext();
-  const [localStorageData, setLocalStorageData] = useState<IBasketItem[]>([]);
-  console.log('localStorageData: ', localStorageData);
   const [duplicate, setDuplicate] = useState(false);
   const router = useRouter();
   const App = useAppContext();
-
-  // useEffect(() => {
-  //   if (localData.length) {
-  //     localStorage.setItem('basket', JSON.stringify(localData));
-  //     const result = JSON.parse(localStorage.getItem("basket"));
-  //     // action.setLocalItems(result);
-  //     setLocalStorageData(result);
-  //   }
-  // }, [localData]);
-
-  useEffect(() => {
-    const result = JSON.parse(localStorage.getItem("basket"));
-    if (result) {
-      setLocalStorageData(result);
-      // setLocalData(result);
-    }
-  }, [App.state.basket.localStorageItem]);
-
-  useEffect(() => {
-    const result = JSON.parse(localStorage.getItem("basket"));
-    if (result) {
-      setLocalStorageData(result);
-      // setLocalData(result);
-    }
-  }, []);
 
   useEffect(() => {
     if (App.state.basket.basketList.length) {
@@ -375,7 +347,6 @@ export default function ProductDetail({ item }: IProductDetail) {
           console.log('error: ', error);
         }
       }
-      // setLocalData(prev => [...prev, ...selectItems]);
     }
   };
 
@@ -385,6 +356,7 @@ export default function ProductDetail({ item }: IProductDetail) {
     const { ...rest }: IBasketItem = currentItem[0];
 
     rest.selectColor = [{ colorName: colorName, hexValue: value }];
+    rest.point = (+currentItem[0].consumer_price * 0.1);
     rest.totalConsumerPrice = currentItem[0].consumer_price;
     rest.totalProductPrice = currentItem[0].product_price;
     delete rest._id;
@@ -435,7 +407,6 @@ export default function ProductDetail({ item }: IProductDetail) {
       return action.setOpenModal();
     } else {
       action.setCurrentOrder(selectItems);
-      setLocalData(prev => [...prev, ...selectItems]);
       router.push('/order/orderform');
     }
   };
@@ -562,48 +533,3 @@ export default function ProductDetail({ item }: IProductDetail) {
     </S.ProductDetail>
   )
 };
-
-
-
-  // const handleAddToBasket = () => {
-  //   if (!selectItems.length) return alert('필수 옵션을 선택해주세요.');
-
-  //   const results = selectItems.filter(({ selectColor: color1 }) => localData.some(({ selectColor: color2 }) => color2 === color1));
-  //   const diff = selectItems.filter(({ selectColor: color1 }) => !localData.some(({ selectColor: color2 }) => color2 === color1));
-
-  //   console.log('results: ', results);
-  //   console.log('diff: ', diff);
-
-  //   if (results.length) {
-  //     if (confirm("이미동일한 상품이있습니다 추가하시겠습니끼??")) {
-  //       setLocalData(prev => {
-  //         const sameItem = prev.filter(({ selectColor: preColor }) => results.some(({ selectColor: resultColor }) => resultColor === preColor));
-  //         console.log('sameItem: ', sameItem);
-
-  //         if (sameItem) {
-  //           const cur = prev.map(preItem => {
-  //             console.log('preItem: ', preItem.qty);
-  //             let fil = sameItem.find(x => x.selectColor === preItem.selectColor);
-  //             console.log('fil: ', fil);
-  //             return fil ? { ...preItem, qty: fil.qty + preItem.qty } : { ...preItem }
-
-  //             //  return {...preItem, qty : sameItem.find( x => x.selectColor === preItem.selectColor).qty + preItem.qty}
-  //             //  const va = sameItem.map(x => x.selectColor === preItem.selectColor ? {...preItem, qty : preItem.qty + x.qty}: preItem)
-  //             //  {...preItem, qty : sameItem.find( x.selectcolor === )}
-  //             //  console.log('va: ', va);
-  //             //  return {...va}
-  //           }
-  //           );
-  //           console.log('cur: ', cur);
-  //           return [...cur, ...diff]
-  //         }
-  //       })
-
-  //     } else {
-  //       return
-  //     }
-  //   } else {
-  //     setLocalData([...localData, ...selectItems]);
-  //   }
-  //   setOpen(true);
-  // }

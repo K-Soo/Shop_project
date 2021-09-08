@@ -13,6 +13,7 @@ import cookies from 'next-cookies'
 import axios from 'axios';
 import jwt from "jsonwebtoken";
 import AppProvider,{useAppContext} from 'context/AppProvider';
+import OrderProvider from 'context/OrderProvider';
 
 export default function App(props: AppProps) {
   const {state,action} = useAppContext();
@@ -27,6 +28,8 @@ export default function App(props: AppProps) {
       </Head>
       <GlobalStyle />
       <AppProvider AppProps={props}>
+      <OrderProvider value={props}>
+        
         <QueryClientProvider client={queryClient}>
           {/* <Hydrate state={props.pageProps.dehydratedState}> */}
             <Theme>
@@ -37,6 +40,9 @@ export default function App(props: AppProps) {
           {/* </Hydrate> */}
           {/* <ReactQueryDevtools initialIsOpen={false} /> */}
         </QueryClientProvider>
+
+      </OrderProvider>
+
       </AppProvider>
     </>
   );

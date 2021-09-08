@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useCallback } from "react";
 import styled from "styled-components";
+import { useRouter } from 'next/router';
+import { useOrderContext } from 'context/OrderProvider';
 import FinalAmount from 'components/Forms/FinalAmount';
 import FormBox from 'components/Forms/FormFieldset';
 import DeliveryInfo from 'components/Forms/DeliveryInfo';
@@ -17,24 +19,46 @@ const S = {
 }
 
 export default function OrderForm({ }: IOrderForm) {
+  const Order = useOrderContext();
+  const router = useRouter();
+
+  const handleRouterBack = useCallback(() => {
+    Order.action.setInitOrderForm();
+    router.back();
+  }, [])
+
+  const handleCheckbox = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target as HTMLInputElement
+    const result = Order.state.orderForm.Products.find(({ _id }) => _id === value);
+    Order.action.setTemporaryArray(result);
+  }
+
+  const handleSelectProductRemove = () => {
+    if(!Order.state.TemporaryArray.length) return alert('상품을 선택해주세요.')
+    Order.action.setRemoveOrderItems();
+  }
   return (
     <S.OrderForm>
       <UserInfo />
       <FormBox title='주문내역'>
-        <OrderList />
+        <OrderList item={Order.state.orderForm.Products} handleRouterBack={handleRouterBack} handleCheckbox={handleCheckbox} handleSelectProductRemove={handleSelectProductRemove}/>
       </FormBox>
 
-      <FormBox title='결제예정금액'>
-        <FinalAmount />
-      </FormBox>
-      
-      <FormBox title='배송정보'>
-        <DeliveryInfo />
-      </FormBox>
+      {Order.state.orderForm.Products.length > 0 && (
+        <>
+          <FormBox title='결제예정금액'>
+            <FinalAmount />
+          </FormBox>
 
-      <FormBox title='결제'>
-        <Payment />
-      </FormBox>
+          <FormBox title='배송정보'>
+            <DeliveryInfo />
+          </FormBox>
+
+          <FormBox title='결제'>
+            <Payment />
+          </FormBox>
+        </>
+      )}
 
     </S.OrderForm>
   );

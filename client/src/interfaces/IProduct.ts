@@ -25,4 +25,5 @@ export interface IBasketItem extends IProduct {
   qty?: number;
   totalProductPrice?: string;
   totalConsumerPrice?: string;
+  point?: number;
 }
