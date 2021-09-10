@@ -41,7 +41,7 @@ export default function Guide({ }: IGuide) {
         {Category.map((d,i) => (
           <li key={i}>
             <p>
-            {d.label}
+             - {d.label}
             </p>
           </li>
         ))}

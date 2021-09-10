@@ -10,6 +10,7 @@ import NoMember from "components/Auth/Login/NoMember";
 import { Post } from 'api';
 import {customCookie} from 'utils';
 import {useAppContext} from 'context/AppProvider';
+import PageTitle from 'components/Common/PageTitle';
 
 const S = {
   Login: styled.section`
@@ -87,7 +88,7 @@ export default function Login() {
   return (
     <S.Login >
       <div className='container'>
-        <Title level={1} marginB='30'>LOGIN</Title>
+        <PageTitle TitleText='로그인' />
         <S.LoginMenu toggle={toggle}>
           <li className='member item' onClick={() => setToggle("member")}>
             회원 로그인

@@ -2,9 +2,13 @@ import React from "react";
 import styled from "styled-components";
 import Button from 'components/style/Button';
 import Icon from 'components/Icon/Icon';
+import {PriceComma} from 'utils';
 interface IFinalAmount {
   handleSelectedProduct?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
   handleEntireProducts?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
+  totalPrice: number;
+  paymentPrice: number;
+
 }
 
 const S = {
@@ -31,13 +35,13 @@ const S = {
       }
       tbody{
         td{
-          font-size: 23px;
+          font-size: 20px;
           padding: 30px 0;
           color: #353535;
           b{
             &::after{
               content: '원';
-              font-size: 14px;
+              font-size: 12px;
               color: #353535;
               font-weight:600;
               vertical-align: middle;
@@ -49,7 +53,7 @@ const S = {
           color: #8c4153;
           &::after{
             content: '원';
-            font-size: 14px;
+            font-size: 12px;
             color: #8c4153;
             font-weight:600;
             vertical-align: middle;
@@ -96,7 +100,8 @@ const S = {
   `,
 }
 
-export default function FinalAmount({ handleSelectedProduct, handleEntireProducts }: IFinalAmount) {
+export default function FinalAmount({ handleSelectedProduct, handleEntireProducts,totalPrice, paymentPrice}: IFinalAmount) {
+  console.log('props pay: ', paymentPrice);
   return (
     <S.FinalAmount>
       <table>
@@ -117,10 +122,10 @@ export default function FinalAmount({ handleSelectedProduct, handleEntireProduct
         </thead>
         <tbody>
           <tr>
-            <td><b>+3000</b></td>
-            <td><b>+3000</b></td>
-            <td><b>+3000</b></td>
-            <td><strong>= 3000</strong></td>
+            <td><b>+{PriceComma(totalPrice)}</b></td>
+            <td><b>+{PriceComma(2500)}</b></td>
+            <td><b>-{PriceComma(totalPrice-paymentPrice)}</b></td>
+            <td><strong>= {PriceComma(2500 + paymentPrice)}</strong></td>
           </tr>
         </tbody>
       </table>

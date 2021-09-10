@@ -7,7 +7,7 @@ const product = express.Router();
 // api/products
 
 product.post('/', ProductController.create); // 새로운 상품을만듬
-product.get('/list', ProductController.list); // 호텔리스트가져옴
+product.get('/list', ProductController.list); // 모든상품 가져옴
 
 // product.post('/test',upload.single('image'), ProductController.Images); 
 

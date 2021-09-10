@@ -2,37 +2,48 @@ import React from 'react';
 import DaumPostcode, { AddressData } from 'react-daum-postcode';
 import styled from "styled-components";
 import { useRegisterContext } from 'context/RegisterProvider';
-
-interface IDaumPost {
-  isModal: boolean;
-}
+import Icon from 'components/Icon/Icon';
+import { useAppContext } from 'context/AppProvider';
+import { NextRouter, useRouter } from 'next/router';
 
 const S = {
   DaumPost: styled.div`
-  position: fixed;
-  top: 30%;
-  left: 50%;
-  transform: translate(-50%);
-  border: 1px solid #999;
-`,
-}
-export default function DaumPost(props: IDaumPost) {
-  const { action } = useRegisterContext();
-  const postCodeStyle = {
-    // display: "block",
-    // top: "50px",
-    width: "500px",
-    // zIndex: "100",
-    // height: '500px'
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%);
+    border: 1px solid #222;
+    background-color: #fff;
+  `,
+  Header: styled.div`
+    display: flex;
+    justify-content: flex-end;
+    border-bottom: 1px solid #999;
+    button{
+      all:unset;
+      padding: 5px;
+      cursor: pointer;
+      font-size: 0;
+    svg{
+    color: #333;
+    }
   }
+  `,
+}
+export default function DaumPost() {
+  const { action } = useRegisterContext();
+  const App = useAppContext();
+  const router: NextRouter = useRouter();
 
+  const postCodeStyle = {
+    top: "50px",
+    height: "500px"
+  }
 
   const handleComplete = (data: AddressData) => {
     const { address, addressType, bname, buildingName, zonecode } = data;
-
     let fullAddress = address;
     let extraAddress = '';
-
     if (addressType === 'R') {
       if (bname !== '') {
         extraAddress += bname;
@@ -42,17 +53,20 @@ export default function DaumPost(props: IDaumPost) {
       }
       fullAddress += (extraAddress !== '' ? ` (${extraAddress})` : '');
     }
-    action.setData('zonecode', zonecode);
-    action.setData('addr1', fullAddress);
+    if (router.asPath === "/auth/register") {
+      action.setData('form.zonecode', zonecode);
+      action.setData('form.addr1', fullAddress);
+    }
   }
 
   return (
-    <>
-      {props.isModal && (
-        <S.DaumPost>
-          <DaumPostcode onComplete={handleComplete} autoClose={true} style={postCodeStyle} autoResize={false} />
-        </S.DaumPost>
-      )}
-    </>
+    <S.DaumPost>
+      <S.Header>
+        <button onClick={App.action.setOpenDaumPost} type='button'>
+          <Icon name='close' />
+        </button>
+      </S.Header>
+      <DaumPostcode onComplete={handleComplete} autoClose={false} style={postCodeStyle} autoResize={true} animation={true}/>
+    </S.DaumPost>
   );
 }

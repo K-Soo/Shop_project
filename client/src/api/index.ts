@@ -27,6 +27,7 @@ const requests = {
 export const Get = {
   products: (category: string): Promise<IProduct> => requests.get(`/api/products/${category}`),
   getProduct: (category: string, id: string): Promise<IProduct> => requests.get(`/api/products/${category}/${id}`),
+  getAllProduct: (): Promise<IProduct> => requests.get(`/api/products/list`),
   getAPost: (id: number): Promise<PostType> => requests.get(`posts/${id}`),
   createPost: (post: PostType): Promise<PostType> => requests.post('posts', post),
   updatePost: (post: PostType, id: number): Promise<PostType> => requests.put(`posts/${id}`, post),
@@ -39,6 +40,7 @@ export const Post = {
   createCart: (body: any) => requests.post('/api/users/cart', body),
   login: (body: any) => requests.post('/api/users/login', body),
   register: (body: any) => requests.post('/api/users/register', body),
+  checkId: (body: {userId: string}) => requests.post('/api/users/check', body),
 };
 
 export const Put = {

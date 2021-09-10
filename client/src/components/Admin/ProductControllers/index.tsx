@@ -5,7 +5,7 @@ import ProductCreate from 'components/Admin/ProductControllers/ProductCreate';
 
 
 interface IProductControllers {
-
+  children: React.ReactNode;
 }
 
 const S = {
@@ -16,16 +16,12 @@ const S = {
     border-radius: 5px;
     padding: 20px;
   `,
-
 }
 
-export default function ProductControllers({ }: IProductControllers) {
+export default function ProductControllers({ children}: IProductControllers) {
   return (
     <S.ProductControllers>
-      {/* <Title level={1}>
-        제품생성
-      </Title> */}
-      <ProductCreate />
+      {children}
     </S.ProductControllers>
   );
 }

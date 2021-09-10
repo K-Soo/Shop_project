@@ -6,38 +6,37 @@ import jwt from 'jsonwebtoken';
 const UserSchema = new mongoose.Schema({
   userId: {
     type: String,
+    unique : true,
+    required : true
   },
   password: {
     type: String,
+    required : true
   },
-  // userName: {
-  //   type: String,
-  // },
-  // phone: {
-  //   type: String,
-  // },
-  // email: {
-  //   type: String,
-  //   unique: true,
-  // },
-  // addr1: {
-  //   type: String,
-  // },
-  // addr2: {
-  //   type: String,
-  // },
-  // zonecode: {
-  //   type: String,
-  // },
-  // birth: {
-  //   type: String,
-  // },
-  // solarCalendar: {
-  //   type: boolean,
-  // },
-  // lunarCalendar: {
-  //   type: boolean,
-  // },
+  userName: {
+    type: String,
+    required : true
+  },
+  phone: {
+    type: String,
+    required : true
+  },
+  email: {
+    type: String,
+    required : true
+  },
+  addr1: {
+    type: String,
+    required : true
+  },
+  addr2: {
+    type: String,
+    required : true
+  },
+  zonecode: {
+    type: String,
+    required : true
+  },
 });
 
 UserSchema.statics.findByUserId = function (userId) {

@@ -11,12 +11,15 @@ import { useAppContext } from 'context/AppProvider';
 import { useOrderContext } from 'context/OrderProvider';
 import { PriceComma } from 'utils';
 import CheckBox from 'components/style/CheckBox';
+import TextIcon from 'components/Common/TextIcon';
+import Link from 'next/link';
+
 
 interface IOrderList {
   handleRemoveItem?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   handleOrderToOneProduct?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   item: IBasketItem[]
-  handleRouterBack?:  (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  handleRouterBack?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   handleCheckbox?: React.ChangeEventHandler<HTMLInputElement>;
   handleSelectProductRemove?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
 }
@@ -70,14 +73,17 @@ const S = {
       display: flex;
       &__left{
         margin-right: 10px;
-        /* border: 1px solid red; */
-        img{
-
+        font-size: 0;
+        a{
+          /* border: 1px solid #000; */
+          display: inline-block;
+          height: 100%;
         }
         .img{
-          height: 100%;
+        /* height: 100%;
         border: 1px solid red;
         background-color: #000;
+        border: 1px solid red; */
         }
       }
       &__right{
@@ -87,13 +93,13 @@ const S = {
         flex-direction: column;
         align-items: flex-start;
         justify-content: space-between;
-        /* border: 1px solid red; */
         &--desc{
           flex: 1;
           width: 100%;
+          align-items: center;
           .title{
             display: flex;
-            align-items: center;
+            align-items: flex-start;
           }
           .consumer-price{
             font-size: 14px;
@@ -134,9 +140,16 @@ const S = {
           display: flex;
           align-items: center;
           border-top: 1px solid #f0f0f0;
+          input[type=number]::-webkit-inner-spin-button {
+            opacity: 1;
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 110%;
+            cursor: pointer;
+          }
         }
       }
-
     }
   `,
   Option: styled.div`
@@ -145,7 +158,6 @@ const S = {
     height: 40px;
     border-top: 1px solid #f0f0f0;
   `,
-
   Price: styled.div`
     display: flex;
     align-items: center;
@@ -188,16 +200,17 @@ const S = {
   `,
 }
 
-export default function OrderList({ 
-  handleRemoveItem, 
-  handleOrderToOneProduct, 
+export default function OrderList({
+  handleRemoveItem,
+  handleOrderToOneProduct,
   handleRouterBack,
   handleCheckbox,
   handleSelectProductRemove,
-  item 
+  item
 }: IOrderList) {
   const { action } = useAppContext();
   const router: NextRouter = useRouter();
+  console.log('router: ', router);
 
   return (
     <S.OrderList>
@@ -205,33 +218,52 @@ export default function OrderList({
         <S.Item key={d._id} asPath={router.asPath}>
           <S.MainContent>
             <div className='icon-box'>
-              <CheckBox name='check' value={d._id} onChange={handleCheckbox}/>
+              <CheckBox name='check' value={d._id} onChange={handleCheckbox} />
             </div>
             <div className='product-info'>
               <div className='product-info__left'>
-                <Image
-                  className='img'
-                  src={d.imageUrl[0].url}
-                  alt="Picture of the author"
-                  width={100}
-                  height={100}
-                />
+                <Link href={'/product/' + d.product_type + '/' + d.seq}>
+                  <a>
+                    <Image
+                      className='img'
+                      src={d.imageUrl[0].url}
+                      alt="Picture of the author"
+                      width={100}
+                      height={116}
+                    />
+                  </a>
+                </Link>
+
               </div>
               <div className='product-info__right'>
                 <div className='product-info__right--desc'>
                   <div className='product-info__right--desc title'>
-                    <Title level={6} size='14' className='title'>{d.name}</Title>
-                    {d.best_product && <span>BEST</span>}
-                    {d.new_product && <span>NEW</span>}
+                    <Link href={'/product/' + d.product_type + '/' + d.seq}>
+                      <a>
+                        <Title level={6} size='14' >{d.name}</Title>
+                      </a>
+                    </Link>
+                    {d.best_product && <TextIcon text='best' margin='0 0 0 5px' />}
+                    {d.new_product && <TextIcon text='new' margin='0 0 0 5px' />}
                   </div>
                   <p className='point-price'>{PriceComma(d.point)}</p>
                   <p className='product-price'><del>{PriceComma(d.product_price)}</del></p>
                   <p className='consumer-price'>{PriceComma(d.consumer_price)}</p>
                 </div>
-                <div className='product-info__right--count'>
-                  <Input type="number" height='30' width='70' value={d.qty} onChange={action.setChangeQty} name={d._id} />
-                  <Button white height='30px' width='50px' name={d._id} >변경</Button>
-                </div>
+                {router.asPath === "/order/basket" && (
+                  <div className='product-info__right--count'>
+                    <Input
+                      type="number"
+                      height='30'
+                      width='70'
+                      margin='0 15px 0 0'
+                      value={d.qty}
+                      onChange={action.setChangeQty}
+                      name={d._id}
+                    />
+                    <Button white height='30px' width='50px' name={d._id} >변경</Button>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -291,7 +323,6 @@ export default function OrderList({
           </Button>
         </S.OrderButtonBox>
       )}
-
     </S.OrderList>
   );
 }

@@ -25,7 +25,6 @@ Section.Header = function Header({ children }: ISection) {
 
 Section.Side = function Side({ children }: ISection) {
   const { state, action } = useAdminContext();
-
   return (
     <SideStyle toggle={state.sideOpen}>
       {children}
@@ -56,8 +55,9 @@ const HeaderStyle = styled.header`
 const MainStyle = styled.main`
   width: calc(100% - 56px );
   margin-left: 56px;
-  /* height: 100%; */
+  height: 100%;
   padding: 20px;
+  /* border: 3px solid green; */
   background-color: #F0F3F7;
   ${({ theme }) => theme.mobile`
     width: 100%;

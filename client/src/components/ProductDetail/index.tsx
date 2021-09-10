@@ -260,7 +260,7 @@ const S = {
      
         }
         input[type=number]::-webkit-inner-spin-button {
-        opacity: 1;
+          opacity: 1;
           position: absolute;
           top: 0;
           right: 0;
@@ -268,7 +268,6 @@ const S = {
           cursor: pointer;
         }
       }
-
       button{
         all: unset;
         height: 100%;
@@ -309,10 +308,8 @@ const S = {
 
 
 export default function ProductDetail({ item }: IProductDetail) {
-
   const [showSpec, setShowSpec] = useState<boolean>(false);
   const [selectItems, setSelectItems] = useState<IBasketItem[]>([]);
-  console.log('selectItems: ', selectItems);
   const { action, state } = useBasketContext();
   const [duplicate, setDuplicate] = useState(false);
   const router = useRouter();
@@ -384,7 +381,7 @@ export default function ProductDetail({ item }: IProductDetail) {
     if (cnt > 10) return alert('최대 주문수량은 10개 입니다.');
     targetItem.qty = cnt;
     targetItem.totalConsumerPrice = String(+targetItem.consumer_price * cnt);
-    targetItem.totalProductPrice = String(+targetItem.totalProductPrice * cnt);
+    targetItem.totalProductPrice = String(+targetItem.product_price * cnt);
     setSelectItems([...selectItems]);
   };
 

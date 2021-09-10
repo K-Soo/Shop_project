@@ -4,9 +4,14 @@ import throwError from '../../src/error/throwError';
 
 const list = async (req, res) => {
   try {
-    res.json(room);
+    const exist = await Product.find();
+    res.json(exist);
+    if (!exist.length) {
+      throwError({statusCode: 404,mgs:'상품이 없습니다.' }); 
+    } 
   } catch (error) {
     console.error('/list error', error);
+    next(error);
   }
 };
 
@@ -14,13 +19,10 @@ const getProductLists = async (req, res, next) => {
   try {
     const { product_type } = req.params;
     const exist = await Product.find({ product_type });
-    console.log('exist: ', exist);
-
     if (exist.length) {
       res.json(exist);
     } 
     const result = exist.length ? exist : null;
-
     console.log('result: ', result);
     if(result && result.length === 0){
        throwError({statusCode: 404 }); 

@@ -10,6 +10,8 @@ import Loading from 'components/Common/Loading';
 import { IProduct } from 'interfaces/IProduct';
 import { Get } from "api";
 import Admin from 'components/Admin';
+import HomeControllers from 'components/Admin/HomeControllers';
+import Home from 'components/Admin/HomeControllers/Home';
 
 export default function AdminPage() {
   const router: NextRouter = useRouter();
@@ -21,6 +23,9 @@ export default function AdminPage() {
         <meta name="description" content="??" />
       </Head>
       <AdminContainer>
+        <HomeControllers >
+          <Home />
+        </HomeControllers>
       </AdminContainer>
     </>
   );

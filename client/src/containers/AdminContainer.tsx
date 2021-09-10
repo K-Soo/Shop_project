@@ -27,9 +27,9 @@ export default function AdminContainer({ children }: IAdminContainer) {
           <Section.Header>
             <AdminNav />
           </Section.Header>
-          <Section.Side>
+           <Section.Side>
             <Aside />
-          </Section.Side>
+          </Section.Side> 
           <Section.Main>
             {children}
           </Section.Main>

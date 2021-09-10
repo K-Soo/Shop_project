@@ -49,9 +49,6 @@ const S = {
         &__short-desc{
           margin: 10px 0;
         }
-        &__discount-percentage{
-          font-size: 12px;
-        }
         &__product-price{
           color: #999;
         }
@@ -99,6 +96,7 @@ const S = {
 }
 
 export default function ProductList({ item }: IProductList) {
+  console.log('item: ', item);
   const router = useRouter();
   const { category } = router.query;
 
@@ -111,7 +109,7 @@ export default function ProductList({ item }: IProductList) {
               <a>
                 <div className='img-box'>
                   <Image
-                    src='https://via.placeholder.com/150'
+                    src={d.imageUrl[0].url}
                     alt="Picture of the author"
                     width={500}
                     height={500}
@@ -130,7 +128,6 @@ export default function ProductList({ item }: IProductList) {
               <p className='desc-box__short-desc'>{d.description.slice(0, 30)}</p>
               <span className='desc-box__product-price'><del>{PriceComma(d.product_price)}원</del></span>
               <span className='desc-box__consumer-price'>{PriceComma(d.consumer_price)}원</span>
-              <span className='desc-box__discount-percentage'>(29%할인)</span>
               <S.IconBox >
                 {d.new_product && <i className='new-icon' >new</i>}
                 {d.best_product && <i className='best-icon' >best</i>}

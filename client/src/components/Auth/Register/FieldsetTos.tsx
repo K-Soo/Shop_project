@@ -3,11 +3,8 @@ import styled from 'styled-components';
 import TextArea from "components/style/TextArea";
 import { Text } from "constants/register";
 import Title from "components/style/Title";
-import Icon from 'components/Icon/Icon';
-
-interface IFieldsetTos {
-  className?: string;
-}
+import CheckBox from 'components/style/CheckBox';
+import { useRegisterContext } from 'context/RegisterProvider';
 
 const TextAreaBlock = styled.div`
   width: 100%;
@@ -21,17 +18,7 @@ const CheckBlock = styled.p`
   font-size: 14px;
   color: #333;
   display: flex;
-  align-items: stretch;
-
-  .icon-wrap{
-    padding-left: 10px;
-    display: inline-flex;
-    align-items: stretch;
-    &::after{
-      content: '동의함';
-      padding-left: 3px;
-    }
-  }
+  align-items: center;
   ${({ theme }) => theme.mobile`
     font-size: 12px;
   `}
@@ -45,9 +32,8 @@ const TotalCheck = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
-
   &::after{
-    margin: 0 15px 0 5px;
+    margin: 0 15px 0 0;
     height:40px;
     line-height: 42px;
     content: '이용약관 및 개인정보수집 및 이용에 모두 동의합니다.'
@@ -57,15 +43,23 @@ const TotalCheck = styled.div`
   `}
 `;
 
-const FieldsetTos: React.FC<IFieldsetTos> = ({ className }) => {
+export default function FieldsetTos() {
+  const { state, action } = useRegisterContext();
+
   return (
     <>
       <div className='form-box__input-wrap'>
         <TextAreaBlock >
           <Title level={3} size='12' textAlign='left' marginB='10' >[필수] 이용약관 동의</Title>
-          <TextArea value={Text.TOS} />
+          <TextArea value={Text.TOS} readOnly />
           <CheckBlock>
             <span>이용약관에 동의하십니까?</span>
+            <CheckBox 
+              marginL='10' 
+              name='TermsOfService' 
+              onChange={action.setCheckBox} 
+              checked={state.TermsOfService}
+            />
           </CheckBlock>
         </TextAreaBlock>
       </div>
@@ -73,21 +67,26 @@ const FieldsetTos: React.FC<IFieldsetTos> = ({ className }) => {
       <div className='form-box__input-wrap'>
         <TextAreaBlock >
           <Title level={3} size='12' textAlign='left' marginB='10' >[필수] 개인정보 수집 및 이용 동의</Title>
-          <TextArea value={Text.TOS} />
+          <TextArea value={Text.TOS} readOnly />
           <CheckBlock>
             <span>개인정보 수집 및 이용에 동의하십니까?</span>
-            <span className='icon-wrap'>
-              <Icon name='check' TosIcon />
-            </span>
+            <CheckBox 
+              marginL='10' 
+              name='PersonalInfo' 
+              onChange={action.setCheckBox} 
+              checked={state.PersonalInfo}
+            />
           </CheckBlock>
         </TextAreaBlock>
       </div>
       <TotalCheck>
-      <Icon name='check' TosIcon style={{width:'25px',height:'25px'}}/>
-    </TotalCheck>
+        <CheckBox 
+          marginR='10' 
+          name='allCheck' 
+          onChange={action.setCheckBox} 
+          checked={state.PersonalInfo && state.TermsOfService}
+        />
+      </TotalCheck>
     </>
   )
 };
-
-
-export default FieldsetTos;

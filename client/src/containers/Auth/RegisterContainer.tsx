@@ -8,9 +8,7 @@ interface IRegisterContainer {
 }
 
 const RegisterContainer: React.FC<IRegisterContainer> = () => {
-  const [isModal, setModal] = useState(false);
-  console.log('isModal: ', isModal);
-  return <Register isModal={isModal} onClick={() => setModal(!isModal)}/>;
+  return <Register />;
 };
 
 export default RegisterContainer;

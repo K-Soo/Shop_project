@@ -10,6 +10,7 @@ import Button from "components/style/Button";
 import Icon from 'components/Icon/Icon';
 import { TAP_CATEGORY, DELIVERY_MESSAGE_LIST } from 'constants/ordrform';
 import { useOrderContext } from 'context/OrderProvider';
+import { useAppContext } from 'context/AppProvider';
 
 interface IDeliveryInfo {
 
@@ -84,12 +85,12 @@ type TToggleText = 'recently' | 'direct';
 
 export default function DeliveryInfo({ }: IDeliveryInfo) {
   const [toggleText, setToggleText] = useState<TToggleText>('recently');
-  const {isModal, setIsModal} = useState(false);
   const { state, action } = useOrderContext();
+  const App = useAppContext();
 
   const handleToggle = (e: React.MouseEvent<HTMLLIElement>) => {
     const { className } = e.target as HTMLLIElement;
-    setToggleText(className);
+    setToggleText(className as TToggleText);
   }
 
   return (
@@ -110,7 +111,7 @@ export default function DeliveryInfo({ }: IDeliveryInfo) {
         <div className='addr'>
           <div className='addr-button'>
             <Input name='zoneCode' maxWidth='80' readOnly />
-            <Button white height='40' fontSize='14px' width='40' onClick={() => setIsModal(!isModal)}>
+            <Button white height='40' fontSize='14px' width='40' onClick={App.action.setOpenDaumPost}>
               <i>
                 <Icon name='location' />
               </i>
@@ -163,7 +164,7 @@ export default function DeliveryInfo({ }: IDeliveryInfo) {
           )}
         </div>
       </S.Group>
-      <DaumPost />
+      {App.state.openDaumPost && <DaumPost />}
     </S.DeliveryInfo>
   );
 }

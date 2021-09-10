@@ -1,5 +1,6 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
+import { useRouter, NextRouter } from 'next/router';
 import FinalAmount from 'components/Forms/FinalAmount';
 import FormFieldset from 'components/Forms/FormFieldset';
 import DeliveryInfo from 'components/Forms/DeliveryInfo';
@@ -12,7 +13,6 @@ import { useAppContext } from 'context/AppProvider';
 import { useOrderContext } from 'context/OrderProvider';
 import Button from 'components/style/Button';
 import { Delete } from 'api';
-import { useRouter, NextRouter } from 'next/router';
 
 const S = {
   Basket: styled.div`
@@ -20,6 +20,8 @@ const S = {
 }
 
 export default function Basket() {
+  const [totalPrice, setTotalPrice] = useState<number | null>(null);
+  const [paymentPrice, setPaymentPrice] = useState<number | null>(null);
   const { state, action } = useAppContext();
   const Order = useOrderContext();
   const router: NextRouter = useRouter();
@@ -47,7 +49,7 @@ export default function Basket() {
       Order.action.setProducts(findOne);
       router.push('/order/orderform');
     }
-  }, [Order.state.orderForm.Products,state.basket.basketList]);
+  }, [Order.state.orderForm.Products, state.basket.basketList]);
 
   const handleCheckbox = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const { checked, value } = e.target as HTMLInputElement;
@@ -62,15 +64,24 @@ export default function Basket() {
   }, [state.basket.basketList])
 
   const handleSelectedProduct = useCallback(() => {
-    if(!Order.state.orderForm.Products.length) return alert('상품선택후 다시 시도해주세요.')
+    if (!Order.state.orderForm.Products.length) return alert('상품선택후 다시 시도해주세요.')
     router.push('/order/orderform');
-  },[Order.state.orderForm.Products])
+  }, [Order.state.orderForm.Products])
 
   const handleEntireProducts = () => {
-    if(!state.basket.basketList.length) return alert('장바구니에 상품이없습니다.');
+    if (!state.basket.basketList.length) return alert('장바구니에 상품이없습니다.');
     Order.action.setEntireProducts(state.basket.basketList);
     router.push('/order/orderform');
   }
+
+  useEffect(() => {
+    if (state.basket.basketList.length) {
+      const CalcProduct = state.basket.basketList.reduce((acc, cur) => acc + (+cur.totalProductPrice), 0);
+      setTotalPrice(CalcProduct)
+      const CalcPayment = CalcProduct - (state.basket.basketList.reduce((acc, cur) => acc + (+cur.totalConsumerPrice), 0));
+      setPaymentPrice(CalcPayment);
+    }
+  }, [state.basket.basketList])
 
   return (
     <S.Basket>
@@ -88,7 +99,12 @@ export default function Basket() {
 
       {state.basket.basketList.length > 0 && (
         <FormFieldset title='결제예정금액'>
-          <FinalAmount handleSelectedProduct={handleSelectedProduct} handleEntireProducts={handleEntireProducts}/>
+          <FinalAmount 
+            handleSelectedProduct={handleSelectedProduct} 
+            handleEntireProducts={handleEntireProducts} 
+            totalPrice={totalPrice} 
+            paymentPrice={paymentPrice} 
+          />
         </FormFieldset>
       )}
 

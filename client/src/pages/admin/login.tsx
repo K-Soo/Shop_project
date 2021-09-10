@@ -10,23 +10,31 @@ import Loading from 'components/Common/Loading';
 import { IProduct } from 'interfaces/IProduct';
 import { Get } from "api";
 import Admin from 'components/Admin';
-import ProductControllers from 'components/Admin/ProductControllers';
-import Section from 'components/Admin/Section';
-import Aside from 'components/Admin/Aside';
+import LoginControllers from 'components/Admin/LoginControllers';
+import Home from 'components/Admin/HomeControllers/Home';
+import styled from "styled-components";
 
-export default function ProductPage() {
+const S = {
+  Login: styled.div`
+    background-color: #000;
+    height: 100vh;
+  `,
+}
+
+
+
+export default function LoginPage() {
   const router: NextRouter = useRouter();
 
   return (
     <>
       <Head>
-        <title>관리자 | 상품</title>
+        <title>관리자 | 로그인</title>
         <meta name="description" content="??" />
       </Head>
-      <AdminContainer>
-        <ProductControllers />
-      </AdminContainer>
+      <LoginControllers/>
     </>
   );
 }
+
 

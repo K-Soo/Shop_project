@@ -9,8 +9,8 @@ interface ICheckBox {
   defaultChecked?: boolean;
   required?: boolean;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
-  marginright?: string;
-  marginleft?: string;
+  marginL?: string;
+  marginR?: string;
 }
 
 const CheckBoxInput: React.FunctionComponent<ICheckBox> = ({
@@ -47,8 +47,8 @@ export default styled(CheckBoxInput)`
   height: 20px;
   display: inline-block;
   font-size: 0;
-  margin-left: ${({ marginleft }) => `${marginleft}px` ?? '0'};
-  margin-right: ${({ marginright }) => `${marginright}px` ?? '0'};
+  margin-left: ${({ marginL }) => `${marginL}px` ?? '0'};
+  margin-right: ${({ marginR }) => `${marginR}px` ?? '0'};
   svg{
       color: #dee2e6;
       width: 18px;

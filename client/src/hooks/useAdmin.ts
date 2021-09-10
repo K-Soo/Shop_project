@@ -107,7 +107,6 @@ const generateAction = (update: (recipe: (draft: IAppState) => void) => void) =>
   const setData = (stateName: string, value: any) =>
     update(draft => {
       const keyArray = stateName.split('.');
-
       if (keyArray.length === 1) draft[keyArray[0]] = value;
       else if (keyArray.length === 2) draft[keyArray[0]][keyArray[1]] = value;
       else if (keyArray.length === 3) draft[keyArray[0]][keyArray[1]][keyArray[2]] = value;

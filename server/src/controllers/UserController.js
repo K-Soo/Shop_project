@@ -2,18 +2,17 @@ import bcrypt from 'bcrypt';
 import User from '../models/User';
 import Basket from '../models/Basket';
 import throwError from '../error/throwError';
+import response from '../error/response';
 
 const register = async (req, res, next) => {
-  console.log('회원가입 요청', req.body);
-  const { userId, password } = req.body;
+  const {userId,password} = req.body;
   try {
     const exist = await User.findByUserId(userId);
     if (exist) return throwError({ statusCode: 409, msg: '이미 가입된 ID입니다' })
-    const user = new User({ password, userId });
+    const user = new User(req.body);
     await user.setPassword(password);
     await user.save();
     const token = user.generateToken();
-
     res.cookie('access_token', token, {
       httpOnly: true,
       maxAge: 1000 * 60 * 5,
@@ -25,7 +24,21 @@ const register = async (req, res, next) => {
     //   token
     //   });
 
+  } catch (error) {
+    next(error);
+  }
+};
 
+const idCheck = async (req, res, next) => {
+  const { userId } = req.body;
+  console.log('userId: ', userId);
+  try {
+    const exist = await User.findByUserId(userId);
+    if (exist) {
+      res.json({ success: false });
+    } else {
+      res.json({ success: true });
+    }
   } catch (error) {
     next(error);
   }
@@ -65,5 +78,6 @@ const logIn = async (req, res, next) => {
 
 export {
   register,
-  logIn
+  logIn,
+  idCheck
 }

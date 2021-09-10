@@ -18,6 +18,7 @@ export interface IAppState {
   openSideMenu: boolean;
   openSubMenu: boolean,
   openSearch: boolean,
+  openDaumPost: boolean,
   testValue: string,
   targetCategory: string;
   layout: {
@@ -43,6 +44,7 @@ export const appDefaultValue: IApp = {
     openSideMenu: false,
     openSubMenu: false,
     openSearch: false,
+    openDaumPost: false,
     testValue: '',
     targetCategory: 'all',
     layout: {
@@ -67,6 +69,7 @@ const initializer = (props) => {
     openSideMenu: false,
     openSubMenu: false,
     openSearch: false,
+    openDaumPost: false,
     testValue: '',
     targetCategory: 'all',
     layout: {
@@ -113,6 +116,11 @@ const generateAction = (update: (recipe: (draft: IAppState) => void) => void) =>
       draft.layout.isHeader = status;
     });
 
+  const setOpenDaumPost = () =>
+    update((draft) => {
+      draft.openDaumPost = !draft.openDaumPost;;
+  });
+
   const setIsFooter = (status: boolean) =>
     update((draft) => {
       draft.layout.isFooter = status;
@@ -153,7 +161,11 @@ const generateAction = (update: (recipe: (draft: IAppState) => void) => void) =>
   const setChangeQty = (e: React.ChangeEvent<HTMLInputElement>) =>
     update((draft) => {
       const { name, value } = e.target as HTMLInputElement;
-      draft.basket.basketList.find(d => d._id === name).qty = +value;
+      const cnt = +value
+      console.log('cnt: ', cnt);
+      if (!cnt) return alert('최소 주문수량은 1개 입니다.');
+      if (cnt > 10) return alert('최대 주문수량은 10개 입니다.');
+      draft.basket.basketList.find(d => d._id === name).qty = cnt;
     });
 
   return {
@@ -168,7 +180,8 @@ const generateAction = (update: (recipe: (draft: IAppState) => void) => void) =>
     setLocalItems,
     setBasketList,
     // setCurrentOrderItem,
-    setChangeQty
+    setChangeQty,
+    setOpenDaumPost
   };
 };
 

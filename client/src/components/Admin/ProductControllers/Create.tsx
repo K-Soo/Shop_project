@@ -15,12 +15,12 @@ import { Post } from "api";
 import FileUpload from 'components/Common/FileUpload';
 import { useMutation } from 'react-query';
 
-interface IProductCreate {
+interface ICreate {
 
 }
 
 const S = {
-  ProductCreate: styled.div`
+  Create: styled.div`
     input,textarea{
       font-size: 12px;
       color: #000;
@@ -122,12 +122,11 @@ type TColorProps = {
 
 const colorInit: TColorProps = { hex_value: '', color_name: '' };
 
-export default function ProductCreate(props: IProductCreate) {
+export default function Create(props: ICreate) {
   const { state, action } = useAdminContext();
   const { product_type } = state.create;
   const [color, setColor] = useState(colorInit)
   const [content, setContent] = useState();
-  console.log('content: ', content);
 
   const handleColor = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target as HTMLInputElement;
@@ -154,7 +153,7 @@ export default function ProductCreate(props: IProductCreate) {
     action.setRemoveColor(result);
   }
 
-  const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     if (!confirm("확인(예) 또는 취소(아니오)를 선택해주세요.")) {
       return;
     } else {
@@ -185,8 +184,7 @@ export default function ProductCreate(props: IProductCreate) {
   }
 
   return (
-    <S.ProductCreate>
-      <Title level={1} textAlign='left' marginB='20' >상품추가</Title>
+    <S.Create>
       <form onSubmit={handleSubmit}>
         <S.Group>
           <Label htmlFor='' >옵션 선택</Label>
@@ -282,6 +280,6 @@ export default function ProductCreate(props: IProductCreate) {
 
         <Button type='submit'>등록</Button>
       </form>
-    </S.ProductCreate>
+    </S.Create>
   );
 };
