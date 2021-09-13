@@ -208,17 +208,17 @@ export default function OrderList({
   handleSelectProductRemove,
   item
 }: IOrderList) {
-  const { action } = useAppContext();
+  const { action,state } = useAppContext();
   const router: NextRouter = useRouter();
-  console.log('router: ', router);
-
+  const {userId} = state.userInfo;
+  
   return (
     <S.OrderList>
       {item.length ? (item.map((d) => (
-        <S.Item key={d._id} asPath={router.asPath}>
+        <S.Item key={userId ? d._id : d.date} asPath={router.asPath}>
           <S.MainContent>
             <div className='icon-box'>
-              <CheckBox name='check' value={d._id} onChange={handleCheckbox} />
+              <CheckBox name='check' value={userId ?  d._id : d.date} onChange={handleCheckbox} />
             </div>
             <div className='product-info'>
               <div className='product-info__left'>
@@ -283,7 +283,7 @@ export default function OrderList({
           {router.asPath === "/order/basket" && (
             <S.BasketButtonBox>
               <div className='button-wrapper'>
-                <Button white height='25px' name={d._id} onClick={handleRemoveItem}>삭제</Button>
+                <Button white height='25px' name={userId ? d._id : d.date} onClick={handleRemoveItem}>삭제</Button>
                 <Button white height='25px'>관심상품</Button>
               </div>
               <Button

@@ -21,6 +21,7 @@ export interface IProduct {
   _id: string;
 }
 export interface IBasketItem extends IProduct {
+  date?: string;
   selectColor?: { colorName: string, hexValue: string }[];
   qty?: number;
   totalProductPrice?: string;

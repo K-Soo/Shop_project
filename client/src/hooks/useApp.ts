@@ -14,7 +14,7 @@ export interface IApp {
 }
 
 export interface IAppState {
-  status: { loading: boolean };
+  status: { user: false },
   openSideMenu: boolean;
   openSubMenu: boolean,
   openSearch: boolean,
@@ -32,6 +32,7 @@ export interface IAppState {
   basket: {
     localStorageItem: IBasketItem[],
     basketList: IBasketItem[],
+    nonMemberBasket: IBasketItem[],
   }
   currentOrderItem: IBasketItem[],
 }
@@ -40,7 +41,7 @@ export const appDefaultValue: IApp = {
   props: null,
   action: null,
   state: {
-    status: { loading: false },
+    status: { user: false },
     openSideMenu: false,
     openSubMenu: false,
     openSearch: false,
@@ -58,6 +59,7 @@ export const appDefaultValue: IApp = {
     basket: {
       localStorageItem: null,
       basketList: [],
+      nonMemberBasket: [],
     },
     currentOrderItem: [],
   },
@@ -65,7 +67,7 @@ export const appDefaultValue: IApp = {
 
 const initializer = (props) => {
   const state: IAppState = {
-    status: { loading: false },
+    status: { user: false },
     openSideMenu: false,
     openSubMenu: false,
     openSearch: false,
@@ -83,6 +85,7 @@ const initializer = (props) => {
     basket: {
       localStorageItem: null,
       basketList: [],
+      nonMemberBasket: [],
     },
     currentOrderItem: [],
   };
@@ -136,8 +139,7 @@ const generateAction = (update: (recipe: (draft: IAppState) => void) => void) =>
   const InitData = (stateName: string, initValue?: any) =>
     update(draft => {
       const keyArray = stateName.split('.');
-      let valueDefault = '';
-      if (initValue) valueDefault = initValue;
+      let valueDefault =  initValue || '';
 
       if (keyArray.length === 1) draft[keyArray[0]] = valueDefault;
       else if (keyArray.length === 2) draft[keyArray[0]][keyArray[1]] = valueDefault;
@@ -148,9 +150,21 @@ const generateAction = (update: (recipe: (draft: IAppState) => void) => void) =>
       draft.basket.localStorageItem = data;
     });
 
+  // 회원 장바구니
   const setBasketList = (data: IBasketItem[]) =>
     update((draft) => {
       draft.basket.basketList = data;
+    });
+
+  // 비회원 장바구니
+    const setNonMemberBasketPush = (data: IBasketItem[]) =>
+    update((draft) => {
+      draft.basket.nonMemberBasket.push(...data);
+    });
+
+    const setNonMemberBasket = (data: IBasketItem[]) =>
+    update((draft) => {
+      draft.basket.nonMemberBasket = data;
     });
 
   // const setCurrentOrderItem = (data: IBasketItem) =>
@@ -181,7 +195,9 @@ const generateAction = (update: (recipe: (draft: IAppState) => void) => void) =>
     setBasketList,
     // setCurrentOrderItem,
     setChangeQty,
-    setOpenDaumPost
+    setOpenDaumPost,
+    setNonMemberBasketPush,
+    setNonMemberBasket,
   };
 };
 
@@ -194,20 +210,42 @@ const useApp = (props) => {
   const action = generateAction(update);
   const app = { props, state, action };
 
-  // useEffect(() => {
-  //   setAppState(() => initializer(props));
-  // },[props]);
+  useEffect(() => {
+    setAppState(() => initializer(props));
+  },[props]);
 
   useEffect(() => {
+    // 회원 장바구니
     if (app.state.basket.localStorageItem) {
       localStorage.setItem('basket', JSON.stringify(app.state.basket.localStorageItem));
     }
-  }, [app.state.basket.localStorageItem])
+  }, [app.state.basket.localStorageItem]);
+
 
   useEffect(() => {
+    // 비회원 장바구니
+      localStorage.setItem('unknown-basket', JSON.stringify(app.state.basket.nonMemberBasket));
+  }, [app.state.basket.nonMemberBasket])
+
+
+  useEffect(() => {
+    // localStorageItem가 변하면  로컬스토리지에서 가져와서 basketList에 저장한다
     const result = JSON.parse(localStorage.getItem("basket"));
-    action.setBasketList(result);
+    if(result) action.setBasketList(result);
   }, [app.state.basket.localStorageItem]);
+
+
+  useEffect(() => {
+    const member = JSON.parse(localStorage.getItem("basket"));
+    if(member) action.setBasketList(member);
+
+  }, [props]);
+
+  useEffect(() => {
+    const nonMember = JSON.parse(localStorage.getItem("unknown-basket"));
+    if(nonMember) action.setNonMemberBasket(nonMember);
+  }, [props]);
+
 
   useEffect(() => {
     app.action.InitData('userInfo.userId', props.userInfo.userId);

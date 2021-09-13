@@ -105,7 +105,7 @@ export default function Register() {
     try {
       const res = await Post.register(formData);
       alert('가입이 완료되었습니다.');
-      // router.push('/');
+      router.push('/');
     } catch (error) {
       console.log('Register-error: ', error);
       alert(error.response.data.message);

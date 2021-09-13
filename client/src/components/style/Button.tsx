@@ -11,16 +11,17 @@ interface IButton {
   margin?: string;
   fontSize?: string;
   fontWeight?: string;
-  name?: string
+  name?: string;
   black?: boolean;
   white?: boolean;
   onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   type?: "button" | "submit" | "reset" | undefined;
+  dataColor?: any;
 }
 
-const Button: React.FC<IButton> = ({ className, children, onClick, type, name }) => {
+const Button: React.FC<IButton> = ({ className, children, onClick, type, name,dataColor }) => {
   return (
-    <button className={className} onClick={onClick} type={type ?? 'button'} name={name}>
+    <button className={className} onClick={onClick} type={type ?? 'button'} data-color={dataColor} name={name}>
       {children}
     </button>
   );

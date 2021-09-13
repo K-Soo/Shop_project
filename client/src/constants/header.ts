@@ -9,7 +9,7 @@ export const NAV_MENU: readonly { label: string; value: string; url: string }[] 
   { label: "커플링", value: "이용안내", url: "/product/coupling" },
 ];
 
-interface IMAIN {
+interface IMain {
   readonly [name: string]: {
     label: string;
     value: string;
@@ -17,7 +17,7 @@ interface IMAIN {
   }[]
 }
 
-export const MAIN_MENU: IMAIN = {
+export const MAIN_MENU: IMain = {
   left: [
     { label: "고객센터", value: "register", url: "/shop-info/agreement" },
     { label: "즐겨찾기", value: "개인정보", url: "/shop-info/privacy" },

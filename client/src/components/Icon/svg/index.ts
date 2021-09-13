@@ -23,5 +23,6 @@ import { ReactComponent as arrowNoTailBottom } from "./arrowNoTailBottom.svg";
 import { ReactComponent as trashCan } from "./trashCan.svg";
 import { ReactComponent as check } from "./check.svg";
 import { ReactComponent as location } from "./location.svg";
+import { ReactComponent as userNot } from "./userNot.svg";
 
-export { bed, ovalCheck, human, cart, search, bookmark, arrowTop, arrowBottom, arrowLeft, close, heart, BigArrowLeft, cartAdd, plus, minus, info, closeSmall, user, home, arrowNoTailBottom, arrowNoTailTop, trashCan, check,location };
+export { bed, ovalCheck, human, cart, search, bookmark, arrowTop, arrowBottom, arrowLeft, close, heart, BigArrowLeft, cartAdd, plus, minus, info, closeSmall, user, home, arrowNoTailBottom, arrowNoTailTop, trashCan, check,location,userNot };

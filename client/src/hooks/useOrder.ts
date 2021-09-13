@@ -82,9 +82,13 @@ const generateAction = (update: (recipe: (draft: IOrderState) => void) => void) 
       draft.orderForm.Products = items
     });
 
-  const setRemoveCheckedItem = (value: string) =>
+  const setRemoveCheckedItem = (value: string,user:boolean) =>
     update((draft) => {
-      draft.orderForm.Products = draft.orderForm.Products.filter(({ _id }) => _id !== value);
+      if(user){
+        draft.orderForm.Products = draft.orderForm.Products.filter(({ _id }) => _id !== value);
+      }else{
+        draft.orderForm.Products = draft.orderForm.Products.filter(({ date }) => date !== value);
+      }
     });
 
   const setInitOrderForm = () =>
@@ -143,7 +147,7 @@ const generateAction = (update: (recipe: (draft: IOrderState) => void) => void) 
 
 const useOrder = (props: any) => {
   const [state, setAppState] = useState(() => initializer(props));
-  console.log('useOrder state: ', state);
+  console.log('useOrder: ', state);
 
   const update = (recipe: (draft: IOrderState) => void) =>
     setAppState((prev) => produce(prev, recipe));

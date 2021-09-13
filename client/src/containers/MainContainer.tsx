@@ -31,10 +31,6 @@ export default function MainContainer(props: IMainContainer) {
           </Link>
         ))}
       </Breadcrumb>
-      <div>
-      {props.global?.userId && props.global.userId}
-      </div>
-
       {props.children}
     </S.MainContainer>
   );

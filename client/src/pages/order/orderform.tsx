@@ -10,6 +10,7 @@ interface IOrderFormPage {
 }
 
 export default function OrderFormPage(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
+  console.log('OrderFormPage: ', props);
   // console.log('props: ', props);
   return (
     <>

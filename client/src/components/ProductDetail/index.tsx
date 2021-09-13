@@ -16,6 +16,7 @@ import Cookie from "js-cookie";
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useAppContext } from 'context/AppProvider';
+import useCheckDuplicate from 'hooks/useCheckDuplicate';
 
 interface IProductDetail {
   item: IProduct[];
@@ -311,40 +312,32 @@ export default function ProductDetail({ item }: IProductDetail) {
   const [showSpec, setShowSpec] = useState<boolean>(false);
   const [selectItems, setSelectItems] = useState<IBasketItem[]>([]);
   const { action, state } = useBasketContext();
-  const [duplicate, setDuplicate] = useState(false);
   const router = useRouter();
   const App = useAppContext();
-
-  useEffect(() => {
-    if (App.state.basket.basketList.length) {
-      const result = App.state.basket.basketList.filter(({ name: localName, selectColor: color1 }) => selectItems.some(({ name: selectName, selectColor: color2 }) => color2[0].colorName == color1[0].colorName && localName === selectName));
-      if (result.length) {
-        setDuplicate(true);
-      } else {
-        setDuplicate(false);
-      }
-    }
-  }, [selectItems]);
+  const [duplicate] = useCheckDuplicate(App.state.basket.basketList ,selectItems);
+  const [nonMemDuplicate] = useCheckDuplicate(App.state.basket.nonMemberBasket ,selectItems);
+  console.log('nonMemDuplicate: ', nonMemDuplicate);
+  console.log('duplicate: ', duplicate);
 
   const handleAddToBasket = async () => {
     if (!selectItems.length) return alert('필수 옵션을 선택해주세요.');
-    const result = App.state.basket.basketList.filter(({ name: localName, selectColor: color1 }) => selectItems.some(({ name: selectName, selectColor: color2 }) => color2[0].colorName == color1[0].colorName && localName === selectName));
-    console.log('result: ', result);
-    if (result.length || duplicate) {
-      alert("이미동일한 상품이 장바구니에 있습니다.\n장바구니에서 확인 후 다시 추가해주세요.");
-      return action.setOpenModal();
-    } else {
-      if (App.state.userInfo.userId) {
-        try {
-          const res = await Put.updateBasket({ userId:App.state.userInfo.userId, items: selectItems });
-          App.action.setLocalItems(res.items);
-          action.setOpenModal();
-          console.log('res: ', res);
-        } catch (error) {
-          console.log('error: ', error);
+
+      if(duplicate || nonMemDuplicate ){
+        return alert("이미동일한 상품이 장바구니에 있습니다.\n장바구니에서 확인 후 다시 추가해주세요.");
+      }else{
+        if (App.state.userInfo.userId) {
+          try {
+            const res = await Put.updateBasket({ userId: App.state.userInfo.userId, items: selectItems });
+            App.action.setLocalItems(res.items);
+            action.setOpenModal();
+          } catch (error) {
+            console.log('error: ', error);
+          }
+        }else{
+          console.log('비회원');
+          App.action.setNonMemberBasketPush(selectItems);
         }
       }
-    }
   };
 
   const handleSelectItem = (e: React.ChangeEvent<HTMLInputElement>, currentItem: IProduct[]) => {
@@ -352,6 +345,7 @@ export default function ProductDetail({ item }: IProductDetail) {
     const { colorName } = (e.target as HTMLInputElement).dataset;
     const { ...rest }: IBasketItem = currentItem[0];
 
+    rest.date = new Date().toLocaleString();
     rest.selectColor = [{ colorName: colorName, hexValue: value }];
     rest.point = (+currentItem[0].consumer_price * 0.1);
     rest.totalConsumerPrice = currentItem[0].consumer_price;
