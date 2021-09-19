@@ -1,31 +1,37 @@
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosResponse, AxiosRequestConfig } from 'axios';
 import { PostType } from '../models/post.interface';
 import { IProduct } from 'interfaces/IProduct';
+import UserInfo from '../components/Forms/UserInfo';
 
-axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+// axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
 
-const instance = axios.create({
+const config: AxiosRequestConfig = {
   baseURL: process.env.NEXT_PUBLIC_SERVER_URL,
-  // timeout: 15000,
   withCredentials: true,
-});
+  // headers: {
+  //   "Content-Type": "application/json",
+  //   'Access-Control-Allow-Origin': '*',
+  //   'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+  //   'Access-Control-Allow-Credentials': 'true',
+  // },
+};
+
+const instance = axios.create(config);
+
 const responseBody = (response: AxiosResponse) => response.data;
 
-// headers: {
-//   'Access-Control-Allow-Origin': '*',
-//   'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-//   'Access-Control-Allow-Credentials': 'true',
-// },
+
 
 const requests = {
   get: (url: string) => instance.get(url).then(responseBody),
-  post: (url: string, body: {}) => instance.post(url, body, { withCredentials: true, }).then(responseBody),
+  post: (url: string, body: {}) => instance.post(url, body).then(responseBody),
   put: (url: string, body: {}) => instance.put(url, body).then(responseBody),
   delete: (url: string) => instance.delete(url).then(responseBody),
 };
 
 export const Get = {
   products: (category: string): Promise<IProduct> => requests.get(`/api/products/${category}`),
+  UserInfo: (id: string): Promise<IProduct> => requests.get(`/api/users/${id}`),
   getProduct: (category: string, id: string): Promise<IProduct> => requests.get(`/api/products/${category}/${id}`),
   getAllProduct: (): Promise<IProduct> => requests.get(`/api/products/list`),
   getAPost: (id: number): Promise<PostType> => requests.get(`posts/${id}`),
@@ -40,7 +46,7 @@ export const Post = {
   createCart: (body: any) => requests.post('/api/users/cart', body),
   login: (body: any) => requests.post('/api/users/login', body),
   register: (body: any) => requests.post('/api/users/register', body),
-  checkId: (body: {userId: string}) => requests.post('/api/users/check', body),
+  checkId: (body: { userId: string }) => requests.post('/api/users/check', body),
 };
 
 export const Put = {

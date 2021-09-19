@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import Button from "components/style/Button";
 import Icon from 'components/Icon/Icon';
+import { useAppContext } from 'context/AppProvider';
+import { useRouter, NextRouter } from 'next/router';
 
 const S = {
   NonMemBox: styled.div`
@@ -27,8 +29,8 @@ const S = {
         font-size: 0;
         height: 16px;
         svg{
-        color: #333;
-        height: 100%;
+          color: #333;
+          height: 100%;
       }
       }
     }
@@ -36,15 +38,24 @@ const S = {
 }
 
 export default function NonMemBox() {
+  const router: NextRouter = useRouter();
+  const { action } = useAppContext();
+
+  const handleNonMemLogin = () => {
+    action.InitData('status.guest', true);
+    localStorage.setItem('guest', 'on');
+    router.push('/order/orderform');
+  };
+
   return (
-    <S.NonMemBox>
+    <S.NonMemBox onClick={handleNonMemLogin}>
       <p>
         비회원으로도 상품구매가 가능하나
         다양한 회원혜택에서 제외될 수 있습니다.
       </p>
       <Button white height='40px' >
         <i>
-        <Icon name='userNot' />
+          <Icon name='userNot' />
         </i>
         <span>
           비회원 구매

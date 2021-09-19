@@ -13,7 +13,7 @@ const TextAreaBlock = styled.div`
   background-color: #fafafa;
 `;
 
-const CheckBlock = styled.p`
+const CheckBlock = styled.div`
   margin-top: 10px;
   font-size: 14px;
   color: #333;

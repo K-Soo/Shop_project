@@ -12,11 +12,6 @@ import Image from 'next/image'
 import { TColor, IProduct, IBasketItem } from 'interfaces/IProduct';
 import { useRouter } from "next/router";
 
-
-interface IBasketModal {
-
-}
-
 const CommonIcon = css`
   padding: 1px 5px;
   font-size: 12px;
@@ -38,7 +33,9 @@ const S = {
     justify-content: space-between;
     border: 1px solid #333;
     ${({ theme }) => theme.mobile`
-        width: 100%;
+        width: 95%;
+        height: 550px;
+
     `}
   `,
   Header: styled.div`
@@ -81,16 +78,11 @@ const S = {
             vertical-align: middle;
           }
           .img-td{
-            border: 1px solid red;
             font-size: 0;
-            display: inline-block;
             padding: 0;
-            /* height: 100%; */
-            /* width: 50px; */
-            .img{
-              /* height: 100%; */
-              /* width: 100%; */
-            }
+            display: inline-block;
+            height: 100%;
+            width: 100%;
           }
           .option-info{
             text-align: left;
@@ -125,6 +117,7 @@ const S = {
   `,
   Footer: styled.div`
     border-top: 1px solid #f0f0f0;
+    border: 1px solid red;
     flex-basis:70px;
     padding: 15px 25px;
     display: flex;
@@ -132,6 +125,7 @@ const S = {
     .button-group{
       display: flex;
       font-size: 0;
+      border: 1px solid red;
       svg{
         width: 10px;
         height: 10px;
@@ -141,24 +135,22 @@ const S = {
   `,
 }
 
-export default function BasketModal(props: IBasketModal) {
+export default function BasketModal() {
   const [getLocalItem, setGetLocalItem] = useState<IBasketItem[]>([]);
+  console.log('getLocalItem: ', getLocalItem);
   const { action, state } = useBasketContext();
   const App = useAppContext();
   const router = useRouter();
 
   useEffect(() => {
-    const result = JSON.parse(localStorage.getItem("basket"));
-    if(result) setGetLocalItem(result);
-  },[])
+    if (App.state.userInfo.userId) {
+      setGetLocalItem(App.state.basket.basketList);
+    } else {
+      setGetLocalItem(App.state.basket.nonMemberBasket);
+    }
+  }, [App.state.userInfo.userId, App.state.basket]);
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    const { name } = e.target;
-    const findAll = App.state.basket.basketList.filter(d => d._id === name);
-    App.action.setCurrentOrderItem(findAll);
-    router.push('/order/orderform');
-    console.log('name: ', name);
   }
 
   return (
@@ -171,7 +163,7 @@ export default function BasketModal(props: IBasketModal) {
           </i>
         </S.Header>
         <S.Content>
-          <p className='total-cnt'>총 {App.state.basket.localStorageItem?.length ?? 0}개의 상품이 있습니다.</p>
+          <p className='total-cnt'>총 {getLocalItem?.length ?? 0}개의 상품이 있습니다.</p>
           <table>
             <caption>장바구니 목록 확인</caption>
             <colgroup>
@@ -187,19 +179,21 @@ export default function BasketModal(props: IBasketModal) {
               </tr>
             </thead>
             <tbody>
-              {App.state.basket.localStorageItem && App.state.basket.localStorageItem.map((d, i) =>
-                <tr className='row' key={d.selectColor[0].hexValue}>
+              {getLocalItem.length > 0 && getLocalItem.map((d, i) =>
+                <tr className='row' key={i}>
+
                   <td className='img-td'>
                     <Image
                       src={d.imageUrl[0].url}
                       alt={d.name}
                       width={50}
-                      height={30}
+                      height={55}
                       // layout="fill"
                       className='img'
-                      // objectFit="cover"
+                    // objectFit="cover"
                     />
                   </td>
+
                   <td className='option-info'>
                     <p>
                       <span className='name'>{d.name}</span>
@@ -209,12 +203,14 @@ export default function BasketModal(props: IBasketModal) {
                     </p>
                     <span>[옵션:{d.selectColor[0].colorName}]</span>
                   </td>
+
                   <td>
                     <del>
                       {PriceComma(d.product_price)}원
                     </del>
                     {PriceComma(d.consumer_price)}원
                   </td>
+                  
                 </tr>
               )}
             </tbody>

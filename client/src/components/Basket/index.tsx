@@ -45,21 +45,6 @@ export default function Basket() {
     }
   }, [state.userInfo.idx, userId, state.basket.nonMemberBasket]);
 
-  const handleOrderToOneProduct = useCallback((e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault();
-    const { name } = e.target as HTMLButtonElement;
-    const userExistItem = Order.state.orderForm.Products.find(d => d._id === name);
-    console.log('userExistItem: ', userExistItem);
-    // const nonUserExistItem = Order.state.orderForm.Products.find(d => d.date === name);
-    if (userExistItem) {
-      return alert('아래에 선택상품 주문버튼을 눌러주세요');
-    } else {
-      const findOne = state.basket.basketList.find(d => d._id === name);
-      Order.action.setProducts(findOne);
-      router.push('/order/orderform');
-    }
-  }, [Order.state.orderForm.Products, state.basket.basketList]);
-
   const handleCheckbox = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const { checked, value } = e.target as HTMLInputElement;
     if (userId) {
@@ -67,6 +52,7 @@ export default function Basket() {
         if (state.basket.basketList) {
           const result = state.basket.basketList.find(d => d._id === value);
           Order.action.setProducts(result);
+          // Order.action.setOrderLocalStorage(result);
         }
       } else {
         Order.action.setRemoveCheckedItem(value, true);
@@ -75,6 +61,7 @@ export default function Basket() {
       if (checked) {
         const result = state.basket.nonMemberBasket.find(d => d.date === value);
         Order.action.setProducts(result);
+        // Order.action.setOrderLocalStorage(result);
       } else {
         Order.action.setRemoveCheckedItem(value, false);
       }
@@ -83,21 +70,36 @@ export default function Basket() {
   }, [state.basket.basketList])
 
   const handleSelectedProduct = useCallback(() => {
+    // 선택상품 주문
     if (!Order.state.orderForm.Products.length) return alert('상품선택후 다시 시도해주세요.')
     router.push('/order/orderform');
   }, [Order.state.orderForm.Products])
 
   const handleEntireProducts = () => {
-    if (!state.basket.basketList.length) return alert('장바구니에 상품이없습니다.');
-    Order.action.setEntireProducts(state.basket.basketList);
-    router.push('/order/orderform');
+    // 전체상품 주문
+    if (userId) {
+      if (!state.basket.basketList.length) return alert('장바구니에 상품이없습니다.');
+      Order.action.setEntireProducts(state.basket.basketList);
+      router.push('/order/orderform');
+    } else {
+      if (!state.basket.nonMemberBasket.length) return alert('장바구니에 상품이없습니다.');
+      Order.action.setEntireProducts(state.basket.nonMemberBasket);
+      router.push('/order/orderform');
+    }
   }
 
   useEffect(() => {
-    if (state.basket.basketList.length) {
-      const CalcProduct = state.basket.basketList.reduce((acc, cur) => acc + (+cur.totalProductPrice), 0);
+    if (userId) {
+      if (state.basket.basketList.length) {
+        const CalcProduct = state.basket.basketList.reduce((acc, cur) => acc + (+cur.totalProductPrice), 0);
+        setTotalPrice(CalcProduct)
+        const CalcPayment = CalcProduct - (state.basket.basketList.reduce((acc, cur) => acc + (+cur.totalConsumerPrice), 0));
+        setPaymentPrice(CalcPayment);
+      }
+    } else {
+      const CalcProduct = state.basket.nonMemberBasket.reduce((acc, cur) => acc + (+cur.totalProductPrice), 0);
       setTotalPrice(CalcProduct)
-      const CalcPayment = CalcProduct - (state.basket.basketList.reduce((acc, cur) => acc + (+cur.totalConsumerPrice), 0));
+      const CalcPayment = CalcProduct - (state.basket.nonMemberBasket.reduce((acc, cur) => acc + (+cur.totalConsumerPrice), 0));
       setPaymentPrice(CalcPayment);
     }
   }, [state.basket.basketList])
@@ -105,14 +107,12 @@ export default function Basket() {
   return (
     <S.Basket>
       <PageTitle TitleText='장바구니' />
-
-      {state.userInfo.userId ? (
+      <UserInfo />
+      {userId ? (
         <>
-          <UserInfo />
           <FormFieldset title='장바구니 목록'>
             <OrderList
               handleRemoveItem={handleRemoveItem}
-              handleOrderToOneProduct={handleOrderToOneProduct}
               handleCheckbox={handleCheckbox}
               item={state.basket.basketList}
             />
@@ -131,11 +131,9 @@ export default function Basket() {
         </>
       ) : (
         <>
-          <UserInfo />
           <FormFieldset title='장바구니 목록'>
             <OrderList
               handleRemoveItem={handleRemoveItem}
-              handleOrderToOneProduct={handleOrderToOneProduct}
               handleCheckbox={handleCheckbox}
               item={state.basket.nonMemberBasket}
             />

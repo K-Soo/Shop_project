@@ -8,7 +8,8 @@ import DeliveryInfo from 'components/Forms/DeliveryInfo';
 import OrderList from 'components/Forms/OrderList';
 import UserInfo from 'components/Forms/UserInfo';
 import Payment from 'components/Forms/Payment';
-
+import PointsInfo from 'components/Forms/PointsInfo';
+import { useAppContext } from 'context/AppProvider';
 interface IOrderForm {
 
 }
@@ -21,53 +22,43 @@ const S = {
 export default function OrderForm({ }: IOrderForm) {
   const [totalPrice, setTotalPrice] = useState<number | null>(null);
   const [paymentPrice, setPaymentPrice] = useState<number | null>(null);
+  const App = useAppContext();
   const Order = useOrderContext();
   const router = useRouter();
+  const { userId } = App.state.userInfo;
 
   const handleRouterBack = useCallback(() => {
     Order.action.setInitOrderForm();
     router.back();
-  }, [])
-
-  const handleCheckbox = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target as HTMLInputElement
-    const result = Order.state.orderForm.Products.find(({ _id }) => _id === value);
-    Order.action.setTemporaryArray(result);
-  }
-
-  const handleSelectProductRemove = () => {
-    if(!Order.state.TemporaryArray.length) return alert('상품을 선택해주세요.')
-    Order.action.setRemoveOrderItems();
-  }
+  }, []);
 
   useEffect(() => {
     if (Order.state.orderForm.Products.length) {
-      const CalcProduct = Order.state.orderForm.Products.reduce((acc, cur) => acc + (+cur.totalProductPrice), 0);
-      setTotalPrice(CalcProduct)
-      const CalcPayment = CalcProduct - (Order.state.orderForm.Products.reduce((acc, cur) => acc + (+cur.totalConsumerPrice), 0));
-      setPaymentPrice(CalcPayment);
+      Order.action.setAmountInfo();
     }
-  }, [Order.state.orderForm.Products])
+  }, [Order.state.orderForm.Products]);
+
 
   return (
     <S.OrderForm>
       <UserInfo />
       <FormBox title='주문내역'>
-        <OrderList 
-          item={Order.state.orderForm.Products} 
-          handleRouterBack={handleRouterBack} 
-          handleCheckbox={handleCheckbox} 
-          handleSelectProductRemove={handleSelectProductRemove}
+        <OrderList
+          item={Order.state.orderForm.Products}
+          handleRouterBack={handleRouterBack}
+          handleCheckbox={(e) => Order.action.setCheckBox(e, userId)}
+          handleSelectProductRemove={(e) => Order.action.setRemoveOrderItems(e, userId)}
         />
       </FormBox>
 
       {Order.state.orderForm.Products.length > 0 && (
         <>
           <FormBox title='결제예정금액'>
-            <FinalAmount 
-              totalPrice={totalPrice} 
-              paymentPrice={paymentPrice} 
+            <FinalAmount
+              totalPrice={Order.state.orderForm.amountInfo.productAmount}
+              paymentPrice={Order.state.orderForm.amountInfo.consumerAmount}
             />
+            {userId && <PointsInfo />}
           </FormBox>
 
           <FormBox title='배송정보'>
@@ -79,7 +70,6 @@ export default function OrderForm({ }: IOrderForm) {
           </FormBox>
         </>
       )}
-
     </S.OrderForm>
   );
 }

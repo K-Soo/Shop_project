@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@next/react-dev-overlay": "^11.1.2",
+    "@paypal/react-paypal-js": "^7.3.3",
     "@types/react-daum-postcode": "^1.6.1",
     "@types/react-tooltip": "^4.2.4",
     "axios": "^0.21.1",
@@ -22,7 +24,7 @@
     "react-daum-postcode": "^2.0.6",
     "react-dom": "17.0.2",
     "react-dropzone": "^11.3.4",
-    "react-loading-overlay": "^1.0.1",
+    "react-loading-overlay-ts": "^0.2.0",
     "react-paypal-button-v2": "^2.6.3",
     "react-paypal-express-checkout": "^1.0.5",
     "react-query": "^3.19.6",

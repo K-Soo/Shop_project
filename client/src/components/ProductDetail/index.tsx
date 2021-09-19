@@ -8,10 +8,9 @@ import Radio from 'components/style/Radio';
 import Button from 'components/style/Button';
 import CheckBoxColor from 'components/style/CheckBoxColor';
 import BasketModal from 'components/ProductDetail/BasketModal';
-import { PriceComma } from 'utils';
+import { PriceComma,customCookie } from 'utils';
 import { Post, Put } from 'api';
 import { useBasketContext } from 'context/BasketProvider';
-import { customCookie } from 'utils';
 import Cookie from "js-cookie";
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -311,6 +310,7 @@ const S = {
 export default function ProductDetail({ item }: IProductDetail) {
   const [showSpec, setShowSpec] = useState<boolean>(false);
   const [selectItems, setSelectItems] = useState<IBasketItem[]>([]);
+  console.log('selectItems: ', selectItems);
   const { action, state } = useBasketContext();
   const router = useRouter();
   const App = useAppContext();
@@ -321,21 +321,22 @@ export default function ProductDetail({ item }: IProductDetail) {
 
   const handleAddToBasket = async () => {
     if (!selectItems.length) return alert('필수 옵션을 선택해주세요.');
-
       if(duplicate || nonMemDuplicate ){
-        return alert("이미동일한 상품이 장바구니에 있습니다.\n장바구니에서 확인 후 다시 추가해주세요.");
+        alert("이미동일한 상품이 장바구니에 있습니다.\n장바구니에서 확인 후 다시 추가해주세요.");
+        setSelectItems([]);
+        return action.setOpenModal();
       }else{
         if (App.state.userInfo.userId) {
           try {
             const res = await Put.updateBasket({ userId: App.state.userInfo.userId, items: selectItems });
             App.action.setLocalItems(res.items);
-            action.setOpenModal();
+            return action.setOpenModal();
           } catch (error) {
             console.log('error: ', error);
           }
         }else{
-          console.log('비회원');
           App.action.setNonMemberBasketPush(selectItems);
+          return action.setOpenModal();
         }
       }
   };

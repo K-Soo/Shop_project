@@ -15,7 +15,7 @@ interface IInput {
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
   pattern?: string;
   type?: string;
-  maxLength?: number;
+  maxLength?: number | string;
   minLength?: number;
   max?: number | string;
   min?: number | string;

@@ -128,7 +128,6 @@ const generateAction = (update: (recipe: (draft: IRegisterState) => void) => voi
         draft.TermsOfService = checked;
         draft.PersonalInfo = checked;
       }
-
   });
 
   return {

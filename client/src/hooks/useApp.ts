@@ -14,7 +14,7 @@ export interface IApp {
 }
 
 export interface IAppState {
-  status: { user: false },
+  status: { guest: false },
   openSideMenu: boolean;
   openSubMenu: boolean,
   openSearch: boolean,
@@ -31,6 +31,7 @@ export interface IAppState {
   }
   basket: {
     localStorageItem: IBasketItem[],
+    guestLocalStorageItem: IBasketItem[],
     basketList: IBasketItem[],
     nonMemberBasket: IBasketItem[],
   }
@@ -41,7 +42,7 @@ export const appDefaultValue: IApp = {
   props: null,
   action: null,
   state: {
-    status: { user: false },
+    status: { guest: false },
     openSideMenu: false,
     openSubMenu: false,
     openSearch: false,
@@ -58,6 +59,7 @@ export const appDefaultValue: IApp = {
     },
     basket: {
       localStorageItem: null,
+      guestLocalStorageItem: [],
       basketList: [],
       nonMemberBasket: [],
     },
@@ -67,7 +69,7 @@ export const appDefaultValue: IApp = {
 
 const initializer = (props) => {
   const state: IAppState = {
-    status: { user: false },
+    status: { guest: false },
     openSideMenu: false,
     openSubMenu: false,
     openSearch: false,
@@ -84,6 +86,7 @@ const initializer = (props) => {
     },
     basket: {
       localStorageItem: null,
+      guestLocalStorageItem: [],
       basketList: [],
       nonMemberBasket: [],
     },
@@ -93,10 +96,6 @@ const initializer = (props) => {
 };
 
 const generateAction = (update: (recipe: (draft: IAppState) => void) => void) => {
-  const setIsNav = (status: boolean) =>
-    update((draft) => {
-      draft.status.loading = status;
-    });
 
   const setToggleSideMenu = () => {
     update((draft) => {
@@ -122,7 +121,7 @@ const generateAction = (update: (recipe: (draft: IAppState) => void) => void) =>
   const setOpenDaumPost = () =>
     update((draft) => {
       draft.openDaumPost = !draft.openDaumPost;;
-  });
+    });
 
   const setIsFooter = (status: boolean) =>
     update((draft) => {
@@ -139,7 +138,7 @@ const generateAction = (update: (recipe: (draft: IAppState) => void) => void) =>
   const InitData = (stateName: string, initValue?: any) =>
     update(draft => {
       const keyArray = stateName.split('.');
-      let valueDefault =  initValue || '';
+      let valueDefault = initValue || '';
 
       if (keyArray.length === 1) draft[keyArray[0]] = valueDefault;
       else if (keyArray.length === 2) draft[keyArray[0]][keyArray[1]] = valueDefault;
@@ -150,6 +149,11 @@ const generateAction = (update: (recipe: (draft: IAppState) => void) => void) =>
       draft.basket.localStorageItem = data;
     });
 
+  const setGuestLocalItem = (data: IBasketItem[]) =>
+    update((draft) => {
+      draft.basket.guestLocalStorageItem.push(...data);
+    });
+
   // 회원 장바구니
   const setBasketList = (data: IBasketItem[]) =>
     update((draft) => {
@@ -157,15 +161,16 @@ const generateAction = (update: (recipe: (draft: IAppState) => void) => void) =>
     });
 
   // 비회원 장바구니
-    const setNonMemberBasketPush = (data: IBasketItem[]) =>
+  const setNonMemberBasket = (data: IBasketItem[]) =>
+    update((draft) => {
+      draft.basket.nonMemberBasket = data;
+    });
+
+  const setNonMemberBasketPush = (data: IBasketItem[]) =>
     update((draft) => {
       draft.basket.nonMemberBasket.push(...data);
     });
 
-    const setNonMemberBasket = (data: IBasketItem[]) =>
-    update((draft) => {
-      draft.basket.nonMemberBasket = data;
-    });
 
   // const setCurrentOrderItem = (data: IBasketItem) =>
   //   update((draft) => {
@@ -175,15 +180,16 @@ const generateAction = (update: (recipe: (draft: IAppState) => void) => void) =>
   const setChangeQty = (e: React.ChangeEvent<HTMLInputElement>) =>
     update((draft) => {
       const { name, value } = e.target as HTMLInputElement;
-      const cnt = +value
+      let cnt = +value
       console.log('cnt: ', cnt);
       if (!cnt) return alert('최소 주문수량은 1개 입니다.');
       if (cnt > 10) return alert('최대 주문수량은 10개 입니다.');
-      draft.basket.basketList.find(d => d._id === name).qty = cnt;
+
+      const result = draft.basket.nonMemberBasket.find(d => d.date === name);
+      result.qty = cnt;
     });
 
   return {
-    setIsNav,
     setToggleSideMenu,
     setCategory,
     setToggleSubMenu,
@@ -198,6 +204,7 @@ const generateAction = (update: (recipe: (draft: IAppState) => void) => void) =>
     setOpenDaumPost,
     setNonMemberBasketPush,
     setNonMemberBasket,
+    setGuestLocalItem
   };
 };
 
@@ -212,40 +219,7 @@ const useApp = (props) => {
 
   useEffect(() => {
     setAppState(() => initializer(props));
-  },[props]);
-
-  useEffect(() => {
-    // 회원 장바구니
-    if (app.state.basket.localStorageItem) {
-      localStorage.setItem('basket', JSON.stringify(app.state.basket.localStorageItem));
-    }
-  }, [app.state.basket.localStorageItem]);
-
-
-  useEffect(() => {
-    // 비회원 장바구니
-      localStorage.setItem('unknown-basket', JSON.stringify(app.state.basket.nonMemberBasket));
-  }, [app.state.basket.nonMemberBasket])
-
-
-  useEffect(() => {
-    // localStorageItem가 변하면  로컬스토리지에서 가져와서 basketList에 저장한다
-    const result = JSON.parse(localStorage.getItem("basket"));
-    if(result) action.setBasketList(result);
-  }, [app.state.basket.localStorageItem]);
-
-
-  useEffect(() => {
-    const member = JSON.parse(localStorage.getItem("basket"));
-    if(member) action.setBasketList(member);
-
   }, [props]);
-
-  useEffect(() => {
-    const nonMember = JSON.parse(localStorage.getItem("unknown-basket"));
-    if(nonMember) action.setNonMemberBasket(nonMember);
-  }, [props]);
-
 
   useEffect(() => {
     app.action.InitData('userInfo.userId', props.userInfo.userId);
@@ -259,6 +233,69 @@ const useApp = (props) => {
   useDidMountEffect(() => {
     app.action.InitData('targetCategory', 'all');
   }, [router.asPath])
+
+
+  // ------------------------------------- //
+  useEffect(() => {
+    // 회원 장바구니
+    if (app.state.basket.localStorageItem) {
+      localStorage.setItem('basket', JSON.stringify(app.state.basket.localStorageItem));
+    }
+  }, [app.state.basket.localStorageItem]);
+
+  useEffect(() => {
+    const result = JSON.parse(localStorage.getItem("basket"));
+    if (result) action.setBasketList(result);
+  }, [app.state.basket.localStorageItem]);
+
+  useEffect(() => {
+    const member = JSON.parse(localStorage.getItem("basket"));
+    if (member) action.setBasketList(member);
+  }, [props]);
+
+  // -----------------------------------------//
+
+  useEffect(() => {
+    // 비회원 장바구니
+    if (app.state.basket.guestLocalStorageItem.length) {
+      localStorage.setItem('unknown-basket', JSON.stringify(app.state.basket.guestLocalStorageItem));
+    }
+  }, [app.state.basket.guestLocalStorageItem]);
+
+  useEffect(() => {
+    if (app.state.basket.nonMemberBasket.length) {
+      localStorage.setItem('unknown-basket', JSON.stringify(app.state.basket.nonMemberBasket));
+    }
+  }, [app.state.basket.nonMemberBasket]);
+
+  // useEffect(() => {
+  //   // 비회원
+  //   const result = JSON.parse(localStorage.getItem("unknown-basket"));
+  //   if (result) action.setNonMemberBasket(result);
+  // }, []);
+
+  useDidMountEffect(() => {
+    // 비회원
+    if (router.asPath === '/order/basket') {
+      localStorage.setItem('unknown-basket', JSON.stringify(app.state.basket.nonMemberBasket));
+    }
+  }, [app.state.basket.nonMemberBasket]);
+
+  useEffect(() => {
+    const nonMember = JSON.parse(localStorage.getItem("unknown-basket"));
+    if (nonMember) action.setNonMemberBasket(nonMember);
+  }, [props]);
+
+    useEffect(() => {
+      const result = localStorage.getItem("guest");
+      if(result) app.action.InitData('status.guest', true);
+      console.log('------------------------------: ', result);
+  }, [router.asPath]);
+
+
+
+
+
 
   return app;
 };

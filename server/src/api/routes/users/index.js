@@ -10,13 +10,16 @@ const upload = multer({
   dest: 'uploads/'
 });
 
+
 users.get('/basket', BasketController.list);
 users.put('/basket', BasketController.update);
-users.delete('/basket/:user/:id', BasketController.remove);
 
 users.post('/register', UserController.register);
 users.post('/check', UserController.idCheck);
 users.post('/login', UserController.logIn);
+
+users.get('/:id', UserController.userInfo);
+users.delete('/basket/:user/:id', BasketController.remove);
 
 // users.post('/login', body("name").isLength({ min: 2 }), validateRequestSchema, UserController.logIn);
 

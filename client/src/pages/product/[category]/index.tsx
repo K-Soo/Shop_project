@@ -46,8 +46,7 @@ export default function ProductType(props) {
   }
 
   if (isLoading) {
-    // return <Loading isLoading={isLoading} text='loading' />
-    return <h1>loading</h1>
+    return <Loading isLoading={isLoading} text='loading' />
   }
 
 
@@ -55,7 +54,7 @@ export default function ProductType(props) {
   return (
     <>
       <Head>
-        <title>쥬얼리 | ?</title>
+        {/* <title>쥬얼리 | ?</title> */}
         <meta name="description" content="??" />
       </Head>
       <MainContainer >

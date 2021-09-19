@@ -6,38 +6,47 @@ import jwt from 'jsonwebtoken';
 const UserSchema = new mongoose.Schema({
   userId: {
     type: String,
-    unique : true,
-    required : true
+    unique: true,
+    required: true
   },
   password: {
     type: String,
-    required : true
+    required: true
   },
   userName: {
     type: String,
-    required : true
+    required: true,
   },
   phone: {
     type: String,
-    required : true
+    required: true,
   },
   email: {
     type: String,
-    required : true
+    required: true,
   },
   addr1: {
     type: String,
-    required : true
+    required: true,
   },
   addr2: {
     type: String,
-    required : true
+    required: true,
   },
   zonecode: {
     type: String,
-    required : true
+    required: true,
   },
-});
+  point: {
+    type: Number,
+    default: 20000,
+    index: true
+  },
+  likes: [String],
+}, {
+  timestamps: true
+}
+);
 
 UserSchema.statics.findByUserId = function (userId) {
   return this.findOne({ userId });
@@ -57,7 +66,6 @@ UserSchema.methods.checkPassword = async function (password) {
 UserSchema.methods.serialize = function () {
   const data = this.toJSON();
   delete data.password;
-  console.log('data: ', data);
   return data;
 };
 
@@ -65,6 +73,7 @@ UserSchema.methods.generateToken = function () {
   const payload = { // access token에 들어갈 payload
     id: this.id,
     userId: this.userId,
+    point: this.point,
   };
 
   const token = jwt.sign(

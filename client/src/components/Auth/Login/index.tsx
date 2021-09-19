@@ -40,12 +40,9 @@ export default function Login() {
     }
     try {
         const res = await Post.login({ userId: login.userId, password: login.password });
-        console.log('res: ', res);
         customCookie.set("access_token", res.token);
-        if (res.basket?.items) {
-          action.setLocalItems(res.basket.items);
-        }
-        action.InitData('status.user' ,true);
+        if (res.basket?.items) action.setLocalItems(res.basket.items);
+        localStorage.removeItem('unknown-basket');
         router.push("/");
     } catch (error) {
       console.error('login: ', error);

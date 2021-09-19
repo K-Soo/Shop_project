@@ -11,6 +11,8 @@ import Icon from 'components/Icon/Icon';
 import { TAP_CATEGORY, DELIVERY_MESSAGE_LIST } from 'constants/ordrform';
 import { useOrderContext } from 'context/OrderProvider';
 import { useAppContext } from 'context/AppProvider';
+import { PHONE_NUMBER } from 'constants/phone';
+import useDidMountEffect from 'hooks/useDidMountEffect';
 
 interface IDeliveryInfo {
 
@@ -91,7 +93,8 @@ export default function DeliveryInfo({ }: IDeliveryInfo) {
   const handleToggle = (e: React.MouseEvent<HTMLLIElement>) => {
     const { className } = e.target as HTMLLIElement;
     setToggleText(className as TToggleText);
-  }
+  };
+
 
   return (
     <S.DeliveryInfo toggleText={toggleText}>
@@ -102,15 +105,15 @@ export default function DeliveryInfo({ }: IDeliveryInfo) {
       </ul>
 
       <S.Group>
-        <Label htmlFor='recipientFor' required>받는분</Label>
-        <Input name='recipient' id='recipientFor' maxWidth='200' />
+        <Label htmlFor='userNameFor' required>받는분</Label>
+        <Input name='orderForm.userName' id='userNameFor' maxWidth='200' maxLength={6} onChange={action.setFormData} value={state.orderForm.userName} />
       </S.Group>
 
       <S.Group>
-        <Label htmlFor='nameFor' required>주소</Label>
+        <Label htmlFor='addr2For' required>주소</Label>
         <div className='addr'>
           <div className='addr-button'>
-            <Input name='zoneCode' maxWidth='80' readOnly />
+            <Input name='zoneCode' maxWidth='80' readOnly value={state.orderForm.addr.zoneCode} />
             <Button white height='40' fontSize='14px' width='40' onClick={App.action.setOpenDaumPost}>
               <i>
                 <Icon name='location' />
@@ -120,35 +123,42 @@ export default function DeliveryInfo({ }: IDeliveryInfo) {
               </span>
             </Button>
           </div>
-          <Input name='zoneCode' maxWidth='300' margin='0 0 15px 0' readOnly />
-          <Input name='zoneCode' placeholder='나미지 주소' maxWidth='300' />
+          <Input name='zoneCode' maxWidth='300' margin='0 0 15px 0' readOnly value={state.orderForm.addr.addr1} />
+          <Input name='orderForm.addr.addr2' id='addr2For' placeholder='나미지 주소' maxWidth='300'     maxLength={30} onChange={action.setFormData} value={state.orderForm.addr.addr2} />
+
         </div>
       </S.Group>
 
       <S.Group>
-        <Label htmlFor='nameFor' required>휴대전화</Label>
-        <Input name='zoneCode' maxWidth='90' />
+        <Label htmlFor='phoneFor' required>휴대전화</Label>
+        <Select name='TemporaryPhone1' id='phoneFor' maxWidth='90' height='40' value={state.TemporaryPhone1} onChange={action.setFormData} required >
+          <option value=''>선택</option>
+          {PHONE_NUMBER.map(d => (
+            <option key={d.value} value={d.value}>{d.label}</option>
+          ))}
+        </Select>
         <span style={{ width: '15px', textAlign: 'center' }}>-</span>
-        <Input name='zoneCode' maxWidth='90' />
+        <Input name='TemporaryPhone2' maxWidth='90' maxLength='4' value={state.TemporaryPhone2} onChange={action.setFormData} required />
         <span style={{ width: '15px', textAlign: 'center' }}>-</span>
-        <Input name='zoneCode' maxWidth='90' />
+        <Input name='TemporaryPhone3' maxWidth='90' maxLength='4' value={state.TemporaryPhone3}  onChange={action.setFormData}  required />
       </S.Group>
 
       <S.Group>
-        <Label htmlFor='nameFor' required>이메일</Label>
-        <Input name='zoneCode' maxWidth='140' />
+        <Label htmlFor='TemporaryEmail1For' required>이메일</Label>
+        <Input id='TemporaryEmail1For' name='TemporaryEmail1' maxWidth='140' value={state.TemporaryEmail1} onChange={action.setFormData} />
         <span style={{ width: '20px', textAlign: 'center' }}>@</span>
-        <Input name='zoneCode' maxWidth='140' />
+        <Input name='TemporaryEmail2' maxWidth='140' value={state.TemporaryEmail2} onChange={action.setFormData} />
       </S.Group>
 
       <S.Group>
-        <Label htmlFor='nameFor' >배송메세지</Label>
+        <Label htmlFor='deliveryFor' >배송메세지</Label>
         <div className='delivery'>
           <Select
             height='40'
             maxWidth='300'
             name='orderForm.deliveryMessage'
             onChange={action.setFormData}
+            id='deliveryFor'
           >
             {DELIVERY_MESSAGE_LIST.map(d => (
               <option key={d.label} value={d.value}>{d.label}</option>
@@ -160,7 +170,8 @@ export default function DeliveryInfo({ }: IDeliveryInfo) {
               maxWidth='300'
               margin='5px 0 0 0'
               onChange={action.setFormData}
-              value={state.orderForm.deliveryMessage} />
+              value={state.orderForm.deliveryMessage} 
+            />
           )}
         </div>
       </S.Group>

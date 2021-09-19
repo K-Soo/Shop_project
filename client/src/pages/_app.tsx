@@ -12,37 +12,38 @@ import { Hydrate } from 'react-query/hydration'
 import cookies from 'next-cookies'
 import axios from 'axios';
 import jwt from "jsonwebtoken";
-import AppProvider,{useAppContext} from 'context/AppProvider';
+import AppProvider, { useAppContext } from 'context/AppProvider';
 import OrderProvider from 'context/OrderProvider';
-
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 export default function App(props: AppProps) {
-  const {state,action} = useAppContext();
-  console.log('_App props: ', props);
+  const { state, action } = useAppContext();
   const queryClient = new QueryClient()
   // useApp(props.pageProps.userId);
 
+  const initialOptions = {
+    "client-id": process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID,
+    currency: "USD",
+    intent: "capture",
+  }
+
   return (
     <>
-      <Head>
-        <title>앱인데</title>
-      </Head>
       <GlobalStyle />
       <AppProvider AppProps={props}>
-      <OrderProvider value={props}>
-        
-        <QueryClientProvider client={queryClient}>
-          {/* <Hydrate state={props.pageProps.dehydratedState}> */}
+        <OrderProvider value={props}>
+          <QueryClientProvider client={queryClient}>
+            {/* <Hydrate state={props.pageProps.dehydratedState}> */}
             <Theme>
               <Layout >
-                <props.Component {...props.pageProps} />
+                <PayPalScriptProvider options={initialOptions} deferLoading={true}>
+                  <props.Component {...props.pageProps} />
+                </PayPalScriptProvider>
               </Layout>
             </Theme>
-          {/* </Hydrate> */}
-          {/* <ReactQueryDevtools initialIsOpen={false} /> */}
-        </QueryClientProvider>
-
-      </OrderProvider>
-
+            {/* </Hydrate> */}
+            <ReactQueryDevtools initialIsOpen={false} />
+          </QueryClientProvider>
+        </OrderProvider>
       </AppProvider>
     </>
   );
@@ -50,13 +51,14 @@ export default function App(props: AppProps) {
 
 App.getInitialProps = async (context: NextAppContext) => {
   const { ctx, Component } = context;
-  if(ctx.req){
+  if (ctx.req) {
     console.log('서버사이드');
-  }else{
+  } else {
     console.log('클라이언트 사이드');
   }
   const { access_token } = cookies(ctx);
   const decodedJwt = access_token && jwt.decode(access_token) as any;
+  console.log('decodedJwt: ', decodedJwt);
 
   let pageProps = {};
   if (Component.getInitialProps) {
@@ -68,8 +70,9 @@ App.getInitialProps = async (context: NextAppContext) => {
 
   const userInfo = {
     userId,
-    idx
-  }
+    idx,
+  };
+
   pageProps = { ...pageProps, userInfo };
 
   console.log('userId: ', userId);
@@ -82,7 +85,7 @@ App.getInitialProps = async (context: NextAppContext) => {
   // }
 
 
- 
+
   // console.log('scr', document?.cookie);
 
 

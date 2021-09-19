@@ -13,7 +13,8 @@ import { Post } from 'api';
 import PageTitle from 'components/Common/PageTitle';
 import Icon from 'components/Icon/Icon';
 import { useRouter } from 'next/router';
-import { idCheck, passwordCheck,allTermCheck } from 'components/validation';
+import { idCheck, passwordCheck, allTermCheck } from 'components/validation';
+import { PHONE_NUMBER } from 'constants/phone';
 
 const S = {
   Register: styled.section`
@@ -174,12 +175,9 @@ export default function Register() {
               <Label htmlFor='phoneFor' required>휴대전화</Label>
               <Select width='100' height='40' name='phone1' onChange={action.setPhone}>
                 <option value=''>선택</option>
-                <option value='010'>010</option>
-                <option value='011'>011</option>
-                <option value='016'>016</option>
-                <option value='017'>017</option>
-                <option value='018'>018</option>
-                <option value='019'>019</option>
+                {PHONE_NUMBER.map(d => (
+                  <option key={d.value} value={d.value}>{d.label}</option>
+                ))}
               </Select>
               <span style={{ width: '15px', textAlign: 'center' }}>-</span>
               <Input maxWidth='100' name='phone2' value={state.phone2} id='phoneFor' onChange={action.setPhone} />

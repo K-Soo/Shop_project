@@ -86,8 +86,7 @@ export default function MenuRight() {
     if (confirm('로그아웃 하시겠습니까?')) {
       customCookie.remove('access_token');
       localStorage.removeItem('basket');
-      const result = customCookie.get('access_token');
-      console.log('result: ', result);
+      localStorage.removeItem('guest');
       return router.push('/');
     }
   }

@@ -1,68 +1,67 @@
+import React, { useEffect, useState } from 'react';
 import Head from 'next/head'
 import MainContainer from 'containers/MainContainer';
 import OrderForm from 'components/OrderForm';
 import { InferGetServerSidePropsType, GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { Get } from "api";
 import cookies from 'next-cookies';
-import OrderProvider from 'context/OrderProvider';
-interface IOrderFormPage {
-
-}
+import { customCookie } from 'utils';
+import jwt from "jsonwebtoken";
+import Cookie from "js-cookie";
+import { useRouter } from 'next/router';
+import { useAppContext } from 'context/AppProvider';
 
 export default function OrderFormPage(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  console.log('OrderFormPage: ', props);
-  // console.log('props: ', props);
+  // const {state:{status:{guest}}} = useAppContext(); 새로고침하면 false -> true
+  const router = useRouter();
+  const { userDetail } = props;
+
+  useEffect(() => {
+    const guest = localStorage.getItem('guest');
+    if (!userDetail && guest === null) router.push('/auth/login');
+  }, [userDetail, router]);
+
   return (
     <>
       <Head>
         <title>쥬얼리 | 상품주문</title>
         <meta name="description" content="상품 주문페이지" />
       </Head>
-      {/* <OrderProvider value={props}> */}
-        <MainContainer>
-          <OrderForm />
-        </MainContainer>
-      {/* </OrderProvider> */}
+      <MainContainer>
+        <OrderForm />
+      </MainContainer>
     </>
   );
 }
 
 export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
-  const { req, res } = context;
-  // console.log('res: ', res);
-  // console.log('req: ', req.headers);
+  const { access_token } = cookies(context);
+  const decodedJwt = access_token && jwt.decode(access_token) as any;
 
-  const cookie = req?.headers.cookie ?? '';
-  console.log('cookie: ', cookie);
-
-  // if(ctx.req){
-  //   console.log('서버사이드');
-  // }else{
-  //   console.log('클라이언트 사이드');
-  // }
-
-  const { category, id } = context.query as { category: string, id: string };
-  const parse = context.req ? cookies(context) : '';
-
-  if (!cookie) {
-    return {
-      redirect: {
-        destination: '/auth/login',
-        permanent: false,
+  // if (!access_token) {
+  //   return {
+  //     redirect: {
+  //       destination: '/auth/login',
+  //       permanent: false,
+  //     }
+  //   }
+  // 
+  if (access_token) {
+    try {
+      const userDetail = await Get.UserInfo(decodedJwt.id);
+      return {
+        props: {
+          userDetail
+        },
       }
+    } catch (error) {
+      throw error;
     }
-  }
-  return {
-    props: {
-      parse
-    },
-  }
+  } else {
+    return {
+      props: {
 
-  try {
-    const res = await Get.getProduct(category, id);
-
-  } catch (error) {
-    // console.log('error: ', error);
-    throw error;
+      },
+    }
   }
 };

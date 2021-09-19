@@ -5,7 +5,7 @@ import throwError from '../error/throwError';
 import response from '../error/response';
 
 const register = async (req, res, next) => {
-  const {userId,password} = req.body;
+  const { userId, password } = req.body;
   try {
     const exist = await User.findByUserId(userId);
     if (exist) return throwError({ statusCode: 409, msg: '이미 가입된 ID입니다' })
@@ -31,7 +31,6 @@ const register = async (req, res, next) => {
 
 const idCheck = async (req, res, next) => {
   const { userId } = req.body;
-  console.log('userId: ', userId);
   try {
     const exist = await User.findByUserId(userId);
     if (exist) {
@@ -44,6 +43,21 @@ const idCheck = async (req, res, next) => {
   }
 };
 
+const userInfo = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const user = await User.findById(id, { password: 0 });
+    if (user) {
+      res.json(user.serialize());
+    } else {
+      return throwError({ msg: '유저정보를 가져올수없습니다.' })
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+
 const logIn = async (req, res, next) => {
   // console.log('req: ', req.headers);
   const { userId, password } = req.body;
@@ -54,13 +68,11 @@ const logIn = async (req, res, next) => {
     if (!exist) return throwError({ statusCode: 401, msg: '아이디를 확인해주세요.' });
     // password check
     const valid = await exist.checkPassword(password);
-    console.log('valid: ', valid);
     if (!valid) return throwError({ statusCode: 401 })
+    // 장바구니 정보
     const basket = await Basket.findOne({ BasketOwner: exist.id }, { BasketOwner: 0 });
-    console.log('basket: ', basket);
 
     const token = exist.generateToken();
-
     res.cookie('access_token', token, {
       maxAge: 1000 * 60 * 2,
       httpOnly: false,
@@ -79,5 +91,6 @@ const logIn = async (req, res, next) => {
 export {
   register,
   logIn,
-  idCheck
+  idCheck,
+  userInfo
 }

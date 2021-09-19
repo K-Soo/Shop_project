@@ -1,6 +1,6 @@
 import React from "react";
-import styled,{css} from "styled-components";
-import LoadingOverlay from 'react-loading-overlay';
+import styled, { css } from "styled-components";
+import LoadingOverlay from 'react-loading-overlay-ts';
 
 interface ILoading {
   className?: string;
@@ -8,41 +8,36 @@ interface ILoading {
   text: string;
 }
 
-const S = {
-  Loading: styled.div<{ isLoading: boolean }>`
-    /* display: none;
-    position: fixed; 
-    z-index: 999;
-    left: 0;
-    top: 0;
-    width: 100%; 
-    height: 100%;
-    overflow: auto; */
-    background-color: rgb(0, 0, 0); 
-    background-color: rgba(0, 0, 0, 0.4); 
-    background-color: #000;
-    ._loading_overlay_content{
-        position: absolute;
-        top: 300px;
-        left: 50%;
-        transform: translateX(-50%);
-      }
-    ${props =>
-        props.isLoading &&
-        css`
-        display: block; 
-    `}
-  `,
-}
+const StyledLoader = styled(LoadingOverlay) <{ isLoading: boolean }>`
+ display: block; 
+      position: fixed;
+      width: 100%;
+      color: rgba(10, 10, 10, 0.5);
+    .gosoo_content{
+      color: #000;
 
-export default function Loading({ text,isLoading }: ILoading) {
+    };
+    .gosoo_spinner{
+      svg circle {
+      stroke: rgba(10, 10, 10, 0.5);
+    }
+    }
+
+  ${props =>
+    props.isLoading &&
+    css`
+    display: block; 
+  `}
+`;
+
+export default function Loading({ text, isLoading }: ILoading) {
   return (
-    <S.Loading isLoading={isLoading}>
-      <LoadingOverlay
-        active={true}
-        spinner
-        text={text}
-      />
-    </S.Loading>
+    <StyledLoader
+      active={true}
+      spinner
+      text={text}
+      classNamePrefix='gosoo_'
+      isLoading={isLoading}
+    />
   );
 }

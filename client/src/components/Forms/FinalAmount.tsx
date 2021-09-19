@@ -2,13 +2,13 @@ import React from "react";
 import styled from "styled-components";
 import Button from 'components/style/Button';
 import Icon from 'components/Icon/Icon';
-import {PriceComma} from 'utils';
+import { PriceComma } from 'utils';
+import { NextRouter, useRouter } from 'next/router';
 interface IFinalAmount {
   handleSelectedProduct?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
   handleEntireProducts?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
   totalPrice: number;
   paymentPrice: number;
-
 }
 
 const S = {
@@ -29,8 +29,9 @@ const S = {
         th{
           background-color: #F9F9F9;
           padding: 14px 0;
-          font-size: 13px;
+          font-size: 14px;
           font-weight: 400;
+          color: #000;
         }
       }
       tbody{
@@ -100,43 +101,42 @@ const S = {
   `,
 }
 
-export default function FinalAmount({ handleSelectedProduct, handleEntireProducts,totalPrice, paymentPrice}: IFinalAmount) {
-  console.log('props pay: ', paymentPrice);
+export default function FinalAmount({ handleSelectedProduct, handleEntireProducts, totalPrice, paymentPrice }: IFinalAmount) {
+  const router: NextRouter = useRouter();
+
   return (
     <S.FinalAmount>
       <table>
         <caption>총 주문금액</caption>
         <colgroup>
-          <col width="20%" />
-          <col width="20%" />
-          <col width="20%" />
-          <col width="40%" />
+          <col width="25%" />
+          <col width="30%" />
+          <col width="45%" />
         </colgroup>
         <thead>
           <tr>
             <th>총 상품금액</th>
-            <th>총 배송비</th>
-            <th>총 할인금액</th>
-            <th>결제예정 금액</th>
+            <th>총 할인 + 부가결제 금액</th>
+            <th>배송비 + 상품 판매가 <br/>= 결제예정금액</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td><b>+{PriceComma(totalPrice)}</b></td>
-            <td><b>+{PriceComma(2500)}</b></td>
-            <td><b>-{PriceComma(totalPrice-paymentPrice)}</b></td>
-            <td><strong>= {PriceComma(2500 + paymentPrice)}</strong></td>
+            <td><b>-{PriceComma(totalPrice - paymentPrice)}</b></td>
+            <td><strong>{PriceComma(2500)} + {PriceComma(paymentPrice)} <br/>= {PriceComma(2500 + paymentPrice)}</strong></td>
           </tr>
         </tbody>
       </table>
 
-      <S.BasketButtons >
-        <div className='button-wrapper'>
-          <Button white fontSize='14px' onClick={handleSelectedProduct}>선택상품 주문</Button>
-          <Button black fontSize='14px'  onClick={handleEntireProducts}>전체상품 주문</Button>
-        </div>
-      </S.BasketButtons>
-
+      {router.asPath === '/order/basket' && (
+        <S.BasketButtons >
+          <div className='button-wrapper'>
+            <Button white fontSize='14px' onClick={handleSelectedProduct}>선택상품 주문</Button>
+            <Button black fontSize='14px' onClick={handleEntireProducts}>전체상품 주문</Button>
+          </div>
+        </S.BasketButtons>
+      )}
     </S.FinalAmount>
   );
 }

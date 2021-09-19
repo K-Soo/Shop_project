@@ -17,7 +17,6 @@ import Link from 'next/link';
 
 interface IOrderList {
   handleRemoveItem?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-  handleOrderToOneProduct?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   item: IBasketItem[]
   handleRouterBack?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   handleCheckbox?: React.ChangeEventHandler<HTMLInputElement>;
@@ -202,7 +201,6 @@ const S = {
 
 export default function OrderList({
   handleRemoveItem,
-  handleOrderToOneProduct,
   handleRouterBack,
   handleCheckbox,
   handleSelectProductRemove,
@@ -218,7 +216,7 @@ export default function OrderList({
         <S.Item key={userId ? d._id : d.date} asPath={router.asPath}>
           <S.MainContent>
             <div className='icon-box'>
-              <CheckBox name='check' value={userId ?  d._id : d.date} onChange={handleCheckbox} />
+              <CheckBox name='checkItem' value={userId ?  d._id : d.date} onChange={handleCheckbox} />
             </div>
             <div className='product-info'>
               <div className='product-info__left'>
@@ -259,7 +257,7 @@ export default function OrderList({
                       margin='0 15px 0 0'
                       value={d.qty}
                       onChange={action.setChangeQty}
-                      name={d._id}
+                      name={userId ?  d._id : d.date}
                     />
                     <Button white height='30px' width='50px' name={d._id} >변경</Button>
                   </div>
@@ -286,15 +284,6 @@ export default function OrderList({
                 <Button white height='25px' name={userId ? d._id : d.date} onClick={handleRemoveItem}>삭제</Button>
                 <Button white height='25px'>관심상품</Button>
               </div>
-              <Button
-                login
-                height='25px'
-                width='90px'
-                name={d._id}
-                onClick={handleOrderToOneProduct}
-              >
-                주문하기
-              </Button>
             </S.BasketButtonBox>
           )}
         </S.Item>
