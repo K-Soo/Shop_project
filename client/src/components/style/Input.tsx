@@ -13,9 +13,11 @@ interface IInput {
   value?: string | number;
   readOnly?: boolean;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
+  onBlur?: React.FocusEventHandler<HTMLInputElement>;
+  onFocus?: React.FocusEventHandler<HTMLInputElement>;
   pattern?: string;
   type?: string;
-  maxLength?: number | string;
+  maxLength?: number;
   minLength?: number;
   max?: number | string;
   min?: number | string;
@@ -49,6 +51,8 @@ let Input: React.FC<IInput> = ({
   id,
   width,
   maxWidth,
+  onBlur,
+  onFocus
 }) => {
   return (
     <input
@@ -63,6 +67,8 @@ let Input: React.FC<IInput> = ({
       pattern={pattern}
       maxLength={maxLength}
       minLength={minLength}
+      onBlur={onBlur}
+      onFocus={onFocus}
       max={max}
       min={min}
       required={required}

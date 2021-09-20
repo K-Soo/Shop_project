@@ -4,11 +4,11 @@ import Button from 'components/style/Button';
 import Icon from 'components/Icon/Icon';
 import { PriceComma } from 'utils';
 import { NextRouter, useRouter } from 'next/router';
+import { useOrderContext } from 'context/OrderProvider';
+
 interface IFinalAmount {
   handleSelectedProduct?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
   handleEntireProducts?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
-  totalPrice: number;
-  paymentPrice: number;
 }
 
 const S = {
@@ -101,8 +101,9 @@ const S = {
   `,
 }
 
-export default function FinalAmount({ handleSelectedProduct, handleEntireProducts, totalPrice, paymentPrice }: IFinalAmount) {
+export default function FinalAmount({ handleSelectedProduct, handleEntireProducts }: IFinalAmount) {
   const router: NextRouter = useRouter();
+  const {state:{orderForm:{amountInfo}}} = useOrderContext();
 
   return (
     <S.FinalAmount>
@@ -122,9 +123,9 @@ export default function FinalAmount({ handleSelectedProduct, handleEntireProduct
         </thead>
         <tbody>
           <tr>
-            <td><b>+{PriceComma(totalPrice)}</b></td>
-            <td><b>-{PriceComma(totalPrice - paymentPrice)}</b></td>
-            <td><strong>{PriceComma(2500)} + {PriceComma(paymentPrice)} <br/>= {PriceComma(2500 + paymentPrice)}</strong></td>
+            <td><b>+{PriceComma(amountInfo.productAmount)}</b></td>
+            <td><b>-{PriceComma(amountInfo.discountAmount)}</b></td>
+            <td><strong>{PriceComma(amountInfo.deliveryAmount)} + {PriceComma(amountInfo.consumerAmount)} <br/>= {PriceComma(amountInfo.paymentAmount)}</strong></td>
           </tr>
         </tbody>
       </table>

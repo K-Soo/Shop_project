@@ -15,9 +15,9 @@ export interface IRegisterState {
   TermsOfService: boolean,
   PersonalInfo: boolean,
   isDuplicateId: boolean;
-  phone1: string;
-  phone2: string;
-  phone3: string;
+  TemporaryPhone1: string,
+  TemporaryPhone2: string,
+  TemporaryPhone3: string,
   form: {
     userId: string;
     password: string;
@@ -39,9 +39,9 @@ export const registerDefaultValue: IApp = {
     TermsOfService: false,
     PersonalInfo: false,
     isDuplicateId: true,
-    phone1: '',
-    phone2: '',
-    phone3: '',
+    TemporaryPhone1: '',
+    TemporaryPhone2: '',
+    TemporaryPhone3: '',
     form: {
       userId: '',
       password: '',
@@ -62,9 +62,9 @@ const initializer = (props: any) => {
     TermsOfService: false,
     PersonalInfo: false,
     isDuplicateId: true,
-    phone1: '',
-    phone2: '',
-    phone3: '',
+    TemporaryPhone1: '',
+    TemporaryPhone2: '',
+    TemporaryPhone3: '',
     form: {
       userId: '',
       password: '',
@@ -98,12 +98,6 @@ const generateAction = (update: (recipe: (draft: IRegisterState) => void) => voi
       else if (keyArray.length === 3) draft[keyArray[0]][keyArray[1]][keyArray[2]] = value;
     });
 
-  const setPhone = (e:any) =>
-    update(draft => {
-      const { name, value } = e.target;
-      draft[name] = value;
-    });
-
   const InitData = (stateName: string, initValue?: any) =>
     update(draft => {
       let valueDefault = '';
@@ -135,7 +129,6 @@ const generateAction = (update: (recipe: (draft: IRegisterState) => void) => voi
     setFormData,
     setData,
     InitData,
-    setPhone,
     setCheckBox
   };
 };
@@ -158,6 +151,12 @@ const useRegister = (props: any) => {
   useEffect(() => {
     app.action.setData('isDuplicateId',true);
   },[app.state.form.userId])
+
+  useDidMountEffect(() => {
+    const result = app.state.TemporaryPhone1.concat('-',app.state.TemporaryPhone2,'-',app.state.TemporaryPhone3);
+    action.InitData('form.phone', result);
+  },[app.state.TemporaryPhone1,app.state.TemporaryPhone2,app.state.TemporaryPhone3]);
+
 
   return app;
 };

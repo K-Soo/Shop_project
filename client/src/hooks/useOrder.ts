@@ -23,6 +23,7 @@ export interface IOrderState {
   TemporaryPhone2: string,
   TemporaryPhone3: string,
   currentPoint: number,
+  isUsePoints: boolean,
   orderForm: {
     Products: IBasketItem[],
     pointInfo: {
@@ -62,6 +63,7 @@ export const orderDefaultValue: IApp = {
     TemporaryPhone2: '',
     TemporaryPhone3: '',
     currentPoint: null,
+    isUsePoints: false,
     orderForm: {
       Products: [],
       pointInfo: {
@@ -99,6 +101,7 @@ const initializer = (props: any) => {
     TemporaryPhone2: '',
     TemporaryPhone3: '',
     currentPoint: null,
+    isUsePoints: false,
     orderForm: {
       Products: [],
       pointInfo: {
@@ -160,7 +163,7 @@ const generateAction = (update: (recipe: (draft: IOrderState) => void) => void) 
         else if (keyArray.length === 2) draft[keyArray[0]][keyArray[1]] = checked;
       } else {
         if (keyArray.length === 1) draft[keyArray[0]] = replaceValue;
-        else if (keyArray.length === 2) draft[keyArray[0]][keyArray[1]] =  replaceValue;
+        else if (keyArray.length === 2) draft[keyArray[0]][keyArray[1]] = replaceValue;
         else if (keyArray.length === 3) draft[keyArray[0]][keyArray[1]][keyArray[2]] = replaceValue;
       }
     });
@@ -231,23 +234,42 @@ const generateAction = (update: (recipe: (draft: IOrderState) => void) => void) 
 
   const setAmountInfo = () =>
     update((draft) => {
+      // 결제예정금액 계산
       const calcProduct = draft.orderForm.Products.reduce((acc, cur) => acc + (+cur.totalProductPrice), 0);
       const calcConsumer = (draft.orderForm.Products.reduce((acc, cur) => acc + (+cur.totalConsumerPrice), 0));
-
       draft.orderForm.amountInfo.productAmount = calcProduct;
       draft.orderForm.amountInfo.consumerAmount = calcConsumer;
       draft.orderForm.amountInfo.discountAmount = calcProduct - calcConsumer;
       draft.orderForm.amountInfo.paymentAmount = calcConsumer + draft.orderForm.amountInfo.deliveryAmount;
     });
 
-  const setPointCalc = () =>
+
+  const setOnBlurPoint = () =>
     update((draft) => {
-      const result = draft.orderForm.Products.reduce((acc, cur) => acc + (cur.point), 0);
-      draft.orderForm.pointInfo.estimatedPoint = result;
+      // 적립금사용
+      if(!draft.isUsePoints){
+        draft.orderForm.amountInfo.discountAmount = draft.orderForm.amountInfo.discountAmount - Number(draft.orderForm.pointInfo.totalUsed);
+        draft.orderForm.amountInfo.paymentAmount = draft.orderForm.amountInfo.paymentAmount - Number(draft.orderForm.pointInfo.totalUsed);
+        draft.isUsePoints = true;
+      }
     });
+
+    const setFocusPoint = () =>
+    update((draft) => {
+      // 적립금사용 초기화
+      if(draft.isUsePoints){
+        draft.orderForm.amountInfo.discountAmount = draft.orderForm.amountInfo.productAmount - draft.orderForm.amountInfo.consumerAmount;
+        draft.orderForm.amountInfo.paymentAmount = draft.orderForm.amountInfo.consumerAmount + draft.orderForm.amountInfo.deliveryAmount;
+        draft.orderForm.pointInfo.totalUsed = '';
+        draft.isUsePoints = false;
+      }
+    });
+
+    
 
   const setTotalPointUsed = () =>
     update((draft) => {
+      // 적립금 전체사용 버튼
       draft.orderForm.pointInfo.totalUsed = String(draft.currentPoint);
     });
 
@@ -262,8 +284,9 @@ const generateAction = (update: (recipe: (draft: IOrderState) => void) => void) 
     setOrderLocalStorage,
     setCheckBox,
     setAmountInfo,
-    setPointCalc,
-    setTotalPointUsed
+    setTotalPointUsed,
+    setOnBlurPoint,
+    setFocusPoint
   };
 };
 
@@ -302,27 +325,46 @@ const useOrder = (props: any) => {
     // 유저정보값
     const exist = props?.pageProps?.userDetail;
     if (exist) {
-        const { userDetail } = props.pageProps;
-        console.log('props.pageProps: ', props);
-        app.action.InitData('orderForm.addr.zoneCode', userDetail.zonecode);
-        app.action.InitData('orderForm.addr.addr1', userDetail.addr1);
-        app.action.InitData('orderForm.addr.addr2', userDetail.addr2);
-        app.action.InitData('orderForm.userName', userDetail.userName);
-        app.action.InitData('currentPoint', userDetail.point);
-        if (userDetail.email) {
-          const emailArray = userDetail.email.split('@');
-          app.action.InitData('TemporaryEmail1', emailArray[0]);
-          app.action.InitData('TemporaryEmail2', emailArray[1]);
-        }
-        if (userDetail.phone) {
-          const phoneArray = userDetail.phone.split('-');
-          app.action.InitData('TemporaryPhone1', phoneArray[0]);
-          app.action.InitData('TemporaryPhone2', phoneArray[1]);
-          app.action.InitData('TemporaryPhone3', phoneArray[2]);
-          app.action.InitData('orderForm.phone', userDetail.phone);
-        }
+      const { userDetail } = props.pageProps;
+      console.log('props.pageProps: ', props);
+      app.action.InitData('orderForm.addr.zoneCode', userDetail.zonecode);
+      app.action.InitData('orderForm.addr.addr1', userDetail.addr1);
+      app.action.InitData('orderForm.addr.addr2', userDetail.addr2);
+      app.action.InitData('orderForm.userName', userDetail.userName);
+      app.action.InitData('currentPoint', userDetail.point);
+      if (userDetail.email) {
+        const emailArray = userDetail.email.split('@');
+        app.action.InitData('TemporaryEmail1', emailArray[0]);
+        app.action.InitData('TemporaryEmail2', emailArray[1]);
+      }
+      if (userDetail.phone) {
+        const phoneArray = userDetail.phone.split('-');
+        app.action.InitData('TemporaryPhone1', phoneArray[0]);
+        app.action.InitData('TemporaryPhone2', phoneArray[1]);
+        app.action.InitData('TemporaryPhone3', phoneArray[2]);
+        app.action.InitData('orderForm.phone', userDetail.phone);
+      }
     }
   }, [props?.pageProps?.userDetail, router.asPath]);
+
+  useEffect(() => {
+    if (app.state.orderForm.Products.length) {
+      const calcProduct = app.state.orderForm.Products.reduce((acc, cur) => acc + (+cur.totalProductPrice), 0);
+      const calcConsumer = (app.state.orderForm.Products.reduce((acc, cur) => acc + (+cur.totalConsumerPrice), 0));
+
+      app.action.InitData('orderForm.amountInfo.productAmount', calcProduct);
+      app.action.InitData('orderForm.amountInfo.consumerAmount', calcConsumer);
+      app.action.InitData('orderForm.amountInfo.discountAmount', calcProduct - calcConsumer);
+      app.action.InitData('orderForm.amountInfo.paymentAmount', calcConsumer + app.state.orderForm.amountInfo.deliveryAmount);
+
+      // app.state.orderForm.amountInfo.productAmount = calcProduct;
+      // app.state.orderForm.amountInfo.consumerAmount = calcConsumer;
+      // app.state.orderForm.amountInfo.discountAmount = calcProduct - calcConsumer;
+      // app.state.orderForm.amountInfo.paymentAmount = calcConsumer + app.state.orderForm.amountInfo.deliveryAmount;
+    }
+  }, [app.state.orderForm.Products, app.state.orderForm.amountInfo.deliveryAmount]);
+
+
 
   useDidMountEffect(() => {
     // 이메일 concat
@@ -331,18 +373,17 @@ const useOrder = (props: any) => {
   }, [app.state.TemporaryEmail1, app.state.TemporaryEmail2]);
 
   useDidMountEffect(() => {
-    // 포인트 계산
+    // 적립예정 금액
     if (App.state.userInfo.userId) {
-      const result = state.orderForm.Products.reduce((acc, cur) => acc + (cur.point), 0);
+      const result = app.state.orderForm.Products.reduce((acc, cur) => acc + (cur.point), 0);
       app.action.InitData('orderForm.pointInfo.estimatedPoint', result);
     }
   }, [app.state.orderForm.Products]);
 
-
   useDidMountEffect(() => {
-    const result = app.state.TemporaryPhone1.concat('-',app.state.TemporaryPhone2,'-',app.state.TemporaryPhone3);
+    const result = app.state.TemporaryPhone1.concat('-', app.state.TemporaryPhone2, '-', app.state.TemporaryPhone3);
     action.InitData('orderForm.phone', result);
-  },[app.state.TemporaryPhone1,app.state.TemporaryPhone2,app.state.TemporaryPhone3]);
+  }, [app.state.TemporaryPhone1, app.state.TemporaryPhone2, app.state.TemporaryPhone3]);
 
 
   return app;

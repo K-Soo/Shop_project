@@ -94,7 +94,6 @@ export default function Register() {
 
   let formData = {
     ...state.form,
-    phone: state.phone1.concat(state.phone2, state.phone3)
   }
   delete formData.passwordConfirm
 
@@ -146,6 +145,7 @@ export default function Register() {
                   name='form.userId'
                   id='idFor'
                   margin='0 20px 0 0'
+                  maxLength={16}
                   onChange={action.setFormData}
                 />
                 <Button white width='80px' height='40px' fontSize='11px' onClick={DuplicateCheckId}>중복확인</Button>
@@ -157,7 +157,7 @@ export default function Register() {
             )}
 
             <S.Group >
-              <Label htmlFor='passwordFor' >비밀번호</Label>
+              <Label htmlFor='passwordFor' required>비밀번호</Label>
               <Input type='password' placeholder='비밀번호' name='form.password' id='passwordFor' value={state.form.password} onChange={action.setFormData} />
             </S.Group>
 
@@ -173,16 +173,16 @@ export default function Register() {
 
             <S.Group >
               <Label htmlFor='phoneFor' required>휴대전화</Label>
-              <Select width='100' height='40' name='phone1' onChange={action.setPhone}>
+              <Select width='100' height='40' name='TemporaryPhone1' onChange={action.setFormData}>
                 <option value=''>선택</option>
                 {PHONE_NUMBER.map(d => (
                   <option key={d.value} value={d.value}>{d.label}</option>
                 ))}
               </Select>
               <span style={{ width: '15px', textAlign: 'center' }}>-</span>
-              <Input maxWidth='100' name='phone2' value={state.phone2} id='phoneFor' onChange={action.setPhone} />
+              <Input maxWidth='100' name='TemporaryPhone2' maxLength={4} value={state.TemporaryPhone2} id='phoneFor' onChange={action.setFormData} />
               <span style={{ width: '15px', textAlign: 'center' }}>-</span>
-              <Input maxWidth='100' name='phone3' value={state.phone3} onChange={action.setPhone} />
+              <Input maxWidth='100' maxLength={4} name='TemporaryPhone3' value={state.TemporaryPhone3} onChange={action.setFormData} />
             </S.Group>
 
             <S.Group >

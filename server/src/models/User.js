@@ -3,7 +3,10 @@ import bcrypt from 'bcrypt';
 import config from '../config';
 import jwt from 'jsonwebtoken';
 
-const UserSchema = new mongoose.Schema({
+const { Schema } = mongoose;
+const { Types: { ObjectId } } = Schema;
+
+const UserSchema = Schema({
   userId: {
     type: String,
     unique: true,
@@ -43,6 +46,10 @@ const UserSchema = new mongoose.Schema({
     index: true
   },
   likes: [String],
+  histories: {
+    type: ObjectId,
+    ref: 'History',
+  },
 }, {
   timestamps: true
 }

@@ -1,8 +1,10 @@
 import bcrypt from 'bcrypt';
 import User from '../models/User';
 import Basket from '../models/Basket';
+import History from '../models/History';
 import throwError from '../error/throwError';
 import response from '../error/response';
+import moment from 'moment-timezone';
 
 const register = async (req, res, next) => {
   const { userId, password } = req.body;
@@ -57,6 +59,28 @@ const userInfo = async (req, res, next) => {
   }
 };
 
+const checkout = async (req, res, next) => {
+  const { userId } = req.params;
+  const dateSeoul = moment.tz("Asia/Seoul").format();
+  try {
+    const target = await User.findByUserId(userId);
+    
+    const exist = await History.findOne({ user: target._id });
+    if (exist) {
+      const result = req.body;
+      result.createAt = dateSeoul;
+      exist.data.push(result);
+      exist.save();
+      res.json(exist);
+    } else {
+      const history = new History({ user: target._id, data: result });
+      history.save();
+      res.json(history);
+    }
+  } catch (error) {
+    next(error);
+  }
+};
 
 const logIn = async (req, res, next) => {
   // console.log('req: ', req.headers);
@@ -92,5 +116,6 @@ export {
   register,
   logIn,
   idCheck,
-  userInfo
+  userInfo,
+  checkout
 }

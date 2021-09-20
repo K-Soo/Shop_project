@@ -80,13 +80,6 @@ const remove = async (req, res, next) => {
     console.log('remove-error: ', error);
     next(error);
   }
-
-
-  try {
-
-  } catch (error) {
-    next(error);
-  }
 };
 
 export {

@@ -4,13 +4,12 @@ import { useRouter } from 'next/router';
 import { useAppContext } from 'context/AppProvider';
 import { useOrderContext } from 'context/OrderProvider';
 import Button from 'components/style/Button';
-import Label from 'components/style/Label';
 import Radio from 'components/style/Radio';
 import Title from 'components/style/Title';
-import { PriceComma } from 'utils';
+import { PriceComma, currencyConvert } from 'utils';
 import LoadingOverlay from 'react-loading-overlay-ts';
-import { recipientCheck, addrCheck,phoneCheck } from 'components/validation';
-
+import { Post } from 'api';
+import { recipientCheck, addrCheck, phoneCheck, pointCheck } from 'components/validation';
 
 import { CreateOrderActions, OnApproveActions, OnApproveData, UnknownObject, OnClickActions, OnCancelledActions } from "@paypal/paypal-js/types/components/buttons";
 import { DISPATCH_ACTION, FUNDING, PayPalButtons, SCRIPT_LOADING_STATE, usePayPalScriptReducer } from "@paypal/react-paypal-js";
@@ -54,6 +53,11 @@ const S = {
     }
     .payment-select{
       padding: 10px;
+    }
+    .payment-guide{
+      padding: 0 10px;
+      font-size: 12px;
+      color: #777;
     }
     ${({ theme }) => theme.mobile`
       border: 1px solid #508bed;
@@ -114,6 +118,7 @@ const paypalStyles: TPaypalStyles = {
 export default function Payment({ }: IPayment) {
   const router = useRouter();
   const { state } = useOrderContext();
+  const App = useAppContext();
   const [{ isInitial, isPending, isRejected, isResolved }, Dispatch] = usePayPalScriptReducer();
   console.group('before');
   console.log('isResolved: ', isResolved);
@@ -122,13 +127,15 @@ export default function Payment({ }: IPayment) {
   console.log('isInitial: ', isInitial);
   console.groupEnd();
 
+  currencyConvert(state.orderForm.amountInfo.paymentAmount);
 
-  const handleSubmit = (e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+
+  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
+    if (!pointCheck(state)) return;
     if (!recipientCheck(state)) return;
     if (!addrCheck(state)) return;
     if (!phoneCheck(state)) return;
-
     Dispatch({ type: DISPATCH_ACTION.LOADING_STATUS, value: SCRIPT_LOADING_STATE.PENDING });
   }
 
@@ -137,7 +144,7 @@ export default function Payment({ }: IPayment) {
       purchase_units: [
         {
           amount: {
-            value: "2.00",
+            value: currencyConvert(state.orderForm.amountInfo.paymentAmount),
           },
         },
       ]
@@ -148,13 +155,25 @@ export default function Payment({ }: IPayment) {
     try {
       const details = await actions.order.capture();
       console.log('details: ', details);
+      if (!App.state.status.guest) {
+        const res = await Post.checkout(App.state.userInfo.userId, state.orderForm);
+        Dispatch({ type: DISPATCH_ACTION.LOADING_STATUS, value: SCRIPT_LOADING_STATE.INITIAL });
+        alert('결제완료');
+
+        console.log('res: ', res);
+      } else {
+
+      }
     } catch (error) {
+      console.log('error-checkout: ', error);
 
     }
   }
 
   const onError = (error: UnknownObject) => {
-    console.log('paypal-error', error);
+    alert('결제 오류');
+    Dispatch({ type: DISPATCH_ACTION.LOADING_STATUS, value: SCRIPT_LOADING_STATE.INITIAL });
+    console.error('paypal-error', error);
   }
 
   const onCancel = (data: UnknownObject, actions: OnCancelledActions) => {
@@ -169,6 +188,9 @@ export default function Payment({ }: IPayment) {
           <input type='radio' id='paypalFor' />
           <label htmlFor='paypalFor'>페이팔</label>
         </div>
+        <ul className='payment-guide'>
+          <li>- 페이팔 결제시 USD 달러로 결제됩니다.</li>
+        </ul>
       </S.PaymentMethod>
 
       <S.PaymentButtonBox>
@@ -184,7 +206,7 @@ export default function Payment({ }: IPayment) {
               className='button-box__submit'
               black
               onClick={handleSubmit}
-              type='button'
+              type='submit'
             >결제하기</Button>
           )}
           {isPending && (

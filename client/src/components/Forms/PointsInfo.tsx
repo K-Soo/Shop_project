@@ -97,7 +97,7 @@ export default function PointsInfo({ }: IPointsInfo) {
           총 부가결제금액
         </li>
         <li className='desc'>
-        <span>{PriceComma(state.currentPoint)}원</span>
+        <span>{PriceComma(state.orderForm.pointInfo.totalUsed || 0)}원</span>
         </li>
       </S.Lists>
       {/* onChange={e => onlyNum(e, action.setFormData)}  */}
@@ -107,7 +107,7 @@ export default function PointsInfo({ }: IPointsInfo) {
           <span className='title__price'>(사용가능 : <strong>{PriceComma(state.currentPoint)}원</strong>)</span>
         </li>
         <li className='desc'>
-          <Input height='35' max="100" maxLength={String(state.currentPoint).length} name='orderForm.pointInfo.totalUsed' onChange={e => onlyNum(e, action.setFormData)} value={state.orderForm.pointInfo.totalUsed}/>
+          <Input height='35' max="100" maxLength={String(state.currentPoint).length} name='orderForm.pointInfo.totalUsed' onFocus={action.setFocusPoint} onBlur={action.setOnBlurPoint} onChange={e => onlyNum(e, action.setFormData)} value={state.orderForm.pointInfo.totalUsed}/>
           <Button white width='50' margin='0 0 0 15px' onClick={action.setTotalPointUsed}>전액사용</Button>
         </li>
       </S.Lists>

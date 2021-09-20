@@ -48,7 +48,6 @@ export default function App(props: AppProps) {
     </>
   );
 }
-
 App.getInitialProps = async (context: NextAppContext) => {
   const { ctx, Component } = context;
   if (ctx.req) {

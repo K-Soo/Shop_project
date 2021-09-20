@@ -20,8 +20,6 @@ const S = {
 }
 
 export default function OrderForm({ }: IOrderForm) {
-  const [totalPrice, setTotalPrice] = useState<number | null>(null);
-  const [paymentPrice, setPaymentPrice] = useState<number | null>(null);
   const App = useAppContext();
   const Order = useOrderContext();
   const router = useRouter();
@@ -32,11 +30,11 @@ export default function OrderForm({ }: IOrderForm) {
     router.back();
   }, []);
 
-  useEffect(() => {
-    if (Order.state.orderForm.Products.length) {
-      Order.action.setAmountInfo();
-    }
-  }, [Order.state.orderForm.Products]);
+  // useEffect(() => {
+  //   if (Order.state.orderForm.Products.length) {
+  //     Order.action.setAmountInfo();
+  //   }
+  // }, [Order.state.orderForm.Products]);
 
 
   return (
@@ -55,8 +53,6 @@ export default function OrderForm({ }: IOrderForm) {
         <>
           <FormBox title='결제예정금액'>
             <FinalAmount
-              totalPrice={Order.state.orderForm.amountInfo.productAmount}
-              paymentPrice={Order.state.orderForm.amountInfo.consumerAmount}
             />
             {userId && <PointsInfo />}
           </FormBox>

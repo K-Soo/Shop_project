@@ -47,6 +47,7 @@ export const Post = {
   login: (body: any) => requests.post('/api/users/login', body),
   register: (body: any) => requests.post('/api/users/register', body),
   checkId: (body: { userId: string }) => requests.post('/api/users/check', body),
+  checkout: (userId: string, body: any) => requests.post(`/api/users/checkout/${userId}`, body),
 };
 
 export const Put = {
@@ -57,5 +58,4 @@ export const Put = {
 export const Delete = {
   deleteBasket: (user: string, id: string) => requests.delete(`/api/users/basket/${user}/${id}`,),
 };
-
 

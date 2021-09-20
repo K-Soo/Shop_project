@@ -15,7 +15,6 @@ const StyledLoader = styled(LoadingOverlay) <{ isLoading: boolean }>`
       color: rgba(10, 10, 10, 0.5);
     .gosoo_content{
       color: #000;
-
     };
     .gosoo_spinner{
       svg circle {
