@@ -35,7 +35,6 @@ const S = {
     ${({ theme }) => theme.mobile`
         width: 95%;
         height: 550px;
-
     `}
   `,
   Header: styled.div`

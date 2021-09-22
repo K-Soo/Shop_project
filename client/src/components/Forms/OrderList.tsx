@@ -212,7 +212,8 @@ export default function OrderList({
   
   return (
     <S.OrderList>
-      {item.length ? (item.map((d) => (
+      {item.length ? (
+        item.map((d) => (
         <S.Item key={userId ? d._id : d.date} asPath={router.asPath}>
           <S.MainContent>
             <div className='icon-box'>
@@ -287,7 +288,8 @@ export default function OrderList({
             </S.BasketButtonBox>
           )}
         </S.Item>
-      ))) : (
+      ))
+      ) : (
         <S.EmptyBasket>
           <p className='icon'>
             <Icon name='cart' />
@@ -296,7 +298,7 @@ export default function OrderList({
         </S.EmptyBasket>
       )}
 
-      {router.asPath === "/order/orderform" && (
+      {router.asPath === "/order/orderform" && item.length > 0 && (
         <S.OrderButtonBox>
           <div>
             <p>선택상품을</p>

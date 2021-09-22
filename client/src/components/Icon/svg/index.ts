@@ -25,5 +25,6 @@ import { ReactComponent as check } from "./check.svg";
 import { ReactComponent as location } from "./location.svg";
 import { ReactComponent as userNot } from "./userNot.svg";
 import { ReactComponent as coin } from "./coin.svg";
+import { ReactComponent as warning } from "./warning.svg";
 
-export { bed, ovalCheck, human, cart, search, bookmark, arrowTop, arrowBottom, arrowLeft, close, heart, BigArrowLeft, cartAdd, plus, minus, info, closeSmall, user, home, arrowNoTailBottom, arrowNoTailTop, trashCan, check, location, userNot, coin };
+export { bed, ovalCheck, human, cart, search, bookmark, arrowTop, arrowBottom, arrowLeft, close, heart, BigArrowLeft, cartAdd, plus, minus, info, closeSmall, user, home, arrowNoTailBottom, arrowNoTailTop, trashCan, check, location, userNot, coin, warning };

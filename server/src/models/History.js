@@ -5,7 +5,6 @@ const { Schema } = mongoose;
 const { Types: { ObjectId } } = Schema;
 
 const dateSeoul = moment.tz("Asia/Seoul");
-console.log('dateSeoul: ', dateSeoul);
 
 const HistorySchema = Schema({
   user: {
@@ -15,16 +14,16 @@ const HistorySchema = Schema({
   data: {
     type: Array,
     default: [],
-    timestamps: {
-      type: Date,
-      default: dateSeoul,
-    }
   }
 }, {
-  timestamps: {
-    type: Date,
-    default: dateSeoul,
-  }
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true }
+}, {
+  timestamps: true,
+});
+
+HistorySchema.virtual('lastPage').get(function () {
+  return this.data.length;
 });
 
 export default mongoose.model('History', HistorySchema);

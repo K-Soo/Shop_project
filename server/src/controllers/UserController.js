@@ -5,6 +5,8 @@ import History from '../models/History';
 import throwError from '../error/throwError';
 import response from '../error/response';
 import moment from 'moment-timezone';
+import { createDate, orderNumber } from '../utils';
+import mongoose from 'mongoose';
 
 const register = async (req, res, next) => {
   const { userId, password } = req.body;
@@ -61,14 +63,16 @@ const userInfo = async (req, res, next) => {
 
 const checkout = async (req, res, next) => {
   const { userId } = req.params;
-  const dateSeoul = moment.tz("Asia/Seoul").format();
   try {
+
     const target = await User.findByUserId(userId);
-    
     const exist = await History.findOne({ user: target._id });
+    
+    const result = req.body;
+    result._id = new mongoose.Types.ObjectId();
+    result.createAt = createDate();
+    result.orderNum = orderNumber();
     if (exist) {
-      const result = req.body;
-      result.createAt = dateSeoul;
       exist.data.push(result);
       exist.save();
       res.json(exist);

@@ -264,9 +264,7 @@ const generateAction = (update: (recipe: (draft: IOrderState) => void) => void) 
         draft.isUsePoints = false;
       }
     });
-
     
-
   const setTotalPointUsed = () =>
     update((draft) => {
       // 적립금 전체사용 버튼

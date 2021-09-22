@@ -10,23 +10,20 @@ interface IBasketPage {
 
 }
 
-export default function BasketPage(props: IBasketPage) {
+export default function DetailsPage(props: IBasketPage) {
 
   return (
     <>
       <Head>
-        <title>쥬얼리 | 장바구니</title>
-        <meta name="description" content="장바구니 정보" />
+        <title>쥬얼리 | 주문내역 상세</title>
+        <meta name="description" content="상품 주문내역 상세" />
       </Head>
-      {/* <OrderProvider value={props}> */}
         <MainContainer >
           <Basket />
         </MainContainer>
-      {/* </OrderProvider> */}
     </>
   );
 };
-
 
 
 

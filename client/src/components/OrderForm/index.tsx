@@ -15,7 +15,7 @@ interface IOrderForm {
 }
 
 const S = {
-  OrderForm: styled.div`
+  OrderForm: styled.section`
   `,
 }
 
@@ -24,7 +24,7 @@ export default function OrderForm({ }: IOrderForm) {
   const Order = useOrderContext();
   const router = useRouter();
   const { userId } = App.state.userInfo;
-
+  const {amountInfo} = Order.state.orderForm;
   const handleRouterBack = useCallback(() => {
     Order.action.setInitOrderForm();
     router.back();
@@ -53,6 +53,11 @@ export default function OrderForm({ }: IOrderForm) {
         <>
           <FormBox title='결제예정금액'>
             <FinalAmount
+                productAmount={amountInfo.productAmount}
+                discountAmount={amountInfo.discountAmount}
+                deliveryAmount={amountInfo.deliveryAmount}
+                consumerAmount={amountInfo.consumerAmount}
+                paymentAmount={amountInfo.paymentAmount}
             />
             {userId && <PointsInfo />}
           </FormBox>

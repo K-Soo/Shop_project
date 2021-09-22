@@ -17,11 +17,19 @@ interface IButton {
   onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   type?: "button" | "submit" | "reset" | undefined;
   dataColor?: any;
+  disabled?: boolean;
 }
 
-const Button: React.FC<IButton> = ({ className, children, onClick, type, name,dataColor }) => {
+const Button: React.FC<IButton> = ({ className, children, onClick, type, name,dataColor,disabled }) => {
   return (
-    <button className={className} onClick={onClick} type={type ?? 'button'} data-color={dataColor} name={name}>
+    <button 
+      className={className} 
+      onClick={onClick} 
+      type={type ?? 'button'} 
+      data-color={dataColor} 
+      name={name}
+      disabled={disabled}
+    >
       {children}
     </button>
   );
@@ -44,6 +52,7 @@ export default styled(Button)`
     transition: all 0.3s ease-in-out;
     background: #00003e;
   } */
+
   ${props =>
     props.login &&
     css`
@@ -89,5 +98,15 @@ export default styled(Button)`
       &:hover {
          background: #fff;
       }
+  `}
+  ${props => props.disabled && css`
+     background: #999;
+     border: none;
+     text-shadow: none;
+     color: #fff;
+     cursor: default;
+     &:hover {
+      background-color: #999;
+    }
   `}
 `;

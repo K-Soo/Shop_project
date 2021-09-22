@@ -15,13 +15,15 @@ import Button from 'components/style/Button';
 import { Delete } from 'api';
 
 const S = {
-  Basket: styled.div`
+  Basket: styled.section`
   `,
 }
 
 export default function Basket() {
   const [totalPrice, setTotalPrice] = useState<number | null>(null);
+  console.log('totalPrice: ', totalPrice);
   const [paymentPrice, setPaymentPrice] = useState<number | null>(null);
+  console.log('paymentPrice: ', paymentPrice);
   const { state, action } = useAppContext();
   const { userId } = state.userInfo;
   const Order = useOrderContext();
@@ -104,6 +106,14 @@ export default function Basket() {
     }
   }, [state.basket.basketList])
 
+  const initBasket = useCallback(() => {
+    if(userId){
+      action.InitData('basket.basketList',[]);
+    }else{
+      action.InitData('basket.nonMemberBasket',[]);
+    }
+  },[userId])
+
   return (
     <S.Basket>
       <PageTitle TitleText='장바구니' />
@@ -123,8 +133,13 @@ export default function Basket() {
               <FinalAmount
                 handleSelectedProduct={handleSelectedProduct}
                 handleEntireProducts={handleEntireProducts}
-                totalPrice={totalPrice}
-                paymentPrice={paymentPrice}
+                initBasket={initBasket}
+
+                productAmount={totalPrice}
+                discountAmount={totalPrice - paymentPrice}
+                deliveryAmount={2500}
+                consumerAmount={totalPrice - paymentPrice}
+                paymentAmount={paymentPrice}
               />
             </FormFieldset>
           )}
@@ -144,8 +159,13 @@ export default function Basket() {
               <FinalAmount
                 handleSelectedProduct={handleSelectedProduct}
                 handleEntireProducts={handleEntireProducts}
-                totalPrice={totalPrice}
-                paymentPrice={paymentPrice}
+                initBasket={initBasket}
+
+                productAmount={totalPrice}
+                discountAmount={totalPrice - paymentPrice}
+                deliveryAmount={2500}
+                consumerAmount={totalPrice - paymentPrice}
+                paymentAmount={paymentPrice}
               />
             </FormFieldset>
           )}

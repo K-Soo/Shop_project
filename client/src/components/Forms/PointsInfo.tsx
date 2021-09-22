@@ -5,10 +5,6 @@ import Button from 'components/style/Button';
 import { PriceComma,onlyNum } from 'utils';
 import { useOrderContext } from 'context/OrderProvider';
 
-interface IPointsInfo {
-
-}
-
 const S = {
   PointsInfo: styled.div`
    border: solid #f0f0f0;
@@ -79,7 +75,7 @@ const S = {
   `,
 }
 
-export default function PointsInfo({ }: IPointsInfo) {
+export default function PointsInfo() {
   const {state,action} = useOrderContext();
   return (
     <S.PointsInfo>
@@ -100,7 +96,7 @@ export default function PointsInfo({ }: IPointsInfo) {
         <span>{PriceComma(state.orderForm.pointInfo.totalUsed || 0)}원</span>
         </li>
       </S.Lists>
-      {/* onChange={e => onlyNum(e, action.setFormData)}  */}
+      
       <S.Lists >
         <li className='title'>
           <span className='title__points'>적립금</span>

@@ -9,6 +9,12 @@ import { useOrderContext } from 'context/OrderProvider';
 interface IFinalAmount {
   handleSelectedProduct?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
   handleEntireProducts?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
+  initBasket?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
+  productAmount: number;
+  discountAmount: number;
+  deliveryAmount?:number;
+  consumerAmount: number;
+  paymentAmount: number;
 }
 
 const S = {
@@ -82,28 +88,30 @@ const S = {
     margin-top: 15px;
     display: flex;
     justify-content: flex-end;
+    justify-content: space-between;
+    button{
+      height: 40px;
+      font-size: 12px;
+      letter-spacing: 0;
+    }
     .button-wrapper{
       display: flex;
       max-width: 500px;
-      button{
-        height: 40px;
-      }
       button:first-child{
         margin-right: 15px;
       }
-      ${({ theme }) => theme.mobile`
+    }
+    ${({ theme }) => theme.mobile`
         button{
           height: 30px;
-          font-size: 12px;
         }
       `}
-    }
   `,
 }
 
-export default function FinalAmount({ handleSelectedProduct, handleEntireProducts }: IFinalAmount) {
+export default function FinalAmount({ handleSelectedProduct, handleEntireProducts,productAmount,discountAmount,deliveryAmount,consumerAmount,paymentAmount,initBasket }: IFinalAmount) {
   const router: NextRouter = useRouter();
-  const {state:{orderForm:{amountInfo}}} = useOrderContext();
+  const { state: { orderForm: { amountInfo } } } = useOrderContext();
 
   return (
     <S.FinalAmount>
@@ -118,20 +126,21 @@ export default function FinalAmount({ handleSelectedProduct, handleEntireProduct
           <tr>
             <th>총 상품금액</th>
             <th>총 할인 + 부가결제 금액</th>
-            <th>배송비 + 상품 판매가 <br/>= 결제예정금액</th>
+            <th>배송비 + 상품 판매가 <br />= 결제예정금액</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><b>+{PriceComma(amountInfo.productAmount)}</b></td>
-            <td><b>-{PriceComma(amountInfo.discountAmount)}</b></td>
-            <td><strong>{PriceComma(amountInfo.deliveryAmount)} + {PriceComma(amountInfo.consumerAmount)} <br/>= {PriceComma(amountInfo.paymentAmount)}</strong></td>
+            <td><b>+{PriceComma(productAmount)}</b></td>
+            <td><b>-{PriceComma(discountAmount)}</b></td>
+            <td><strong>{PriceComma(deliveryAmount)} + {PriceComma(consumerAmount)} <br />= {PriceComma(paymentAmount)}</strong></td>
           </tr>
         </tbody>
       </table>
 
       {router.asPath === '/order/basket' && (
         <S.BasketButtons >
+          <Button white fontSize='14px' width='120px' onClick={initBasket}>장바구니 비우기</Button>
           <div className='button-wrapper'>
             <Button white fontSize='14px' onClick={handleSelectedProduct}>선택상품 주문</Button>
             <Button black fontSize='14px' onClick={handleEntireProducts}>전체상품 주문</Button>

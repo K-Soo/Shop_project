@@ -118,7 +118,7 @@ export default function MenuRight() {
           </>
         )}
         <li className='item'>
-          <Link href="/auth/login">
+          <Link href="/users/history/list">
             <a>주문조회</a>
           </Link>
         </li>

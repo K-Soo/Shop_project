@@ -82,7 +82,7 @@ const initializer = (props) => {
     },
     userInfo: {
       userId: props.userInfo.userId,
-      idx: '',
+      idx: props.userInfo.idx,
     },
     basket: {
       localStorageItem: null,
@@ -164,12 +164,12 @@ const generateAction = (update: (recipe: (draft: IAppState) => void) => void) =>
   const setNonMemberBasket = (data: IBasketItem[]) =>
     update((draft) => {
       draft.basket.nonMemberBasket = data;
-    });
+  });
 
   const setNonMemberBasketPush = (data: IBasketItem[]) =>
     update((draft) => {
       draft.basket.nonMemberBasket.push(...data);
-    });
+  });
 
 
   // const setCurrentOrderItem = (data: IBasketItem) =>
@@ -222,8 +222,8 @@ const useApp = (props) => {
   }, [props]);
 
   useEffect(() => {
-    app.action.InitData('userInfo.userId', props.userInfo.userId);
-    app.action.InitData('userInfo.idx', props.userInfo.idx);
+    // app.action.InitData('userInfo.userId', props.userInfo.userId);
+    // app.action.InitData('userInfo.idx', props.userInfo.idx);
   }, [props])
 
   useEffect(() => {
@@ -291,11 +291,6 @@ const useApp = (props) => {
       if(result) app.action.InitData('status.guest', true);
       console.log('------------------------------: ', result);
   }, [router.asPath]);
-
-
-
-
-
 
   return app;
 };

@@ -9,8 +9,7 @@ interface ILoading {
 }
 
 const StyledLoader = styled(LoadingOverlay) <{ isLoading: boolean }>`
- display: block; 
-      position: fixed;
+      /* position: fixed; */
       width: 100%;
       color: rgba(10, 10, 10, 0.5);
     .gosoo_content{

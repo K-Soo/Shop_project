@@ -38,6 +38,7 @@ export const Get = {
   createPost: (post: PostType): Promise<PostType> => requests.post('posts', post),
   updatePost: (post: PostType, id: number): Promise<PostType> => requests.put(`posts/${id}`, post),
   deletePost: (id: number): Promise<void> => requests.delete(`posts/${id}`),
+  getHistory: (idx: string, page: number) => requests.get(`/api/users/history/${idx}/?page=${page}`),
 };
 
 export const Post = {

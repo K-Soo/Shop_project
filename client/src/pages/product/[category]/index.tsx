@@ -9,7 +9,7 @@ import Loading from 'components/Common/Loading';
 import { IProduct } from 'interfaces/IProduct';
 import { Get } from "api";
 
-export default function ProductType(props) {
+export default function ProductType(props:any) {
   console.log('ProductType: ', props);
   const router: NextRouter = useRouter();
   const { category } = router.query as { category: string };
@@ -24,7 +24,7 @@ export default function ProductType(props) {
   // console.log('result: ', result);
 
   if (error instanceof Error) {
-    console.log('response', error.response);
+    console.log('response', error);
   }
 
   // const [item, setItem] = useState<IProduct[] | null>(null);
