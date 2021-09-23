@@ -11,8 +11,6 @@ const upload = multer({
   dest: 'uploads/'
 });
 
-users.get('/history/:idx', HistoryController.list);
-
 users.get('/basket', BasketController.list);
 users.put('/basket', BasketController.update);
 
@@ -21,6 +19,10 @@ users.post('/check', UserController.idCheck);
 users.post('/login', UserController.logIn);
 
 users.get('/:id', UserController.userInfo);
+
+users.get('/history/:idx', HistoryController.list);
+users.get('/history/:idx/:orderNum', HistoryController.historyDetail);
+
 users.post('/checkout/:userId', UserController.checkout);
 users.delete('/basket/:user/:id', BasketController.remove);
 

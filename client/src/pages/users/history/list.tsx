@@ -13,7 +13,6 @@ interface IBasketPage {
 
 export default function ListPage(props: IBasketPage) {
   const { state: { userInfo } } = useAppContext();
-  console.log('ListPage: ', props);
 
   return (
     <>

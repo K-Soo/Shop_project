@@ -11,6 +11,7 @@ import Link from 'next/link';
 interface IContent {
   items: any;
   isLoading: boolean;
+  isSuccess: boolean;
 }
 
 const S = {
@@ -201,7 +202,8 @@ const S = {
 
 }
 
-export default function Content({ items, isLoading }: IContent) {
+export default function Content({ items, isLoading,isSuccess }: IContent) {
+  console.log('items: ', items);
   return (
     <S.Content>
       <S.Header>
@@ -210,13 +212,13 @@ export default function Content({ items, isLoading }: IContent) {
         ))}
       </S.Header>
       <S.Body>
-        {items.data && items.data.map(d => (
+        {isSuccess && items.data.map(d => (
           <div key={d._id} className='item-box'>
             <div className='order-number'>
               <div className='order-number__info'>
                 <p className='order-number__info--date'>{d.createAt.split(' ')[0]}</p>
                 <p className='order-number__info--number'>
-                  <Link href=''>
+                  <Link href={`/users/history/details/${items.user}/${d.orderNum}`}>
                     <a>
                       {`[ ${d.orderNum} ]`}
                     </a>
@@ -224,12 +226,11 @@ export default function Content({ items, isLoading }: IContent) {
                 </p>
               </div>
               <div className='order-number__detail-link'>
-                <Link href=''>
+                <Link href={`/users/history/details/${items.user}/${d.orderNum}`}>
                   <a>상세정보</a>
                 </Link>
               </div>
             </div>
-
             <div className='details-box'>
               {d.Products.map(v => (
                 <ul className='details' key={v._id}>

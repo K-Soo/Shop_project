@@ -1,6 +1,4 @@
 import React from 'react';
-
-// TODO https://nextjs.org/docs/advanced-features/custom-error-page#404-page
 function Error({ statusCode }) {
   return (
     <p>

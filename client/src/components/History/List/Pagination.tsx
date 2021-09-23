@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Button from 'components/style/Button';
 
@@ -10,7 +10,7 @@ interface IPagination {
 }
 
 const S = {
-  Pagination: styled.div`
+  Pagination: styled.div<{isHidden:boolean}>`
     margin-top: 20px;
     display: flex;
     .wrapper{
@@ -22,6 +22,9 @@ const S = {
         width: 60px;
         font-size: 12px;
         border-radius: 10px;
+      }
+      .prev-btn{
+        visibility: ${props => props.isHidden ? 'hidden' : 'visible'};
       }
       .page-number{
         display: inline-block;
@@ -38,14 +41,26 @@ const S = {
   `,
 }
 
-export default function pagination({ currentPage,prevPage, nextPage,maxPages }: IPagination) {
+export default function Pagination({ currentPage, prevPage, nextPage, maxPages }: IPagination) {
+  const [isHidden, setIsHidden] = useState<boolean>(false);
+
+  useEffect(() => {
+    if(currentPage <= 1){
+      setIsHidden(true);
+    }else{
+      setIsHidden(false);
+    }
+
+  },[currentPage]);
+
+
   console.log('maxPages: ', maxPages);
   return (
-    <S.Pagination>
+    <S.Pagination isHidden={isHidden}>
       <div className='wrapper'>
-        <Button white onClick={prevPage} disabled={currentPage <= 1}>이전</Button>
+        <Button white onClick={prevPage} className='prev-btn' disabled={isHidden}>이전</Button>
         <span className='page-number'>{currentPage}</span>
-        <Button white onClick={nextPage} disabled={maxPages <= currentPage}>{ maxPages <= currentPage ? '마지막':'다음'}</Button>
+        <Button white onClick={nextPage} disabled={maxPages <= currentPage}>{maxPages <= currentPage ? '마지막' : '다음'}</Button>
       </div>
     </S.Pagination>
   );

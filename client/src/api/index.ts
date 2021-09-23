@@ -39,6 +39,7 @@ export const Get = {
   updatePost: (post: PostType, id: number): Promise<PostType> => requests.put(`posts/${id}`, post),
   deletePost: (id: number): Promise<void> => requests.delete(`posts/${id}`),
   getHistory: (idx: string, page: number) => requests.get(`/api/users/history/${idx}/?page=${page}`),
+  getHistoryDetail: (idx: string, orderNum: string) => requests.get(`/api/users/history/${idx}/${orderNum}`),
 };
 
 export const Post = {

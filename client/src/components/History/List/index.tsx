@@ -22,30 +22,34 @@ const S = {
 }
 
 export default function List({ idx }: IList) {
+  console.log('ㅌㅌㅌㅌㅌㅌㅌㅌㅌㅌㅌㅌㅌㅌㅌㅌㅌ: ', idx);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const fallback: Array<null> = [];
   const queryClient = useQueryClient();
 
-  const { data = fallback, isLoading, isSuccess, isError, status, error, refetch } = useQuery([queryKeys.HISTORY, idx, currentPage], async () => await Get.getHistory(idx, currentPage), {
+  const { data = fallback, isLoading, isSuccess, isError, status, error, isFetching } = useQuery([queryKeys.HISTORY, idx, currentPage], async () => await Get.getHistory(idx, currentPage), {
     retry: 0,
     keepPreviousData: true,
+    refetchOnWindowFocus: false,
+    staleTime: 2000,                                      
   });
   
+  console.log('data: ', data);
   useEffect(() => {
     if (currentPage < data.maxPages) {
       const nextPreFetchPage = currentPage + 1;
       queryClient.prefetchQuery([queryKeys.HISTORY, idx, nextPreFetchPage], () => Get.getHistory(idx, currentPage));
     }
   }, [currentPage, queryClient, idx, data.maxPages]);
-
+  
 
   return (
     <S.List>
       <PageTitle TitleText='주문내역 리스트' />
-      <HistoryCalendar maxPages={data.maxPages}/>
+      {/* <HistoryCalendar maxPages={data.maxPages}/> */}
       <Guide />
-      <FormFieldset title='주문 상품 정보'>
-        <Content items={data} isLoading={isLoading} />
+      <FormFieldset title={`주문 상품 정보 (${data.maxPages})`}>
+        <Content items={data} isLoading={isLoading} isSuccess={isSuccess}/>
         <Pagination
           currentPage={currentPage}
           prevPage={() => setCurrentPage(prev => prev - 1)}

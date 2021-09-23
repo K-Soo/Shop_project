@@ -71,7 +71,6 @@ export const getServerSideProps: GetServerSideProps = async (context): Promise<{
   // console.log('xxxxx: ', context.req.headers);
   try {
     const res = await Get.getProduct(category, id);
-    // console.log('res: ', res);
     return {
       props: {
         item: res,
