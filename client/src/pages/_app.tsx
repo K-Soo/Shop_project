@@ -16,7 +16,6 @@ import AppProvider, { useAppContext } from 'context/AppProvider';
 import OrderProvider from 'context/OrderProvider';
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 export default function App(props: AppProps) {
-  console.log('xxxxxxxxx: ', props);
   const { state, action } = useAppContext();
   const queryClient = new QueryClient()
   // useApp(props.pageProps.userId);

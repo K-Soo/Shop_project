@@ -22,7 +22,6 @@ interface ILeftSide {
 
 const S = {
   LeftSide: styled.nav<{ openSideMenu: boolean, directionSwap: boolean }>`
-    border: 1px solid #000;
     position: fixed;
     top: 0;
     left: 0;
@@ -135,7 +134,7 @@ const LeftSide: React.FC<ILeftSide> = ({ className, directionSwap, onClick }) =>
             <button onClick={onClick}>SHOP</button>
             <button onClick={onClick}>CART</button>
           </div>
-          <CloseButton onClick={action.setToggleSideMenu} />
+          <CloseButton name='openSideMenu' onClick={action.setGlobalToggle} />
         </S.Panel>
         <S.Banner>
           {/* <img src="/images/side.jpg" alt='1' /> */}

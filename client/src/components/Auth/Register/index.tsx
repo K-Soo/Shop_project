@@ -55,8 +55,12 @@ const S = {
         button{
           display: flex;
           align-items: center;
+        span{
+          pointer-events: none;
+        }
         i{
           font-size: 0;
+          pointer-events: none;
           svg{
             color: #000;
             width: 18px;
@@ -198,7 +202,14 @@ export default function Register() {
                 <div className='address-box__inner'>
                   {App.state.openDaumPost && <DaumPost />}
                   <Input name='form.zoneCode' maxWidth='200' margin='0 20px 0 0' value={state.form.zonecode} readOnly />
-                  <Button white width='90px' height='40px' fontSize='12px' onClick={App.action.setOpenDaumPost}>
+                  <Button 
+                    white 
+                    width='90px' 
+                    height='40px' 
+                    fontSize='12px' 
+                    name='openDaumPost'
+                    onClick={App.action.setGlobalToggle}
+                  >
                     <i><Icon name='location' /></i>
                     <span>우편번호</span>
                   </Button>

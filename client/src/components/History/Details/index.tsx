@@ -6,6 +6,7 @@ import { IOrderDetail } from 'interfaces/IOrder';
 import OrderInfo from 'components/History/Details/OrderInfo';
 import PaymentInfo from 'components/History/Details/PaymentInfo';
 import DeliveryInfo from 'components/History/Details/DeliveryInfo';
+import ProductInfo from 'components/History/Details/ProductInfo';
 interface IDetails {
   items: IOrderDetail[]
 }
@@ -23,16 +24,16 @@ export default function Details({ items }: IDetails) {
     <S.Details>
       <PageTitle TitleText='주문상세 조회' />
       <FormFieldset title='주문정보'>
-        <OrderInfo items={items}/>
+        <OrderInfo items={items} />
       </FormFieldset>
       <FormFieldset title='결제정보'>
-        <PaymentInfo items={items}/>
+        <PaymentInfo items={items} />
       </FormFieldset>
       <FormFieldset title='주문상품 정보'>
-        ㅇㅇ
+        <ProductInfo items={items} />
       </FormFieldset>
       <FormFieldset title='배송지정보'>
-       <DeliveryInfo items={items}/>
+        <DeliveryInfo items={items} />
       </FormFieldset>
     </S.Details>
   );

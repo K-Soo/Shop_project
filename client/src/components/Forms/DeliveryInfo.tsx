@@ -70,13 +70,17 @@ const S = {
       button{
         display: flex;
         align-items: center;
+        span{
+          pointer-events: none;
+        }
         i{
           font-size: 0;
-        svg{
-          color: #000;
-          width: 18px;
-          height: 16px;
-        }
+          pointer-events: none;
+          svg{
+            color: #000;
+            width: 18px;
+            height: 16px;
+          }
         }
       }
     }
@@ -114,7 +118,7 @@ export default function DeliveryInfo({ }: IDeliveryInfo) {
         <div className='addr'>
           <div className='addr-button'>
             <Input name='zoneCode' maxWidth='80' readOnly value={state.orderForm.addr.zoneCode} />
-            <Button white height='40' fontSize='14px' width='40' onClick={App.action.setOpenDaumPost}>
+            <Button white name='openDaumPost' height='40' fontSize='12px' width='40' onClick={App.action.setGlobalToggle}>
               <i>
                 <Icon name='location' />
               </i>
@@ -138,9 +142,9 @@ export default function DeliveryInfo({ }: IDeliveryInfo) {
           ))}
         </Select>
         <span style={{ width: '15px', textAlign: 'center' }}>-</span>
-        <Input name='TemporaryPhone2' maxWidth='90' maxLength='4' value={state.TemporaryPhone2} onChange={action.setFormData} required />
+        <Input name='TemporaryPhone2' maxWidth='90' maxLength={4} value={state.TemporaryPhone2} onChange={action.setFormData} required />
         <span style={{ width: '15px', textAlign: 'center' }}>-</span>
-        <Input name='TemporaryPhone3' maxWidth='90' maxLength='4' value={state.TemporaryPhone3}  onChange={action.setFormData}  required />
+        <Input name='TemporaryPhone3' maxWidth='90' maxLength={4} value={state.TemporaryPhone3}  onChange={action.setFormData}  required />
       </S.Group>
 
       <S.Group>

@@ -27,6 +27,7 @@ function Icon({ name, className, style,onClick }: IconProps) {
 
 export default styled(Icon)`
 cursor: pointer;
+pointer-events: none;
 color: #BDBDBD;
 ${props =>
     props.TosIcon &&

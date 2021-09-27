@@ -2,13 +2,15 @@ import React from "react";
 import styled from "styled-components";
 
 interface IHamburgerIcon {
-  className?: string;
+  dataName?:string;
   toggle: boolean;
+  className?: string;
   onClick?: React.MouseEventHandler<HTMLDivElement>;
 }
 
 const S = {
   HamburgerIcon: styled.div<{ toggle: boolean }>`
+    border: 1px solid red;
     width: 25px;
     height: 25px;
     display: flex;
@@ -17,6 +19,7 @@ const S = {
     flex-flow: column nowrap;
     overflow: hidden;
     .line {
+      pointer-events: none;
       margin: 0 auto;
       width: 25px;
       height: 3px;
@@ -39,10 +42,15 @@ const S = {
   `,
 }
 
-export default function HamburgerIcon({ className,toggle,onClick }: IHamburgerIcon) {
+export default function HamburgerIcon({ className, toggle, onClick,dataName }: IHamburgerIcon) {
 
   return (
-    <S.HamburgerIcon toggle={toggle} onClick={onClick} className={className}>
+    <S.HamburgerIcon
+      className={className}
+      toggle={toggle}
+      onClick={onClick}
+      data-name={dataName}
+    >
       <span className='line' />
       <span className='line' />
       <span className='line' />

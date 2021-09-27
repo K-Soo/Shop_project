@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { IOrderDetail } from 'interfaces/IOrder';
 import Button from 'components/style/Button';
 import Icon from 'components/Icon/Icon';
+import { useRouter } from 'next/router';
 
 interface IDeliveryInfo {
   items: IOrderDetail[]
@@ -43,16 +44,32 @@ const S = {
     `}
   }
   `,
-  ButtonBox:styled.div`
-  margin-top: 15px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border: 1px solid red;
+  ButtonBox: styled.div`
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .back{
+      i{
+        font-size: 0;
+        padding-right: 5px;
+        svg{
+          color: #fff;
+        }
+      }
+    }
+    button{
+      font-size: 12px;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   `,
 }
 
-export default function DeliveryInfo({items}:IDeliveryInfo) {
+export default function DeliveryInfo({ items }: IDeliveryInfo) {
+  const router = useRouter();
   return (
     <S.DeliveryInfo>
       {items && items.map(d => (
@@ -83,8 +100,9 @@ export default function DeliveryInfo({items}:IDeliveryInfo) {
       ))}
       <S.ButtonBox>
         <Button height='20px' white width='100px'>결제</Button>
-        <Button height='30px' black width='100px'>
-          {/* <Icon name='menu' /> */}
+        <Button className='back' height='30px' black width='120px' onClick={() => router.back()}>
+          <i><Icon name='back' /></i>
+          <span>주문목록 보기</span>
         </Button>
       </S.ButtonBox>
     </S.DeliveryInfo>

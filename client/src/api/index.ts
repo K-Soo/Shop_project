@@ -33,7 +33,7 @@ export const Get = {
   products: (category: string): Promise<IProduct> => requests.get(`/api/products/${category}`),
   UserInfo: (id: string): Promise<IProduct> => requests.get(`/api/users/${id}`),
   getProduct: (category: string, id: string): Promise<IProduct> => requests.get(`/api/products/${category}/${id}`),
-  getAllProduct: (): Promise<IProduct> => requests.get(`/api/products/list`),
+  getAllProduct: (): Promise<IProduct[]> => requests.get(`/api/products/list`),
   getAPost: (id: number): Promise<PostType> => requests.get(`posts/${id}`),
   createPost: (post: PostType): Promise<PostType> => requests.post('posts', post),
   updatePost: (post: PostType, id: number): Promise<PostType> => requests.put(`posts/${id}`, post),
@@ -54,7 +54,7 @@ export const Post = {
 
 export const Put = {
   updateBasket: (body: any) => requests.put('/api/users/basket', body),
-  updateBasketQty: (body: any) => requests.put('/api/users/basket', body),
+  updateProductQty: (idx:string,productId:string,body: any) => requests.put(`/api/users/basket/${idx}/${productId}`, body),
 };
 
 export const Delete = {

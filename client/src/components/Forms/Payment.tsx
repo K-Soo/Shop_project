@@ -129,7 +129,6 @@ export default function Payment({ }: IPayment) {
 
   currencyConvert(state.orderForm.amountInfo.paymentAmount);
 
-
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     if (!pointCheck(state)) return;
@@ -157,6 +156,7 @@ export default function Payment({ }: IPayment) {
       console.log('details: ', details);
       if (!App.state.status.guest) {
         const res = await Post.checkout(App.state.userInfo.userId, state.orderForm);
+        App.action.setLocalItems(res.items);
         Dispatch({ type: DISPATCH_ACTION.LOADING_STATUS, value: SCRIPT_LOADING_STATE.INITIAL });
         alert('결제완료');
 

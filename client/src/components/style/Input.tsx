@@ -75,6 +75,7 @@ let Input: React.FC<IInput> = ({
       title={title}
       disabled={disabled}
       id={id}
+      autoComplete='off'
     />
   );
 };

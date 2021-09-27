@@ -114,7 +114,7 @@ export default function ProductCategory({ currentProduct, keyName }: IProductCat
           <Icon name='BigArrowLeft' />
         </i>
         <Title level={3} size='24' textAlign='left'>{currentProduct}</Title>
-        <HamburgerIcon className='hamburger-icon' toggle={state.openSubMenu} onClick={action.setToggleSubMenu}/>
+        <HamburgerIcon className='hamburger-icon' toggle={state.openSubMenu} dataName='openSubMenu' onClick={action.setGlobalToggle}/>
         <HamburgerMenuList productSubList={PRODUCT[keyName]} />
       </S.SubTitle>
       <S.CategorySubList category={state.targetCategory}>

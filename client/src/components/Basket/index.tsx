@@ -12,7 +12,7 @@ import { IBasketItem } from 'interfaces/IProduct';
 import { useAppContext } from 'context/AppProvider';
 import { useOrderContext } from 'context/OrderProvider';
 import Button from 'components/style/Button';
-import { Delete } from 'api';
+import { Delete, Put } from 'api';
 
 const S = {
   Basket: styled.section`
@@ -20,14 +20,33 @@ const S = {
 }
 
 export default function Basket() {
-  const [totalPrice, setTotalPrice] = useState<number | null>(null);
-  console.log('totalPrice: ', totalPrice);
-  const [paymentPrice, setPaymentPrice] = useState<number | null>(null);
-  console.log('paymentPrice: ', paymentPrice);
+  const [basketProduct, setBasketProduct] = useState<number | null>(null);
+  const [basketConsumer, setBasketConsumer] = useState<number | null>(null);
+  console.log('basketProduct: ', basketProduct);
+  console.log('basketConsumer: ', basketConsumer);
   const { state, action } = useAppContext();
   const { userId } = state.userInfo;
   const Order = useOrderContext();
   const router: NextRouter = useRouter();
+
+  const handleChangeQty = useCallback(async (e) => {
+    const { name } = e.target as HTMLButtonElement;
+    const target = state.basket.basketList.find(d => d._id === name);
+    console.log('target: ', target.qty);
+    if (state.userInfo.userId) {
+      try {
+        const res = await Put.updateProductQty(state.userInfo.idx, name, { qty: target.qty });
+        action.setLocalItems(res.items);
+        alert('변경되었습니다.');
+      } catch (error) {
+        console.log('error: ', error);
+      }
+    } else {
+
+    }
+  }, [state.basket.basketList, state.userInfo.idx, state.userInfo.userId])
+
+
 
   const handleRemoveItem = useCallback(async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     if (confirm('선택하신 상품을 삭제하시겠습니까?')) {
@@ -94,25 +113,25 @@ export default function Basket() {
     if (userId) {
       if (state.basket.basketList.length) {
         const CalcProduct = state.basket.basketList.reduce((acc, cur) => acc + (+cur.totalProductPrice), 0);
-        setTotalPrice(CalcProduct)
-        const CalcPayment = CalcProduct - (state.basket.basketList.reduce((acc, cur) => acc + (+cur.totalConsumerPrice), 0));
-        setPaymentPrice(CalcPayment);
+        setBasketProduct(CalcProduct)
+        const CalcPayment = (state.basket.basketList.reduce((acc, cur) => acc + (+cur.totalConsumerPrice), 0));
+        setBasketConsumer(CalcPayment);
       }
     } else {
       const CalcProduct = state.basket.nonMemberBasket.reduce((acc, cur) => acc + (+cur.totalProductPrice), 0);
-      setTotalPrice(CalcProduct)
-      const CalcPayment = CalcProduct - (state.basket.nonMemberBasket.reduce((acc, cur) => acc + (+cur.totalConsumerPrice), 0));
-      setPaymentPrice(CalcPayment);
+      setBasketProduct(CalcProduct)
+      const CalcPayment = (state.basket.nonMemberBasket.reduce((acc, cur) => acc + (+cur.totalConsumerPrice), 0));
+      setBasketConsumer(CalcPayment);
     }
-  }, [state.basket.basketList])
+  }, [state.basket.basketList,state.basket.nonMemberBasket,userId])
 
   const initBasket = useCallback(() => {
-    if(userId){
-      action.InitData('basket.basketList',[]);
-    }else{
-      action.InitData('basket.nonMemberBasket',[]);
+    if (userId) {
+      action.InitData('basket.basketList', []);
+    } else {
+      action.InitData('basket.nonMemberBasket', []);
     }
-  },[userId])
+  }, [userId])
 
   return (
     <S.Basket>
@@ -124,6 +143,7 @@ export default function Basket() {
             <OrderList
               handleRemoveItem={handleRemoveItem}
               handleCheckbox={handleCheckbox}
+              handleChangeQty={handleChangeQty}
               item={state.basket.basketList}
             />
           </FormFieldset>
@@ -134,12 +154,11 @@ export default function Basket() {
                 handleSelectedProduct={handleSelectedProduct}
                 handleEntireProducts={handleEntireProducts}
                 initBasket={initBasket}
-
-                productAmount={totalPrice}
-                discountAmount={totalPrice - paymentPrice}
+                productAmount={basketProduct}
+                discountAmount={basketProduct - basketConsumer}
                 deliveryAmount={2500}
-                consumerAmount={totalPrice - paymentPrice}
-                paymentAmount={paymentPrice}
+                consumerAmount={basketConsumer}
+                paymentAmount={2500 + basketConsumer}
               />
             </FormFieldset>
           )}
@@ -160,12 +179,11 @@ export default function Basket() {
                 handleSelectedProduct={handleSelectedProduct}
                 handleEntireProducts={handleEntireProducts}
                 initBasket={initBasket}
-
-                productAmount={totalPrice}
-                discountAmount={totalPrice - paymentPrice}
+                productAmount={basketProduct}
+                discountAmount={basketProduct - basketConsumer}
                 deliveryAmount={2500}
-                consumerAmount={totalPrice - paymentPrice}
-                paymentAmount={paymentPrice}
+                consumerAmount={basketProduct - basketConsumer}
+                paymentAmount={2500 + basketConsumer}
               />
             </FormFieldset>
           )}

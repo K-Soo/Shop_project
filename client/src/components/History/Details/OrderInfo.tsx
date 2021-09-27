@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import { IOrderDetail } from 'interfaces/IOrder';
-
 interface IOrderInfo {
   items: IOrderDetail[]
 }

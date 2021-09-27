@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import Image from 'next/image';
 import { useRouter, NextRouter } from 'next/router';
@@ -8,7 +8,6 @@ import Icon from 'components/Icon/Icon';
 import Title from 'components/style/Title';
 import Input from 'components/style/Input';
 import { useAppContext } from 'context/AppProvider';
-import { useOrderContext } from 'context/OrderProvider';
 import { PriceComma } from 'utils';
 import CheckBox from 'components/style/CheckBox';
 import TextIcon from 'components/Common/TextIcon';
@@ -16,11 +15,12 @@ import Link from 'next/link';
 
 
 interface IOrderList {
-  handleRemoveItem?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   item: IBasketItem[]
+  handleRemoveItem?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   handleRouterBack?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   handleCheckbox?: React.ChangeEventHandler<HTMLInputElement>;
   handleSelectProductRemove?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
+  handleChangeQty?:(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
 }
 
 const S = {
@@ -204,12 +204,13 @@ export default function OrderList({
   handleRouterBack,
   handleCheckbox,
   handleSelectProductRemove,
+  handleChangeQty,
   item
 }: IOrderList) {
   const { action,state } = useAppContext();
   const router: NextRouter = useRouter();
   const {userId} = state.userInfo;
-  
+
   return (
     <S.OrderList>
       {item.length ? (
@@ -232,7 +233,6 @@ export default function OrderList({
                     />
                   </a>
                 </Link>
-
               </div>
               <div className='product-info__right'>
                 <div className='product-info__right--desc'>
@@ -260,7 +260,7 @@ export default function OrderList({
                       onChange={action.setChangeQty}
                       name={userId ?  d._id : d.date}
                     />
-                    <Button white height='30px' width='50px' name={d._id} >변경</Button>
+                    <Button white height='30px' width='50px' name={userId ? d._id : d.date} onClick={handleChangeQty}>변경</Button>
                   </div>
                 )}
               </div>

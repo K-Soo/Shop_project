@@ -26,6 +26,8 @@ users.get('/history/:idx/:orderNum', HistoryController.historyDetail);
 users.post('/checkout/:userId', UserController.checkout);
 users.delete('/basket/:user/:id', BasketController.remove);
 
+users.put('/basket/:idx/:productId', BasketController.updateProductQty);
+
 
 // users.post('/login', body("name").isLength({ min: 2 }), validateRequestSchema, UserController.logIn);
 

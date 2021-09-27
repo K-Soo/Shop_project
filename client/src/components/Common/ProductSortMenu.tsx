@@ -2,12 +2,12 @@ import React from "react";
 import styled from "styled-components";
 import Select from 'components/style/Select';
 
-interface IOrderTap {
+interface IProductSortMenu {
   itemCount: number;
 }
 
 const S = {
-  OrderTap: styled.div`
+  ProductSortMenu: styled.div`
     height: 40px;
     display: flex;
     justify-content: space-between;
@@ -63,10 +63,9 @@ const S = {
   `,
 }
 
-export default function OrderTap({ itemCount }: IOrderTap) {
-
+export default function ProductSortMenu({ itemCount }: IProductSortMenu) {
   return (
-    <S.OrderTap>
+    <S.ProductSortMenu>
       <S.Layout>
         <span>icon</span>
         <span>icon</span>
@@ -87,6 +86,6 @@ export default function OrderTap({ itemCount }: IOrderTap) {
           <option value="best">인기상품</option>
         </Select>
       </div>
-    </S.OrderTap>
+    </S.ProductSortMenu>
   );
 }

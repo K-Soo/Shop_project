@@ -25,6 +25,7 @@ export default function OrderForm({ }: IOrderForm) {
   const router = useRouter();
   const { userId } = App.state.userInfo;
   const {amountInfo} = Order.state.orderForm;
+  
   const handleRouterBack = useCallback(() => {
     Order.action.setInitOrderForm();
     router.back();

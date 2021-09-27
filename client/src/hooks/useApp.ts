@@ -21,6 +21,7 @@ export interface IAppState {
   openDaumPost: boolean,
   testValue: string,
   targetCategory: string;
+  keyword: string;
   layout: {
     isHeader: boolean,
     isFooter: boolean,
@@ -49,6 +50,7 @@ export const appDefaultValue: IApp = {
     openDaumPost: false,
     testValue: '',
     targetCategory: 'all',
+    keyword: '',
     layout: {
       isHeader: true,
       isFooter: true,
@@ -76,6 +78,7 @@ const initializer = (props) => {
     openDaumPost: false,
     testValue: '',
     targetCategory: 'all',
+    keyword: '',
     layout: {
       isHeader: true,
       isFooter: true,
@@ -96,31 +99,43 @@ const initializer = (props) => {
 };
 
 const generateAction = (update: (recipe: (draft: IAppState) => void) => void) => {
+  const setGlobalToggle = (e) => {
+    update((draft) => {
+      const dataSetName = e.target?.dataset?.name;
+      console.log('dataSetName: ', dataSetName);
+      const tagName = e.target?.name;
+      console.log('tagName: ', tagName);
+      if (dataSetName) {
+        const keyArray = dataSetName.split('.');
+        if (keyArray.length === 1) draft[keyArray[0]] = !draft[dataSetName];
+        else if (keyArray.length === 2) draft[keyArray[1]] = !draft[dataSetName];
+      } else if (tagName) {
+        const keyArray = tagName.split('.');
+        if (keyArray.length === 1) draft[keyArray[0]] = !draft[tagName];
+        else if (keyArray.length === 2) draft[keyArray[1]] = !draft[tagName];
+      }
+    })
+  }
+  const setFormData = (e: any) =>
+    update(draft => {
+      const { name, type, checked, value, maxLength, selectedIndex } = e.target;
+      let replaceValue = value.replace(/,/g, '');
+      const keyArray = name.split('.');
 
+      if (keyArray.length === 1) draft[keyArray[0]] = replaceValue;
+      else if (keyArray.length === 2) draft[keyArray[0]][keyArray[1]] = replaceValue;
+      else if (keyArray.length === 3) draft[keyArray[0]][keyArray[1]][keyArray[2]] = replaceValue;
+    });
+    
   const setToggleSideMenu = () => {
     update((draft) => {
       draft.openSideMenu = !draft.openSideMenu;
     })
   }
 
-  const setToggleSubMenu = () => {
-    update((draft) => {
-      draft.openSubMenu = !draft.openSubMenu;
-    })
-  }
-  const setToggleSearch = () => {
-    update((draft) => {
-      draft.openSearch = !draft.openSearch;
-    })
-  }
   const setIsHeader = (status: boolean) =>
     update((draft) => {
       draft.layout.isHeader = status;
-    });
-
-  const setOpenDaumPost = () =>
-    update((draft) => {
-      draft.openDaumPost = !draft.openDaumPost;;
     });
 
   const setIsFooter = (status: boolean) =>
@@ -136,8 +151,8 @@ const generateAction = (update: (recipe: (draft: IAppState) => void) => void) =>
   }
 
   const InitData = (stateName: string, initValue?: any) =>
-    update(draft => {
-      const keyArray = stateName.split('.');
+  update(draft => {
+    const keyArray = stateName.split('.');
       let valueDefault = initValue || '';
 
       if (keyArray.length === 1) draft[keyArray[0]] = valueDefault;
@@ -164,12 +179,12 @@ const generateAction = (update: (recipe: (draft: IAppState) => void) => void) =>
   const setNonMemberBasket = (data: IBasketItem[]) =>
     update((draft) => {
       draft.basket.nonMemberBasket = data;
-  });
+    });
 
   const setNonMemberBasketPush = (data: IBasketItem[]) =>
     update((draft) => {
       draft.basket.nonMemberBasket.push(...data);
-  });
+    });
 
 
   // const setCurrentOrderItem = (data: IBasketItem) =>
@@ -184,16 +199,20 @@ const generateAction = (update: (recipe: (draft: IAppState) => void) => void) =>
       console.log('cnt: ', cnt);
       if (!cnt) return alert('최소 주문수량은 1개 입니다.');
       if (cnt > 10) return alert('최대 주문수량은 10개 입니다.');
+      if (draft.userInfo.userId) {
+        const result = draft.basket.basketList.find(d => d._id === name);
+        result.qty = cnt;
 
-      const result = draft.basket.nonMemberBasket.find(d => d.date === name);
-      result.qty = cnt;
+      } else {
+        const result = draft.basket.nonMemberBasket.find(d => d.date === name);
+        result.qty = cnt;
+      }
+
     });
 
   return {
     setToggleSideMenu,
     setCategory,
-    setToggleSubMenu,
-    setToggleSearch,
     InitData,
     setIsHeader,
     setIsFooter,
@@ -201,10 +220,11 @@ const generateAction = (update: (recipe: (draft: IAppState) => void) => void) =>
     setBasketList,
     // setCurrentOrderItem,
     setChangeQty,
-    setOpenDaumPost,
     setNonMemberBasketPush,
     setNonMemberBasket,
-    setGuestLocalItem
+    setGuestLocalItem,
+    setGlobalToggle,
+    setFormData
   };
 };
 
@@ -286,10 +306,9 @@ const useApp = (props) => {
     if (nonMember) action.setNonMemberBasket(nonMember);
   }, [props]);
 
-    useEffect(() => {
-      const result = localStorage.getItem("guest");
-      if(result) app.action.InitData('status.guest', true);
-      console.log('------------------------------: ', result);
+  useEffect(() => {
+    const result = localStorage.getItem("guest");
+    if (result) app.action.InitData('status.guest', true);
   }, [router.asPath]);
 
   return app;

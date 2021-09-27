@@ -34,7 +34,6 @@ export default function List({ idx }: IList) {
     staleTime: 2000,                                      
   });
   
-  console.log('data: ', data);
   useEffect(() => {
     if (currentPage < data.maxPages) {
       const nextPreFetchPage = currentPage + 1;

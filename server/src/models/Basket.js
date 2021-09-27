@@ -10,7 +10,6 @@ const selectColorSchema = Schema({
   hexValue: String,
 });
 
-// const newId2 = new mongoose.Types.ObjectId();
 const itemSchema = Schema({
   ProductId: {
     type:ObjectId,

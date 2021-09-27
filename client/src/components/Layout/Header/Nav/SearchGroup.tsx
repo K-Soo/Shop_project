@@ -63,6 +63,7 @@ const S = {
         }
         svg{
           color: #222;
+          pointer-events: none;
         }
       }
       ${({ theme }) => theme.mobile`
@@ -87,15 +88,16 @@ const S = {
 export default function SearchGroup() {
   const { action, state } = useAppContext();
 
+
   return (
     <S.SearchGroup toggle={state.openSearch} >
       <li className='hamburger-btn' onClick={action.setToggleSideMenu}>
-        <HamburgerIcon toggle={state.openSideMenu} onClick={action.setToggleSubMenu} />
+        <HamburgerIcon toggle={state.openSideMenu}  />
       </li>
       <NavSearchBar />
       <div className='inner-group'>
         <li className='search-btn' >
-          <span onClick={action.setToggleSearch}>
+          <span  data-name='openSearch' onClick={action.setGlobalToggle}>
             {state.openSearch ? <Icon name='close' /> : <Icon name='search' />}
           </span>
         </li>

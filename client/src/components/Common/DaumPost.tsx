@@ -25,7 +25,7 @@ const S = {
       cursor: pointer;
       font-size: 0;
     svg{
-    color: #333;
+      color: #333;
     }
   }
   `,
@@ -62,7 +62,7 @@ export default function DaumPost() {
   return (
     <S.DaumPost>
       <S.Header>
-        <button onClick={App.action.setOpenDaumPost} type='button'>
+        <button name='openDaumPost' onClick={App.action.setGlobalToggle} type='button'>
           <Icon name='close' />
         </button>
       </S.Header>

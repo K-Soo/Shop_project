@@ -167,6 +167,7 @@ const generateAction = (update: (recipe: (draft: IOrderState) => void) => void) 
         else if (keyArray.length === 3) draft[keyArray[0]][keyArray[1]][keyArray[2]] = replaceValue;
       }
     });
+    
   const setOrderLocalStorage = (data: IBasketItem) =>
     update((draft) => {
       draft.OrderLocalStorage.push(data);
@@ -292,8 +293,6 @@ const useOrder = (props: any) => {
   const [state, setAppState] = useState(initializer(props));
   const App = useAppContext();
   const router = useRouter();
-  // console.log('useOrder props: ', props);
-  console.log('useOrder: ', state);
   const update = (recipe: (draft: IOrderState) => void) =>
     setAppState((prev) => produce(prev, recipe));
 

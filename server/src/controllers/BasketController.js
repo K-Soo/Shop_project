@@ -1,6 +1,7 @@
 import throwError from '../../src/error/throwError';
 import User from '../models/User';
 import Basket from '../models/Basket';
+import mongoose from 'mongoose';
 
 const list = async (req, res, next) => {
   // console.log('req: ', req.headers);
@@ -50,20 +51,18 @@ const update = async (req, res, next) => {
   }
 };
 
-const updateQty = async (req, res, next) => {
-  const { userId, items } = req.body
+const updateProductQty = async (req, res, next) => {
+  const { idx, productId } = req.params;
   try {
-    const target = await User.findByUserId(userId);
-    const exist = await Basket.findOne({ BasketOwner: target.id });
-    if (exist) {
-      exist.items.push(...items);
-      exist.save();
-      res.json(exist);
-    } else {
-      const newBasket = new Basket({ BasketOwner: target.id, items });
-      newBasket.save();
-      res.json(newBasket);
-    };
+    const result = await Basket.findOneAndUpdate(
+      {BasketOwner: idx},
+      {$set: {"items.$[el].qty": req.body.qty } },
+      { 
+        arrayFilters: [{ "el._id": productId }],
+        new: true
+      }
+      )
+    res.json(result);
   } catch (error) {
     next(error);
   }
@@ -73,7 +72,7 @@ const remove = async (req, res, next) => {
   const { user, id } = req.params;
   try {
     const exist = await Basket.findOne({ BasketOwner: user });
-    if(exist) exist.items.pull({_id:id});
+    if (exist) exist.items.pull({ _id: id });
     exist.save();
     res.json(exist);
   } catch (error) {
@@ -86,5 +85,5 @@ export {
   list,
   update,
   remove,
-  updateQty
+  updateProductQty
 }

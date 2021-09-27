@@ -64,18 +64,27 @@ const userInfo = async (req, res, next) => {
 const checkout = async (req, res, next) => {
   const { userId } = req.params;
   try {
-
+    const result = req.body;
+    let idArray = [];
+    result.Products.map(d => idArray.push(mongoose.Types.ObjectId.createFromHexString(d._id)));
     const target = await User.findByUserId(userId);
     const exist = await History.findOne({ user: target._id });
-    
-    const result = req.body;
+
+    const replaceBasket = await Basket.findOneAndUpdate(
+      { BasketOwner: target.id },
+      { $pull: { items: { _id: { $in: idArray } } } },
+      {
+        new: true
+      }
+    );
+
     result._id = new mongoose.Types.ObjectId();
     result.createAt = createDate();
     result.orderNum = orderNumber();
     if (exist) {
       exist.data.push(result);
       exist.save();
-      res.json(exist);
+      res.json(replaceBasket);
     } else {
       const history = new History({ user: target._id, data: result });
       history.save();
@@ -99,6 +108,7 @@ const logIn = async (req, res, next) => {
     if (!valid) return throwError({ statusCode: 401 })
     // 장바구니 정보
     const basket = await Basket.findOne({ BasketOwner: exist.id }, { BasketOwner: 0 });
+    console.log('basket: ', basket);
 
     const token = exist.generateToken();
     res.cookie('access_token', token, {

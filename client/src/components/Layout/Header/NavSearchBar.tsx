@@ -1,8 +1,16 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useCallback } from 'react';
 import styled, { css } from 'styled-components';
-import Icon from 'components/Icon/Icon';
-import JSON_SEARCH from 'mock/MOCK_SEARCH.json';
 import { useAppContext } from 'context/AppProvider';
+import useDidMountEffect from 'hooks/useDidMountEffect';
+import Icon from 'components/Icon/Icon';
+import { useQuery, UseQueryResult, useQueryClient } from 'react-query';
+import { queryKeys } from 'constants/queryKeys';
+import { IProduct } from 'interfaces/IProduct';
+import { SEARCH_KEYWORD } from 'constants/keyword';
+import { Get } from "api";
+import Link from 'next/link';
+import { NextRouter, useRouter } from 'next/router';
+import useSearch from 'hooks/useSearch';
 
 const InputStyle = css`
   all: unset;
@@ -89,11 +97,57 @@ const S = {
       }
     }
     .search-data{
-      border: 1px solid red;
-      height: 200px;
+      box-sizing:border-box;
+      height: 100%;
       width: 100%;
       color: #222;
-      overflow-y: scroll;
+      /* overflow: scroll */
+      display: flex;
+      flex-direction: column;
+      &__keyword{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 5px 0;
+        span{
+          color: #444;
+          letter-spacing: 0.5px;
+          font-size: 13px;
+          font-weight: 600;
+        }
+        ul{
+          display: flex;
+          li{
+            background-color: #f5f5f5;
+            color: #666;
+            font-size: 12px;
+            padding: 5px 10px;
+            border-radius: 10px;
+            margin-left: 10px;
+            cursor: pointer;
+            &:hover{
+              background-color: #636363;
+              color: #f5f5f5;
+            }
+          }
+        }
+      }
+      &--filtering{
+        height: 100%;
+        padding-left: 20px;
+        a{
+          display: block;
+          padding: 5px 0;
+          cursor: pointer;
+          font-size: 12px;
+          color: #666;
+          &:hover{
+            color: #000;
+          }
+        }
+
+      }
+
     }
     .bottom-field{
       display: none;
@@ -106,9 +160,11 @@ const S = {
         height: 18px;
         width: 18px;
         font-size: 0;
+        cursor: pointer;
         svg{
           height: 18px;
           width: 18px;
+          pointer-events: none;
         &:hover{
           color: #222;
         }
@@ -120,51 +176,74 @@ const S = {
 
 export default function NavSearchBar() {
   const InputFocus = useRef<HTMLInputElement | null>(null);
-  const [searchTerm, setSearchTerm] = useState('');
   const { action, state } = useAppContext();
+  const fallback: Array<null> = [];
+  const router: NextRouter = useRouter();
 
-  useEffect(() => {
-    if (state.openSearch) setTimeout(() => InputFocus.current?.focus(), 1000);
+  const { FilteredData ,isSuccess,isLoading} = useSearch();
+
+
+  useDidMountEffect(() => {
+    if (state.openSearch) {
+      setTimeout(() => InputFocus.current?.focus(), 500);
+    };
   }, [state.openSearch]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('hh');
-  };
+    if (!state.keyword.trim()) return
+    router.push('/product/search');
 
-  const data = JSON_SEARCH.filter((d) => {
-    if(searchTerm === ""){
-      return;
-    }else if(d.first_name.toLowerCase().includes(searchTerm.toLowerCase())){
-      return d;
-    }
-  })
+    router.push({
+      pathname: '/product/search/',
+      query: { keyword: state.keyword },
+    })
+
+  };
 
   return (
     <S.NavSearchBar toggle={state.openSearch}>
-      <S.form toggle={state.openSearch} onSubmit={handleSubmit}>
-        <fieldset className='search-field'>
-          <input className='search-area' ref={InputFocus} type='text' placeholder='...' onChange={(e) => setSearchTerm(e.target.value)} />
-          <button className='search-btn' type='submit'>
-            <Icon name='search' />
-          </button>
-        </fieldset>
-        <fieldset className='search-data'>
-          <div>
-            {data && data.map(d => (
-              <p key={d.id}>
-                {d.first_name}
-              </p>
-            ))}
-          </div>
-        </fieldset>
-        <fieldset className='bottom-field'>
-          <button className='close-btn' type='button' onClick={action.setToggleSearch}>
-            <Icon name='close' />
-          </button>
-        </fieldset>
-      </S.form>
+      {isLoading && (
+        <div>Loading...</div>
+      )}
+      {isSuccess && (
+        <S.form toggle={state.openSearch} onSubmit={handleSubmit}>
+          <fieldset className='search-field'>
+            <input className='search-area' autoComplete='off' ref={InputFocus} type='text' name='keyword' value={state.keyword} placeholder='...' onChange={action.setFormData} />
+            <button className='search-btn' type='submit'>
+              <Icon name='search' />
+            </button>
+          </fieldset>
+          <fieldset className='search-data'>
+            <div className='search-data__keyword'>
+              <span>KEYWORD</span>
+              <ul>
+                {SEARCH_KEYWORD.map(d => (
+                  <Link key={d.value} href={`/product/search?keyword=${d.value}`}>
+                    <a >
+                      <li key={d.value}>{d.label}</li>
+                    </a>
+                  </Link>
+                ))}
+              </ul>
+            </div>
+            <ul className='search-data--filtering'>
+              {FilteredData.map(d => (
+                <Link key={d._id} href={`/product/search?keyword=${d.name.trim()}`}>
+                  <a >
+                    <li >{d.name}</li>
+                  </a>
+                </Link>
+              ))}
+            </ul>
+          </fieldset>
+          <fieldset className='bottom-field'>
+            <button className='close-btn' type='button' name='openSearch' onClick={action.setGlobalToggle}>
+              <Icon name='close' />
+            </button>
+          </fieldset>
+        </S.form>
+      )}
     </S.NavSearchBar>
   )
 };
-
