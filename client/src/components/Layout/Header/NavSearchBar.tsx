@@ -85,14 +85,15 @@ const S = {
       .search-btn{
         all: unset;
         position: absolute;
-        right: 4%;
+        right: 2%;
         font-size: 0;
-        svg{
-          width: 18px;
-          height: 18px;
-          &:hover{
-          color: #EAEAEA;
-        }
+        padding: 4px;
+        border-radius: 50%;
+        cursor: pointer;
+        &:hover{
+          svg{
+            color: #fff;
+          }
         }
       }
     }
@@ -108,7 +109,7 @@ const S = {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 5px 0;
+        padding: 8px 0;
         span{
           color: #444;
           letter-spacing: 0.5px;
@@ -165,11 +166,11 @@ const S = {
           height: 18px;
           width: 18px;
           pointer-events: none;
-        &:hover{
-          color: #222;
+          &:hover{
+            color: #222;
+          }
         }
       }
-    }
     }
   `,
 }
@@ -177,13 +178,12 @@ const S = {
 export default function NavSearchBar() {
   const InputFocus = useRef<HTMLInputElement | null>(null);
   const { action, state } = useAppContext();
-  const fallback: Array<null> = [];
   const router: NextRouter = useRouter();
 
-  const { FilteredData ,isSuccess,isLoading} = useSearch();
-
+  const { FilteredData, isSuccess, isLoading, setFilter, filter } = useSearch();
 
   useDidMountEffect(() => {
+    setFilter('');
     if (state.openSearch) {
       setTimeout(() => InputFocus.current?.focus(), 500);
     };
@@ -191,14 +191,12 @@ export default function NavSearchBar() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!state.keyword.trim()) return
-    router.push('/product/search');
-
+    if (!filter.trim()) return
+    setFilter('');
     router.push({
       pathname: '/product/search/',
-      query: { keyword: state.keyword },
+      query: { keyword: filter },
     })
-
   };
 
   return (
@@ -209,7 +207,7 @@ export default function NavSearchBar() {
       {isSuccess && (
         <S.form toggle={state.openSearch} onSubmit={handleSubmit}>
           <fieldset className='search-field'>
-            <input className='search-area' autoComplete='off' ref={InputFocus} type='text' name='keyword' value={state.keyword} placeholder='...' onChange={action.setFormData} />
+            <input className='search-area' autoComplete='off' ref={InputFocus} name='keyword' value={filter} onChange={(e) => setFilter(e.target.value)} />
             <button className='search-btn' type='submit'>
               <Icon name='search' />
             </button>

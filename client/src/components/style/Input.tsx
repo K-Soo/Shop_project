@@ -2,6 +2,10 @@ import React from "react";
 import styled, { css } from "styled-components";
 
 interface IInput {
+  onChange?: React.ChangeEventHandler<HTMLInputElement>;
+  onBlur?: React.FocusEventHandler<HTMLInputElement>;
+  onFocus?: React.FocusEventHandler<HTMLInputElement>;
+  onKeyPress?: React.KeyboardEventHandler<HTMLButtonElement>;
   className?: string;
   id?: string;
   width?: string;
@@ -12,9 +16,6 @@ interface IInput {
   defaultValue?: number;
   value?: string | number;
   readOnly?: boolean;
-  onChange?: React.ChangeEventHandler<HTMLInputElement>;
-  onBlur?: React.FocusEventHandler<HTMLInputElement>;
-  onFocus?: React.FocusEventHandler<HTMLInputElement>;
   pattern?: string;
   type?: string;
   maxLength?: number;
@@ -52,7 +53,8 @@ let Input: React.FC<IInput> = ({
   width,
   maxWidth,
   onBlur,
-  onFocus
+  onFocus,
+  onKeyPress,
 }) => {
   return (
     <input
@@ -75,6 +77,7 @@ let Input: React.FC<IInput> = ({
       title={title}
       disabled={disabled}
       id={id}
+      onKeyPress={onKeyPress}
       autoComplete='off'
     />
   );

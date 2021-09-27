@@ -9,6 +9,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import Title from 'components/style/Title';
 import { TColor, IProduct } from 'interfaces/IProduct';
 import { PriceComma } from 'utils';
+import Icon from 'components/Icon/Icon';
 
 interface IProductList {
   item?: any;
@@ -17,7 +18,6 @@ interface IProductList {
 const S = {
   ProductList: styled.article`
     display: flex;
-    border: 1px solid red;
     flex-wrap: wrap;
   `,
   Card: styled.div`
@@ -93,16 +93,27 @@ const S = {
     margin: 0 5px;
     background-color: ${props => props.color ? `${props.color};` : 'none'};
 `,
+  EmptyItems: styled.div`
+    margin: 0 auto;
+    padding: 20px 0;
+    font-size: 12px;
+    color: #999;
+  i{
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 0;
+  }
+  `,
 }
 
 export default function ProductList({ item }: IProductList) {
-  console.log('item: ', item);
   const router = useRouter();
   const { category } = router.query;
 
   return (
     <S.ProductList>
-      {item && item.map((d: IProduct) => (
+      {item && item.length > 0 ? item.map((d: IProduct) => (
         <S.Card key={d.seq}>
           <div className='card-inner'>
           <Link href={category + "/" + d.seq}>
@@ -135,8 +146,12 @@ export default function ProductList({ item }: IProductList) {
             </div>
           </div>
         </S.Card>
-      ))}
-
+      )) : (
+        <S.EmptyItems >
+          <i><Icon name='menu' style={{color: '#000'}}/></i>
+          <p style={{'marginTop':'10px'}}>검색된 상품이 없습니다.</p>
+        </S.EmptyItems>
+      )}
     </S.ProductList>
   );
 }

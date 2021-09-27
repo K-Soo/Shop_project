@@ -7,7 +7,7 @@ interface IProductSortMenu {
 }
 
 const S = {
-  ProductSortMenu: styled.div`
+  ProductSortMenu: styled.article`
     height: 40px;
     display: flex;
     justify-content: space-between;

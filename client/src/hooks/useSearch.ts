@@ -1,34 +1,33 @@
-import { useCallback } from 'react';
+import { useCallback, Dispatch, SetStateAction, useState } from 'react';
 import { IProduct } from 'interfaces/IProduct';
-import { useAppContext } from 'context/AppProvider';
 import { queryKeys } from 'constants/queryKeys';
 import { Get } from "api";
 import { useQuery } from 'react-query';
 
-interface IUseSearch {
+export interface IUseSearch {
   FilteredData: IProduct[]
+  setFilter: Dispatch<SetStateAction<string>>;
   isLoading: boolean;
   isSuccess: boolean;
   isError: boolean;
+  filter: string;
 }
 
-
-
 export default function useSearch(): IUseSearch {
-  const { state } = useAppContext();
+  const [filter, setFilter] = useState('');
   const fallback: Array<null> = [];
 
   const selectFc = useCallback((data) => {
-    if (state.keyword) return data.filter((d: IProduct) => d.name.trim().includes(state.keyword))
-  }, [state.keyword]);
+    if (filter) return data.filter((d: IProduct) => d.name.trim().includes(filter))
+  }, [filter]);
 
   const { data: FilteredData = fallback, isLoading, isSuccess, isError } = useQuery<IProduct[]>([queryKeys.SEARCH], async () => await Get.getAllProduct(), {
     retry: 0,
     refetchOnWindowFocus: false,
     staleTime: Infinity,
     select: selectFc,
-    enabled: state.openSearch,
+    // enabled: state.openSearch,
   });
 
-  return { FilteredData, isLoading, isSuccess, isError }
+  return { FilteredData, isLoading, isSuccess, isError, setFilter, filter }
 }

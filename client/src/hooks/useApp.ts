@@ -311,6 +311,13 @@ const useApp = (props) => {
     if (result) app.action.InitData('status.guest', true);
   }, [router.asPath]);
 
+  useEffect(() => {
+    const { keyword } = router.query;
+    console.log('-----> keyword: ', keyword);
+    app.action.InitData('keyword', keyword);
+    console.log('----->', state.keyword);
+  }, []);
+
   return app;
 };
 

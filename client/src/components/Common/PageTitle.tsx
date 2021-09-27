@@ -20,6 +20,12 @@ const S = {
       position: absolute;
       font-size: 0;
       left: 10px;
+      cursor: pointer;
+      &:hover{
+        svg{
+          color: #000;
+        }
+      }
       svg{
         width: 24px;
         height: 24px;

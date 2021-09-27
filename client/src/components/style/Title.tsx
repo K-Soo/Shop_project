@@ -27,6 +27,7 @@ const Title: React.FC<ITitle> = ({ className, children, level }) => {
 };
 
 export default styled(Title)`
+  cursor: default;
   font-size: ${({ size }) => size ? `${size}px` : "30px"};
   color: ${({ color }) => color ?? "#2e2e2e"};
   margin: ${({ margin }) => `${margin}` ?? "0px"};

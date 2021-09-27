@@ -3,6 +3,8 @@ import styled, { css } from "styled-components";
 
 
 interface IButton {
+  onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  onKeyPress?: React.KeyboardEventHandler<HTMLButtonElement>;
   className?: string;
   login?: boolean;
   kakao?: boolean;
@@ -14,13 +16,12 @@ interface IButton {
   name?: string;
   black?: boolean;
   white?: boolean;
-  onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   type?: "button" | "submit" | "reset" | undefined;
   dataColor?: any;
   disabled?: boolean;
 }
 
-const Button: React.FC<IButton> = ({ className, children, onClick, type, name,dataColor,disabled }) => {
+const Button: React.FC<IButton> = ({ className, children, onClick, type, name,dataColor,disabled,onKeyPress }) => {
   return (
     <button 
       className={className} 
@@ -29,6 +30,7 @@ const Button: React.FC<IButton> = ({ className, children, onClick, type, name,da
       data-color={dataColor} 
       name={name}
       disabled={disabled}
+      onKeyPress={onKeyPress}
     >
       {children}
     </button>
@@ -48,11 +50,6 @@ export default styled(Button)`
   border: none;
   letter-spacing: 2px;
   white-space: nowrap;
-  /* &:hover {
-    transition: all 0.3s ease-in-out;
-    background: #00003e;
-  } */
-
   ${props =>
     props.login &&
     css`

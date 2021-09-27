@@ -13,12 +13,12 @@ export default function SearchPage() {
   const router: NextRouter = useRouter();
   const { action, state } = useAppContext();
 
-  useEffect(() => {
-    const { keyword } = router.query;
-    console.log('-----> keyword: ', keyword);
-    action.InitData('keyword', keyword);
-    console.log('----->',state.keyword);
-  }, [router.query]);
+  // useEffect(() => {
+  //   const { keyword } = router.query;
+  //   console.log('-----> keyword: ', keyword);
+  //   action.InitData('keyword', keyword);
+  //   console.log('----->', state.keyword);
+  // }, []);
 
   return (
     <>

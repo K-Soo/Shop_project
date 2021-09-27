@@ -17,12 +17,13 @@ const S = {
 
 export default function Layout(props: ILayout) {
   const router: NextRouter = useRouter();
+  console.log('router: ', router);
   const { action, state } = useAppContext();
   const { isFooter, isHeader } = state.layout;
 
   useEffect(() => {
-    const result = router.asPath.split('/')
-    if (result[1] === 'admin') {
+    const result = router.asPath.includes('admin');
+    if (result) {
       action.setIsHeader(false);
       action.setIsFooter(false);
     }

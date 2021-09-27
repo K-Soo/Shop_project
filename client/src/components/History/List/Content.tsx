@@ -202,7 +202,7 @@ const S = {
 
 }
 
-export default function Content({ items, isLoading,isSuccess }: IContent) {
+export default function Content({ items, isLoading, isSuccess }: IContent) {
   console.log('items: ', items);
   return (
     <S.Content>
@@ -247,9 +247,9 @@ export default function Content({ items, isLoading,isSuccess }: IContent) {
                     </Link>
                   </li>
                   <li className='details__option'>
-                  <p className='details__option--category'>
-                    {v.category}
-                   </p>
+                    <p className='details__option--category'>
+                      {v.category}
+                    </p>
 
                     <p className='details__option--name'>
                       <Link href={'/product/' + v.product_type + '/' + v.seq}>
