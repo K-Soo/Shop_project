@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Title from 'components/style/Title';
-import ProductCreate from 'components/Admin/ProductControllers/ProductCreate';
+// import ProductCreate from 'components/Admin/ProductControllers/ProductCreate';
 
 
 interface IProductControllers {

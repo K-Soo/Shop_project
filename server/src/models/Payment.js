@@ -14,6 +14,10 @@ const PaymentSchema = new mongoose.Schema({
     type: Array,
     default: []
   }
-});
+},
+{
+  versionKey: false 
+}
+);
 
 export default mongoose.model('Payment', PaymentSchema);

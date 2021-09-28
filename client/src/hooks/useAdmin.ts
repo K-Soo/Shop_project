@@ -6,11 +6,11 @@ export type TAppAction = typeof generateAction extends (...args: any[]) => infer
 export interface IUseAdmin {
   props: null;
   action: TAppAction;
-  state: IAppState;
+  state: IAdminState;
 }
 
 
-export interface IAppState {
+export interface IAdminState {
   status: { loading: boolean };
   sideOpen: boolean;
   create: {
@@ -51,7 +51,7 @@ export const adminDefaultValue: IUseAdmin = {
 };
 
 const initializer = (props: any) => {
-  const state: IAppState = {
+  const state: IAdminState = {
     status: { loading: false },
     sideOpen: false,
     create: {
@@ -72,7 +72,7 @@ const initializer = (props: any) => {
   return state;
 };
 
-const generateAction = (update: (recipe: (draft: IAppState) => void) => void) => {
+const generateAction = (update: (recipe: (draft: IAdminState) => void) => void) => {
 
   const sideOpen = () =>
     update((draft) => {
@@ -130,7 +130,7 @@ const useAdmin = (props: any) => {
   const [state, setAppState] = useState(() => initializer(props));
   console.log('state: ', state);
 
-  const update = (recipe: (draft: IAppState) => void) =>
+  const update = (recipe: (draft: IAdminState) => void) =>
     setAppState((prev) => produce(prev, recipe));
 
   const action = generateAction(update);

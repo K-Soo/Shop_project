@@ -13,6 +13,7 @@ import cookies from 'next-cookies'
 import axios from 'axios';
 import jwt from "jsonwebtoken";
 import AppProvider, { useAppContext } from 'context/AppProvider';
+import ReviewProvider from 'context/ReviewProvider';
 import OrderProvider from 'context/OrderProvider';
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 export default function App(props: AppProps) {
@@ -31,6 +32,7 @@ export default function App(props: AppProps) {
       <GlobalStyle />
       <AppProvider AppProps={props}>
         <OrderProvider value={props}>
+        <ReviewProvider value={props}>
           <QueryClientProvider client={queryClient}>
             {/* <Hydrate state={props.pageProps.dehydratedState}> */}
             <Theme>
@@ -43,6 +45,7 @@ export default function App(props: AppProps) {
             {/* </Hydrate> */}
             <ReactQueryDevtools initialIsOpen={false} />
           </QueryClientProvider>
+            </ReviewProvider>
         </OrderProvider>
       </AppProvider>
     </>

@@ -196,7 +196,7 @@ export default function NavSearchBar() {
     router.push({
       pathname: '/product/search/',
       query: { keyword: filter },
-    })
+    });
   };
 
   return (

@@ -50,6 +50,10 @@ const ProductSchema = new mongoose.Schema(
         url: { type: String, required: true },
       },
     ],
+    sold: {
+      type: Number,
+      default: 10
+    },
     seq: {
       type: Number,
       default: 0
@@ -57,7 +61,7 @@ const ProductSchema = new mongoose.Schema(
     quantity:{
       type: Number,
       default: 10,
-    }
+    },
   },
 );
 ProductSchema.plugin(autoIncrement.plugin,

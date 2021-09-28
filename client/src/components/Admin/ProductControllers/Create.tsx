@@ -14,6 +14,7 @@ import Icon from 'components/Icon/Icon';
 import { Post } from "api";
 import FileUpload from 'components/Common/FileUpload';
 import { useMutation } from 'react-query';
+import {TColor,IProduct} from 'interfaces/IProduct';
 
 interface ICreate {
 
@@ -115,17 +116,13 @@ const S = {
     position: relative;
   `,
 }
-type TColorProps = {
-  hex_value: string,
-  color_name: string,
-}
 
-const colorInit: TColorProps = { hex_value: '', color_name: '' };
+const colorInit: TColor = { hex_value: '', color_name: '' };
 
 export default function Create(props: ICreate) {
   const { state, action } = useAdminContext();
   const { product_type } = state.create;
-  const [color, setColor] = useState(colorInit)
+  const [color, setColor] = useState(colorInit);
   const [content, setContent] = useState();
 
   const handleColor = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -162,7 +159,7 @@ export default function Create(props: ICreate) {
         try {
           const res = await Post.createProduct(state.create);
           alert('등록이 완료되었습니다.');
-        } catch (error) {
+        } catch (error:any) {
           alert(error.response.data.message);
         }
       })();
@@ -172,6 +169,7 @@ export default function Create(props: ICreate) {
   const handleDrop = (image: any) => {
     const formData = new FormData();
     formData.append('image', image[0]);
+    console.log('formData: ', formData.append);
     (async () => {
       try {
         const res = await Post.createProductImage(formData);

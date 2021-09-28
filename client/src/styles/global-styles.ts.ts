@@ -97,12 +97,13 @@ export const GlobalStyle = createGlobalStyle`
   ul {
     list-style: none;
   }
-
   a {
     text-decoration: none;
     color: inherit;
   }
-  
+  i{
+    font-size: 0;
+  }
   input:focus {
     outline: none;
   }

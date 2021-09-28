@@ -12,7 +12,7 @@ const selectColorSchema = Schema({
 
 const itemSchema = Schema({
   ProductId: {
-    type:ObjectId,
+    type: ObjectId,
   },
   new_product: {
     type: Boolean,
@@ -70,6 +70,8 @@ const itemSchema = Schema({
     type: selectColorSchema,
     required: true,
   }],
+}, {
+  versionKey: false
 });
 
 

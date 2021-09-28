@@ -20,6 +20,7 @@ const HistorySchema = Schema({
   toObject: { virtuals: true }
 }, {
   timestamps: true,
+  versionKey: false 
 });
 
 HistorySchema.virtual('lastPage').get(function () {

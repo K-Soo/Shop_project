@@ -15,6 +15,8 @@ import cookies from 'next-cookies'
 
 export default function ProductDetailPage(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { item ,cookies} = props;
+  console.log('cookies: ', cookies);
+  console.log('ProductDetailPage: ', item);
   const router: NextRouter = useRouter();
   const { category, id } = router.query as { category: string, id: string };
 
@@ -70,7 +72,7 @@ export const getServerSideProps: GetServerSideProps = async (context): Promise<{
   const parse = context.req ? cookies(context) : '';
   // console.log('xxxxx: ', context.req.headers);
   try {
-    const res = await Get.getProduct(category, id);
+    const res = await Get.getProductDetail(category, id);
     return {
       props: {
         item: res,

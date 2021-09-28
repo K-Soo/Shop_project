@@ -11,9 +11,7 @@ export default function ProductsCreatePage() {
     <>
       <Head>
         <title>관리자 | 상품생성</title>
-        <meta name="description" content="??" />
       </Head>
-
       <AdminContainer>
         <ProductControllers>
           <Create />

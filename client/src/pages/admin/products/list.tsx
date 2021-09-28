@@ -12,9 +12,7 @@ export default function ProductsListPage(props: InferGetServerSidePropsType<type
     <>
       <Head>
         <title>관리자 | 상품리스트</title>
-        <meta name="description" content="??" />
       </Head>
-
       <AdminContainer>
         <ProductControllers>
           <List item={props.item}/>

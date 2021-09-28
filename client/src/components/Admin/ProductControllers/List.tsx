@@ -12,7 +12,6 @@ const S = {
 }
 
 export default function List({ item }: IList) {
-  console.log('item: ', item);
   return (
     <S.List>
       <ul>

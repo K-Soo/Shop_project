@@ -9,8 +9,6 @@ const s3 = new AWS.S3({
   secretAccessKey: config.AWS_S3_SECRET_ACCESS_KEY,
 })
 
-
-
 const storage = multerS3({
   s3: s3,
   bucket: config.AWS_S3_BUCKET_NAME,

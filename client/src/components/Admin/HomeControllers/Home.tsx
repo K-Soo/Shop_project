@@ -13,7 +13,7 @@ const S = {
 export default function Home({}:IHome) {
   return (
     <S.Home>
-    Home
+      Home
     </S.Home>
   );
 }

@@ -51,8 +51,10 @@ const UserSchema = Schema({
     ref: 'History',
   },
 }, {
-  timestamps: true
-}
+  timestamps: true,
+  versionKey: false 
+
+},
 );
 
 UserSchema.statics.findByUserId = function (userId) {

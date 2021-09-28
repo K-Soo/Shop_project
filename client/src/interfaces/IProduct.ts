@@ -16,9 +16,10 @@ export interface IProduct {
   description: string;
   product_colors: TColor[];
   imageUrl: TUrl[]
-  seq: number;
-  __v: number;
-  _id: string;
+  seq?: number;
+  __v?: number;
+  _id?: string;
+  sold?: number;
 }
 export interface IBasketItem extends IProduct {
   date?: string;
