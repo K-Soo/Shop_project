@@ -1,9 +1,10 @@
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import Select from 'components/style/Select';
 
 interface IProductSortMenu {
-  itemCount: number;
+  itemCount?: number;
+  setSort?: Dispatch<SetStateAction<string>>;
 }
 
 const S = {
@@ -63,7 +64,7 @@ const S = {
   `,
 }
 
-export default function ProductSortMenu({ itemCount }: IProductSortMenu) {
+export default function ProductSortMenu({ itemCount, setSort }: IProductSortMenu) {
   return (
     <S.ProductSortMenu>
       <S.Layout>
@@ -78,7 +79,7 @@ export default function ProductSortMenu({ itemCount }: IProductSortMenu) {
         </strong>
       </S.ProductCount>
       <div className='select-box'>
-        <Select width='200' >
+        <Select width='200' onChange={(e) => setSort(e.target.value)}>
           <option value="">상품정렬</option>
           <option value="row">낮은가격</option>
           <option value="hight">높은가격</option>

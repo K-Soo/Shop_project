@@ -23,6 +23,7 @@ const S = {
       props.ScrollActive &&
       css`
       position: fixed;
+      z-index: 9;
       top: 40px;
       border-top: none;
     `}

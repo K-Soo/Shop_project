@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { ORDER_INFO } from 'constants/history';
 import Icon from 'components/Icon/Icon';
 import Loading from 'components/Common/Loading';
-import EmptyItem from 'components/History/List/EmptyItem';
+import EmptyItem from 'components/Common/EmptyItem';
 import { PriceComma } from 'utils';
 import Image from 'next/image'
 import Link from 'next/link';
@@ -203,7 +203,6 @@ const S = {
 }
 
 export default function Content({ items, isLoading, isSuccess }: IContent) {
-  console.log('items: ', items);
   return (
     <S.Content>
       <S.Header>
@@ -276,7 +275,7 @@ export default function Content({ items, isLoading, isSuccess }: IContent) {
             <Loading isLoading={true} text='' />
           </S.LoadingBox>
         )}
-        {!items.data?.length && <EmptyItem />}
+        {!items.data?.length && <EmptyItem text='주문 내역이 없습니다.'/>}
       </S.Body>
     </S.Content>
   );

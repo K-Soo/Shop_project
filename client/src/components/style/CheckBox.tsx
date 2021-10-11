@@ -50,11 +50,11 @@ export default styled(CheckBoxInput)`
   margin-left: ${({ marginL }) => `${marginL}px` ?? '0'};
   margin-right: ${({ marginR }) => `${marginR}px` ?? '0'};
   svg{
-      color: #dee2e6;
-      width: 18px;
-      height: 18px;
-      padding-right: 1px;
-      padding-bottom: 2px;
+    color: #dee2e6;
+    width: 18px;
+    height: 18px;
+    padding-right: 1px;
+    padding-bottom: 2px;
   }
   input[type='checkbox'] {
     display: none;

@@ -31,13 +31,9 @@ export const MAIN_MENU: IMain = {
 }
 
 export const QUICK_ICON_MENU: readonly { label: string, url: string, icon: string }[] = [
-  { label: '상품문의', url: '/', icon: 'bed' },
+  { label: '장바구니', url: '/order/basket', icon: 'cart' },
   { label: '상품후기', url: '/2', icon: 'bed' },
-  { label: '공지사항', url: '/3', icon: 'bed' },
   { label: '고객센터', url: '/4', icon: 'bed' },
   { label: '마이쇼핑', url: '/5', icon: 'bed' },
-  { label: '키작남 어플', url: '/6', icon: 'bed' },
-  { label: '장바구니', url: '/7', icon: 'bed' },
-  { label: '배송조회', url: '/8', icon: 'bed' },
 ]
 

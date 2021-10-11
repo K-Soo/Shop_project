@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Head from "next/head";
-import axios from 'axios';
 import { NextRouter, useRouter } from 'next/router';
 import { useQuery, UseQueryResult } from 'react-query';
 import MainContainer from 'containers/MainContainer';
@@ -8,57 +7,34 @@ import Product from 'components/Product';
 import Loading from 'components/Common/Loading';
 import { IProduct } from 'interfaces/IProduct';
 import { Get } from "api";
+import { CategoryEnum } from 'constants/product';
 
-export default function ProductType(props:any) {
-  console.log('ProductType: ', props);
+export default function ProductType(props: any) {
   const router: NextRouter = useRouter();
   const { category } = router.query as { category: string };
-  const { data, isLoading, isSuccess, isError, status, error, refetch } = useQuery<IProduct, Error>(['product', category], async () => await Get.products(category), {
+  const fallback: Array<null> = [];
+
+  const { data: productData = fallback, isLoading, isSuccess, isError,  error } = useQuery<IProduct[], Error>(['product', category], async () => await Get.products(category), {
     retry: 0,
+    refetchOnWindowFocus: false,
   });
-
-  console.log('error: ', error);
-  // const result = useQuery<IProduct>(['product', category], async () => await Get.products(category),{
-  //   retry: 0,
-  // });
-  // console.log('result: ', result);
-
+  
   if (error instanceof Error) {
     console.log('response', error);
   }
 
-  // const [item, setItem] = useState<IProduct[] | null>(null);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const result = await axios.get(URL);
-  //       setItem(result.data);
-  //       console.log('result: ', result);
-  //     } catch (error) {
-  //       console.log('error: ', error);
-  //     }
-  //   }
-  //   fetchData()
-  // }, [])
   if (isError) {
     return <h1>error..</h1>
   }
 
-  if (isLoading) {
-    return <Loading isLoading={isLoading} text='loading' />
-  }
-
-
-
   return (
     <>
       <Head>
-        {/* <title>쥬얼리 | ?</title> */}
-        <meta name="description" content="??" />
+        <title>쥬얼리 | {CategoryEnum[category]}</title>
+        <meta name="description" content={`${CategoryEnum[category]} 카테고리 리스트`} />
       </Head>
       <MainContainer >
-        <Product item={data} />
+        <Product item={productData} isLoading={isLoading} isSuccess={isSuccess}/>
       </MainContainer>
     </>
   );

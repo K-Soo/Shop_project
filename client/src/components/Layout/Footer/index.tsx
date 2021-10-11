@@ -21,6 +21,11 @@ const Footer: React.FC<IFooter> = ({ className }) => {
 };
 
 export default styled(Footer)`
+  width: 100%;
+  bottom: 0;
   border-top: 1px solid #555;
   margin-top: 50px;
+  ${({ theme }) => theme.mobile`
+      display: none;
+  `}
 `;

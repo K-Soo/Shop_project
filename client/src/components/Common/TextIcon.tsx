@@ -12,13 +12,14 @@ const S = {
     display: block;
     align-items: center;
     border-radius: 5%;
-    padding: 0 5px;
+    padding: 1px 5px;
     color: #fff;
+    font-size: 12px;
     margin: ${({ margin }) => margin ?? "0px"};
     ${props =>
       props.text === 'best' &&
       css`
-      color: #718FC5;
+      color: #fff;
       background-color: #1B5DF6;
     `}
     ${props =>

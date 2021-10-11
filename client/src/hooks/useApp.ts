@@ -19,6 +19,7 @@ export interface IAppState {
   openSubMenu: boolean,
   openSearch: boolean,
   openDaumPost: boolean,
+  openMyShop: boolean,
   testValue: string,
   targetCategory: string;
   keyword: string;
@@ -48,6 +49,7 @@ export const appDefaultValue: IApp = {
     openSubMenu: false,
     openSearch: false,
     openDaumPost: false,
+    openMyShop: false,
     testValue: '',
     targetCategory: 'all',
     keyword: '',
@@ -76,6 +78,7 @@ const initializer = (props) => {
     openSubMenu: false,
     openSearch: false,
     openDaumPost: false,
+    openMyShop: false,
     testValue: '',
     targetCategory: 'all',
     keyword: '',
@@ -99,12 +102,10 @@ const initializer = (props) => {
 };
 
 const generateAction = (update: (recipe: (draft: IAppState) => void) => void) => {
-  const setGlobalToggle = (e) => {
+  const setGlobalToggle = (e:any) => {
     update((draft) => {
       const dataSetName = e.target?.dataset?.name;
-      console.log('dataSetName: ', dataSetName);
       const tagName = e.target?.name;
-      console.log('tagName: ', tagName);
       if (dataSetName) {
         const keyArray = dataSetName.split('.');
         if (keyArray.length === 1) draft[keyArray[0]] = !draft[dataSetName];

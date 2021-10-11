@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Head from 'next/head'
 import MainContainer from 'containers/MainContainer';
 import Basket from 'components/Basket';
@@ -7,12 +7,24 @@ import { useAppContext } from 'context/AppProvider';
 import BasketProvider, { BasketContext } from 'context/BasketProvider';
 import OrderProvider from 'context/OrderProvider';
 import { InferGetServerSidePropsType, GetServerSideProps, GetServerSidePropsContext } from 'next';
+import { useRouter } from 'next/router';
+
 interface IBasketPage {
 
 }
 
 export default function ListPage(props: IBasketPage) {
+  const router = useRouter();
   const { state: { userInfo } } = useAppContext();
+
+  useEffect(() => {
+    if(!userInfo.idx){
+        router.push({
+          pathname: '/auth/login',
+          query: { type: 'history' },
+        });
+    }
+  }, [userInfo.idx,router]);
 
   return (
     <>

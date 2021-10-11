@@ -44,9 +44,10 @@ const S = {
 `,
 
 }
+type TText = 'customer' | 'account';
 
 const Info: React.FC<IInfo> = ({ className }) => {
-  const [text, setText] = useState<string>('customer')
+  const [text, setText] = useState<TText>('customer');
 
   const handleText = (e:any) => {
     const { className } = e.target;

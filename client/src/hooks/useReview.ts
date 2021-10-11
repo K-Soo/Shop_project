@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import produce from "immer";
 import { IProduct } from 'interfaces/IProduct';
+import {NextRouter, useRouter} from 'next/router';
 export interface IUseReview {
   props: null;
   action: TReviewAction;
@@ -12,8 +13,9 @@ export type TReviewAction = typeof generateAction extends (...args: any[]) => in
 export interface IReviewState {
   product: IProduct[],
   form: {
-    content: '',
+    content: string,
     imageUrl: { url: string }[],
+    rate: string,
   }
 }
 
@@ -25,6 +27,7 @@ export const reviewDefaultValue: IUseReview = {
     form: {
       content: '',
       imageUrl: [],
+      rate: '',
     }
   },
 };
@@ -35,6 +38,7 @@ const initializer = (props: any) => {
     form: {
       content: '',
       imageUrl: [],
+      rate: '',
     }
   };
 
@@ -42,9 +46,26 @@ const initializer = (props: any) => {
 };
 
 const generateAction = (update: (recipe: (draft: IReviewState) => void) => void) => {
+
+  const setInit = () =>
+  update(draft => {
+    draft.product = reviewDefaultValue.state.product;
+  });
+
   const setProduct = (item: IProduct[]) =>
     update(draft => {
-      draft.product.push(...item);
+      draft.product = item
+    });
+
+  const setFormData = (e: any) =>
+    update(draft => {
+      const { name, checked, value, } = e.target;
+      let replaceValue = value.replace(/,/g, '');
+      const keyArray = name.split('.');
+
+      if (keyArray.length === 1) draft[keyArray[0]] = replaceValue;
+      else if (keyArray.length === 2) draft[keyArray[0]][keyArray[1]] = replaceValue;
+      else if (keyArray.length === 3) draft[keyArray[0]][keyArray[1]][keyArray[2]] = replaceValue;
     });
 
   const setData = (stateName: string, value: any) =>
@@ -57,19 +78,30 @@ const generateAction = (update: (recipe: (draft: IReviewState) => void) => void)
 
   return {
     setData,
-    setProduct
+    setProduct,
+    setFormData,
+    setInit
   };
 };
 
 const useReview = (props: any) => {
   const [state, setAppState] = useState(() => initializer(props));
   console.log('useReview state: ', state);
-
+  const router:NextRouter = useRouter();
+  console.log('router: ', router);
+      
   const update = (recipe: (draft: IReviewState) => void) =>
-    setAppState((prev) => produce(prev, recipe));
+  setAppState((prev) => produce(prev, recipe));
 
   const action = generateAction(update);
   const app = { props, state, action };
+
+  // useEffect(() => {
+  //   if((router.pathname === '/product/review') || (router.pathname === "/product/[category]/[id]")){
+  //     console.log('초기화 실행---------------------------');
+  //     app.action.setInit();
+  //   }
+  // },[app.action,router]);
 
   return app;
 };

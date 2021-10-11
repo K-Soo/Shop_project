@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styled, { css } from "styled-components";
 import Button from "components/style/Button";
 import Input from "components/style/Input";
@@ -13,8 +13,9 @@ import { Post } from 'api';
 import PageTitle from 'components/Common/PageTitle';
 import Icon from 'components/Icon/Icon';
 import { useRouter } from 'next/router';
-import { idCheck, passwordCheck, allTermCheck } from 'components/validation';
+import { idCheck, passwordCheck, allTermCheck, userNameCheck } from 'components/validation';
 import { PHONE_NUMBER } from 'constants/phone';
+import { onlyNum } from 'utils';
 
 const S = {
   Register: styled.section`
@@ -39,6 +40,10 @@ const S = {
     display: flex;
     align-items: center;
     max-width: 400px;
+    label{
+      min-width: 70px;
+      width: 70px;
+    }
     .id-box {
       display: flex;
       justify-content: space-between;
@@ -92,9 +97,19 @@ const S = {
 
 export default function Register() {
   const [status, setStatus] = useState<boolean | null>(null);
+  console.log('status: ', status);
   const { state, action } = useRegisterContext();
   const App = useAppContext();
   const router = useRouter();
+  const userIdRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const userNameRef = useRef<HTMLInputElement>(null);
+  const addrDetailRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (state.isDuplicateId) setStatus(null);
+  }, [state.form.userId, state.isDuplicateId]);
+
 
   let formData = {
     ...state.form,
@@ -103,9 +118,31 @@ export default function Register() {
 
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    if (!allTermCheck(state)) return;
+    if (status === false) {
+      alert('이미 가입된 아이디입니다.');
+      return userIdRef.current.focus();
+    }
     if (!idCheck(state)) return;
-    if (!passwordCheck(state)) return;
+
+    if (!passwordCheck(state)) {
+      action.InitData('form.password');
+      action.InitData('form.passwordConfirm');
+      return passwordRef.current.focus();
+    }
+
+    if (!userNameCheck(state)) return userNameRef.current.focus();
+
+    if ([state.form.zonecode.trim(), state.form.addr1.trim()].includes('')) {
+      return alert('주소정보를 입력해주세요');
+    }
+
+    if ([state.form.addr2.trim()].includes('')) {
+      alert('나머지 주소를 입력해주세요.');
+      return addrDetailRef.current.focus();
+    }
+
+    if (!allTermCheck(state)) return;
+
     try {
       const res = await Post.register(formData);
       alert('가입이 완료되었습니다.');
@@ -151,6 +188,7 @@ export default function Register() {
                   margin='0 20px 0 0'
                   maxLength={16}
                   onChange={action.setFormData}
+                  refValue={userIdRef}
                 />
                 <Button white width='80px' height='40px' fontSize='11px' onClick={DuplicateCheckId}>중복확인</Button>
               </div>
@@ -159,20 +197,19 @@ export default function Register() {
             {status !== null && (
               <S.statusText status={status} />
             )}
-
             <S.Group >
               <Label htmlFor='passwordFor' required>비밀번호</Label>
-              <Input type='password' placeholder='비밀번호' name='form.password' id='passwordFor' value={state.form.password} onChange={action.setFormData} />
+              <Input type='password' refValue={passwordRef} placeholder='비밀번호' name='form.password' id='passwordFor' value={state.form.password} onChange={action.setFormData} />
             </S.Group>
 
             <S.Group>
-              <Label htmlFor='passwordConfirmFor' required>비밀번호 확인</Label>
+              <Label htmlFor='passwordConfirmFor' required>비밀번호확인</Label>
               <Input type='password' placeholder='비밀번호' name='form.passwordConfirm' id='passwordConfirmFor' value={state.form.passwordConfirm} onChange={action.setFormData} />
             </S.Group>
 
             <S.Group >
               <Label htmlFor='nameFor' required>이름</Label>
-              <Input maxWidth='200' placeholder='이름' id='nameFor' name='form.userName' value={state.form.userName} onChange={action.setFormData} />
+              <Input minLength={3} refValue={userNameRef} maxWidth='200' placeholder='이름' id='nameFor' name='form.userName' value={state.form.userName} onChange={action.setFormData} />
             </S.Group>
 
             <S.Group >
@@ -184,14 +221,16 @@ export default function Register() {
                 ))}
               </Select>
               <span style={{ width: '15px', textAlign: 'center' }}>-</span>
-              <Input maxWidth='100' name='TemporaryPhone2' maxLength={4} value={state.TemporaryPhone2} id='phoneFor' onChange={action.setFormData} />
+              <Input required maxWidth='100' name='TemporaryPhone2' maxLength={4} minLength={3} value={state.TemporaryPhone2} id='phoneFor' onChange={e => onlyNum(e, action.setFormData)} />
               <span style={{ width: '15px', textAlign: 'center' }}>-</span>
-              <Input maxWidth='100' maxLength={4} name='TemporaryPhone3' value={state.TemporaryPhone3} onChange={action.setFormData} />
+              <Input required maxWidth='100' maxLength={4} minLength={4} name='TemporaryPhone3' value={state.TemporaryPhone3} onChange={e => onlyNum(e, action.setFormData)} />
             </S.Group>
 
             <S.Group >
               <Label htmlFor='emailFor' required>이메일</Label>
-              <Input placeholder='이메일' name='form.email' id='emailFor' value={state.form.email} onChange={action.setFormData} />
+              <Input placeholder='이메일' type='email' name='TemporaryEmail1' id='emailFor' value={state.TemporaryEmail1} onChange={action.setFormData} />
+              <span style={{ width: '20px', textAlign: 'center' }}>@</span>
+              <Input type='email' name='TemporaryEmail2' value={state.TemporaryEmail2} onChange={action.setFormData} />
             </S.Group>
 
             <S.Group >
@@ -202,11 +241,11 @@ export default function Register() {
                 <div className='address-box__inner'>
                   {App.state.openDaumPost && <DaumPost />}
                   <Input name='form.zoneCode' maxWidth='200' margin='0 20px 0 0' value={state.form.zonecode} readOnly />
-                  <Button 
-                    white 
-                    width='90px' 
-                    height='40px' 
-                    fontSize='12px' 
+                  <Button
+                    white
+                    width='90px'
+                    height='40px'
+                    fontSize='12px'
                     name='openDaumPost'
                     onClick={App.action.setGlobalToggle}
                   >
@@ -215,7 +254,7 @@ export default function Register() {
                   </Button>
                 </div>
                 <Input placeholder='기본주소' name='form.addr1' value={state.form.addr1} readOnly margin="0 0 15px 0" />
-                <Input placeholder='나머지 주소' name='form.addr2' id='addrFor' onChange={action.setFormData} value={state.form.addr2} />
+                <Input placeholder='나머지 주소' refValue={addrDetailRef} name='form.addr2' id='addrFor' onChange={action.setFormData} value={state.form.addr2} />
               </div>
             </S.Group>
           </fieldset>

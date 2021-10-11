@@ -1,7 +1,8 @@
 import React from "react";
 import Head from "next/head";
-import RegisterContainer from "containers/Auth/RegisterContainer";
 import RegisterProvider from 'context/RegisterProvider';
+import MainContainer from 'containers/MainContainer';
+import Register from "components/Auth/Register";
 
 interface IRegister {
   className?: string;
@@ -14,7 +15,9 @@ export default function register() {
         <title>쥬얼리 | 회원가입</title>
       </Head>
       <RegisterProvider >
-        <RegisterContainer />
+        <MainContainer>
+          <Register />
+        </MainContainer>
       </RegisterProvider>
     </>
   );

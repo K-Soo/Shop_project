@@ -38,7 +38,7 @@ const S = {
       transform: translateX(-85%);
       width: 20px;
       height: 20px;
-      line-height: 21px;
+      line-height: 30px;
       border-radius: 50%;
       ${({ theme }) => theme.mobile`
         top: 1px;

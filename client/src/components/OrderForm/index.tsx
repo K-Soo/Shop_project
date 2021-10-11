@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback } from "react";
 import styled from "styled-components";
 import { useRouter } from 'next/router';
 import { useOrderContext } from 'context/OrderProvider';
@@ -10,16 +10,13 @@ import UserInfo from 'components/Forms/UserInfo';
 import Payment from 'components/Forms/Payment';
 import PointsInfo from 'components/Forms/PointsInfo';
 import { useAppContext } from 'context/AppProvider';
-interface IOrderForm {
-
-}
 
 const S = {
   OrderForm: styled.section`
   `,
 }
 
-export default function OrderForm({ }: IOrderForm) {
+export default function OrderForm() {
   const App = useAppContext();
   const Order = useOrderContext();
   const router = useRouter();

@@ -21,7 +21,6 @@ export default function ProductDetailPage(props: InferGetServerSidePropsType<typ
   const { category, id } = router.query as { category: string, id: string };
 
 
-
   // const { data, isLoading, isSuccess, isError, status, error } = useQuery<IProduct>(['productDetail', category, id], async () => await Get.getProduct(category, id), {
   //   retry: 0,
   // });

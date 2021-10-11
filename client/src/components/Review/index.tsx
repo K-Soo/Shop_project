@@ -17,7 +17,7 @@ const S = {
 
 export default function Review({ }: IReview) {
   const Review = useReviewContext();
-  console.log('Review: ', Review);
+  
   return (
     <S.Review>
       <PageTitle TitleText='포토리뷰' />

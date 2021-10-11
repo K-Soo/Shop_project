@@ -70,12 +70,11 @@ export default function SearchBox({ setFilter }: TSearchBox) {
 
   const handleClick = useCallback(() => {
     setFilter(text);
-  },[setFilter,text]);
+  }, [setFilter, text]);
 
   const handleKeyPress = useCallback((e: React.KeyboardEvent<HTMLButtonElement>) => {
-    if(!text) return alert('검색어를 입력해주세요.');
-    else if (e.key === 'Enter') handleClick();
-  },[text,handleClick]);
+    if (e.key === 'Enter') handleClick();
+  }, [text, handleClick]);
 
   return (
     <S.SearchBox>

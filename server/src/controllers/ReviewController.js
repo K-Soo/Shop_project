@@ -4,9 +4,10 @@ import mongoose from 'mongoose';
 
 const createReview = async (req, res, next) => {
   const { idx, productId } = req.params;
-  const { content } = req.body;
+  const { content, rate } = req.body;
+  console.log('req.body: ', req.body);
   try {
-    const comment = new ProductReview({ commenter: idx, product: productId, comment: content })
+    const comment = new ProductReview({ commenter: idx, product: productId, comment: content, rate })
     comment.save();
     res.json({ success: true });
   } catch (error) {
@@ -17,11 +18,14 @@ const createReview = async (req, res, next) => {
 
 const getProductReview = async (req, res, next) => {
   const { productId } = req.params;
-  
+
   try {
-    const exist = await ProductReview.find({ product: productId});
+    const exist = await ProductReview.find({ product: productId }).populate({
+      path: 'commenter',
+      select: { userName: 1 }
+    });
     console.log('exist: ', exist);
-    if(exist){
+    if (exist) {
       res.json(exist);
     }
   } catch (error) {
@@ -30,4 +34,4 @@ const getProductReview = async (req, res, next) => {
   }
 }
 
-export { createReview,getProductReview }
+export { createReview, getProductReview }

@@ -2,9 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import Icon from 'components/Icon/Icon';
 import Link from "next/link";
-import {QUICK_ICON_MENU} from 'constants/header';
+import { QUICK_ICON_MENU } from 'constants/header';
 
-const S ={
+const S = {
   QuickIcon: styled.div`
     /* margin: 30px 0; */
   `,
@@ -27,7 +27,7 @@ const S ={
       border: 1px solid #999;
       color: #999;
       box-shadow: inset 0 0 5px #fafafa, 0 0 5px #999;
-      transform: scale(1.1);
+      transform: scale(1.01);
       transition: transform 0.1s ease;
      }
      &:nth-child(n + 5){
@@ -38,6 +38,9 @@ const S ={
        width: 100%;
        font-size: 10px;
        color: #555;
+       svg{
+         color: #444;
+       }
      }
   `,
 }
@@ -45,23 +48,23 @@ const S ={
 export default function QuickIcon() {
   return (
     <S.QuickIcon>
-    <S.List>
-      {QUICK_ICON_MENU.map((d) => (
-        <S.Item key={d.url}>
-        <Link href={d.url}>
-           <a>
-           <Icon name='bed' />
-           </a>
-          </Link>
-         <Link href={d.url}>
-           <a>
-           {d.label}
-           </a>
-          </Link>
-        </S.Item>
-      ))}
-    </S.List>
-  </S.QuickIcon>
+      <S.List>
+        {QUICK_ICON_MENU.map((d) => (
+          <S.Item key={d.url}>
+            <Link href={d.url}>
+              <a>
+                <Icon name={d.icon} />
+              </a>
+            </Link>
+            <Link href={d.url}>
+              <a>
+                {d.label}
+              </a>
+            </Link>
+          </S.Item>
+        ))}
+      </S.List>
+    </S.QuickIcon>
   )
 };
 

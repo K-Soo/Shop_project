@@ -52,7 +52,6 @@ const S = {
       width: 0px;
       height: 80px;
       padding: 5px 10px 10px;
-      // border-radius: 0px;
       left: 0;
       top: 0;
       ${(props: any) => props.toggle && css`
@@ -102,7 +101,6 @@ const S = {
       height: 100%;
       width: 100%;
       color: #222;
-      /* overflow: scroll */
       display: flex;
       flex-direction: column;
       &__keyword{

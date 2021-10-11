@@ -12,9 +12,12 @@ interface IMainContainer {
 
 const S = {
   MainContainer: styled.main`
+    width: 100%;
     max-width: 1200px;
     padding: 0 20px;
     margin: 0 auto;
+    /* border: 1px solid red; */
+    /* height: 100%; */
     ${({ theme }) => theme.mobile`
       padding: 0;
     `}

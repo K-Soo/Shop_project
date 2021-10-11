@@ -93,7 +93,6 @@ const S = {
 }
 
 export default function ProductInfo({ items }: IProductInfo) {
-  console.log('items: ', items);
   return (
     <S.ProductInfo>
       {items.map((d) => (

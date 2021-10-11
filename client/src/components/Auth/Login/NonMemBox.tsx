@@ -48,12 +48,12 @@ export default function NonMemBox() {
   };
 
   return (
-    <S.NonMemBox onClick={handleNonMemLogin}>
+    <S.NonMemBox>
       <p>
         비회원으로도 상품구매가 가능하나
         다양한 회원혜택에서 제외될 수 있습니다.
       </p>
-      <Button white height='40px' >
+      <Button white height='40px' onClick={handleNonMemLogin}>
         <i>
           <Icon name='userNot' />
         </i>

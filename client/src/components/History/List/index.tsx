@@ -22,17 +22,18 @@ const S = {
 }
 
 export default function List({ idx }: IList) {
-  console.log('ㅌㅌㅌㅌㅌㅌㅌㅌㅌㅌㅌㅌㅌㅌㅌㅌㅌ: ', idx);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const fallback: Array<null> = [];
   const queryClient = useQueryClient();
 
-  const { data = fallback, isLoading, isSuccess, isError, status, error, isFetching } = useQuery([queryKeys.HISTORY, idx, currentPage], async () => await Get.getHistory(idx, currentPage), {
+  const { data = fallback, isLoading, isSuccess, isError, error, isFetching } = useQuery([queryKeys.HISTORY, idx, currentPage], async () => await Get.getHistory(idx, currentPage), {
     retry: 0,
     keepPreviousData: true,
     refetchOnWindowFocus: false,
-    staleTime: 2000,                                      
+    staleTime: 2000,
+    enabled: !!idx,                                      
   });
+  console.log('data: ', data);
   
   useEffect(() => {
     if (currentPage < data.maxPages) {
@@ -54,6 +55,7 @@ export default function List({ idx }: IList) {
           prevPage={() => setCurrentPage(prev => prev - 1)}
           nextPage={() => setCurrentPage(prev => prev + 1)}
           maxPages={data.maxPages}
+          isFetching={isFetching}
         />
       </FormFieldset>
     </S.List>

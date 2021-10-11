@@ -65,30 +65,31 @@ const checkout = async (req, res, next) => {
   const { userId } = req.params;
   try {
     const result = req.body;
-    let idArray = [];
-    result.Products.map(d => idArray.push(mongoose.Types.ObjectId.createFromHexString(d._id)));
-    const target = await User.findByUserId(userId);
-    const exist = await History.findOne({ user: target._id });
-
-    const replaceBasket = await Basket.findOneAndUpdate(
-      { BasketOwner: target.id },
-      { $pull: { items: { _id: { $in: idArray } } } },
-      {
-        new: true
-      }
-    );
-
     result._id = new mongoose.Types.ObjectId();
     result.createAt = createDate();
     result.orderNum = orderNumber();
-    if (exist) {
-      exist.data.push(result);
-      exist.save();
-      res.json(replaceBasket);
-    } else {
-      const history = new History({ user: target._id, data: result });
-      history.save();
-      res.json(history);
+
+    let idArray = [];
+    result.Products.map(d => idArray.push(mongoose.Types.ObjectId.createFromHexString(d._id)));
+
+    const target = await User.findByUserId(userId);
+    if (target) {
+      const updatedBasket = await Basket.findOneAndUpdate(
+        { BasketOwner: target.id },
+        { $pull: { items: { _id: { $in: idArray } } } },
+        { new: true }
+      );
+      const exist = await History.findOne({ user: target._id });
+
+      if (exist) {
+        exist.data.push(result);
+        exist.save();
+        res.json({ success: true, updatedBasket });
+      } else {
+        const history = new History({ user: target._id, data: result });
+        history.save();
+        res.json({ success: true });
+      }
     }
   } catch (error) {
     next(error);

@@ -8,13 +8,14 @@ interface ITap {
 }
 
 const S = {
-  Tap: styled.div`
+  Tap: styled.article`
   `,
   Categories: styled.ul<{ selectTap: number, reviewCnt: string }>`
     display: flex;
     align-items: center;
     height: 30px;
     font-size: 14px;
+    margin-bottom: 30px;
     li{
       flex: 1;
       display: flex;
@@ -59,12 +60,14 @@ const S = {
       background-color: ${props => props.selectTap === 3 ? '#fff' : '#F8F9FA'};
       color: ${props => props.selectTap === 3 ? '#111' : '#999'};
     }
+    ${({ theme }) => theme.mobile`
+      font-size: 12px;
+    `}
   `,
 }
 
 export default function Tap({ children, text, reviewCnt }: ITap) {
   const [selectTap, setSelectTap] = useState<number>(1);
-  console.log('reviewCnt: ', reviewCnt);
 
   return (
     <S.Tap>

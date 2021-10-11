@@ -28,6 +28,7 @@ interface IInput {
   height?: string;
   margin?: string;
   maxWidth?: string;
+  refValue?: React.LegacyRef<HTMLInputElement>
 }
 
 let Input: React.FC<IInput> = ({
@@ -55,6 +56,7 @@ let Input: React.FC<IInput> = ({
   onBlur,
   onFocus,
   onKeyPress,
+  refValue
 }) => {
   return (
     <input
@@ -79,6 +81,7 @@ let Input: React.FC<IInput> = ({
       id={id}
       onKeyPress={onKeyPress}
       autoComplete='off'
+      ref={refValue}
     />
   );
 };

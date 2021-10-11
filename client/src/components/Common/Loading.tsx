@@ -9,10 +9,16 @@ interface ILoading {
 }
 
 const StyledLoader = styled(LoadingOverlay) <{ isLoading: boolean }>`
-      /* position: fixed; */
+      height: 200px;
+      background-color: #fff;
       width: 100%;
-      color: rgba(10, 10, 10, 0.5);
+    .gosoo_overlay{
+      background-color: #fff;
+
+    }
     .gosoo_content{
+      /* background-color: #fff; */
+
       color: #000;
     };
     .gosoo_spinner{

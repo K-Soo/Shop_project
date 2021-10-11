@@ -8,6 +8,7 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import CartIcon from 'components/Common/CartIcon';
 // import ReactTooltip from 'react-tooltip';
+import MyShopMenuBar from 'components/Common/MyShopMenuBar';
 
 const ReactTooltip = dynamic(() => import("react-tooltip"), {
   ssr: false,
@@ -65,12 +66,20 @@ const MyShop = styled.i`
     height: 40px;
     width: 40px;
     border-left: 1px solid #e8e8e8;
-    border-right: 1px solid #e8e8e8;
+    border-right: none;
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
+    ${({ theme }) => theme.mobile`
+      border-right: none;
+    `}
+    a{
+      pointer-events: none;
+    }
     svg{
       color: #222;
+      pointer-events: none;
     }
     .Tool{
       font-size: 12px;
@@ -81,7 +90,8 @@ const MyShop = styled.i`
 export default function MenuRight() {
   const router = useRouter();
   const { state: { userInfo } } = useAppContext();
-
+  const App = useAppContext();
+  
   const handleLogOut = () => {
     if (confirm('로그아웃 하시겠습니까?')) {
       customCookie.remove('access_token');
@@ -124,7 +134,7 @@ export default function MenuRight() {
         </li>
       </ul>
 
-      <MyShop >
+      <MyShop data-name='openMyShop' onClick={App.action.setGlobalToggle}>
         <a data-tip data-for='happyFace' data-border={true} >
           <Icon name='human' />
         </a>
@@ -134,7 +144,7 @@ export default function MenuRight() {
       </MyShop>
       
       <CartIcon className='cart'/>
-
+      <MyShopMenuBar />
     </S.MenuRight>
   );
 }

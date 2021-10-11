@@ -1,9 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 import { IReview } from 'interfaces/IReview';
+import Rate from 'rc-rate';
+import 'rc-rate/assets/index.css';
 
 interface IReviewBanner {
   reviewData: IReview[];
+  userRate: number;
+  percentage: number;
 }
 const S = {
   Review: styled.div`
@@ -46,17 +50,31 @@ const S = {
       }
     }
     ${({ theme }) => theme.mobile`
-      height: 60px;
+      padding: 10px 5px;
       ul{
-        font-size: 12px;
+        font-size: 14px;
+        .desc{
+          font-size: 10px;
+        }
       }
-      }
-    `}
+    }`}
   `,
 }
 
-export default function ReviewBanner({ reviewData }: IReviewBanner) {
-  console.log('reviewData: ', reviewData);
+const StyledRate = styled(Rate)`
+  &.rc-rate {
+    font-size: 30px;
+    color: #000;
+    ${({ theme }) => theme.mobile`
+      font-size: 14px;
+      .rc-rate-star{
+        margin-right: 3px;
+      }
+    }`}
+  }
+`
+export default function ReviewBanner({ reviewData, userRate, percentage }: IReviewBanner) {
+
   return (
     <S.Review>
       <ul>
@@ -67,13 +85,22 @@ export default function ReviewBanner({ reviewData }: IReviewBanner) {
           </div>
         </li>
         <li className='star'>
-          star
+          <StyledRate
+            defaultValue={userRate}
+            disabled={true}
+          />
         </li>
         <li className='desc'>
-          <p>
-            구매자의 약 100%가<br />
-            이제품을 추천합니다.
-          </p>
+          {percentage ? (
+            <p>
+              구매자의 약 {percentage}%가<br />
+              이제품을 추천합니다.
+            </p>
+          ) : (
+            <p>
+              아직 리뷰가 없습니다
+            </p>
+          )}
         </li>
       </ul>
     </S.Review>

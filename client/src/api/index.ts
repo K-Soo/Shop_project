@@ -30,13 +30,14 @@ const requests = {
 };
 
 export const Get = {
-  products: (category: string): Promise<IProduct> => requests.get(`/api/products/${category}`),
+  products: (category: string): Promise<IProduct[]> => requests.get(`/api/products/${category}`),
   UserInfo: (id: string): Promise<IProduct> => requests.get(`/api/users/${id}`),
   getProductDetail: (category: string, id: string): Promise<IProduct> => requests.get(`/api/products/${category}/${id}`),
   getAllProduct: (): Promise<IProduct[]> => requests.get(`/api/products/list`),
-  getHistory: (idx: string, page: number) => requests.get(`/api/users/history/${idx}/?page=${page}`),
+  getHistory: (idx: string, page: number) => requests.get(`/api/users/history/${idx}?page=${page}`),
   getHistoryDetail: (idx: string, orderNum: string) => requests.get(`/api/users/history/${idx}/${orderNum}`),
   getProductReview: (productId: string) => requests.get(`/api/products/review/${productId}`),
+  getInterestProductList: (idx: string, page: number) => requests.get(`/api/users/interest-product/${idx}?page=${page}`),
 };
 
 export const Post = {
@@ -52,10 +53,12 @@ export const Post = {
 
 export const Put = {
   updateBasket: (body: any) => requests.put('/api/users/basket', body),
+  updateInterestProduct: (body: any) => requests.put('/api/users/interest-product', body),
   updateProductQty: (idx: string, productId: string, body: any) => requests.put(`/api/users/basket/${idx}/${productId}`, body),
 };
 
 export const Delete = {
   deleteBasket: (user: string, id: string) => requests.delete(`/api/users/basket/${user}/${id}`,),
+  deleteInterestProduct: (idx: string, ProductId: string) => requests.delete(`/api/users/interest-product/${idx}/${ProductId}`,),
 };
 

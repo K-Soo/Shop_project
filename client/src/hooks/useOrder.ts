@@ -24,6 +24,7 @@ export interface IOrderState {
   TemporaryPhone3: string,
   currentPoint: number,
   isUsePoints: boolean,
+  deliveryTap: string,
   orderForm: {
     Products: IBasketItem[],
     pointInfo: {
@@ -64,6 +65,7 @@ export const orderDefaultValue: IApp = {
     TemporaryPhone3: '',
     currentPoint: null,
     isUsePoints: false,
+    deliveryTap: 'recently',
     orderForm: {
       Products: [],
       pointInfo: {
@@ -102,6 +104,7 @@ const initializer = (props: any) => {
     TemporaryPhone3: '',
     currentPoint: null,
     isUsePoints: false,
+    deliveryTap: 'recently',
     orderForm: {
       Products: [],
       pointInfo: {
@@ -167,7 +170,7 @@ const generateAction = (update: (recipe: (draft: IOrderState) => void) => void) 
         else if (keyArray.length === 3) draft[keyArray[0]][keyArray[1]][keyArray[2]] = replaceValue;
       }
     });
-    
+
   const setOrderLocalStorage = (data: IBasketItem) =>
     update((draft) => {
       draft.OrderLocalStorage.push(data);
@@ -206,6 +209,19 @@ const generateAction = (update: (recipe: (draft: IOrderState) => void) => void) 
       draft.directText = orderDefaultValue.state.directText;
     });
 
+  const setInitDelivery = () =>
+    update((draft) => {
+      // 주소 초기화 
+      draft.TemporaryEmail1 = orderDefaultValue.state.TemporaryEmail1;
+      draft.TemporaryEmail2 = orderDefaultValue.state.TemporaryEmail2;
+      draft.TemporaryPhone1 = orderDefaultValue.state.TemporaryPhone1;
+      draft.TemporaryPhone2 = orderDefaultValue.state.TemporaryPhone2;
+      draft.TemporaryPhone3 = orderDefaultValue.state.TemporaryPhone3;
+      draft.orderForm.userName = orderDefaultValue.state.orderForm.userName;
+      draft.orderForm.addr = orderDefaultValue.state.orderForm.addr
+    });
+
+
   const setCheckBox = (e: React.ChangeEvent<HTMLInputElement>, userId: string) =>
     update((draft) => {
       const { checked, value } = e.target;
@@ -237,6 +253,7 @@ const generateAction = (update: (recipe: (draft: IOrderState) => void) => void) 
     update((draft) => {
       // 결제예정금액 계산
       const calcProduct = draft.orderForm.Products.reduce((acc, cur) => acc + (+cur.totalProductPrice), 0);
+
       const calcConsumer = (draft.orderForm.Products.reduce((acc, cur) => acc + (+cur.totalConsumerPrice), 0));
       draft.orderForm.amountInfo.productAmount = calcProduct;
       draft.orderForm.amountInfo.consumerAmount = calcConsumer;
@@ -248,24 +265,24 @@ const generateAction = (update: (recipe: (draft: IOrderState) => void) => void) 
   const setOnBlurPoint = () =>
     update((draft) => {
       // 적립금사용
-      if(!draft.isUsePoints){
+      if (!draft.isUsePoints) {
         draft.orderForm.amountInfo.discountAmount = draft.orderForm.amountInfo.discountAmount - Number(draft.orderForm.pointInfo.totalUsed);
         draft.orderForm.amountInfo.paymentAmount = draft.orderForm.amountInfo.paymentAmount - Number(draft.orderForm.pointInfo.totalUsed);
         draft.isUsePoints = true;
       }
     });
 
-    const setFocusPoint = () =>
+  const setFocusPoint = () =>
     update((draft) => {
       // 적립금사용 초기화
-      if(draft.isUsePoints){
+      if (draft.isUsePoints) {
         draft.orderForm.amountInfo.discountAmount = draft.orderForm.amountInfo.productAmount - draft.orderForm.amountInfo.consumerAmount;
         draft.orderForm.amountInfo.paymentAmount = draft.orderForm.amountInfo.consumerAmount + draft.orderForm.amountInfo.deliveryAmount;
         draft.orderForm.pointInfo.totalUsed = '';
         draft.isUsePoints = false;
       }
     });
-    
+
   const setTotalPointUsed = () =>
     update((draft) => {
       // 적립금 전체사용 버튼
@@ -285,12 +302,14 @@ const generateAction = (update: (recipe: (draft: IOrderState) => void) => void) 
     setAmountInfo,
     setTotalPointUsed,
     setOnBlurPoint,
-    setFocusPoint
+    setFocusPoint,
+    setInitDelivery
   };
 };
 
 const useOrder = (props: any) => {
   const [state, setAppState] = useState(initializer(props));
+  console.log('useOrder state: ', state);
   const App = useAppContext();
   const router = useRouter();
   const update = (recipe: (draft: IOrderState) => void) =>
@@ -316,33 +335,33 @@ const useOrder = (props: any) => {
   //   const result = JSON.parse(localStorage.getItem("order"));
   //   if(result) action.setBasketList(result);
   // }, [app.state.OrderLocalStorage]);
-
-
+  
+  
   useEffect(() => {
     // 유저정보값
-    const exist = props?.pageProps?.userDetail;
-    if (exist) {
-      const { userDetail } = props.pageProps;
-      console.log('props.pageProps: ', props);
-      app.action.InitData('orderForm.addr.zoneCode', userDetail.zonecode);
-      app.action.InitData('orderForm.addr.addr1', userDetail.addr1);
-      app.action.InitData('orderForm.addr.addr2', userDetail.addr2);
-      app.action.InitData('orderForm.userName', userDetail.userName);
-      app.action.InitData('currentPoint', userDetail.point);
-      if (userDetail.email) {
-        const emailArray = userDetail.email.split('@');
-        app.action.InitData('TemporaryEmail1', emailArray[0]);
-        app.action.InitData('TemporaryEmail2', emailArray[1]);
-      }
-      if (userDetail.phone) {
-        const phoneArray = userDetail.phone.split('-');
-        app.action.InitData('TemporaryPhone1', phoneArray[0]);
-        app.action.InitData('TemporaryPhone2', phoneArray[1]);
-        app.action.InitData('TemporaryPhone3', phoneArray[2]);
-        app.action.InitData('orderForm.phone', userDetail.phone);
+    const result = props?.pageProps?.userDetail;
+    if (result) {
+      if (app.state.deliveryTap === 'recently') {
+        app.action.InitData('orderForm.addr.zoneCode', result.zonecode);
+        app.action.InitData('orderForm.addr.addr1', result.addr1);
+        app.action.InitData('orderForm.addr.addr2', result.addr2);
+        app.action.InitData('orderForm.userName', result.userName);
+        app.action.InitData('currentPoint', result.point);
+        if (result.email) {
+          const emailArray = result.email.split('@');
+          app.action.InitData('TemporaryEmail1', emailArray[0]);
+          app.action.InitData('TemporaryEmail2', emailArray[1]);
+        }
+        if (result.phone) {
+          const phoneArray = result.phone.split('-');
+          app.action.InitData('TemporaryPhone1', phoneArray[0]);
+          app.action.InitData('TemporaryPhone2', phoneArray[1]);
+          app.action.InitData('TemporaryPhone3', phoneArray[2]);
+          app.action.InitData('orderForm.phone', result.phone);
+        }
       }
     }
-  }, [props?.pageProps?.userDetail, router.asPath]);
+  }, [props?.pageProps?.userDetail, router.asPath,app.state.deliveryTap]);
 
   useEffect(() => {
     if (app.state.orderForm.Products.length) {
@@ -361,7 +380,11 @@ const useOrder = (props: any) => {
     }
   }, [app.state.orderForm.Products, app.state.orderForm.amountInfo.deliveryAmount]);
 
-
+  useDidMountEffect(() => {
+    if(app.state.deliveryTap === 'direct'){
+      app.action.setInitDelivery();
+    }
+  }, [app.state.deliveryTap]);
 
   useDidMountEffect(() => {
     // 이메일 concat

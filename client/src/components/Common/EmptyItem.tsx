@@ -2,6 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import Icon from 'components/Icon/Icon';
 
+interface IEmptyItem {
+  text: string
+}
+
 const S = {
   EmptyItem: styled.div`
     padding: 60px 0;
@@ -24,12 +28,12 @@ const S = {
   `,
 }
 
-export default function EmptyItem() {
+export default function EmptyItem({text}:IEmptyItem) {
   return (
     <S.EmptyItem>
       <div className='wrapper'>
         <i><Icon name='warning' /></i>
-        <p>주문 내역이 없습니다.</p>
+        <p>{text}</p>
       </div>
     </S.EmptyItem>
   );

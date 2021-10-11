@@ -50,7 +50,7 @@ const S = {
 
 export default function HamburgerMenuList({ productSubList }: IHamburgerMenuList) {
   const { action,state } = useAppContext();
-
+  
   return (
     <S.HamburgerMenuList toggleSubMenu={state.openSubMenu}>
       <ul className='sub-category-box'>

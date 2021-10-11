@@ -8,7 +8,7 @@ import Radio from 'components/style/Radio';
 import Button from 'components/style/Button';
 import CheckBoxColor from 'components/style/CheckBoxColor';
 import BasketModal from 'components/ProductDetail/BasketModal';
-import { PriceComma,customCookie } from 'utils';
+import { PriceComma, customCookie } from 'utils';
 import { Post, Put } from 'api';
 import { useBasketContext } from 'context/BasketProvider';
 import Cookie from "js-cookie";
@@ -27,7 +27,7 @@ const CommonIcon = css`
 `;
 
 const S = {
-  ProductInfo: styled.section`
+  ProductInfo: styled.article`
     height: 100%;
     margin: 0 auto;
   `,
@@ -320,38 +320,54 @@ const S = {
   `,
 }
 
-export default function ProductInfo({item}:IProductInfo) {
+export default function ProductInfo({ item }: IProductInfo) {
   const [showSpec, setShowSpec] = useState<boolean>(false);
   const [selectItems, setSelectItems] = useState<IBasketItem[]>([]);
-  console.log('selectItems: ', selectItems);
+  const [interestProduct, setInterestProduct] = useState<string>('');
   const { action, state } = useBasketContext();
   const router = useRouter();
   const App = useAppContext();
-  const [duplicate] = useCheckDuplicate(App.state.basket.basketList ,selectItems);
-  const [nonMemDuplicate] = useCheckDuplicate(App.state.basket.nonMemberBasket ,selectItems);
-  console.log('nonMemDuplicate: ', nonMemDuplicate);
-  console.log('duplicate: ', duplicate);
+  const [duplicate] = useCheckDuplicate(App.state.basket.basketList, selectItems);
+  const [nonMemDuplicate] = useCheckDuplicate(App.state.basket.nonMemberBasket, selectItems);
+
+  useEffect(() => {
+    setInterestProduct(item[0].name);
+  }, [item]);
+
+  const handleAddInterestProduct = async () => {
+    try {
+      if (App.state.userInfo.userId) {
+        const res = await Put.updateInterestProduct({ userId: App.state.userInfo.userId, name: interestProduct });
+        if (res.success) return alert('관심상품으로 등록되었습니다.');
+        if (res.duplicate) return alert('이미 등록되었습니다.');
+      } else {
+        alert('로그인후 이용가능합니다.');
+      }
+    } catch (error) {
+      console.log('error: ', error);
+    }
+  }
 
   const handleAddToBasket = async () => {
     if (!selectItems.length) return alert('필수 옵션을 선택해주세요.');
-      if(duplicate || nonMemDuplicate ){
-        alert("이미동일한 상품이 장바구니에 있습니다.\n장바구니에서 확인 후 다시 추가해주세요.");
-        setSelectItems([]);
-        return action.setOpenModal();
-      }else{
-        if (App.state.userInfo.userId) {
-          try {
-            const res = await Put.updateBasket({ userId: App.state.userInfo.userId, items: selectItems });
-            App.action.setLocalItems(res.items);
-            return action.setOpenModal();
-          } catch (error) {
-            console.log('error: ', error);
-          }
-        }else{
-          App.action.setNonMemberBasketPush(selectItems);
+    if (duplicate || nonMemDuplicate) {
+      alert("이미동일한 상품이 장바구니에 있습니다.\n장바구니에서 확인 후 다시 추가해주세요.");
+      setSelectItems([]);
+      return action.setOpenModal();
+    } else {
+      if (App.state.userInfo.userId) {
+        try {
+          const res = await Put.updateBasket({ userId: App.state.userInfo.userId, items: selectItems });
+          App.action.setLocalItems(res.items);
           return action.setOpenModal();
+        } catch (error) {
+          console.log('error: ', error);
         }
+      } else {
+        App.action.setNonMemberBasketPush(selectItems);
+        return action.setOpenModal();
       }
+    }
   };
 
   const handleSelectItem = (e: React.ChangeEvent<HTMLInputElement>, currentItem: IProduct[]) => {
@@ -383,7 +399,6 @@ export default function ProductInfo({item}:IProductInfo) {
   }, [selectItems]);
 
   const handleCount = (e: React.ChangeEvent<HTMLInputElement>, targetItem: IBasketItem) => {
-    // const exist = selectItems.find(x => x.selectColor === targetItem.selectColor)
     const cnt = +e.target.value;
     if (!cnt) return alert('최소 주문수량은 1개 입니다.');
     if (cnt > 10) return alert('최대 주문수량은 10개 입니다.');
@@ -415,6 +430,7 @@ export default function ProductInfo({item}:IProductInfo) {
       router.push('/order/orderform');
     }
   };
+
   return (
     <S.ProductInfo>
       {item && item.map((d: IProduct) => (
@@ -528,7 +544,7 @@ export default function ProductInfo({item}:IProductInfo) {
             </Button>
             <S.EtcBox>
               <span className='basket-add' onClick={handleAddToBasket}>장바구니 담기</span>
-              <span className='wishlist'>관심상품 추가</span>
+              <span className='wishlist' onClick={handleAddInterestProduct}>관심상품 추가</span>
             </S.EtcBox>
             <BasketModal />
           </div>

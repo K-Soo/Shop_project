@@ -10,6 +10,9 @@ import Button from 'components/style/Button';
 import { useAppContext } from 'context/AppProvider';
 import { useReviewContext } from 'context/ReviewProvider';
 import { Post } from 'api';
+import Radio from 'components/style/Radio';
+import Rate from 'components/style/Rate';
+
 
 const Editor = dynamic(async () => {
   const mod = await import("react-draft-wysiwyg");
@@ -26,19 +29,35 @@ interface IForm {
 
 const S = {
   Form: styled.div`
-    max-width: 900px;
-    margin: 0 auto;
-      /* .wrapper-class{
-        width: 50%;
-        margin: 0 auto;
-        margin-bottom: 4rem;
+    margin: 30px auto 0;
+    /* .wrapper-class{
+      width: 50%;
+      margin: 0 auto;
+      margin-bottom: 4rem;
+    } */
+    .editor {
+      height: 300px !important;
+      border: 1px solid #f1f1f1 !important;
+      padding: 5px !important;
+      border-radius: 2px !important;
     }
-  .editor {
-    height: 500px !important;
-    border: 1px solid #f1f1f1 !important;
-    padding: 5px !important;
-    border-radius: 2px !important;
-  } */
+  `,
+  RateBox: styled.div`
+    display: flex;
+    align-items: center;
+    border: solid #f1f1f1;
+    border-width: 1px 0;
+    padding: 20px 0;
+    margin-bottom: 15px;
+    p{
+      margin-right: 50px;
+    }
+    label{
+      margin-right: 20px;
+    }
+    label:last-child{
+      margin: 0;
+    }
   `,
   ButtonBox: styled.div`
     display: flex;
@@ -57,6 +76,8 @@ const IntroduceContent = styled.div`
   margin: 0 auto;
   margin-bottom: 4rem;
 `;
+const starArray = ['★', '★★', '★★★', '★★★★', '★★★★★']
+
 
 export default function Form({ }: IForm) {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
@@ -69,10 +90,10 @@ export default function Form({ }: IForm) {
   const editorToHtml = draftToHtml(convertToRaw(editorState.getCurrentContent()));
   const rendered = useRef(false);
 
-  console.log('editorToHtml: ', editorToHtml);
+
   useEffect(() => {
-    Review.action.setData('form.content',editorToHtml);
-  },[editorToHtml])
+    Review.action.setData('form.content', editorToHtml);
+  }, [editorToHtml])
 
   const onEditorStateChange = (editorState: any) => {
     setEditorState(editorState);
@@ -83,11 +104,12 @@ export default function Form({ }: IForm) {
       return;
     } else {
       e.preventDefault();
+      if(!Review.state.form.rate) return alert('평점을 선택해주세요.');
       (async () => {
         try {
-          const res = await Post.createReview(idx,ProductId,Review.state.form);
-          if(res.success) alert('등록이 완료되었습니다.');
-        } catch (error:any) {
+          const res = await Post.createReview(idx, ProductId, Review.state.form);
+          if (res.success) alert('등록이 완료되었습니다.');
+        } catch (error: any) {
           console.log('error: ', error?.response?.data?.message);
           alert(error?.response?.data?.message);
         }
@@ -110,24 +132,36 @@ export default function Form({ }: IForm) {
     }
   }, [htmlToEditor]);
 
+
   return (
     <S.Form>
+      <S.RateBox >
+        <p>평점</p>
+        {starArray.map((d ,i) => (
+            <Rate key={d}
+              name='form.rate' 
+              onClick={Review.action.setFormData} 
+              checked={Review.state.form.rate === String(i + 1)} 
+              value={i+1}
+              text={d} 
+            />
+        ))}
+      </S.RateBox>
+
       <Editor
         wrapperClassName="wrapper-class"
         // 에디터 주변에 적용된 클래스
         editorClassName="editor"
         // 툴바 주위에 적용된 클래스
         toolbarClassName="toolbar-class"
-        // 툴바 설정
         toolbar={{
-          // inDropdown: 해당 항목과 관련된 항목을 드롭다운으로 나타낼것인지
-          list: { inDropdown: true },
-          textAlign: { inDropdown: true },
-          link: { inDropdown: true },
+          inline: { inDropdown: false },
+          list: { inDropdown: false },
+          textAlign: { inDropdown: false },
+          link: { inDropdown: false },
           history: { inDropdown: false },
         }}
         placeholder="내용을 작성해주세요."
-        // 한국어 설정
         localization={{
           locale: 'ko',
         }}

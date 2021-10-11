@@ -4,15 +4,9 @@ import RightSide from 'components/SideMenu/RightSide';
 import DarkBackground from 'components/Common/DarkBackground';
 import {useAppContext} from 'context/AppProvider';
 
-
-interface ISideMenu {
-  className?: string;
-}
-
-const SideMenu: React.FC<ISideMenu> = ({ className }) => {
+export default function SideMenu()  {
   const [directionSwap, setDirectionSwap] = useState<boolean>(true);
-  const {action, state} = useAppContext();
-
+  const { state} = useAppContext();
 
 
   const handler = useCallback(() => {
@@ -27,12 +21,11 @@ const SideMenu: React.FC<ISideMenu> = ({ className }) => {
 
   return (
     <>
-      <DarkBackground active={state.openSideMenu}>
+      <DarkBackground  directionSwap={directionSwap} >
         <LeftSide onClick={handler} directionSwap={directionSwap}/>
         <RightSide onClick={handler} directionSwap={directionSwap}/>
       </DarkBackground >
-    </>
+      </>
   );
 };
 
-export default SideMenu;

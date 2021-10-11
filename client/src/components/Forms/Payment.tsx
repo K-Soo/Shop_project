@@ -53,6 +53,8 @@ const S = {
     }
     .payment-select{
       padding: 10px;
+      font-size: 13px;
+      display: flex;
     }
     .payment-guide{
       padding: 0 10px;
@@ -62,6 +64,7 @@ const S = {
     ${({ theme }) => theme.mobile`
       border: 1px solid #508bed;
       margin-bottom: 10px;
+      padding-bottom: 10px;
     `}
   `,
 
@@ -127,8 +130,6 @@ export default function Payment({ }: IPayment) {
   console.log('isInitial: ', isInitial);
   console.groupEnd();
 
-  currencyConvert(state.orderForm.amountInfo.paymentAmount);
-
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     if (!pointCheck(state)) return;
@@ -150,23 +151,25 @@ export default function Payment({ }: IPayment) {
     })
   };
 
+  App.state.userInfo.userId
+  console.log('App.state.userInfo.userId: ', App.state.userInfo.userId);
+
   const onApprove = async (data: OnApproveData, actions: OnApproveActions) => {
     try {
       const details = await actions.order.capture();
-      console.log('details: ', details);
       if (!App.state.status.guest) {
         const res = await Post.checkout(App.state.userInfo.userId, state.orderForm);
-        App.action.setLocalItems(res.items);
+        console.log('checkout POST: ', res);
         Dispatch({ type: DISPATCH_ACTION.LOADING_STATUS, value: SCRIPT_LOADING_STATE.INITIAL });
-        alert('결제완료');
-
-        console.log('res: ', res);
+        if(res.success){
+          App.action.setLocalItems(res.updatedBasket.items);
+          alert('결제완료');
+        }
       } else {
 
       }
     } catch (error) {
-      console.log('error-checkout: ', error);
-
+      alert('결제 실패\n잠시후 다시시도해주세요');
     }
   }
 
@@ -185,7 +188,7 @@ export default function Payment({ }: IPayment) {
       <S.PaymentMethod>
         <Title level={6} textAlign='left' size='14'>결제수단 선택</Title>
         <div className='payment-select'>
-          <input type='radio' id='paypalFor' />
+          <input type='radio' id='paypalFor' defaultChecked={true} style={{marginRight:'5px'}}/>
           <label htmlFor='paypalFor'>페이팔</label>
         </div>
         <ul className='payment-guide'>

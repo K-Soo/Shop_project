@@ -8,18 +8,9 @@ export const PRODUCT: IProductProps = {
   necklace: [
     { label: '18k 목걸이', value: '' },
     { label: '18k 팬던트', value: '' },
-    { label: '18k 체인목걸이', value: '' },
-    { label: '24k 순금목걸이', value: '' },
-    { label: '탄생석/원석', value: '' },
-    { label: '별자리/룬 목걸이', value: '' },
     { label: '이니셜 목걸이', value: '' },
     { label: '진주 목걸이', value: '' },
-    { label: '실버 목걸이', value: '' },
-    { label: '롱 목걸이', value: '' },
     { label: '1부 다이아몬드 목걸이', value: '' },
-    { label: '2부 다이아몬드 목걸이', value: '' },
-    { label: '5부 다이아몬드 목걸이', value: '' },
-    { label: '블루 다이아몬드 목걸이', value: '' },
   ],
   earring: [
     { label: '피어싱 귀걸이', value: '' },

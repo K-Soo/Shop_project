@@ -22,8 +22,6 @@ const S = {
 export default function Basket() {
   const [basketProduct, setBasketProduct] = useState<number | null>(null);
   const [basketConsumer, setBasketConsumer] = useState<number | null>(null);
-  console.log('basketProduct: ', basketProduct);
-  console.log('basketConsumer: ', basketConsumer);
   const { state, action } = useAppContext();
   const { userId } = state.userInfo;
   const Order = useOrderContext();
@@ -65,6 +63,22 @@ export default function Basket() {
       }
     }
   }, [state.userInfo.idx, userId, state.basket.nonMemberBasket]);
+
+  const handleAddInterestProduct = useCallback(async (e) => {
+    const { name } = e.target as HTMLButtonElement;
+    try {
+      if (state.userInfo.userId) {
+        const res = await Put.updateInterestProduct({ userId: state.userInfo.userId, name });
+        if(res.success) return alert('관심상품으로 등록되었습니다.');
+        if(res.duplicate) return alert('이미 등록되었습니다.');
+      } else {
+        alert('로그인후 이용가능합니다.');
+      }
+    } catch (error) {
+      console.log('error: ', error);
+    }
+  },[state.userInfo.userId])
+
 
   const handleCheckbox = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const { checked, value } = e.target as HTMLInputElement;
@@ -136,7 +150,6 @@ export default function Basket() {
   return (
     <S.Basket>
       <PageTitle TitleText='장바구니' />
-      <UserInfo />
       {userId ? (
         <>
           <FormFieldset title='장바구니 목록'>
@@ -144,6 +157,7 @@ export default function Basket() {
               handleRemoveItem={handleRemoveItem}
               handleCheckbox={handleCheckbox}
               handleChangeQty={handleChangeQty}
+              handleAddInterestProduct={handleAddInterestProduct}
               item={state.basket.basketList}
             />
           </FormFieldset>

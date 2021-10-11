@@ -1,6 +1,6 @@
 
 export const TAP_CATEGORY: readonly { label: string, value: string }[] = [
-  { label: '최근배송지', value: 'recently' },
+  { label: '회원정보와 동일', value: 'recently' },
   { label: '직접입력', value: 'direct' },
 ];
 

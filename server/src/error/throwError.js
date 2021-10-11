@@ -14,5 +14,4 @@ const DEFAULT_HTTP_STATUS_MESSAGES = {
   throw err;
 }
 
-
 export default throwError;

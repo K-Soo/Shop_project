@@ -10,7 +10,7 @@ interface IHamburgerIcon {
 
 const S = {
   HamburgerIcon: styled.div<{ toggle: boolean }>`
-    border: 1px solid red;
+    cursor: pointer;
     width: 25px;
     height: 25px;
     display: flex;
@@ -22,7 +22,7 @@ const S = {
       pointer-events: none;
       margin: 0 auto;
       width: 25px;
-      height: 3px;
+      height: 2px;
       background-color: ${({ toggle }) => toggle ? "#ccc" : "#333"};
       border-radius: 10px;
       transform-origin: 1px;

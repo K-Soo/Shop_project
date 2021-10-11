@@ -22,6 +22,11 @@ const ProductReviewSchema = new Schema({
     type: String,
     required: true,
   },
+  rate:{
+    type: String,
+    required: true,
+    default:0,
+  },
   createdAt: {
     type: String,
     default: moment.tz("Asia/Seoul").format('YYYY-MM-DD hh:mm:ss'),

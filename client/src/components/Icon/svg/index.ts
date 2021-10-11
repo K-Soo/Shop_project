@@ -30,5 +30,9 @@ import { ReactComponent as back } from "./back.svg";
 import { ReactComponent as menu } from "./menu.svg";
 import { ReactComponent as menu2 } from "./menu2.svg";
 import { ReactComponent as pencil } from "./pencil.svg";
+import { ReactComponent as circlePlus } from "./circlePlus.svg";
+import { ReactComponent as circleCheck } from "./circleCheck.svg";
+import { ReactComponent as note } from "./note.svg";
+import { ReactComponent as arrowRight } from "./arrowRight.svg";
 
-export { bed, ovalCheck, human, cart, search, bookmark, arrowTop, arrowBottom, arrowLeft, close, heart, BigArrowLeft, cartAdd, plus, minus, info, closeSmall, user, home, arrowNoTailBottom, arrowNoTailTop, trashCan, check, location, userNot, coin, warning, back, menu ,menu2,pencil};
+export { bed, ovalCheck, human, cart, search, bookmark, arrowTop, arrowBottom, arrowLeft, close, heart, BigArrowLeft, cartAdd, plus, minus, info, closeSmall, user, home, arrowNoTailBottom, arrowNoTailTop, trashCan, check, location, userNot, coin, warning, back, menu, menu2, pencil, circlePlus, circleCheck, note, arrowRight };

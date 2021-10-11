@@ -12,14 +12,20 @@ import { useRouter } from 'next/router';
 import { useAppContext } from 'context/AppProvider';
 
 export default function OrderFormPage(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  // const {state:{status:{guest}}} = useAppContext(); 새로고침하면 false -> true
   const router = useRouter();
+  const App = useAppContext();
   const { userDetail } = props;
 
   useEffect(() => {
-    const guest = localStorage.getItem('guest');
-    if (!userDetail && guest === null) router.push('/auth/login');
-  }, [userDetail, router]);
+    if(!userDetail){
+      if (!App.state.status.guest){
+        router.push({
+          pathname: '/auth/login',
+          query: { type: 'order' },
+        });
+      } 
+    }
+  }, [App.state.status.guest,userDetail,router]);
 
   return (
     <>
@@ -60,7 +66,6 @@ export const getServerSideProps: GetServerSideProps = async (context: GetServerS
   } else {
     return {
       props: {
-
       },
     }
   }

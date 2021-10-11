@@ -21,6 +21,7 @@ interface IOrderList {
   handleCheckbox?: React.ChangeEventHandler<HTMLInputElement>;
   handleSelectProductRemove?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
   handleChangeQty?:(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
+  handleAddInterestProduct?:(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
 }
 
 const S = {
@@ -204,6 +205,7 @@ export default function OrderList({
   handleRouterBack,
   handleCheckbox,
   handleSelectProductRemove,
+  handleAddInterestProduct,
   handleChangeQty,
   item
 }: IOrderList) {
@@ -283,7 +285,7 @@ export default function OrderList({
             <S.BasketButtonBox>
               <div className='button-wrapper'>
                 <Button white height='25px' name={userId ? d._id : d.date} onClick={handleRemoveItem}>삭제</Button>
-                <Button white height='25px'>관심상품</Button>
+                <Button white height='25px' name={d.name} onClick={handleAddInterestProduct}>관심상품</Button>
               </div>
             </S.BasketButtonBox>
           )}

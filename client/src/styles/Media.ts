@@ -3,11 +3,13 @@ import { css } from 'styled-components';
 type MediaQueryProps = {
   mobile: number;
   tablet: number;
+  laptop: number;
   desktop: number;
 };
 
 const sizes: MediaQueryProps = {
   desktop: 1200,
+  laptop: 1000,
   tablet: 768,
   mobile: 580,
 };

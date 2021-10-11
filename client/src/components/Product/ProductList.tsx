@@ -1,18 +1,17 @@
 import React from "react";
-import Image from 'next/image'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import styled from "styled-components";
-import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import Title from 'components/style/Title';
-import { TColor, IProduct } from 'interfaces/IProduct';
-import { PriceComma } from 'utils';
+import {  IProduct } from 'interfaces/IProduct';
 import Icon from 'components/Icon/Icon';
+import Loading from 'components/Loading';
+import ProductCard from 'components/ProductCard';
 
 interface IProductList {
-  item?: any;
+  item?: IProduct[];
+  isLoading: boolean;
+  isSuccess: boolean;
 }
 
 const S = {
@@ -20,137 +19,51 @@ const S = {
     display: flex;
     flex-wrap: wrap;
   `,
-  Card: styled.div`
-    padding: 30px;
-    border: 1px solid red;
-    flex: 1 25%;
-    .card-inner{
-      margin: 0 auto;
-      max-width: 350px;
-      .img-box{
-        img{
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          :hover{
-            transform: scale(1.1);
-            transition: all .5s ease;
-          }
-        }
-      }
-      .desc-box{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        ${Title}{
-          display: block;
-          font-size: 16px;
-        }
-        &__short-desc{
-          margin: 10px 0;
-        }
-        &__product-price{
-          color: #999;
-        }
-        &__consumer-price{
-          margin-top: 2px;
-          color: #4d4d4d;
-        }
-      }
-    }
-  `,
-  IconBox: styled.p`
-  margin-top: 5px;
-  i{
-    margin: 0 5px;
-    border-radius: 3px;
-  }
-  .new-icon{
-    padding: 1px 5px;
-    color: #718FC5;
-    font-size: 14px;
-    background-color: #FFEF36;
-    letter-spacing: 1px;
-  }
-  .best-icon{
-    padding: 1px 5px;
-    color: #fff;
-    font-size: 14px;
-    background-color: #1B5DF6;
-    letter-spacing: 1px;
-  }
-`,
-  ColorBox: styled.p<{ productColors: number }>`
-    display: ${props => props.productColors > 1 ? 'block' : 'none'};
-    text-align: center;
-    margin-bottom: 10px;
-`,
-  ColorIcon: styled.span<{ color: string }>`
-    display: inline-block;
-    width:10px;
-    height:10px;
-    border-radius: 50%;
-    margin: 0 5px;
-    background-color: ${props => props.color ? `${props.color};` : 'none'};
-`,
   EmptyItems: styled.div`
     margin: 0 auto;
     padding: 20px 0;
     font-size: 12px;
     color: #999;
-  i{
-    display: block;
-    margin: 0 auto;
-    text-align: center;
-    font-size: 0;
-  }
+    i{
+      display: block;
+      margin: 0 auto;
+      text-align: center;
+      font-size: 0;
+    }
   `,
 }
 
-export default function ProductList({ item }: IProductList) {
+export default function ProductList({ item, isLoading, isSuccess }: IProductList) {
   const router = useRouter();
-  const { category } = router.query;
 
   return (
     <S.ProductList>
-      {item && item.length > 0 ? item.map((d: IProduct) => (
-        <S.Card key={d.seq}>
-          <div className='card-inner'>
-          <Link href={category + "/" + d.seq}>
-              <a>
-                <div className='img-box'>
-                  <Image
-                    src={d.imageUrl[0].url}
-                    alt="Picture of the author"
-                    width={500}
-                    height={500}
-                  />
-                </div>
-              </a>
-            </Link>
-            <div className='desc-box'>
-              <S.ColorBox productColors={d.product_colors.length}>
-                {d.product_colors?.map((d: TColor) => (
-                  <S.ColorIcon key={d.hex_value} className='color-icon' color={d.hex_value} />
-                ))}
-              </S.ColorBox>
-              <Title level={5}>{d.name.slice(0, 20)}</Title>
-              <span>{d.category}</span>
-              <p className='desc-box__short-desc'>{d.description.slice(0, 30)}</p>
-              <span className='desc-box__product-price'><del>{PriceComma(d.product_price)}원</del></span>
-              <span className='desc-box__consumer-price'>{PriceComma(d.consumer_price)}원</span>
-              <S.IconBox >
-                {d.new_product && <i className='new-icon' >new</i>}
-                {d.best_product && <i className='best-icon' >best</i>}
-              </S.IconBox>
-            </div>
-          </div>
-        </S.Card>
-      )) : (
-        <S.EmptyItems >
-          <i><Icon name='menu' style={{color: '#000'}}/></i>
-          <p style={{'marginTop':'10px'}}>검색된 상품이 없습니다.</p>
-        </S.EmptyItems>
+      {isLoading && <Loading isLoading={isLoading} height={300} text='상품 갱신중...' />}
+      {isSuccess && (
+        <>
+          {item.length > 0 ? item.map((d: IProduct, i) => (
+            <ProductCard 
+              key={d._id}
+              product_type={d.product_type}
+              seq={d.seq}
+              name={d.name} 
+              description={d.description}
+              product_price={d.product_price}
+              consumer_price={d.consumer_price}
+              imageUrl={d.imageUrl}
+              product_colors={d.product_colors}
+              best_product={d.best_product}
+              new_product={d.new_product}
+              isList={true}
+            />
+      
+          )) : (
+            <S.EmptyItems >
+              <i><Icon name='menu' style={{ color: '#000' }} /></i>
+              <p style={{ 'marginTop': '10px' }}>검색된 상품이 없습니다.</p>
+            </S.EmptyItems>
+          )}
+        </>
       )}
     </S.ProductList>
   );

@@ -2,8 +2,8 @@ export type TColor = {
   hex_value: string;
   color_name: string;
 }
-export type TUrl = { url: string }
 
+export type TUrl = { url: string }
 export interface IProduct {
   best_product: boolean;
   new_product: boolean;
@@ -15,7 +15,7 @@ export interface IProduct {
   summary_description: string;
   description: string;
   product_colors: TColor[];
-  imageUrl: TUrl[]
+  imageUrl: TUrl[];
   seq?: number;
   __v?: number;
   _id?: string;

@@ -7,6 +7,7 @@ interface IPagination {
   nextPage: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   currentPage: number;
   maxPages: number;
+  isFetching:boolean;
 }
 
 const S = {
@@ -41,7 +42,7 @@ const S = {
   `,
 }
 
-export default function Pagination({ currentPage, prevPage, nextPage, maxPages }: IPagination) {
+export default function Pagination({ currentPage, prevPage, nextPage, maxPages,isFetching }: IPagination) {
   const [isHidden, setIsHidden] = useState<boolean>(false);
 
   useEffect(() => {
@@ -53,14 +54,12 @@ export default function Pagination({ currentPage, prevPage, nextPage, maxPages }
 
   },[currentPage]);
 
-
-  console.log('maxPages: ', maxPages);
   return (
     <S.Pagination isHidden={isHidden}>
       <div className='wrapper'>
-        <Button white onClick={prevPage} className='prev-btn' disabled={isHidden}>이전</Button>
+        <Button white onClick={prevPage} className='prev-btn' disabled={isHidden || isFetching}>이전</Button>
         <span className='page-number'>{currentPage}</span>
-        <Button white onClick={nextPage} disabled={maxPages <= currentPage}>{maxPages <= currentPage ? '마지막' : '다음'}</Button>
+        <Button white onClick={nextPage} disabled={maxPages <= currentPage || isFetching}>{maxPages <= currentPage ? '마지막' : '다음'}</Button>
       </div>
     </S.Pagination>
   );

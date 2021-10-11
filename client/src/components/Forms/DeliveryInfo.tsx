@@ -13,10 +13,7 @@ import { useOrderContext } from 'context/OrderProvider';
 import { useAppContext } from 'context/AppProvider';
 import { PHONE_NUMBER } from 'constants/phone';
 import useDidMountEffect from 'hooks/useDidMountEffect';
-
-interface IDeliveryInfo {
-
-}
+import { onlyNum } from 'utils';
 
 const S = {
   DeliveryInfo: styled.div<{ toggleText: string }>`
@@ -24,6 +21,7 @@ const S = {
       height: 40px;
       display: flex;
       margin-bottom: 15px;
+      font-size: 14px;
       li{
         flex: 1;
         display: flex;
@@ -42,6 +40,9 @@ const S = {
         background-color: ${props => props.toggleText === 'direct' ? '#fff' : '#F8F9FA'};
         color: ${props => props.toggleText === 'direct' ? '#111' : '#999'};
       }
+      ${({ theme }) => theme.mobile`
+        font-size: 12px;
+      `}
     }
   `,
   Group: styled.div`
@@ -87,21 +88,18 @@ const S = {
   }
   `,
 }
-type TToggleText = 'recently' | 'direct';
 
-export default function DeliveryInfo({ }: IDeliveryInfo) {
-  const [toggleText, setToggleText] = useState<TToggleText>('recently');
+export default function DeliveryInfo() {
   const { state, action } = useOrderContext();
   const App = useAppContext();
 
   const handleToggle = (e: React.MouseEvent<HTMLLIElement>) => {
     const { className } = e.target as HTMLLIElement;
-    setToggleText(className as TToggleText);
+    action.InitData('deliveryTap',className);
   };
 
-
   return (
-    <S.DeliveryInfo toggleText={toggleText}>
+    <S.DeliveryInfo toggleText={state.deliveryTap}>
       <ul className='tap-box' >
         {TAP_CATEGORY.map(d => (
           <li key={d.value} onClick={handleToggle} className={d.value}>{d.label}</li>
@@ -128,7 +126,7 @@ export default function DeliveryInfo({ }: IDeliveryInfo) {
             </Button>
           </div>
           <Input name='zoneCode' maxWidth='300' margin='0 0 15px 0' readOnly value={state.orderForm.addr.addr1} />
-          <Input name='orderForm.addr.addr2' id='addr2For' placeholder='나미지 주소' maxWidth='300'     maxLength={30} onChange={action.setFormData} value={state.orderForm.addr.addr2} />
+          <Input name='orderForm.addr.addr2' id='addr2For' placeholder='나미지 주소' maxWidth='300' maxLength={30} onChange={action.setFormData} value={state.orderForm.addr.addr2} />
 
         </div>
       </S.Group>
@@ -142,9 +140,9 @@ export default function DeliveryInfo({ }: IDeliveryInfo) {
           ))}
         </Select>
         <span style={{ width: '15px', textAlign: 'center' }}>-</span>
-        <Input name='TemporaryPhone2' maxWidth='90' maxLength={4} value={state.TemporaryPhone2} onChange={action.setFormData} required />
+        <Input name='TemporaryPhone2' maxWidth='90' minLength={3} maxLength={4} value={state.TemporaryPhone2} onChange={e => onlyNum(e, action.setFormData)} required />
         <span style={{ width: '15px', textAlign: 'center' }}>-</span>
-        <Input name='TemporaryPhone3' maxWidth='90' maxLength={4} value={state.TemporaryPhone3}  onChange={action.setFormData}  required />
+        <Input name='TemporaryPhone3' maxWidth='90' minLength={4}  maxLength={4} value={state.TemporaryPhone3}  onChange={e => onlyNum(e, action.setFormData)}  required />
       </S.Group>
 
       <S.Group>
