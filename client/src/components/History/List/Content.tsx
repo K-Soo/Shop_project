@@ -56,9 +56,8 @@ const S = {
     li:nth-child(6){
       width: 70px;
     }
-
     ${({ theme }) => theme.mobile`
-   display: none;
+      display: none;
     `}
   `,
   Body: styled.div`

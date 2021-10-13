@@ -51,11 +51,8 @@ const itemSchema = Schema({
     type: Number,
   },
 },
-  {
-    versionKey: false,
-  });
-
-
+  { versionKey: false, }
+);
 
 const InterestProductSchema = new Schema({
   InterestProductOwner: {

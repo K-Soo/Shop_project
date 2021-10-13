@@ -11,14 +11,20 @@ const S = {
     position: fixed;
     top: 10%;
     left: 50%;
+    width: 50%;
     transform: translate(-50%);
     border: 1px solid #222;
     background-color: #fff;
+    ${({ theme }) => theme.mobile`
+      width: auto;
+    `}
   `,
   Header: styled.div`
     display: flex;
     justify-content: flex-end;
     border-bottom: 1px solid #999;
+    height: 50px;
+    padding: 0 15px;
     button{
       all:unset;
       padding: 5px;
@@ -36,8 +42,8 @@ export default function DaumPost() {
   const router: NextRouter = useRouter();
 
   const postCodeStyle = {
-    top: "50px",
-    height: "500px"
+    // top: "50px",
+    height: "600px",
   }
 
   const handleComplete = (data: AddressData) => {
@@ -53,9 +59,10 @@ export default function DaumPost() {
       }
       fullAddress += (extraAddress !== '' ? ` (${extraAddress})` : '');
     }
-    if (router.asPath === "/auth/register") {
+    if (router.asPath === "/auth/register" || router.asPath === "/users/modify") {
       action.setData('form.zonecode', zonecode);
       action.setData('form.addr1', fullAddress);
+      App.action.InitData('openDaumPost', false);
     }
   }
 
@@ -66,7 +73,13 @@ export default function DaumPost() {
           <Icon name='close' />
         </button>
       </S.Header>
-      <DaumPostcode onComplete={handleComplete} autoClose={false} style={postCodeStyle} autoResize={true} animation={true}/>
+      <DaumPostcode 
+        onComplete={handleComplete} 
+        autoClose={true} 
+        style={postCodeStyle} 
+        autoResize={true} 
+        animation={true} 
+      />
     </S.DaumPost>
   );
 }

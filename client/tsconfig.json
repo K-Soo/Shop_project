@@ -9,14 +9,15 @@
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "esModuleInterop": true,
-    "strictNullChecks": false, /* 엄격한 null 확인 여부 */
+    "strictNullChecks": false, 
     "noImplicitAny": true,
     "suppressImplicitAnyIndexErrors": true,
+    // "useUnknownInCatchVariables": false,
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]

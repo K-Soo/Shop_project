@@ -55,6 +55,7 @@ export const Put = {
   updateBasket: (body: any) => requests.put('/api/users/basket', body),
   updateInterestProduct: (body: any) => requests.put('/api/users/interest-product', body),
   updateProductQty: (idx: string, productId: string, body: any) => requests.put(`/api/users/basket/${idx}/${productId}`, body),
+  updateUserInfo: (idx: string,body: any) => requests.put(`/api/users/${idx}`, body),
 };
 
 export const Delete = {

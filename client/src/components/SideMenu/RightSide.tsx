@@ -3,9 +3,13 @@ import styled, { css } from 'styled-components';
 import { useAppContext } from 'context/AppProvider';
 import DarkBackground from 'components/Common/DarkBackground';
 import CloseButton from 'components/style/CloseButton';
-
+import CartIcon from 'components/Common/CartIcon';
+import TitleLine from 'components/SideMenu/common/TitleLine';
+import Info from 'components/SideMenu/common/Info';
+import Copyright from 'components/SideMenu/common/Copyright';
+import QuickIcon from 'components/SideMenu/common/QuickIcon';
+import {QUICK_ICON_RIGHT} from 'constants/sideMenu';
 interface IRightSide {
-  className?: string;
   directionSwap: boolean;
   onClick: React.MouseEventHandler<HTMLLIElement>;
 }
@@ -19,7 +23,6 @@ const S = {
     z-index: 9999;
     visibility: ${props => props.openSideMenu && props.directionSwap === false ? 'visible' : 'hidden'};
     background-color: #fff;
-    /* transform: translateX(-100%); */
     padding: 20px;
     ${props => props.openSideMenu && props.directionSwap === false ? css`
       transform: translateX(0%);
@@ -30,6 +33,12 @@ const S = {
   `,
   Container: styled.div`
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    .side-footer{
+      margin-top: 15px;
+    }
   `,
   directionSwap: styled.div`
     width: 100px;
@@ -79,26 +88,51 @@ const S = {
       }
     }
   `,
+  IconMenu: styled.div`
+  `,
+  ImageBanner: styled.div`
+    border: 1px solid #000;
+    height: 100px;
+  `,
 }
-const RightSide: React.FC<IRightSide> = ({ className, directionSwap, onClick }) => {
+export default function RightSide({ directionSwap, onClick }: IRightSide) {
   const { action, state } = useAppContext();
 
   return (
-    <S.RightSide className={className} openSideMenu={state.openSideMenu} directionSwap={directionSwap}>
+    <S.RightSide openSideMenu={state.openSideMenu} directionSwap={directionSwap}>
       <S.Container>
-        <S.Panel directionSwap={directionSwap} openSideMenu={state.openSideMenu}>
-          <ul className='wrapper'>
-            <span>SHOP</span>
-            <li onClick={onClick}>SHOP</li>
-            <li >CART</li>
-          </ul>
-        </S.Panel>
+        <div>
+          <S.Panel directionSwap={directionSwap} openSideMenu={state.openSideMenu}>
+            <ul className='wrapper'>
+              <span>SHOP</span>
+              <li onClick={onClick}>SHOP</li>
+              <li >CART</li>
+            </ul>
+          </S.Panel>
+
+          <S.ImageBanner>
+            asd
+          </S.ImageBanner>
+
+          <TitleLine text='MY SHOPPING' />
+          <S.IconMenu>
+            <QuickIcon lists={QUICK_ICON_RIGHT}/>
+          </S.IconMenu>
+
+          <TitleLine text='POINT / COUPON' />
+          <div>
+            <p>쿠폰</p>
+            <p>쿠폰</p>
+          </div>
+        </div>
+
+        <div className='side-footer'>
+          <Info />
+          <Copyright />
+        </div>
+
       </S.Container>
     </S.RightSide>
   )
 };
 
-
-export default styled(RightSide)`
-
-`;

@@ -1,6 +1,7 @@
 export interface IProductProps {
   readonly [index: string]: {
-    label: string, value: string
+    label: string, 
+    value: string
   }[]
 }
 

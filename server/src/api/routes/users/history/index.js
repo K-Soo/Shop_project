@@ -3,8 +3,7 @@ import { HistoryController} from '../../../../controllers';
 
 const history = express.Router();
 
-history.get('/list', HistoryController.list);
-
-
+history.get('/:idx', HistoryController.list);
+history.get('/:idx/:orderNum', HistoryController.historyDetail);
 
 export default history;

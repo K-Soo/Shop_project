@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import produce from "immer";
 import useDidMountEffect from 'hooks/useDidMountEffect';
+import { useRouter, NextRouter } from 'next/router';
 
 type TAppAction = typeof generateAction extends (...args: any[]) => infer R ? R : never;
 
@@ -72,15 +73,15 @@ const initializer = (props: any) => {
     TemporaryEmail1: '',
     TemporaryEmail2: '',
     form: {
-      userId: '',
+      userId: props?.userDetail.userId ?? '',
       password: '',
       passwordConfirm: '',
-      userName: '',
+      userName: props?.userDetail.userName ?? '',
       phone: '',
       email: '',
-      addr1: '',
-      addr2: '',
-      zonecode: '',
+      addr1: props?.userDetail.addr1 ?? '',
+      addr2: props?.userDetail.addr2 ?? '',
+      zonecode: props?.userDetail.zonecode ?? '',
     }
   };
   return state;
@@ -120,17 +121,17 @@ const generateAction = (update: (recipe: (draft: IRegisterState) => void) => voi
       draft.status.loading = status;
     });
 
-  const setCheckBox = (e) =>
+  const setCheckBox = (e: any) =>
     update((draft) => {
-      const {name ,checked} = e.target;
-      if(name === 'TermsOfService') draft.TermsOfService = checked;
-      if(name === 'PersonalInfo') draft.PersonalInfo = checked;
+      const { name, checked } = e.target;
+      if (name === 'TermsOfService') draft.TermsOfService = checked;
+      if (name === 'PersonalInfo') draft.PersonalInfo = checked;
 
-      if(name === 'allCheck'){
+      if (name === 'allCheck') {
         draft.TermsOfService = checked;
         draft.PersonalInfo = checked;
       }
-  });
+    });
 
   return {
     setIsNav,
@@ -143,6 +144,7 @@ const generateAction = (update: (recipe: (draft: IRegisterState) => void) => voi
 
 const useRegister = (props: any) => {
   const [state, setAppState] = useState(() => initializer(props));
+  const router: NextRouter = useRouter()
   console.log('useRegister state: ', state);
 
   const update = (recipe: (draft: IRegisterState) => void) =>
@@ -153,24 +155,40 @@ const useRegister = (props: any) => {
   const app = { props, state, action };
 
   useEffect(() => {
+    // 회원가입 수정 초기값
+    if (router.asPath === '/users/modify') {
+      const result = props?.userDetail;
+      if (result.email) {
+        const emailArray = result.email.split('@');
+        app.action.InitData('TemporaryEmail1', emailArray[0]);
+        app.action.InitData('TemporaryEmail2', emailArray[1]);
+      }
+      if (result.phone) {
+        const phoneArray = result.phone.split('-');
+        app.action.InitData('TemporaryPhone1', phoneArray[0]);
+        app.action.InitData('TemporaryPhone2', phoneArray[1]);
+        app.action.InitData('TemporaryPhone3', phoneArray[2]);
+      }
+    }
+  }, []);
+
+  useDidMountEffect(() => {
     app.action.InitData('form.addr2');
   }, [app.state.form.addr1])
 
   useEffect(() => {
-    app.action.setData('isDuplicateId',true);
-  },[app.state.form.userId])
+    app.action.setData('isDuplicateId', true);
+  }, [app.state.form.userId])
 
   useDidMountEffect(() => {
-    const result = app.state.TemporaryPhone1.concat('-',app.state.TemporaryPhone2,'-',app.state.TemporaryPhone3);
+    const result = app.state.TemporaryPhone1.concat('-', app.state.TemporaryPhone2, '-', app.state.TemporaryPhone3);
     action.setData('form.phone', result);
-  },[app.state.TemporaryPhone1,app.state.TemporaryPhone2,app.state.TemporaryPhone3]);
+  }, [app.state.TemporaryPhone1, app.state.TemporaryPhone2, app.state.TemporaryPhone3]);
 
   useDidMountEffect(() => {
     const result = app.state.TemporaryEmail1.concat('@', app.state.TemporaryEmail2);
     app.action.setData('form.email', result);
   }, [app.state.TemporaryEmail1, app.state.TemporaryEmail2]);
-
-
 
   return app;
 };

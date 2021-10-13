@@ -2,16 +2,18 @@ import React from 'react';
 import styled from 'styled-components';
 
 interface ICopyright {
-  className?: string;
 }
 
 const S = {
   Copyright: styled.div`
+  margin-top: 30px;
+  padding-top: 30px;
+  border-top: 1px solid #f2f2f2;
   font-size: 11px;
 `,
 }
 
-const Copyright: React.FC<ICopyright> = ({ className }) => {
+export default function Copyright({ }:ICopyright) {
   const thisYear = () => {
     const year = new Date().getFullYear();
     return year;
@@ -26,7 +28,3 @@ const Copyright: React.FC<ICopyright> = ({ className }) => {
   )
 };
 
-
-export default styled(Copyright)`
-
-`;

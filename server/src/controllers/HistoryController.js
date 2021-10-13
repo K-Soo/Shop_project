@@ -3,19 +3,15 @@ import History from '../models/History';
 import throwError from '../../src/error/throwError';
 import mongoose from 'mongoose';
 
-// .select({ 'cart': { '$slice': [skip,limit] } })
-
 const list = async (req, res, next) => {
   const { idx } = req.params;
   const { page } = req.query;
   const limit = 1;
   const skip = limit * (page - 1);
-
   try {
     if (!mongoose.Types.ObjectId.isValid(idx)) {
       throwError({statusCode: 404 });
     }
-
     const _id = mongoose.Types.ObjectId.createFromHexString(idx);
     console.log('_id: ', _id);
     let lastPage = await History.findOne({ user: _id }, { data: 1 });
@@ -38,8 +34,6 @@ const list = async (req, res, next) => {
 
 const historyDetail = async (req, res, next) => {
   const { idx, orderNum } = req.params;
-  console.log('req.params: ', req.params);
-
   try {
     if (!mongoose.Types.ObjectId.isValid(idx)) {
       throwError({statusCode: 400 });
@@ -57,7 +51,6 @@ const historyDetail = async (req, res, next) => {
     console.log('error-historyDetail: ', error);
   }
 };
-
 
 export {
   list,

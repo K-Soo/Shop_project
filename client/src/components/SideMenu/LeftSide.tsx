@@ -9,11 +9,12 @@ import { ACCOUNT_INFO } from 'constants/footer';
 import Info from 'components/SideMenu/common/Info';
 import Copyright from 'components/SideMenu/common/Copyright';
 import QuickIcon from 'components/SideMenu/common/QuickIcon';
-import DropDown from 'components/SideMenu/common/DropDown';
 import Link from "next/link";
 import { useRouter } from 'next/router';
 import { useAppContext } from 'context/AppProvider';
 import Category from 'components/SideMenu/common/Category';
+import {QUICK_ICON_LEFT,TQuickIconProps} from 'constants/sideMenu';
+import TitleLine from 'components/SideMenu/common/TitleLine';
 
 interface ILeftSide {
   directionSwap: boolean;
@@ -59,7 +60,7 @@ const S = {
   Top: styled.div`
     display: flex;
     justify-content: space-between;
-    margin: 15px 0;
+    margin-top: 15px;
     button{
       width: 48%;
       padding: 0;
@@ -156,8 +157,8 @@ export default function LeftSide({ directionSwap, onClick }: ILeftSide) {
   }
 
   return (
-    <S.LeftSide 
-      openSideMenu={state.openSideMenu} 
+    <S.LeftSide
+      openSideMenu={state.openSideMenu}
       directionSwap={directionSwap}
     >
       <S.Container>
@@ -173,7 +174,7 @@ export default function LeftSide({ directionSwap, onClick }: ILeftSide) {
           <S.Banner>
             <Image className='main-logo' src="/images/main_logo.jpeg" width={80} height={80} alt='main_logo' />
           </S.Banner>
-
+          
           <S.Top>
             <Button login height='35px' fontSize='12px' name='login' onClick={handleRouter}>
               로그인
@@ -182,8 +183,9 @@ export default function LeftSide({ directionSwap, onClick }: ILeftSide) {
               회원가입
             </Button>
           </S.Top>
-
-          <QuickIcon />
+          
+          <TitleLine text='MY SHOPPING' />
+          <QuickIcon lists={QUICK_ICON_LEFT}/>
 
           <S.Tap text={text}>
             <ul className='tap-list'>

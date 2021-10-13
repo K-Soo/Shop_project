@@ -103,7 +103,15 @@ export default function PointsInfo() {
           <span className='title__price'>(사용가능 : <strong>{PriceComma(state.currentPoint)}원</strong>)</span>
         </li>
         <li className='desc'>
-          <Input height='35' max="100" maxLength={String(state.currentPoint).length} name='orderForm.pointInfo.totalUsed' onFocus={action.setFocusPoint} onBlur={action.setOnBlurPoint} onChange={e => onlyNum(e, action.setFormData)} value={state.orderForm.pointInfo.totalUsed}/>
+          <Input 
+            height='35' 
+            maxLength={String(state.currentPoint).length}
+            name='orderForm.pointInfo.totalUsed' 
+            onFocus={action.setFocusPoint} 
+            onBlur={action.setOnBlurPoint} 
+            onChange={e => onlyNum(e, action.setFormData)} 
+            value={state.orderForm.pointInfo.totalUsed}
+          />
           <Button white width='50' margin='0 0 0 15px' onClick={action.setTotalPointUsed}>전액사용</Button>
         </li>
       </S.Lists>

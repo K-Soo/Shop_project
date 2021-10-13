@@ -5,7 +5,6 @@ import Product from '../models/Product';
 import mongoose from 'mongoose';
 
 const list = async (req, res, next) => {
-  console.log(req.body);
   const { idx } = req.params;
   const { page } = req.query;
   const limit = 1;
@@ -18,7 +17,6 @@ const list = async (req, res, next) => {
 
     const _id = mongoose.Types.ObjectId.createFromHexString(idx);
     let lastPage = await InterestProduct.findOne({ InterestProductOwner: _id });
-    console.log('lastPage: ', lastPage);
 
     // let exist = await InterestProduct.findOne({ user: _id },
     //   { data: { $slice: [skip, limit] }, createdAt: 0, updatedAt: 0, __v: 0, _id: 0 }).lean();
@@ -42,6 +40,7 @@ const update = async (req, res, next) => {
   const { userId, name } = req.body;
   try {
     const target = await User.findByUserId(userId);
+    console.log('target: ', target);
     const exist = await InterestProduct.findOne({ InterestProductOwner: target.id });
 
     const findProduct = await Product.findOne({name});

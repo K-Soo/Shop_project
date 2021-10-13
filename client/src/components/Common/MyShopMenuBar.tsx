@@ -89,9 +89,8 @@ const S = {
         display: block;
         font-size: 0;
         cursor:pointer;
-        ::hover{
+        svg{
           color: #555555;
-
         }
       }
     }
@@ -144,16 +143,16 @@ export default function MyShopMenuBar({ }: IMyShopMenuBar) {
         <div className='auth-box__users'>
           <Button black>
             <Link href='/auth/login'>
-            <a>
-              로그인
-            </a>
+              <a>
+                로그인
+              </a>
             </Link>
           </Button>
           <Button white>
-          <Link href='/auth/register'>
-            <a>
-              회원가입
-            </a>
+            <Link href='/auth/register'>
+              <a>
+                회원가입
+              </a>
             </Link>
           </Button>
         </div>

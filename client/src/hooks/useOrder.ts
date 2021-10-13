@@ -63,7 +63,7 @@ export const orderDefaultValue: IApp = {
     TemporaryPhone1: '',
     TemporaryPhone2: '',
     TemporaryPhone3: '',
-    currentPoint: null,
+    currentPoint: undefined,
     isUsePoints: false,
     deliveryTap: 'recently',
     orderForm: {
@@ -139,7 +139,7 @@ const generateAction = (update: (recipe: (draft: IOrderState) => void) => void) 
   const InitData = (stateName: string, initValue?: any) =>
     update(draft => {
       const keyArray = stateName.split('.');
-      let valueDefault = initValue || '';
+      let valueDefault = initValue ?? '';
 
       if (keyArray.length === 1) draft[keyArray[0]] = valueDefault;
       else if (keyArray.length === 2) draft[keyArray[0]][keyArray[1]] = valueDefault;
@@ -286,6 +286,8 @@ const generateAction = (update: (recipe: (draft: IOrderState) => void) => void) 
   const setTotalPointUsed = () =>
     update((draft) => {
       // 적립금 전체사용 버튼
+      if(!draft.currentPoint) return alert('사용가능한 적립금이 없습니다.')
+      if(draft.orderForm.amountInfo.paymentAmount < draft.currentPoint) return alert('결제에정금액보다 클수없습니다.');
       draft.orderForm.pointInfo.totalUsed = String(draft.currentPoint);
     });
 
@@ -340,6 +342,7 @@ const useOrder = (props: any) => {
   useEffect(() => {
     // 유저정보값
     const result = props?.pageProps?.userDetail;
+    console.log('result: ', result);
     if (result) {
       if (app.state.deliveryTap === 'recently') {
         app.action.InitData('orderForm.addr.zoneCode', result.zonecode);
@@ -387,6 +390,21 @@ const useOrder = (props: any) => {
   }, [app.state.deliveryTap]);
 
   useDidMountEffect(() => {
+    //결제예정금액보다 적립금사용금액이 더큰경우
+    if(Number(app.state.orderForm.pointInfo.totalUsed) > app.state.orderForm.amountInfo.paymentAmount){
+      alert('결제예정금액보다 사용금액이 클수없습니다.');
+    }
+  }, [app.state.orderForm.pointInfo.totalUsed]);
+
+  useDidMountEffect(() => {
+    //결제예정금액보다 적립금사용금액이 더큰경우
+    if(Number(app.state.orderForm.pointInfo.totalUsed) > app.state.currentPoint){
+      alert('사용가능금액보다 큽니다.');
+    }
+  }, [app.state.orderForm.pointInfo.totalUsed]);
+
+
+  useDidMountEffect(() => {
     // 이메일 concat
     const result = app.state.TemporaryEmail1.concat('@', app.state.TemporaryEmail2);
     app.action.InitData('orderForm.email', result);
@@ -404,7 +422,6 @@ const useOrder = (props: any) => {
     const result = app.state.TemporaryPhone1.concat('-', app.state.TemporaryPhone2, '-', app.state.TemporaryPhone3);
     action.InitData('orderForm.phone', result);
   }, [app.state.TemporaryPhone1, app.state.TemporaryPhone2, app.state.TemporaryPhone3]);
-
 
   return app;
 };

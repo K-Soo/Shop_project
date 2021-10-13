@@ -43,7 +43,7 @@ const UserSchema = Schema({
   point: {
     type: Number,
     default: 20000,
-    index: true
+    index: true,
   },
   likes: [String],
   histories: {
@@ -53,7 +53,6 @@ const UserSchema = Schema({
 }, {
   timestamps: true,
   versionKey: false 
-
 },
 );
 

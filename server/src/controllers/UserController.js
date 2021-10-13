@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt';
 import User from '../models/User';
 import Basket from '../models/Basket';
 import History from '../models/History';
+import Point from '../models/Point';
 import throwError from '../error/throwError';
 import response from '../error/response';
 import moment from 'moment-timezone';
@@ -21,13 +22,7 @@ const register = async (req, res, next) => {
       httpOnly: true,
       maxAge: 1000 * 60 * 5,
     });
-    res.json(user.serialize());
-
-    // res.status(201).json({
-    //   result: 'ok',
-    //   token
-    //   });
-
+    res.json({success:true});
   } catch (error) {
     next(error);
   }
@@ -51,8 +46,29 @@ const userInfo = async (req, res, next) => {
   const { id } = req.params;
   try {
     const user = await User.findById(id, { password: 0 });
+    console.log('user: ', user);
     if (user) {
       res.json(user.serialize());
+    } else {
+      return throwError({ msg: '유저정보를 가져올수없습니다.' })
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+const updateUserInfo = async (req, res, next) => {
+  const { idx } = req.params;
+  const { phone, email, zonecode, addr1, addr2 } = req.body;
+  const option = { new: true }
+  try {
+    const user = await User.findOneAndUpdate(
+      { _id: idx },
+      { $set: { phone, email, zonecode, addr1, addr2 } },
+      option
+    )
+    if (user) {
+      res.json({ success: true });
     } else {
       return throwError({ msg: '유저정보를 가져올수없습니다.' })
     }
@@ -80,13 +96,40 @@ const checkout = async (req, res, next) => {
         { new: true }
       );
       const exist = await History.findOne({ user: target._id });
+      const findUserPoint = await Point.findOne({ PointOwner: target._id });
+      const user = await User.findById(target._id);
+      if(!user) return throwError({statusCode:500,msg:'Unknown user.'});
 
+      const resultPoint = user.point - Number(result.pointInfo.totalUsed);
+      if(resultPoint < 0) return throwError({statusCode:400,msg:'user Point Error'});
+      
+      const updateUserPoint = await User.findOneAndUpdate(
+        { _id: target._id },
+        { $set: { point: resultPoint} },
+        )
+        
       if (exist) {
         exist.data.push(result);
+        findUserPoint.pointInfo.push({
+          usedPoint: result.pointInfo.totalUsed,
+          savedPoint: result.pointInfo.estimatedPoint,
+          orderNum: result.orderNum
+        });
+
         exist.save();
+        findUserPoint.save();
         res.json({ success: true, updatedBasket });
       } else {
         const history = new History({ user: target._id, data: result });
+        const point = new Point({
+          PointOwner: target._id, 
+          pointInfo: {
+            usedPoint: result.totalUsed,
+            savedPoint: result.pointInfo.estimatedPoint,
+            orderNum: result.orderNum
+          }
+        });
+        point.save();
         history.save();
         res.json({ success: true });
       }
@@ -99,7 +142,6 @@ const checkout = async (req, res, next) => {
 const logIn = async (req, res, next) => {
   // console.log('req: ', req.headers);
   const { userId, password } = req.body;
-
   try {
     // id check
     const exist = await User.findByUserId(userId);
@@ -132,5 +174,6 @@ export {
   logIn,
   idCheck,
   userInfo,
-  checkout
+  checkout,
+  updateUserInfo
 }

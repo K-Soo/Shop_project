@@ -9,13 +9,14 @@ import FieldsetTos from 'components/Auth/Register/FieldsetTos';
 import useScrollFadeIn from 'hooks/useScrollFadeIn';
 import { useRegisterContext } from 'context/RegisterProvider';
 import { useAppContext } from 'context/AppProvider';
-import { Post } from 'api';
+import { Post,Put } from 'api';
 import PageTitle from 'components/Common/PageTitle';
 import Icon from 'components/Icon/Icon';
-import { useRouter } from 'next/router';
+import { useRouter, NextRouter } from 'next/router';
 import { idCheck, passwordCheck, allTermCheck, userNameCheck } from 'components/validation';
 import { PHONE_NUMBER } from 'constants/phone';
 import { onlyNum } from 'utils';
+import axios from 'axios';
 
 const S = {
   Register: styled.section`
@@ -93,18 +94,31 @@ const S = {
     }
     `};
   `,
+  ButtonBox: styled.div`
+    display: flex;
+    max-width: 350px;
+    margin: 50px auto;
+    button{
+      height: 40px;
+      font-size: 14px;
+    }
+  `,
 }
 
 export default function Register() {
   const [status, setStatus] = useState<boolean | null>(null);
-  console.log('status: ', status);
   const { state, action } = useRegisterContext();
   const App = useAppContext();
-  const router = useRouter();
+  const router: NextRouter = useRouter();
   const userIdRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
   const userNameRef = useRef<HTMLInputElement>(null);
   const addrDetailRef = useRef<HTMLInputElement>(null);
+  const [isNotModify, setIsNotModify] = useState(false);
+
+  useEffect(() => {
+    if (router.asPath === '/auth/register') setIsNotModify(true);
+  }, [router.asPath])
 
   useEffect(() => {
     if (state.isDuplicateId) setStatus(null);
@@ -118,38 +132,61 @@ export default function Register() {
 
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    if (status === false) {
-      alert('이미 가입된 아이디입니다.');
-      return userIdRef.current.focus();
+    if ([state.TemporaryPhone1.trim(), state.TemporaryPhone2.trim(), state.TemporaryPhone3.trim()].includes('')) {
+      return alert('휴대폰 번호를 입력해주세요.');
     }
-    if (!idCheck(state)) return;
-
-    if (!passwordCheck(state)) {
-      action.InitData('form.password');
-      action.InitData('form.passwordConfirm');
-      return passwordRef.current.focus();
-    }
-
-    if (!userNameCheck(state)) return userNameRef.current.focus();
 
     if ([state.form.zonecode.trim(), state.form.addr1.trim()].includes('')) {
       return alert('주소정보를 입력해주세요');
     }
-
     if ([state.form.addr2.trim()].includes('')) {
       alert('나머지 주소를 입력해주세요.');
       return addrDetailRef.current.focus();
     }
 
-    if (!allTermCheck(state)) return;
-
-    try {
-      const res = await Post.register(formData);
-      alert('가입이 완료되었습니다.');
-      router.push('/');
-    } catch (error) {
-      console.log('Register-error: ', error);
-      alert(error.response.data.message);
+    if (isNotModify) {
+      // 회원가입 폼
+      if (status === false) {
+        alert('이미 가입된 아이디입니다.');
+        return userIdRef.current.focus();
+      }
+      if (!idCheck(state)) return;
+      if (!passwordCheck(state)) {
+        action.InitData('form.password');
+        action.InitData('form.passwordConfirm');
+        return passwordRef.current.focus();
+      }
+      if (!userNameCheck(state)) return userNameRef.current.focus();
+      if (!allTermCheck(state)) return;
+      try {
+        const res = await Post.register(formData);
+        if(res.success) alert('가입이 완료되었습니다.');
+        router.push('/');
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          console.error('Register-error: ', error);
+          alert(error.response.data.message);
+        }
+      }
+    }else{
+      try {
+        const res = await Put.updateUserInfo(App.state.userInfo.idx,{
+          phone: state.form.phone,
+          email: state.form.email,
+          zonecode: state.form.zonecode,
+          addr1: state.form.addr1,
+          addr2: state.form.addr2,
+        });
+        if(res.success){
+         alert('정보가 변경되었습니다.');
+         router.push('/');
+        }
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          console.error('Register-error: ', error);
+          alert(error.response.data.message);
+        }
+      }
     }
   };
 
@@ -158,12 +195,12 @@ export default function Register() {
     if (!state.form.userId) return alert('아이디를 입력해주세요.');
     try {
       const res = await Post.checkId({ userId: state.form.userId });
+      console.log('res: ', res);
       if (res.success) {
         action.setData('isDuplicateId', false);
       } else {
         action.setData('isDuplicateId', true);
       }
-      console.log('res: ', res);
       setStatus(res.success);
     } catch (error) {
       console.log('Register-error: ', error);
@@ -173,7 +210,7 @@ export default function Register() {
   return (
     <S.Register >
       <article className='container'>
-        <PageTitle TitleText='회원가입' />
+        <PageTitle TitleText={isNotModify ? '회원가입' : '회원정보 수정'} />
         <form className='form-box' onSubmit={handleSubmit}>
           <fieldset>
             <legend>기본정보</legend>
@@ -188,33 +225,40 @@ export default function Register() {
                   margin='0 20px 0 0'
                   maxLength={16}
                   onChange={action.setFormData}
+                  value={state.form.userId}
                   refValue={userIdRef}
+                  readOnly={!isNotModify}
                 />
-                <Button white width='80px' height='40px' fontSize='11px' onClick={DuplicateCheckId}>중복확인</Button>
+                {isNotModify && <Button white width='80px' height='40px' fontSize='11px' onClick={DuplicateCheckId}>중복확인</Button>}
               </div>
             </S.Group>
 
             {status !== null && (
               <S.statusText status={status} />
             )}
-            <S.Group >
-              <Label htmlFor='passwordFor' required>비밀번호</Label>
-              <Input type='password' refValue={passwordRef} placeholder='비밀번호' name='form.password' id='passwordFor' value={state.form.password} onChange={action.setFormData} />
-            </S.Group>
+            {isNotModify && (
+              <>
+                <S.Group >
+                  <Label htmlFor='passwordFor' required>비밀번호</Label>
+                  <Input type='password' refValue={passwordRef} placeholder='비밀번호' name='form.password' id='passwordFor' value={state.form.password} onChange={action.setFormData} />
+                </S.Group>
 
-            <S.Group>
-              <Label htmlFor='passwordConfirmFor' required>비밀번호확인</Label>
-              <Input type='password' placeholder='비밀번호' name='form.passwordConfirm' id='passwordConfirmFor' value={state.form.passwordConfirm} onChange={action.setFormData} />
-            </S.Group>
+                <S.Group>
+                  <Label htmlFor='passwordConfirmFor' required>비밀번호확인</Label>
+                  <Input type='password' placeholder='비밀번호' name='form.passwordConfirm' id='passwordConfirmFor' value={state.form.passwordConfirm} onChange={action.setFormData} />
+                </S.Group>
+              </>
+            )}
+
 
             <S.Group >
               <Label htmlFor='nameFor' required>이름</Label>
-              <Input minLength={3} refValue={userNameRef} maxWidth='200' placeholder='이름' id='nameFor' name='form.userName' value={state.form.userName} onChange={action.setFormData} />
+              <Input readOnly={!isNotModify} minLength={2} refValue={userNameRef} maxWidth='200' placeholder='이름' id='nameFor' name='form.userName' value={state.form.userName} onChange={action.setFormData} />
             </S.Group>
 
             <S.Group >
               <Label htmlFor='phoneFor' required>휴대전화</Label>
-              <Select width='100' height='40' name='TemporaryPhone1' onChange={action.setFormData}>
+              <Select width='100' height='40' name='TemporaryPhone1' value={state.TemporaryPhone1} onChange={action.setFormData}>
                 <option value=''>선택</option>
                 {PHONE_NUMBER.map(d => (
                   <option key={d.value} value={d.value}>{d.label}</option>
@@ -228,9 +272,9 @@ export default function Register() {
 
             <S.Group >
               <Label htmlFor='emailFor' required>이메일</Label>
-              <Input placeholder='이메일' type='email' name='TemporaryEmail1' id='emailFor' value={state.TemporaryEmail1} onChange={action.setFormData} />
+              <Input placeholder='이메일' name='TemporaryEmail1' id='emailFor' value={state.TemporaryEmail1} onChange={action.setFormData} />
               <span style={{ width: '20px', textAlign: 'center' }}>@</span>
-              <Input type='email' name='TemporaryEmail2' value={state.TemporaryEmail2} onChange={action.setFormData} />
+              <Input name='TemporaryEmail2' value={state.TemporaryEmail2} onChange={action.setFormData} />
             </S.Group>
 
             <S.Group >
@@ -259,12 +303,19 @@ export default function Register() {
             </S.Group>
           </fieldset>
 
-          <fieldset>
-            <legend>이용약관</legend>
-            <FieldsetTos />
-          </fieldset>
 
-          <Button login type='submit'>가입</Button>
+          {isNotModify && (
+            <fieldset>
+              <legend>이용약관</legend>
+              <FieldsetTos />
+            </fieldset>
+          )}
+
+          <S.ButtonBox>
+            <Button black type='submit'>{isNotModify ? '가입' : '수정하기'}</Button>
+            <Button white type='button' width='200px' onClick={() => router.push('/')}>취소</Button>
+          </S.ButtonBox>
+
         </form>
       </article>
     </S.Register>

@@ -4,17 +4,17 @@ import { AppProps } from "next/app";
 
 interface IApp {
   children: React.ReactNode;
-  AppProps?: AppProps;
+  value: any;
 }
 
 export const RegisterContext = createContext(registerDefaultValue);
 export const useRegisterContext = () =>  useContext(RegisterContext);
 
 export default function RegisterProvider(props: IApp) {
-  const app = useRegister(props.AppProps);
+  const providerValue = useRegister(props.value);
 
   return (
-    <RegisterContext.Provider value={app}>
+    <RegisterContext.Provider value={providerValue}>
       {props.children}
     </RegisterContext.Provider>
   );
