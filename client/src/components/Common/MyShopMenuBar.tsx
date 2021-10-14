@@ -85,6 +85,16 @@ const S = {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      button{
+        padding: 0;
+      }
+      a{
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+        line-height: 30px;
+        padding: 0 5px;
+      }
       i{
         display: block;
         font-size: 0;
@@ -182,7 +192,18 @@ export default function MyShopMenuBar({ }: IMyShopMenuBar) {
 
       <div className='button-box'>
         <i data-name='openMyShop' onClick={action.setGlobalToggle}><Icon name='close' /></i>
-        <Button black height='30px' fontSize='14' width='200'>마이쇼핑 전체보기</Button>
+        <Button
+          black
+          height='30px'
+          fontSize='14'
+          width='200'
+        >
+          <Link href="/users">
+            <a>
+              마이쇼핑 전체보기
+            </a>
+          </Link>
+        </Button>
       </div>
     </S.MyShopMenuBar>
   );

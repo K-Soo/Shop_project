@@ -6,7 +6,7 @@ const { Types: { ObjectId } } = Schema;
 
 const itemSchema = Schema({
   usedPoint: {
-    type: String,
+    type: Number,
     default: 0,
   },
   savedPoint: {
@@ -31,11 +31,14 @@ const PointSchema = new Schema(
       ref: 'User',
     },
     currentPoint: {
-      type: String,
+      type: Number,
       default: 20000,
     },
     pointInfo: [itemSchema],
   },
+  {
+    versionKey: false
+  }
 );
 
 export default mongoose.model("Point", PointSchema);

@@ -3,7 +3,6 @@ export const queryKeys = {
   SEARCH: 'search',
   REVIEW: 'review',
   INTEREST_PRODUCT: 'interestProduct',
-  appointments: 'appointments',
-  user: 'user',
-  staff: 'staff',
+  POINT: 'point',
+  POINT_DETAIL: 'pointDetail',
 } as const;

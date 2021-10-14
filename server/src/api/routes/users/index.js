@@ -1,5 +1,5 @@
 import express from 'express';
-import { UserController, BasketController,HistoryController,InterestProductController } from '../../../controllers';
+import { UserController, PointController } from '../../../controllers';
 import { body } from "express-validator";
 import { validateRequestSchema } from '../../middleware/validateRequestSchema';
 import multer from 'multer';
@@ -21,6 +21,7 @@ users.post('/register', UserController.register);
 users.post('/check', UserController.idCheck);
 users.post('/login', UserController.logIn);
 
+users.get('/point/:idx',PointController.list);
 users.get('/:id', UserController.userInfo);
 users.put('/:idx', UserController.updateUserInfo);
 

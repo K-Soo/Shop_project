@@ -20,8 +20,8 @@ interface IOrderList {
   handleRouterBack?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   handleCheckbox?: React.ChangeEventHandler<HTMLInputElement>;
   handleSelectProductRemove?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
-  handleChangeQty?:(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
-  handleAddInterestProduct?:(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
+  handleChangeQty?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
+  handleAddInterestProduct?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
 }
 
 const S = {
@@ -96,23 +96,9 @@ const S = {
         &--desc{
           flex: 1;
           width: 100%;
-          align-items: center;
           .title{
             display: flex;
             align-items: flex-start;
-          }
-          .consumer-price{
-            font-size: 14px;
-            font-weight: 600;
-            &::after{
-              content: '원';
-            }
-          }
-          .product-price{
-            color: #333;
-            &::after{
-              content: '원';
-            }
           }
           .point-price{
             font-weight: 400;
@@ -129,6 +115,29 @@ const S = {
               border-radius: 1px;
               height: 9px;
             }
+            &::after{
+              content: '원';
+            }
+          }
+          .qty{
+            padding-top: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            &::before{
+              content: '수량 : ';
+              color: #444;
+              font-weight: 400;
+            }
+          }
+          .product-price{
+            color: #333;
+            &::after{
+              content: '원';
+            }
+          }
+          .consumer-price{
+            font-size: 14px;
+            font-weight: 600;
             &::after{
               content: '원';
             }
@@ -209,88 +218,91 @@ export default function OrderList({
   handleChangeQty,
   item
 }: IOrderList) {
-  const { action,state } = useAppContext();
+  const { action, state } = useAppContext();
   const router: NextRouter = useRouter();
-  const {userId} = state.userInfo;
+  const { userId } = state.userInfo;
 
   return (
     <S.OrderList>
       {item.length ? (
         item.map((d) => (
-        <S.Item key={userId ? d._id : d.date} asPath={router.asPath}>
-          <S.MainContent>
-            <div className='icon-box'>
-              <CheckBox name='checkItem' value={userId ?  d._id : d.date} onChange={handleCheckbox} />
-            </div>
-            <div className='product-info'>
-              <div className='product-info__left'>
-                <Link href={'/product/' + d.product_type + '/' + d.seq}>
-                  <a>
-                    <Image
-                      className='img'
-                      src={d.imageUrl[0].url}
-                      alt="Picture of the author"
-                      width={100}
-                      height={116}
-                    />
-                  </a>
-                </Link>
+          <S.Item key={userId ? d._id : d.date} asPath={router.asPath}>
+            <S.MainContent>
+              <div className='icon-box'>
+                <CheckBox name='checkItem' value={userId ? d._id : d.date} onChange={handleCheckbox} />
               </div>
-              <div className='product-info__right'>
-                <div className='product-info__right--desc'>
-                  <div className='product-info__right--desc title'>
-                    <Link href={'/product/' + d.product_type + '/' + d.seq}>
-                      <a>
-                        <Title level={6} size='14' >{d.name}</Title>
-                      </a>
-                    </Link>
-                    {d.best_product && <TextIcon text='best' margin='0 0 0 5px' />}
-                    {d.new_product && <TextIcon text='new' margin='0 0 0 5px' />}
-                  </div>
-                  <p className='point-price'>{PriceComma(d.point)}</p>
-                  <p className='product-price'><del>{PriceComma(d.product_price)}</del></p>
-                  <p className='consumer-price'>{PriceComma(d.consumer_price)}</p>
+              <div className='product-info'>
+                <div className='product-info__left'>
+                  <Link href={'/product/' + d.product_type + '/' + d.seq}>
+                    <a>
+                      <Image
+                        className='img'
+                        src={d.imageUrl[0].url}
+                        alt="Picture of the author"
+                        width={100}
+                        height={116}
+                      />
+                    </a>
+                  </Link>
                 </div>
-                {router.asPath === "/order/basket" && (
-                  <div className='product-info__right--count'>
-                    <Input
-                      type="number"
-                      height='30'
-                      width='70'
-                      margin='0 15px 0 0'
-                      value={d.qty}
-                      onChange={action.setChangeQty}
-                      name={userId ?  d._id : d.date}
-                    />
-                    <Button white height='30px' width='50px' name={userId ? d._id : d.date} onClick={handleChangeQty}>변경</Button>
+                <div className='product-info__right'>
+                  <div className='product-info__right--desc'>
+                    <p>{(d.category)}</p>
+                    <div className='title'>
+                      <Link href={'/product/' + d.product_type + '/' + d.seq}>
+                        <a>
+                          <Title level={6} size='14' >{d.name}</Title>
+                        </a>
+                      </Link>
+                      {d.best_product && <TextIcon text='best' margin='0 0 0 5px' />}
+                      {d.new_product && <TextIcon text='new' margin='0 0 0 5px' />}
+                    </div>
+
+                      <p className='point-price'>{PriceComma(d.point)}</p>
+                      {router.asPath === '/order/orderform' && <p className='qty'>{d.qty}</p>}
+                      <p className='product-price'><del>{PriceComma(d.product_price)}</del></p>
+                      <p className='consumer-price'>{PriceComma(d.consumer_price)}</p>
                   </div>
-                )}
+                  {router.asPath === "/order/basket" && (
+                    <div className='product-info__right--count'>
+                      <Input
+                        type="number"
+                        height='30'
+                        width='70'
+                        margin='0 15px 0 0'
+                        value={d.qty}
+                        onChange={action.setChangeQty}
+                        name={userId ? d._id : d.date}
+                      />
+                      <Button white height='30px' width='50px' name={userId ? d._id : d.date} onClick={handleChangeQty}>변경</Button>
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
 
-          </S.MainContent>
-          <S.Option>
-            <span>
-              [ 옵션 : {d.selectColor[0].colorName} ]
-            </span>
-          </S.Option>
+            </S.MainContent>
+            <S.Option>
+              <span>
+                [ 옵션 : {d.selectColor[0].colorName} ]
+              </span>
+            </S.Option>
 
-          <S.Price>
-            <strong>
-              합계 : {PriceComma(d.totalConsumerPrice)}원
-            </strong>
-          </S.Price>
+            <S.Price>
+              <strong>
+                합계 : {PriceComma(d.totalConsumerPrice)}원
+              </strong>
+            </S.Price>
 
-          {router.asPath === "/order/basket" && (
-            <S.BasketButtonBox>
-              <div className='button-wrapper'>
-                <Button white height='25px' name={userId ? d._id : d.date} onClick={handleRemoveItem}>삭제</Button>
-                <Button white height='25px' name={d.name} onClick={handleAddInterestProduct}>관심상품</Button>
-              </div>
-            </S.BasketButtonBox>
-          )}
-        </S.Item>
-      ))
+            {router.asPath === "/order/basket" && (
+              <S.BasketButtonBox>
+                <div className='button-wrapper'>
+                  <Button white height='25px' name={userId ? d._id : d.date} onClick={handleRemoveItem}>삭제</Button>
+                  <Button white height='25px' name={d.name} onClick={handleAddInterestProduct}>관심상품</Button>
+                </div>
+              </S.BasketButtonBox>
+            )}
+          </S.Item>
+        ))
       ) : (
         <S.EmptyBasket>
           <p className='icon'>

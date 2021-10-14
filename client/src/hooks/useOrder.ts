@@ -413,7 +413,7 @@ const useOrder = (props: any) => {
   useDidMountEffect(() => {
     // 적립예정 금액
     if (App.state.userInfo.userId) {
-      const result = app.state.orderForm.Products.reduce((acc, cur) => acc + (cur.point), 0);
+      const result = app.state.orderForm.Products.reduce((acc, cur) => acc + (cur.point * cur.qty), 0);
       app.action.InitData('orderForm.pointInfo.estimatedPoint', result);
     }
   }, [app.state.orderForm.Products]);

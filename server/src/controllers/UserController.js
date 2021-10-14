@@ -15,6 +15,10 @@ const register = async (req, res, next) => {
     const exist = await User.findByUserId(userId);
     if (exist) return throwError({ statusCode: 409, msg: '이미 가입된 ID입니다' })
     const user = new User(req.body);
+    const point = new Point({ PointOwner: user._id });
+    const history = new History({ user: user._id });
+    point.save();
+    history.save();
     await user.setPassword(password);
     await user.save();
     const token = user.generateToken();
@@ -22,7 +26,7 @@ const register = async (req, res, next) => {
       httpOnly: true,
       maxAge: 1000 * 60 * 5,
     });
-    res.json({success:true});
+    res.json({ success: true });
   } catch (error) {
     next(error);
   }
@@ -46,7 +50,6 @@ const userInfo = async (req, res, next) => {
   const { id } = req.params;
   try {
     const user = await User.findById(id, { password: 0 });
-    console.log('user: ', user);
     if (user) {
       res.json(user.serialize());
     } else {
@@ -79,15 +82,13 @@ const updateUserInfo = async (req, res, next) => {
 
 const checkout = async (req, res, next) => {
   const { userId } = req.params;
+  const result = req.body;
+  result._id = new mongoose.Types.ObjectId();
+  result.createAt = createDate();
+  result.orderNum = orderNumber();
+  let idArray = [];
+  result.Products.map(d => idArray.push(mongoose.Types.ObjectId.createFromHexString(d._id)));
   try {
-    const result = req.body;
-    result._id = new mongoose.Types.ObjectId();
-    result.createAt = createDate();
-    result.orderNum = orderNumber();
-
-    let idArray = [];
-    result.Products.map(d => idArray.push(mongoose.Types.ObjectId.createFromHexString(d._id)));
-
     const target = await User.findByUserId(userId);
     if (target) {
       const updatedBasket = await Basket.findOneAndUpdate(
@@ -95,43 +96,43 @@ const checkout = async (req, res, next) => {
         { $pull: { items: { _id: { $in: idArray } } } },
         { new: true }
       );
+
       const exist = await History.findOne({ user: target._id });
+      await History.findOneAndUpdate(
+        { user: target._id },
+        { $push: { data: result } },
+      )
       const findUserPoint = await Point.findOne({ PointOwner: target._id });
-      const user = await User.findById(target._id);
-      if(!user) return throwError({statusCode:500,msg:'Unknown user.'});
 
-      const resultPoint = user.point - Number(result.pointInfo.totalUsed);
-      if(resultPoint < 0) return throwError({statusCode:400,msg:'user Point Error'});
-      
-      const updateUserPoint = await User.findOneAndUpdate(
-        { _id: target._id },
-        { $set: { point: resultPoint} },
-        )
-        
+      const resultValue = findUserPoint.currentPoint - Number(result.pointInfo.totalUsed);
+      const savePoint = result.pointInfo.estimatedPoint;
+      if (resultValue < 0) return throwError({ statusCode: 400, msg: 'user Point Error' });
+
+      if (findUserPoint) {
+        const resultUpdate = await Point.findOneAndUpdate(
+          { PointOwner: target._id },
+          {
+            $set: { currentPoint: resultValue + savePoint },
+            $push: {
+              pointInfo: {
+                usedPoint: result.pointInfo.totalUsed ? Number(result.pointInfo.totalUsed) : 0,
+                savedPoint: result.pointInfo.estimatedPoint,
+                orderNum: result.orderNum
+              }
+            }
+          },
+          { new: true }
+        );
+        await User.findOneAndUpdate(
+          { _id: target._id },
+          { $set: { point: resultUpdate.currentPoint } },
+        );
+      }
+
       if (exist) {
-        exist.data.push(result);
-        findUserPoint.pointInfo.push({
-          usedPoint: result.pointInfo.totalUsed,
-          savedPoint: result.pointInfo.estimatedPoint,
-          orderNum: result.orderNum
-        });
-
-        exist.save();
-        findUserPoint.save();
+        // exist.data.push(result);
+        // exist.save();
         res.json({ success: true, updatedBasket });
-      } else {
-        const history = new History({ user: target._id, data: result });
-        const point = new Point({
-          PointOwner: target._id, 
-          pointInfo: {
-            usedPoint: result.totalUsed,
-            savedPoint: result.pointInfo.estimatedPoint,
-            orderNum: result.orderNum
-          }
-        });
-        point.save();
-        history.save();
-        res.json({ success: true });
       }
     }
   } catch (error) {

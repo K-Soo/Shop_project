@@ -1,17 +1,6 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import styled from "styled-components";
-import Image from 'next/image';
-import { useRouter, NextRouter } from 'next/router';
-import { IBasketItem } from 'interfaces/IProduct';
-import Button from 'components/style/Button';
-import Icon from 'components/Icon/Icon';
-import Title from 'components/style/Title';
-import Input from 'components/style/Input';
 import { useAppContext } from 'context/AppProvider';
-import { PriceComma } from 'utils';
-import CheckBox from 'components/style/CheckBox';
-import TextIcon from 'components/Common/TextIcon';
-import Link from 'next/link';
 import PageTitle from 'components/Common/PageTitle';
 import FormFieldset from 'components/Forms/FormFieldset';
 import List from 'components/InterestProduct/List';
@@ -27,7 +16,6 @@ const S = {
 export default function InterestProduct() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const { state: { userInfo:{idx} } } = useAppContext();
-  console.log('idx: ', idx);
   const { data = [], isLoading, isSuccess, isError, error, isFetching } = useQuery([queryKeys.INTEREST_PRODUCT,idx, currentPage], async () => await Get.getInterestProductList(idx, currentPage), {
     retry: 0,
     // keepPreviousData: true,

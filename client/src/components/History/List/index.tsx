@@ -1,13 +1,11 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import PageTitle from 'components/Common/PageTitle';
-import HistoryCalendar from 'components/History/List/HistoryCalendar';
 import Guide from 'components/History/List/Guide';
 import Content from 'components/History/List/Content';
 import Pagination from 'components/History/List/Pagination';
 import FormFieldset from 'components/Forms/FormFieldset';
-import { NextRouter, useRouter } from 'next/router';
-import { useQuery, UseQueryResult, useQueryClient } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import { Get } from "api";
 import { queryKeys } from 'constants/queryKeys';
 
@@ -33,7 +31,6 @@ export default function List({ idx }: IList) {
     staleTime: 2000,
     enabled: !!idx,                                      
   });
-  console.log('data: ', data);
   
   useEffect(() => {
     if (currentPage < data.maxPages) {
@@ -46,7 +43,6 @@ export default function List({ idx }: IList) {
   return (
     <S.List>
       <PageTitle TitleText='주문내역 리스트' />
-      {/* <HistoryCalendar maxPages={data.maxPages}/> */}
       <Guide />
       <FormFieldset title={`주문 상품 정보 (${data.maxPages})`}>
         <Content items={data} isLoading={isLoading} isSuccess={isSuccess}/>

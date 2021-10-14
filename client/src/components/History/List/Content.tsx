@@ -1,13 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import { ORDER_INFO } from 'constants/history';
-import Icon from 'components/Icon/Icon';
 import Loading from 'components/Common/Loading';
 import EmptyItem from 'components/Common/EmptyItem';
 import { PriceComma } from 'utils';
 import Image from 'next/image'
 import Link from 'next/link';
-
 interface IContent {
   items: any;
   isLoading: boolean;
@@ -210,7 +208,7 @@ export default function Content({ items, isLoading, isSuccess }: IContent) {
         ))}
       </S.Header>
       <S.Body>
-        {isSuccess && items.data.map(d => (
+        {isSuccess && items.data.map((d:any) => (
           <div key={d._id} className='item-box'>
             <div className='order-number'>
               <div className='order-number__info'>
@@ -230,7 +228,7 @@ export default function Content({ items, isLoading, isSuccess }: IContent) {
               </div>
             </div>
             <div className='details-box'>
-              {d.Products.map(v => (
+              {d.Products.map((v:any) => (
                 <ul className='details' key={v._id}>
                   <li className='details__img'>
                     <Link href={'/product/' + v.product_type + '/' + v.seq}>

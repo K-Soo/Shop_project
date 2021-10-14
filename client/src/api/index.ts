@@ -38,6 +38,7 @@ export const Get = {
   getHistoryDetail: (idx: string, orderNum: string) => requests.get(`/api/users/history/${idx}/${orderNum}`),
   getProductReview: (productId: string) => requests.get(`/api/products/review/${productId}`),
   getInterestProductList: (idx: string, page: number) => requests.get(`/api/users/interest-product/${idx}?page=${page}`),
+  getPoint: (idx: string) => requests.get(`/api/users/point/${idx}`),
 };
 
 export const Post = {

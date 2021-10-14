@@ -7,7 +7,7 @@ import { useOrderContext } from 'context/OrderProvider';
 import Link from 'next/link';
 import { PriceComma } from 'utils';
 interface IUserInfo {
-
+  currentPoint:number
 }
 
 const S = {
@@ -96,7 +96,7 @@ const S = {
 
 }
 
-export default function UserInfo({ }: IUserInfo) {
+export default function UserInfo({currentPoint }: IUserInfo) {
   const { state: { userInfo: { userId } } } = useAppContext();
   const Order = useOrderContext();
   return (
@@ -112,7 +112,7 @@ export default function UserInfo({ }: IUserInfo) {
           <p className='point'>
             <i><Icon name='coin' /></i>
             <Link href='/users/point'>
-              <a>가용적립금: <b>{PriceComma(Order.state.currentPoint)}원</b></a>
+              <a>가용적립금: <b>{PriceComma(currentPoint)}원</b></a>
             </Link>
           </p>
         </S.MemberInfo>
