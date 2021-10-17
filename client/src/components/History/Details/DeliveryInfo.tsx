@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useRef } from 'react';
 import styled from "styled-components";
 import { IOrderDetail } from 'interfaces/IOrder';
 import Button from 'components/style/Button';
 import Icon from 'components/Icon/Icon';
 import { useRouter } from 'next/router';
+import { useReactToPrint } from 'react-to-print';
 
 interface IDeliveryInfo {
   items: IOrderDetail[]
+  handlePrint:any;
 }
 
 const S = {
@@ -65,11 +67,17 @@ const S = {
       align-items: center;
       justify-content: center;
     }
+    .print{
+      ${({ theme }) => theme.mobile`
+        display: none;
+      `}
+    }
   `,
 }
 
-export default function DeliveryInfo({ items }: IDeliveryInfo) {
+export default function DeliveryInfo({ items,handlePrint }: IDeliveryInfo) {
   const router = useRouter();
+
   return (
     <S.DeliveryInfo>
       {items && items.map(d => (
@@ -99,7 +107,7 @@ export default function DeliveryInfo({ items }: IDeliveryInfo) {
         </table>
       ))}
       <S.ButtonBox>
-        <Button height='20px' white width='100px'>결제</Button>
+        <Button className='print' height='20px' white width='100px' onClick={handlePrint}>프린트</Button>
         <Button className='back' height='30px' black width='120px' onClick={() => router.back()}>
           <i><Icon name='back' /></i>
           <span>주문목록 보기</span>
