@@ -96,6 +96,7 @@ const S = {
 }
 
 export default function PaymentInfo({ items }: IPaymentInfo) {
+  console.log('items: ', items);
   return (
     <S.PaymentInfo>
       {items && items.map(d => (
@@ -107,11 +108,11 @@ export default function PaymentInfo({ items }: IPaymentInfo) {
           <tbody>
             <tr className='order-price'>
               <th>총 주문결제금액</th>
-              <td>{d.orderNum}</td>
+              <td>{PriceComma(d.amountInfo.consumerAmount + d.amountInfo.deliveryAmount)}원</td>
             </tr>
             <tr className='total-used-point'>
               <th>총 부가결제금액</th>
-              <td>{PriceComma(d.createAt)}원</td>
+              <td>{PriceComma(d.pointInfo.totalUsed)}원</td>
             </tr>
             <tr className='point'>
               <th>적립금</th>

@@ -289,12 +289,15 @@ const generateAction = (update: (recipe: (draft: IOrderState) => void) => void) 
       if(!draft.currentPoint) return alert('사용가능한 적립금이 없습니다.')
       if(draft.orderForm.amountInfo.paymentAmount < draft.currentPoint){
         draft.orderForm.pointInfo.totalUsed = String(draft.orderForm.amountInfo.paymentAmount - 10000);
-        draft.orderForm.amountInfo.discountAmount = draft.orderForm.amountInfo.discountAmount + Number(draft.orderForm.pointInfo.totalUsed)
+        draft.orderForm.amountInfo.discountAmount = draft.orderForm.amountInfo.discountAmount + Number(draft.orderForm.pointInfo.totalUsed);
         draft.orderForm.amountInfo.paymentAmount = draft.orderForm.amountInfo.paymentAmount - Number(draft.orderForm.pointInfo.totalUsed);
-        draft.isUsePoints = true;
+
       }else{
         draft.orderForm.pointInfo.totalUsed = String(draft.currentPoint);
+        draft.orderForm.amountInfo.discountAmount = draft.orderForm.amountInfo.discountAmount + Number(draft.orderForm.pointInfo.totalUsed);
+        draft.orderForm.amountInfo.paymentAmount = draft.orderForm.amountInfo.paymentAmount - Number(draft.orderForm.pointInfo.totalUsed);
       }
+      draft.isUsePoints = true;
     });
 
   return {
