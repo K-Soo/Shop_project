@@ -123,12 +123,12 @@ export default function Payment({ }: IPayment) {
   const { state } = useOrderContext();
   const App = useAppContext();
   const [{ isInitial, isPending, isRejected, isResolved }, Dispatch] = usePayPalScriptReducer();
-  console.group('before');
-  console.log('isResolved: ', isResolved);
-  console.log('isRejected: ', isRejected);
-  console.log('isPending: ', isPending);
-  console.log('isInitial: ', isInitial);
-  console.groupEnd();
+  // console.group('before');
+  // console.log('isResolved: ', isResolved);
+  // console.log('isRejected: ', isRejected);
+  // console.log('isPending: ', isPending);
+  // console.log('isInitial: ', isInitial);
+  // console.groupEnd();
 
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
@@ -152,7 +152,6 @@ export default function Payment({ }: IPayment) {
   };
 
   App.state.userInfo.userId
-  console.log('App.state.userInfo.userId: ', App.state.userInfo.userId);
 
   const onApprove = async (data: OnApproveData, actions: OnApproveActions) => {
     try {

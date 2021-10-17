@@ -148,7 +148,6 @@ export default function LeftSide({ directionSwap, onClick }: ILeftSide) {
   const { action, state } = useAppContext();
   const router = useRouter();
   const [text, setText] = useState<TTap>('product');
-  console.log('text: ', text);
 
   const handleRouter = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
     const { name } = e.currentTarget

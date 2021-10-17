@@ -22,22 +22,16 @@ export default function OrderForm() {
   const router = useRouter();
   const { userId } = App.state.userInfo;
   const {amountInfo} = Order.state.orderForm;
+  const OrderState = Order.state;
   
   const handleRouterBack = useCallback(() => {
     Order.action.setInitOrderForm();
     router.back();
   }, []);
 
-  // useEffect(() => {
-  //   if (Order.state.orderForm.Products.length) {
-  //     Order.action.setAmountInfo();
-  //   }
-  // }, [Order.state.orderForm.Products]);
-
-
   return (
     <S.OrderForm>
-      <UserInfo />
+      <UserInfo currentPoint={OrderState.currentPoint}/>
       <FormBox title='주문내역'>
         <OrderList
           item={Order.state.orderForm.Products}

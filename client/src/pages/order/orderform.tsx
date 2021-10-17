@@ -15,7 +15,6 @@ export default function OrderFormPage(props: InferGetServerSidePropsType<typeof 
   const router = useRouter();
   const App = useAppContext();
   const { userDetail } = props;
-  console.log('------------------: ', userDetail);
 
   useEffect(() => {
     if (!userDetail) {

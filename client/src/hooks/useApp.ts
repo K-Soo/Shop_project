@@ -315,7 +315,6 @@ const useApp = (props) => {
   useEffect(() => {
     const { keyword } = router.query;
     app.action.InitData('keyword', keyword);
-    console.log('----->', state.keyword);
   }, []);
 
   return app;

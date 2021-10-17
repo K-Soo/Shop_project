@@ -266,7 +266,7 @@ const generateAction = (update: (recipe: (draft: IOrderState) => void) => void) 
     update((draft) => {
       // 적립금사용
       if (!draft.isUsePoints) {
-        draft.orderForm.amountInfo.discountAmount = draft.orderForm.amountInfo.discountAmount - Number(draft.orderForm.pointInfo.totalUsed);
+        draft.orderForm.amountInfo.discountAmount = draft.orderForm.amountInfo.discountAmount + Number(draft.orderForm.pointInfo.totalUsed);
         draft.orderForm.amountInfo.paymentAmount = draft.orderForm.amountInfo.paymentAmount - Number(draft.orderForm.pointInfo.totalUsed);
         draft.isUsePoints = true;
       }
@@ -287,8 +287,14 @@ const generateAction = (update: (recipe: (draft: IOrderState) => void) => void) 
     update((draft) => {
       // 적립금 전체사용 버튼
       if(!draft.currentPoint) return alert('사용가능한 적립금이 없습니다.')
-      if(draft.orderForm.amountInfo.paymentAmount < draft.currentPoint) return alert('결제에정금액보다 클수없습니다.');
-      draft.orderForm.pointInfo.totalUsed = String(draft.currentPoint);
+      if(draft.orderForm.amountInfo.paymentAmount < draft.currentPoint){
+        draft.orderForm.pointInfo.totalUsed = String(draft.orderForm.amountInfo.paymentAmount - 10000);
+        draft.orderForm.amountInfo.discountAmount = draft.orderForm.amountInfo.discountAmount + Number(draft.orderForm.pointInfo.totalUsed)
+        draft.orderForm.amountInfo.paymentAmount = draft.orderForm.amountInfo.paymentAmount - Number(draft.orderForm.pointInfo.totalUsed);
+        draft.isUsePoints = true;
+      }else{
+        draft.orderForm.pointInfo.totalUsed = String(draft.currentPoint);
+      }
     });
 
   return {
@@ -311,7 +317,7 @@ const generateAction = (update: (recipe: (draft: IOrderState) => void) => void) 
 
 const useOrder = (props: any) => {
   const [state, setAppState] = useState(initializer(props));
-  console.log('useOrder state: ', state);
+  console.log('useOrder isUsePoints: ', state);
   const App = useAppContext();
   const router = useRouter();
   const update = (recipe: (draft: IOrderState) => void) =>
@@ -373,13 +379,9 @@ const useOrder = (props: any) => {
 
       app.action.InitData('orderForm.amountInfo.productAmount', calcProduct);
       app.action.InitData('orderForm.amountInfo.consumerAmount', calcConsumer);
-      app.action.InitData('orderForm.amountInfo.discountAmount', calcProduct - calcConsumer);
+      // app.action.InitData('orderForm.amountInfo.discountAmount', (calcProduct - calcConsumer) + Number(app.state.orderForm.pointInfo.totalUsed));
+      app.action.InitData('orderForm.amountInfo.discountAmount', (calcProduct - calcConsumer) );
       app.action.InitData('orderForm.amountInfo.paymentAmount', calcConsumer + app.state.orderForm.amountInfo.deliveryAmount);
-
-      // app.state.orderForm.amountInfo.productAmount = calcProduct;
-      // app.state.orderForm.amountInfo.consumerAmount = calcConsumer;
-      // app.state.orderForm.amountInfo.discountAmount = calcProduct - calcConsumer;
-      // app.state.orderForm.amountInfo.paymentAmount = calcConsumer + app.state.orderForm.amountInfo.deliveryAmount;
     }
   }, [app.state.orderForm.Products, app.state.orderForm.amountInfo.deliveryAmount]);
 
@@ -390,15 +392,29 @@ const useOrder = (props: any) => {
   }, [app.state.deliveryTap]);
 
   useDidMountEffect(() => {
-    //결제예정금액보다 적립금사용금액이 더큰경우
+    // 결제예정금액보다 적립금사용금액이 더큰경우
     if(Number(app.state.orderForm.pointInfo.totalUsed) > app.state.orderForm.amountInfo.paymentAmount){
+      app.action.InitData('orderForm.pointInfo.totalUsed');
       alert('결제예정금액보다 사용금액이 클수없습니다.');
     }
   }, [app.state.orderForm.pointInfo.totalUsed]);
 
   useDidMountEffect(() => {
-    //결제예정금액보다 적립금사용금액이 더큰경우
+    if(10000 > Number(app.state.orderForm.amountInfo.paymentAmount)){
+      app.action.InitData('orderForm.pointInfo.totalUsed')
+      app.action.InitData('orderForm.amountInfo.discountAmount',app.state.orderForm.amountInfo.productAmount - app.state.orderForm.amountInfo.consumerAmount)  
+      app.action.InitData('orderForm.amountInfo.paymentAmount',app.state.orderForm.amountInfo.consumerAmount + app.state.orderForm.amountInfo.deliveryAmount);
+      app.action.InitData('orderForm.pointInfo.totalUsed');
+      app.action.InitData('isUsePoints',false);
+
+      alert('최소 결제금액은 10,000원 입니다.');
+    }
+  }, [app.state.orderForm.amountInfo.paymentAmount]);
+
+  useDidMountEffect(() => {
+    // 사용가능 적립금보다 큰금액을 입력한경우
     if(Number(app.state.orderForm.pointInfo.totalUsed) > app.state.currentPoint){
+      app.action.InitData('orderForm.pointInfo.totalUsed');
       alert('사용가능금액보다 큽니다.');
     }
   }, [app.state.orderForm.pointInfo.totalUsed]);
