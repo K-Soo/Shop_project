@@ -25,8 +25,8 @@ const S ={
     img{
       object-fit: contain;
       border: 1px solid red;
-      width: 300px;
-      max-height: 70px;
+      /* width: 300px;
+      max-height: 70px; */
     }
   `,
 }
@@ -38,7 +38,7 @@ const MainLogo: React.FC<IMainLogo> = ({ className }) => {
     <S.MainLogo className={className}>
       <Link href={PAGE.MAIN.path}>
         <a>
-          <Image className='main-logo' src="/images/main_logo.jpeg" width={100} height={80} alt='main_logo' />
+          <Image className='main-logo' src="/images/main_logo.jpeg" width={300} height={80} alt='main_logo' />
         </a>
       </Link>
     </S.MainLogo>

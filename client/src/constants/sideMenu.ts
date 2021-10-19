@@ -5,7 +5,7 @@ export const QUICK_ICON_LEFT: TQuickIconProps[] = [
   { label: '장바구니', url: '/order/basket', icon: 'cart' },
   { label: '상품후기', url: '/2', icon: 'bed' },
   { label: '고객센터', url: '/4', icon: 'bed' },
-  { label: '마이쇼핑', url: '/5', icon: 'bed' },
+  { label: '마이쇼핑', url: '/users', icon: 'user' },
 ]
 
 export const QUICK_ICON_RIGHT: TQuickIconProps[] = [

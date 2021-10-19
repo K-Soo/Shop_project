@@ -23,8 +23,9 @@ export default function List({ idx }: IList) {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const fallback: Array<null> = [];
   const queryClient = useQueryClient();
+  const limit = 1;
 
-  const { data = fallback, isLoading, isSuccess, isError, error, isFetching } = useQuery([queryKeys.HISTORY, idx, currentPage], async () => await Get.getHistory(idx, currentPage), {
+  const { data = fallback, isLoading, isSuccess, isError, error, isFetching } = useQuery([queryKeys.HISTORY, idx, currentPage,limit], async () => await Get.getHistory(idx, currentPage,limit), {
     retry: 0,
     keepPreviousData: true,
     refetchOnWindowFocus: false,
@@ -35,7 +36,7 @@ export default function List({ idx }: IList) {
   useEffect(() => {
     if (currentPage < data.maxPages) {
       const nextPreFetchPage = currentPage + 1;
-      queryClient.prefetchQuery([queryKeys.HISTORY, idx, nextPreFetchPage], () => Get.getHistory(idx, currentPage));
+      queryClient.prefetchQuery([queryKeys.HISTORY, idx, nextPreFetchPage], () => Get.getHistory(idx, currentPage,limit));
     }
   }, [currentPage, queryClient, idx, data.maxPages]);
   

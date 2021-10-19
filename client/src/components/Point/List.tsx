@@ -1,30 +1,26 @@
-import React, { useState, useCallback } from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 import { useAppContext } from 'context/AppProvider';
-import { useQuery, UseQueryResult, useQueryClient } from 'react-query';
-import { Get } from "api";
-import { queryKeys } from 'constants/queryKeys';
-import IPoint from 'interfaces/IPoint';
 import Link from 'next/link';
-import {PriceComma} from 'utils';
 import Loading from 'components/Common/Loading';
+import {IPointList} from 'interfaces/IPoint';
 
 interface IList {
-
+  data: IPointList;
+  isSuccess: boolean;
+  isLoading: boolean;
+  isError: boolean;
 }
 
 const S = {
   List: styled.div`
   `,
-  Tap: styled.div<{text:string}>`
+  Tap: styled.div`
     border-bottom: 1px solid #000;
   .list{
     display: flex;
-    .usedPoint{
-      border-bottom: ${props => props.text === 'usedPoint' ? '3px solid #000;' : 'none' }
-    }
-    .currentPoint{
-      border-bottom: ${props => props.text === 'currentPoint' ? '3px solid #000;' : 'none' };
+    .all{
+      border-bottom: 3px solid #000;
     }
     &__item{
       color: #AAA;
@@ -45,6 +41,7 @@ const S = {
   `,
   Content: styled.div`
     margin-top: 15px;
+    min-height: 150px;
     .item{
       display: flex;
       &__detail{
@@ -100,54 +97,18 @@ const S = {
     }
   `,
 }
-type TText = 'usedPoint' | 'currentPoint'
 
-export default function List({ }: IList) {
-  const [text, setText] = useState<TText>('usedPoint');
+export default function List({ data, isSuccess, isLoading, isError }: IList) {
   const { state: { userInfo: { idx } } } = useAppContext();
 
-  const selectFc = useCallback((data) => {
-    if (text === 'usedPoint') {
-      return data.pointInfo.map((d: any) => d.usedPoint > 0 ? { ...d, point: d.usedPoint * -1, account: '사용 적립금' } : null);
-      // return  data;
-    } else {
-      return data.pointInfo.map((d: any) => d.savedPoint ? { ...d, point: d.savedPoint, account: '상품구매 적립금' } : null);
-    }
-  }, [text]);
-
-  const { data, isLoading, isSuccess, isError, error, isFetching } = useQuery([queryKeys.POINT_DETAIL, idx], async () => await Get.getPoint(idx), {
-    retry: 0,
-    refetchOnWindowFocus: false,
-    enabled: !!idx,
-    staleTime: 2000,
-    select: selectFc,
-  });
-
-
-  const handleTap = (e:React.MouseEvent<HTMLLIElement>) => {
-    const { name } = (e.target as HTMLLIElement).dataset
-    setText(name as TText);
-  }
-
-  if(isError) return <div>Error</div>
+  if (isError) return <div>Error</div>
 
   return (
     <S.List>
-      <S.Tap text={text}>
+      <S.Tap >
         <ul className='list'>
-          <li 
-            onClick={handleTap}
-            data-name='usedPoint' 
-            className='list__item usedPoint'
-           >
-            <span>사용된 적립금</span>
-           </li>
-          <li 
-            onClick={handleTap}
-            data-name='currentPoint' 
-            className='list__item currentPoint'
-            >
-            <span>가용 적립금</span>
+          <li className='list__item all'>
+            <span>전체</span>
           </li>
         </ul>
       </S.Tap>
@@ -161,11 +122,11 @@ export default function List({ }: IList) {
             <div className='item'>내용</div>
           </S.ContentHeader>
 
-          {isLoading && <Loading isLoading={true} text=''/>}
-          
+          {isLoading && <Loading isLoading={true} text='' />}
+
           {isSuccess && (
             <>
-              {data.length > 0 && data.map((d:any) => {
+              {data.pointInfo.length > 0 && data.pointInfo.map((d: any) => {
                 if (d) {
                   return (
                     <li key={d._id} className='item'>
@@ -176,7 +137,7 @@ export default function List({ }: IList) {
                         {d.point}
                       </div>
                       <div className='item__detail'>
-                      <Link href={`/users/history/details/${idx}/${d.orderNum}`}>
+                        <Link href={`/users/history/details/${idx}/${d.orderNum}`}>
                           <a>
                             {d.orderNum}
                           </a>

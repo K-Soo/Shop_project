@@ -23,7 +23,7 @@ const HistorySchema = Schema({
   versionKey: false 
 });
 
-HistorySchema.virtual('lastPage').get(function () {
+HistorySchema.virtual('maxPages').get(function () {
   return this.data.length;
 });
 

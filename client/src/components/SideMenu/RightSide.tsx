@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React from "react";
 import styled, { css } from 'styled-components';
 import { useAppContext } from 'context/AppProvider';
@@ -91,8 +92,11 @@ const S = {
   IconMenu: styled.div`
   `,
   ImageBanner: styled.div`
-    border: 1px solid #000;
-    height: 100px;
+     font-size: 0;
+    img{
+      width: 100%;
+      object-fit: cover;
+    }
   `,
 }
 export default function RightSide({ directionSwap, onClick }: IRightSide) {
@@ -111,7 +115,7 @@ export default function RightSide({ directionSwap, onClick }: IRightSide) {
           </S.Panel>
 
           <S.ImageBanner>
-            asd
+          <img className='main-logo' src="/images/41p61tShGfL._AC_.jpg" alt='side_left_main_logo' />
           </S.ImageBanner>
 
           <TitleLine text='MY SHOPPING' />

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { useContext, useState } from "react";
 import styled, { css } from 'styled-components';
 import Image from "next/image";
@@ -44,17 +45,16 @@ const S = {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    overflow-Y: scroll;
+    /* overflow-Y: scroll; */
     .side-footer{
       margin-top: 15px;
     }
   `,
-  Banner: styled.div`
+  ImageBanner: styled.div`
     font-size: 0;
-    /* margin-bottom: 15px; */
-    border: 1px solid red;
     img{
       width: 100%;
+      object-fit: cover;
     }
   `,
   Top: styled.div`
@@ -170,9 +170,9 @@ export default function LeftSide({ directionSwap, onClick }: ILeftSide) {
             </ul>
           </S.Panel>
 
-          <S.Banner>
-            <Image className='main-logo' src="/images/main_logo.jpeg" width={80} height={80} alt='main_logo' />
-          </S.Banner>
+          <S.ImageBanner>
+            <img className='main-logo' src="/images/single-first.jpeg" alt='side_left_main_logo' />
+          </S.ImageBanner>
           
           <S.Top>
             <Button login height='35px' fontSize='12px' name='login' onClick={handleRouter}>

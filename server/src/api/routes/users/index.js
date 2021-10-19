@@ -22,6 +22,7 @@ users.post('/check', UserController.idCheck);
 users.post('/login', UserController.logIn);
 
 users.get('/point/:idx',PointController.list);
+users.get('/point/:idx/info',PointController.userInfo);
 users.get('/:id', UserController.userInfo);
 users.put('/:idx', UserController.updateUserInfo);
 

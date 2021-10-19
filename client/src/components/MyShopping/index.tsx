@@ -10,7 +10,7 @@ import { queryKeys } from 'constants/queryKeys';
 import { Get } from "api";
 import { useQuery, UseQueryResult, useQueryClient } from 'react-query';
 import { useAppContext } from 'context/AppProvider';
-import IPoint from 'interfaces/IPoint';
+import {IPointInfo} from 'interfaces/IPoint';
 
 interface IMyShopping {
 
@@ -25,9 +25,8 @@ export default function MyShopping({ }: IMyShopping) {
   const [totalUsedPoint, setTotalUsedPoint] = useState<number | null>(null);
   const [totalAccPoint, setTotalAccPoint] = useState<number | null>(null);
   const { state: { userInfo: { idx } } } = useAppContext();
-  console.log('totalUsedPoint: ', totalUsedPoint);
   
-  const { data, isLoading, isSuccess, isError, error, isFetching } = useQuery<IPoint>([queryKeys.POINT, idx], async () => await Get.getPoint(idx), {
+  const { data, isLoading, isSuccess, isError, error, isFetching } = useQuery<IPointInfo>([queryKeys.POINT, idx], async () => await Get.getPointInfo(idx), {
     retry: 0,
     refetchOnWindowFocus: false,
     enabled: !!idx,

@@ -34,11 +34,12 @@ export const Get = {
   UserInfo: (id: string): Promise<IProduct> => requests.get(`/api/users/${id}`),
   getProductDetail: (category: string, id: string): Promise<IProduct> => requests.get(`/api/products/${category}/${id}`),
   getAllProduct: (): Promise<IProduct[]> => requests.get(`/api/products/list`),
-  getHistory: (idx: string, page: number) => requests.get(`/api/users/history/${idx}?page=${page}`),
+  getHistory: (idx: string, page: number,limit:number) => requests.get(`/api/users/history/${idx}?page=${page}&limit=${limit}`),
   getHistoryDetail: (idx: string, orderNum: string) => requests.get(`/api/users/history/${idx}/${orderNum}`),
   getProductReview: (productId: string) => requests.get(`/api/products/review/${productId}`),
   getInterestProductList: (idx: string, page: number) => requests.get(`/api/users/interest-product/${idx}?page=${page}`),
-  getPoint: (idx: string) => requests.get(`/api/users/point/${idx}`),
+  getPointInfo: (idx: string) => requests.get(`/api/users/point/${idx}/info`),
+  getPointList: (idx: string,page:number,limit:number) => requests.get(`/api/users/point/${idx}?page=${page}&limit=${limit}`),
 };
 
 export const Post = {

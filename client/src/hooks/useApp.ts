@@ -14,6 +14,10 @@ export interface IApp {
 }
 
 export interface IAppState {
+  pagination:{
+    currentPage:string,
+    arrNumbers:[],
+  },
   status: { guest: false },
   openSideMenu: boolean;
   openSubMenu: boolean,
@@ -44,6 +48,10 @@ export const appDefaultValue: IApp = {
   props: null,
   action: null,
   state: {
+    pagination:{
+      currentPage: '1',
+      arrNumbers:[],
+    },
     status: { guest: false },
     openSideMenu: false,
     openSubMenu: false,
@@ -73,6 +81,10 @@ export const appDefaultValue: IApp = {
 
 const initializer = (props) => {
   const state: IAppState = {
+    pagination:{
+      currentPage: '1',
+      arrNumbers:[],
+    },
     status: { guest: false },
     openSideMenu: false,
     openSubMenu: false,

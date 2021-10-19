@@ -9,7 +9,7 @@ interface IPageTitle {
 }
 
 const S = {
-  PageTitle: styled.div`
+  PageTitle: styled.article`
     position: relative;
     display: flex;
     justify-content: center;

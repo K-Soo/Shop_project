@@ -8,6 +8,7 @@ interface IButton {
   className?: string;
   login?: boolean;
   kakao?: boolean;
+  pageNum?: boolean;
   width?: string;
   height?: string;
   margin?: string;
@@ -19,9 +20,10 @@ interface IButton {
   type?: "button" | "submit" | "reset" | undefined;
   dataColor?: any;
   disabled?: boolean;
+  value?:string;
 }
 
-const Button: React.FC<IButton> = ({ className, children, onClick, type, name,dataColor,disabled,onKeyPress }) => {
+const Button: React.FC<IButton> = ({ className, children, onClick, type, name,dataColor,disabled,onKeyPress,value }) => {
   return (
     <button 
       className={className} 
@@ -31,6 +33,7 @@ const Button: React.FC<IButton> = ({ className, children, onClick, type, name,da
       name={name}
       disabled={disabled}
       onKeyPress={onKeyPress}
+      value={value}
     >
       {children}
     </button>
@@ -50,6 +53,11 @@ export default styled(Button)`
   border: none;
   letter-spacing: 2px;
   white-space: nowrap;
+  ${props =>
+    props.pageNum &&
+    css`
+      all: unset;
+  `}
   ${props =>
     props.login &&
     css`

@@ -112,11 +112,11 @@ export default function PaymentInfo({ items }: IPaymentInfo) {
             </tr>
             <tr className='total-used-point'>
               <th>총 부가결제금액</th>
-              <td>{PriceComma(d.pointInfo.totalUsed)}원</td>
+              <td>{PriceComma(d.pointInfo.totalUsed || 0)}원</td>
             </tr>
             <tr className='point'>
               <th>적립금</th>
-              <td>{PriceComma(d.pointInfo.estimatedPoint)}원</td>
+              <td>{PriceComma(d.pointInfo.estimatedPoint || 0)}원</td>
             </tr>
             <tr className='payment-price'>
               <th>총 결제금액</th>

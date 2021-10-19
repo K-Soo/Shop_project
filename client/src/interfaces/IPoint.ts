@@ -10,3 +10,12 @@ export default interface IPoint {
     usedPoint: number;
   }[]
 }
+
+export interface IPointInfo extends IPoint{
+  totalAmount: number;
+  totalLength: number;
+}
+
+export interface IPointList extends IPoint{
+  maxPages: number;
+}

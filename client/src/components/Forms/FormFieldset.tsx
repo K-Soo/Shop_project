@@ -10,7 +10,7 @@ interface IFormFieldset {
 }
 
 const S = {
-  FormFieldset: styled.fieldset<{ margin: string }>`
+  FormFieldset: styled.article<{ margin: string }>`
     /* margin-top: 30px; */
     ${({ theme }) => theme.mobile`
       padding: 0 10px;

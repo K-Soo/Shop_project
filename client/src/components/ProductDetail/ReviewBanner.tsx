@@ -3,11 +3,14 @@ import styled from "styled-components";
 import { IReview } from 'interfaces/IReview';
 import Rate from 'rc-rate';
 import 'rc-rate/assets/index.css';
+import Loading from 'components/Loading';
 
 interface IReviewBanner {
-  reviewData: IReview[];
+  reviewCnt: number;
   userRate: number;
   percentage: number;
+  isSuccess: boolean;
+  isLoading: boolean;
 }
 const S = {
   Review: styled.div`
@@ -73,36 +76,42 @@ const StyledRate = styled(Rate)`
     }`}
   }
 `
-export default function ReviewBanner({ reviewData, userRate, percentage }: IReviewBanner) {
+export default function ReviewBanner({ reviewCnt, userRate, percentage, isSuccess ,isLoading}: IReviewBanner) {
+  console.log('userRate: ', userRate);
 
   return (
     <S.Review>
-      <ul>
-        <li className='cont'>
-          <div>
-            <span style={{ fontSize: '16px' }}>{reviewData && reviewData.length}</span>
-            <p>review</p>
-          </div>
-        </li>
-        <li className='star'>
-          <StyledRate
-            defaultValue={userRate}
-            disabled={true}
-          />
-        </li>
-        <li className='desc'>
-          {percentage ? (
-            <p>
-              구매자의 약 {percentage}%가<br />
-              이제품을 추천합니다.
-            </p>
-          ) : (
-            <p>
-              아직 리뷰가 없습니다
-            </p>
-          )}
-        </li>
-      </ul>
+      {isLoading && <Loading isLoading={true} text='' />}
+      {isSuccess && (
+        <ul>
+          <li className='cont'>
+            <div>
+              <span style={{ fontSize: '16px' }}>{reviewCnt}</span>
+              <p>review</p>
+            </div>
+          </li>
+          <li className='star'>
+            {userRate && (
+              <StyledRate
+                defaultValue={userRate}
+                disabled={true}
+              />
+            )}
+          </li>
+          <li className='desc'>
+            {percentage ? (
+              <p>
+                구매자의 약 {percentage}%가<br />
+                이제품을 추천합니다.
+              </p>
+            ) : (
+              <p>
+                아직 리뷰가 없습니다
+              </p>
+            )}
+          </li>
+        </ul>
+      )}
     </S.Review>
   );
 }

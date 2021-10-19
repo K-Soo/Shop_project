@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Tap from 'components/ProductDetail/Tap';
 import { IProduct } from 'interfaces/IProduct';
@@ -26,9 +26,9 @@ const S = {
 }
 
 export default function ProductDetail({ item }: IProductDetail) {
-  const [userRate,setUserRate] = useState<number>(0);
-  const [percentage,setPercentage] = useState<number>(0);
-  console.log('percentage: ', percentage);
+  const [userRate, setUserRate] = useState<number>(0);
+  console.log('userRate: ', userRate);
+  const [percentage, setPercentage] = useState<number>(0);
   const fallback: Array<null> = [];
   const productId = item[0]._id;
   const { data: reviewData = fallback, isLoading, isSuccess, isError } = useQuery<IReview[]>([queryKeys.REVIEW, productId], async () => await Get.getProductReview(productId), {
@@ -40,21 +40,27 @@ export default function ProductDetail({ item }: IProductDetail) {
   });
 
   useEffect(() => {
-    const startCalc = reviewData.reduce((acc, cur,index,array) => {
+    const startCalc = reviewData.reduce((acc, cur, index, array) => {
       return acc + Number(cur.rate) / array.length;
     }, 0);
 
-    const percentageCalc = reviewData.reduce((acc, cur,index,array) => {
+    const percentageCalc = reviewData.reduce((acc, cur, index, array) => {
       return startCalc * 100 / 5;
     }, 0);
-    
     setUserRate(startCalc);
+    console.log('startCalc: ', startCalc);
     setPercentage(percentageCalc);
   }, [reviewData]);
   return (
     <S.ProductDetail>
       <ProductInfo item={item} />
-      <ReviewBanner reviewData={reviewData} userRate={userRate} percentage={percentage}/>
+      <ReviewBanner 
+        isSuccess={isSuccess}
+        isLoading={isLoading}
+        reviewCnt={reviewData.length} 
+        userRate={userRate} 
+        percentage={percentage} 
+      />
       <Tap text={['상품정보', '상품 후기', '문의']} reviewCnt={reviewData.length}>
         <InfoTap />
         <ReviewListTap item={item} reviewData={reviewData} />
