@@ -22,6 +22,9 @@ const ProductReviewSchema = new Schema({
     type: String,
     required: true,
   },
+  url:{
+    type: String,
+  },
   rate:{
     type: String,
     required: true,
@@ -29,7 +32,7 @@ const ProductReviewSchema = new Schema({
   },
   createdAt: {
     type: String,
-    default: moment.tz("Asia/Seoul").format('YYYY-MM-DD hh:mm:ss'),
+    default: moment.tz("Asia/Seoul").format('YYYY-MM-DD'),
   }
 }, {
   versionKey: false

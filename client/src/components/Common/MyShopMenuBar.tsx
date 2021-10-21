@@ -44,6 +44,13 @@ const S = {
       button{
         height: 30px;
         font-size: 12px;
+        padding: 0;
+        a{
+          display: inline-block;
+          line-height: 30px;
+          width: 100%;
+          height: 100%;
+        }
       }
     }
     .myshop__list{
@@ -166,7 +173,13 @@ export default function MyShopMenuBar({ }: IMyShopMenuBar) {
             </Link>
           </Button>
         </div>
-        <Button black>마이쇼핑 바로가기</Button>
+        <Button black>
+        <Link href='/users'>
+              <a>
+              마이쇼핑 바로가기
+              </a>
+            </Link>
+        </Button>
       </div>
 
       <ul className='myshop__list'>

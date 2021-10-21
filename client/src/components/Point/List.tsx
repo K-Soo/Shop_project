@@ -1,9 +1,10 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React from "react";
 import styled from "styled-components";
 import { useAppContext } from 'context/AppProvider';
 import Link from 'next/link';
 import Loading from 'components/Common/Loading';
 import {IPointList} from 'interfaces/IPoint';
+import EmptyItem from 'components/Common/EmptyItem';
 
 interface IList {
   data: IPointList;
@@ -124,7 +125,7 @@ export default function List({ data, isSuccess, isLoading, isError }: IList) {
 
           {isLoading && <Loading isLoading={true} text='' />}
 
-          {isSuccess && (
+          {isSuccess ? (
             <>
               {data.pointInfo.length > 0 && data.pointInfo.map((d: any) => {
                 if (d) {
@@ -151,6 +152,8 @@ export default function List({ data, isSuccess, isLoading, isError }: IList) {
                 }
               })}
             </>
+          ):(
+            <EmptyItem text='내역이 없습니다'/>
           )}
         </ul>
       </S.Content>

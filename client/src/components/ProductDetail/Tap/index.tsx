@@ -29,7 +29,7 @@ const S = {
     }
     li:nth-child(1){
       border-width: ${props => props.selectTap === 1 ? '2px 1px 0 0' : '0 0 1px 0'};
-      border-top: ${props => props.selectTap === 1 ? '2px solid #000' : '0 0 1px 0'};
+      border-top: ${props => props.selectTap === 1 ? '2px solid #000' : '2px solid #fff'};
       background-color: ${props => props.selectTap === 1 ? '#fff' : '#F8F9FA'};
       color: ${props => props.selectTap === 1 ? '#111' : '#999'};
     }
@@ -50,13 +50,13 @@ const S = {
         color: #fff;
       }
       border-width: ${props => props.selectTap === 2 ? '2px 0 0 1px' : '0 0 1px 1px'};
-      border-top: ${props => props.selectTap === 2 ? '2px solid #000' : '0 0 1px 0'};
+      border-top: ${props => props.selectTap === 2 ? '2px solid #000' : '2px solid #fff'};
       background-color: ${props => props.selectTap === 2 ? '#fff' : '#F8F9FA'};
       color: ${props => props.selectTap === 2 ? '#111' : '#999'};
     }
     li:nth-child(3){
       border-width: ${props => props.selectTap === 3 ? '2px 1px 0 1px' : '0 0 1px 1px'};
-      border-top: ${props => props.selectTap === 3 ? '2px solid #000' : '0 0 1px 0'};
+      border-top: ${props => props.selectTap === 3 ? '2px solid #000' : '2px solid #fff'};
       background-color: ${props => props.selectTap === 3 ? '#fff' : '#F8F9FA'};
       color: ${props => props.selectTap === 3 ? '#111' : '#999'};
     }

@@ -50,7 +50,7 @@ export default function MenuLeft({ ScrollActive }: IMenuLeft) {
     <S.MenuLeft >
       <S.Home ScrollActive={ScrollActive}>
         <Link href={PAGE.MAIN.path}>
-          <a>홈</a>
+          <a >홈</a>
         </Link>
       </S.Home>
       {MAIN_MENU.left.map(d => (

@@ -4,10 +4,10 @@ import mongoose from 'mongoose';
 
 const createReview = async (req, res, next) => {
   const { idx, productId } = req.params;
-  const { content, rate } = req.body;
-  console.log('req.body: ', req.body);
+  const { content,rate } = req.body;
+
   try {
-    const comment = new ProductReview({ commenter: idx, product: productId, comment: content, rate })
+    const comment = new ProductReview({ commenter: idx, product: productId, comment: content, rate, url: req.file ? req.file.location : null});
     comment.save();
     res.json({ success: true });
   } catch (error) {

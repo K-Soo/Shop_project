@@ -14,7 +14,7 @@ export interface IReviewState {
   product: IProduct[],
   form: {
     content: string,
-    imageUrl: { url: string }[],
+    imageUrl: string | Blob,
     rate: string,
   }
 }
@@ -26,7 +26,7 @@ export const reviewDefaultValue: IUseReview = {
     product: [],
     form: {
       content: '',
-      imageUrl: [],
+      imageUrl: null,
       rate: '',
     }
   },
@@ -37,7 +37,7 @@ const initializer = (props: any) => {
     product: [],
     form: {
       content: '',
-      imageUrl: [],
+      imageUrl: null,
       rate: '',
     }
   };

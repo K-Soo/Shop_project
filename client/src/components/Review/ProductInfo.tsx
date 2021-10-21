@@ -55,7 +55,6 @@ const S = {
 
 export default function ProductInfo({ }: IProductInfo) {
   const { state: { product } } = useReviewContext();
-  console.log('product: ', product);
 
   return (
     <S.ProductInfo>

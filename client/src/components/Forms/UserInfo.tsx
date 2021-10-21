@@ -119,8 +119,8 @@ export default function UserInfo({currentPoint }: IUserInfo) {
       ) : (
         <S.NonMemberInfo>
           <p className='text'>
-            저희 쇼핑몰을 이용해주셔서 대단히 감사합니다.<br />
-            회원가입을 하시면 각종 다양한 혜택들을 받으실 수 있습니다.
+            저희 쇼핑몰을 이용해주셔서 감사합니다.<br />
+            회원가입 하시면 혜택들을 받으실 수 있습니다.
           </p>
           <p className='link-box'>
             <Button black >

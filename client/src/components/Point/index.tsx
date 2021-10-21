@@ -21,9 +21,9 @@ const S = {
 export default function Point() {
   const App = useAppContext();
   const { state: { userInfo: { idx } } } = useAppContext();
-  const limit = 4;
   const queryClient = useQueryClient();
   const currentPage  = Number(App.state.pagination.currentPage);
+  const limit = 4;
 
 
   const selectFc = useCallback((data) => {
@@ -31,14 +31,16 @@ export default function Point() {
       return { ...data, pointInfo: filtered }
   }, []);
 
-  const { data, isLoading, isSuccess, isError } = useQuery<IPointList>([queryKeys.POINT_DETAIL, idx, currentPage, limit], async () => await Get.getPointList(idx, currentPage, limit), {
+  const { data, isLoading, isSuccess, isError,isFetching } = useQuery<IPointList>([queryKeys.POINT_DETAIL, idx, currentPage, limit], async () => await Get.getPointList(idx, currentPage, limit), {
     retry: 0,
-    refetchOnWindowFocus: false,
     keepPreviousData: true,
+    refetchOnWindowFocus: false,
+    staleTime: 2000,
     enabled: !!idx,
     select: selectFc,
   });
-
+  
+  console.log('data: ', data);
   useEffect(() => {
     if(isSuccess){
       if (currentPage < data.maxPages) {
@@ -49,8 +51,7 @@ export default function Point() {
       }
     }
   }, [App.state.pagination.currentPage, queryClient, idx,isSuccess,currentPage]);
-
-
+  
   return (
     <S.Point>
       <PageTitle TitleText='적립금' />
@@ -62,7 +63,7 @@ export default function Point() {
           isError={isError}
         />
       </FormFieldset>
-      {isSuccess && (<Pagination maxPages={data.maxPages} />)}
+      {isSuccess && (<Pagination maxPages={data.maxPages} isFetching={isFetching}/>)}
     </S.Point>
   );
 }

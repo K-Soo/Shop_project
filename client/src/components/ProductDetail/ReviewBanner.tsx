@@ -57,7 +57,7 @@ const S = {
       ul{
         font-size: 14px;
         .desc{
-          font-size: 10px;
+          font-size: 12px;
         }
       }
     }`}
@@ -91,11 +91,15 @@ export default function ReviewBanner({ reviewCnt, userRate, percentage, isSucces
             </div>
           </li>
           <li className='star'>
-            {userRate && (
+            {userRate ? (
               <StyledRate
                 defaultValue={userRate}
                 disabled={true}
               />
+            ):(
+              <p>
+              아직 평점이 없습니다
+            </p>
             )}
           </li>
           <li className='desc'>

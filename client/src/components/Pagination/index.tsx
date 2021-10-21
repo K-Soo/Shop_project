@@ -9,6 +9,7 @@ import TurnBtn from 'components/Pagination/TurnBtn';
 
 interface IPagination {
   maxPages: number;
+  isFetching:boolean;
 }
 
 const S = {
@@ -21,7 +22,7 @@ const S = {
   `,
 }
 
-export default function Pagination({ maxPages }: IPagination) {
+export default function Pagination({ maxPages,isFetching }: IPagination) {
   const { state, action } = useAppContext();
   const [turnPage, setTurnPage] = useState<number>(1);
   const [checkLast, setCheckLast] = useState(false);
@@ -73,23 +74,29 @@ export default function Pagination({ maxPages }: IPagination) {
   return (
     <S.Pagination >
       <div className='wrapper'>
-        <TurnBtn onClick={handleFirstPage} disabled={turnPage === 1}>처음</TurnBtn>
+        <TurnBtn onClick={handleFirstPage} disabled={isFetching || turnPage === 1}>처음</TurnBtn>
         <TurnBtn
           onClick={handlePevPage}
-          disabled={turnPage == 1}
+          disabled={isFetching || turnPage == 1}
         >이전
         </TurnBtn>
         {array && array.map(d => (
-          <NumBtn name='pagination.currentPage' active={String(d) === state.pagination.currentPage} value={d} onClick={action.setFormData} key={d}>{d}</NumBtn>
+          <NumBtn 
+            key={d}
+            name='pagination.currentPage' 
+            active={String(d) === state.pagination.currentPage} 
+            value={d} onClick={action.setFormData} 
+            disabled={isFetching}
+            >{d}</NumBtn>
         ))}
         <TurnBtn
           onClick={handleNextPage}
-          disabled={turnPage === maxTurn[maxTurn.length - 1]}
+          disabled={isFetching || turnPage === maxTurn[maxTurn.length - 1]}
         >다음
         </TurnBtn>
         <TurnBtn
           onClick={handleLastPage}
-          disabled={turnPage === maxTurn[maxTurn.length - 1]}
+          disabled={isFetching || turnPage === maxTurn[maxTurn.length - 1]}
         >마지막
         </TurnBtn>
       </div>

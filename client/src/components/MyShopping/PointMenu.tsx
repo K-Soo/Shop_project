@@ -2,13 +2,14 @@ import React from "react";
 import styled from "styled-components";
 import Link from 'next/link';
 import { PriceComma } from 'utils';
-
+import EmptyItem from 'components/Common/EmptyItem';
 interface IPointMenu {
   currentPoint: number;
   totalUsedPoint: number;
   totalAccPoint: number;
   totalAmount:number;
   totalLength:number;
+  isSuccess:boolean;
 }
 
 const S = {
@@ -87,9 +88,10 @@ const S = {
   `,
 }
 
-export default function PointMenu({ currentPoint, totalUsedPoint, totalAccPoint,totalAmount,totalLength }: IPointMenu) {
+export default function PointMenu({ currentPoint, totalUsedPoint, totalAccPoint,totalAmount,totalLength,isSuccess }: IPointMenu) {
   return (
     <S.PointMenu>
+      {isSuccess || <EmptyItem text='로그인후 이용가능합니다'/>}
       <ul className='lists'>
         <li className='item'>
           <span className='item--label'>가용 적립금</span>
@@ -142,8 +144,6 @@ export default function PointMenu({ currentPoint, totalUsedPoint, totalAccPoint,
             </div>
           </div>
         </li>
-
-
       </ul>
     </S.PointMenu>
   );

@@ -29,7 +29,7 @@ export default function Header() {
   }, [scrollY])
 
   return (
-    <S.Header ScrollActive={scrollActive}>
+    <S.Header ScrollActive={scrollActive} >
       <Menu ScrollActive={scrollActive} />
       <MainLogo />
       <Nav ScrollActive={scrollActive} />

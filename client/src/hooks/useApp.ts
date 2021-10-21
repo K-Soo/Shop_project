@@ -79,7 +79,7 @@ export const appDefaultValue: IApp = {
   },
 };
 
-const initializer = (props) => {
+const initializer = (props:any) => {
   const state: IAppState = {
     pagination:{
       currentPage: '1',
@@ -241,7 +241,7 @@ const generateAction = (update: (recipe: (draft: IAppState) => void) => void) =>
   };
 };
 
-const useApp = (props) => {
+const useApp = (props:any) => {
   const [state, setAppState] = useState(initializer(props));
   console.log('useApp state: ', state);
   const update = (recipe: (draft: IAppState) => void) =>

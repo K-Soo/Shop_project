@@ -4,7 +4,6 @@ import Image from 'next/image';
 import { useRouter, NextRouter } from 'next/router';
 import { IBasketItem } from 'interfaces/IProduct';
 import Button from 'components/style/Button';
-import Icon from 'components/Icon/Icon';
 import Title from 'components/style/Title';
 import Input from 'components/style/Input';
 import { useAppContext } from 'context/AppProvider';
@@ -12,6 +11,7 @@ import { PriceComma } from 'utils';
 import CheckBox from 'components/style/CheckBox';
 import TextIcon from 'components/Common/TextIcon';
 import Link from 'next/link';
+import EmptyItem from 'components/Common/EmptyItem';
 
 
 interface IOrderList {
@@ -26,25 +26,6 @@ interface IOrderList {
 
 const S = {
   OrderList: styled.div`
-  `,
-  EmptyBasket: styled.div`
-    padding: 20px 0;
-    align-items: center;
-    .text{
-      margin-top: 20px;
-      color: #999;
-      text-align: center;
-    }
-    .icon{
-      text-align: center;
-      font-size: 0;
-      svg{
-        color: #333;
-        width: 30px;
-        height: 30px;
-        font-size: 0;
-      }
-    }
   `,
   Item: styled.div<{ asPath: string }>`
     border-bottom: 1px dashed #ccc;
@@ -304,12 +285,7 @@ export default function OrderList({
           </S.Item>
         ))
       ) : (
-        <S.EmptyBasket>
-          <p className='icon'>
-            <Icon name='cart' />
-          </p>
-          <p className='text'>장바구니가 비어있습니다.</p>
-        </S.EmptyBasket>
+        <EmptyItem text='장바구니가 비어있습니다'/>
       )}
 
       {router.asPath === "/order/orderform" && item.length > 0 && (

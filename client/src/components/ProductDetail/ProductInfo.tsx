@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import styled, { css } from 'styled-components';
 import Image from 'next/image'
@@ -38,17 +39,19 @@ const S = {
     .top{
       flex: 1;
       font-size: 0;
-      min-width: 400px;
+      min-width: 300px;
+      border: 1px solid #eee;
       img{
         width: 100%;
         height: 100%;
+        object-fit: cover;
       }
     }
     .bottom{
       flex: 1;
       min-width: 320px;
+      padding: 0 20px;
       .order-button{
-        border: 1px solid red;
       }
     }
     ${({ theme }) => theme.mobile`
@@ -56,11 +59,12 @@ const S = {
       .top{
         width: 100%;
         min-width: 100%;
+        margin-bottom: 20px;
       }
       .bottom{
-        // display: none;
         width: 100%;
         min-width: 100%;
+        padding: 0;
       }
     }
   `}
@@ -436,11 +440,9 @@ export default function ProductInfo({ item }: IProductInfo) {
       {item && item.map((d: IProduct) => (
         <S.Card key={d.seq}>
           <div className='top'>
-            <Image
+            <img
               src={d.imageUrl[0].url}
               alt={d.name}
-              width={600}
-              height={600}
             />
           </div>
 

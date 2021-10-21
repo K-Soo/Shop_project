@@ -5,4 +5,5 @@ export interface IReview {
   product: string
   _id: string;
   rate: string;
+  url?: string;
 }

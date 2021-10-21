@@ -15,8 +15,6 @@ const list = async (req, res, next) => {
   }
 };
 
-
-
 const getProductLists = async (req, res, next) => {
   try {
     const { product_type } = req.params;

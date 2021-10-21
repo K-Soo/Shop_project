@@ -6,21 +6,23 @@ import mongoose from 'mongoose';
 const list = async (req, res, next) => {
   const { idx } = req.params;
   const { page, limit } = req.query;
-  const skip = Number(limit) * (page - 1);
+  const skip = Number(limit) * (Number(page) - 1);
   try {
-    if (!mongoose.Types.ObjectId.isValid(idx)) {
-      throwError({ statusCode: 404 });
-    }
+ 
     const _id = mongoose.Types.ObjectId.createFromHexString(idx);
-    let lastPage = await History.findOne({ user: _id }, { data: 1 });
+    let total = await History.findOne({ user: _id }, { data: 1 }).lean();
 
     let exist = await History.findOne({ user: _id },
       { data: { $slice: [skip, Number(limit)] }, createdAt: 0, updatedAt: 0, __v: 0, _id: 0 }).lean();
 
-    exist.maxPages = lastPage.lastPage;
+    const response = {
+      ...exist,
+      total : total.data.length,
+      maxPages : Math.ceil(total.data.length / limit),
+    }
 
     if (exist) {
-      res.json(exist);
+      res.json(response);
     } else {
       throwError();
     }

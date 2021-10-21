@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import Button from 'components/style/Button';
@@ -62,8 +63,14 @@ const S = {
     align-items: center;
     margin: 20px 0;
     color: #505050;
+    font-size: 14px;
     .review-filter{
       display: flex;
+      align-items: center;
+      p:first-child{
+        border: 1px solid red;
+        margin-right: 10px;
+      }
       p{
         display: flex;
         align-items: flex-end;
@@ -72,7 +79,8 @@ const S = {
           font-size: 0;
           padding-right: 5px;
           svg{
-          color: #505050;
+            color: #505050;
+            height: 16px;
           }
         }
         span{
@@ -84,59 +92,94 @@ const S = {
   List: styled.div`
     border-top: 1px solid rgb(144, 144, 144);
     .item{
+      cursor:pointer;
       display:flex;
-      flex-direction: column;
       justify-content: space-between;
-      /* height: 100px; */
-      padding: 16px 20px;
+      padding: 15px 20px;
       color: #505050;
       font-size: 14px;
-      border-bottom: 1px solid rgb(144, 144, 144);
-      &__user-info{
+      border-bottom: 1px solid #eee;
+      &[data-active=true] {
+        min-height: 150px;
+        flex-direction: column;
+        .desc-box{
+          &__text{
+            max-width: 500px;
+            p{
+              overflow: visible;
+              text-overflow: clip;
+              white-space: normal;
+            }
+          }
+        }
+        .image-box{
+          margin: 0;
+        }
+      }
+      .desc-box{
+        pointer-events: none;
+        flex: 1;
+        &__user-info{
         display: flex;
         justify-content: flex-start;
         align-items: center;
-        border: 1px solid red;
         padding-bottom: 10px;
+        p{
+          font-size: 12px;
+          color: #999;
+        }
       }
-      &__desc{
-        border: 1px solid red;
-        display: flex;
-        justify-content: space-between;
-        max-height: 120px;
-        &--text{
-          border: 3px solid red;
-          display: block; 
-          white-space: nowrap;
+      &__text{
+        max-width: 400px;
+        p{
           overflow: hidden;
+          display: block;
+          text-align: left !important;
           text-overflow: ellipsis;
-          /* width: calc(80%); */
+          white-space: nowrap;
         }
-        &--img{
-          border: 3px solid #000;
+      }
+      &__text *{
+          /* display: flex; */
+          /* text-align: left; */
+        }
+      }
+      .image-box{
+        pointer-events: none;
+        border: 1px solid #eee;
+        margin-left: 15px;
+        font-size: 0;
           width: 120px;
-          /* height: 120px; */
-        }
-        /* text-align: left; */
-        /* height: 60px; */
-        /* width: 300px; */
-        /* overflow: hidden; */
-        /* white-space: nowrap; */
-        /* text-overflow: ellipsis; */
+          height: 120px;
+          font-size: 0;
+          img{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
       }
     }
     ${({ theme }) => theme.mobile`
     .item{
-      height: 85px;
+      height: 100px;
       border: solid rgb(248, 248, 248);
       border-width: 0 0 6px 0;
-      &__user-info{
-        justify-content: space-between;
+      padding: 10px 20px;
+      .desc-box{
+        &__user-info{
+          justify-content: space-between;
+        }
+        &__text{
+        max-width: 200px;
+        }
+      }
+      .image-box{
+        height: 80px;
+        width: 80px;
       }
     }
   `}
   `,
-
 }
 const StyledRate = styled(Rate)`
   &.rc-rate {
@@ -146,25 +189,40 @@ const StyledRate = styled(Rate)`
     .rc-rate-star{
       margin: 0;
     }
-    ${({ theme }) => theme.mobile`
-      font-size: 14px;
-    }`}
   }
 `
 
 export default function ReviewListTap({ item, reviewData }: IReviewListTap) {
+  console.log('item: ', item);
+  console.log('reviewData: ', reviewData);
+  const [active,setActive] = useState('');
   const router: NextRouter = useRouter();
   const App = useAppContext();
   const Review = useReviewContext();
   const TextRef = useRef(null);
 
+  
+  useEffect(() => {
+    const cntImage = reviewData.reduce((acc,cur) => acc + Number(cur.url),0)
+    console.log('cntImage: ', cntImage);
+  },[])
+
 
   const handleRouter = () => {
-    Review.action.setProduct(item);
-    router.push({
-      pathname: '/product/review',
-      query: { idx: App.state.userInfo.idx, productId: item[0]._id },
-    });
+    if (App.state.userInfo.idx) {
+      Review.action.setProduct(item);
+      router.push({
+        pathname: '/product/review',
+        query: { idx: App.state.userInfo.idx, productId: item[0]._id },
+      });
+    } else {
+      alert('로그인후 이용가능합니다.');
+    }
+  }
+
+  const handleItem = (e) => {
+    const { id } = e.target;
+    setActive(id);
   }
 
   return (
@@ -198,28 +256,28 @@ export default function ReviewListTap({ item, reviewData }: IReviewListTap) {
         </Select>
       </S.filterTap>
 
-
       <S.List>
         {reviewData.map(d => (
-          <div key={d._id} className='item'>
-            <div className='item__user-info'>
-              <div>
-                <StyledRate
-                  defaultValue={Number(d.rate)}
-                  disabled={true}
-                />
-                <span style={{ margin: '0 10px' }}>{charConvert(d.commenter.userName)}</span>
+          <div key={d._id} className='item' id={d._id} onClick={handleItem} data-active={d._id === active}>
+            <div className='desc-box'>
+              <div className='desc-box__user-info'>
+                <div>
+                  <StyledRate
+                    defaultValue={Number(d.rate)}
+                    disabled={true}
+                  />
+                  <span style={{ margin: '0 10px' }}>{charConvert(d.commenter.userName)}</span>
+                </div>
+                <p className='date'>{d.createdAt}</p>
               </div>
-              <p>{d.createdAt}</p>
-            </div>
-            <div className='item__desc'>
-              <div id='target-height' ref={TextRef} className='item__desc--text' dangerouslySetInnerHTML={{ __html: d.comment }} />
-
-              <div className='item__desc--img'>
-                d
-              </div>
+              <div id='target-height' className='desc-box__text' ref={TextRef} dangerouslySetInnerHTML={{ __html: d.comment }} />
             </div>
 
+            {d.url && (
+              <div className='image-box'>
+                <img className='image-box__img' src={d.url} alt="dd" />
+              </div>
+            )}
           </div>
         ))}
       </S.List>

@@ -9,6 +9,9 @@ interface IEmptyItem {
 const S = {
   EmptyItem: styled.div`
     padding: 60px 0;
+    ${({ theme }) => theme.mobile`
+    padding: 30px 0;
+    }`}
     .wrapper{
       margin: 0 auto;
       text-align: center;

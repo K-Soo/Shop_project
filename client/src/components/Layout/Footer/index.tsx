@@ -3,7 +3,6 @@ import styled from "styled-components";
 import SubTop from "components/Layout/Footer/SubTop";
 import Top from "components/Layout/Footer/Top";
 import Bottom from "components/Layout/Footer/Bottom";
-import QuickScroll from 'components/Common/QuickScroll';
 
 interface IFooter {
   className?: string;
@@ -15,7 +14,6 @@ const Footer: React.FC<IFooter> = ({ className }) => {
       <SubTop />
       {/* <Top /> */}
       <Bottom />
-      <QuickScroll />
     </footer>
   );
 };

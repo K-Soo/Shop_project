@@ -45,12 +45,13 @@ export default function ProductDetail({ item }: IProductDetail) {
     }, 0);
 
     const percentageCalc = reviewData.reduce((acc, cur, index, array) => {
-      return startCalc * 100 / 5;
+      return Math.ceil(startCalc * 100 / 5);
     }, 0);
+
     setUserRate(startCalc);
-    console.log('startCalc: ', startCalc);
     setPercentage(percentageCalc);
   }, [reviewData]);
+  
   return (
     <S.ProductDetail>
       <ProductInfo item={item} />

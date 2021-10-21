@@ -15,6 +15,7 @@ interface IContent {
 const S = {
   Content: styled.article`
     border: 1px solid #f0f0f0;
+    margin-bottom: 15px;
   `,
   LoadingBox: styled.div`
     height: 60px;
@@ -25,12 +26,9 @@ const S = {
     text-align: center;
     font-size: 12px;
     background-color: #f9f9f9;
-    /* border: 3px solid #000; */
-    /* width: 100%; */
     li{
     border: solid #f0f0f0;
     border-width: 0 1px 1px 0;
-      /* flex: 1; */
       vertical-align: middle;
       line-height: 40px;
       background: #f9f9f9;
@@ -61,7 +59,10 @@ const S = {
   Body: styled.div`
     .item-box{
       display: flex;
-      /* border: 3px solid blue; */
+      border-bottom: 1px solid #f0f0f0;
+      :last-child{
+        border-bottom: none;
+      }
       ${({ theme }) => theme.mobile`
         flex-direction: column;
       `}

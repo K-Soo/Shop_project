@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 const list = async (req, res, next) => {
   const { idx } = req.params;
   const { page, limit } = req.query;
-  const skip = Number(limit) * (page - 1);
+  const skip = Number(limit) * (Number(page) - 1);
   try {
     const total = await Point.findOne({ PointOwner: idx }).lean();
 

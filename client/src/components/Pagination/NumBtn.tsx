@@ -7,6 +7,7 @@ interface INumBtn {
   name?: string;
   active?: boolean;
   children: React.ReactNode;
+  disabled:boolean;
 }
 
 const S = {
@@ -36,9 +37,15 @@ const S = {
   `,
 }
 
-export default function NumBtn({ onClick, value, name, children, active }: INumBtn) {
+export default function NumBtn({ onClick, value, name, children, active,disabled }: INumBtn) {
   return (
-    <S.NumBtn onClick={onClick} name={name} value={value} data-active={active}>
+    <S.NumBtn 
+      onClick={onClick} 
+      name={name} 
+      value={value} 
+      data-active={active} 
+      disabled={disabled}
+    >
       {children}
     </S.NumBtn>
   );
