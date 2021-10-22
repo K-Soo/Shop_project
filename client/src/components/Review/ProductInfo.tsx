@@ -55,13 +55,14 @@ const S = {
 
 export default function ProductInfo({ }: IProductInfo) {
   const { state: { product } } = useReviewContext();
+  console.log('product: ', product);
 
   return (
     <S.ProductInfo>
       {product.map(d => (
         <div key={d._id} className='item'>
           <div className='img-box'>
-            <Link href={d.category + "/" + d.seq}>
+            <Link href={d.product_type + "/" + d.seq}>
               <a>
                 <div className='img-box'>
                   <Image

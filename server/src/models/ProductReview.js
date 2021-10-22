@@ -32,7 +32,7 @@ const ProductReviewSchema = new Schema({
   },
   createdAt: {
     type: String,
-    default: moment.tz("Asia/Seoul").format('YYYY-MM-DD'),
+    default: moment.tz("Asia/Seoul").format('YYYY-MM-DD hh:mm:ss'),
   }
 }, {
   versionKey: false

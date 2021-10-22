@@ -12,6 +12,7 @@ import { useReviewContext } from 'context/ReviewProvider';
 import { Post } from 'api';
 import Radio from 'components/style/Radio';
 import Rate from 'components/style/Rate';
+import { useRouter, NextRouter } from 'next/router';
 
 
 const Editor = dynamic(async () => {
@@ -84,17 +85,26 @@ const starArray = ['★', '★★', '★★★', '★★★★', '★★★★�
 
 export default function Form({ }: IForm) {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  const [textLength,setTextLength] = useState(0);
   console.log('editorState+++++: ', editorState);
   const strCnt = convertToRaw(editorState.getCurrentContent()).blocks[0].text.length; // 문자열 길이
+  const test = convertToRaw(editorState.getCurrentContent()).blocks; // 문자열 길이
+  console.log('test: ', test);
   const App = useAppContext();
   const Review = useReviewContext();
-  console.log('form--------------: ', Review.state.form);
   const idx = App.state?.userInfo?.idx;
   const ProductId = Review.state?.product[0]?._id;
+  const router: NextRouter = useRouter();
 
   const editorToHtml = draftToHtml(convertToRaw(editorState.getCurrentContent()));
 
   const rendered = useRef(false);
+
+  useEffect(() => {
+    const target = convertToRaw(editorState.getCurrentContent()).blocks; // 문자열 길이
+    const result = target.reduce((acc,cur) => acc + (cur.text.length),0 );
+    setTextLength(result);
+  },[editorState])
 
   useEffect(() => {
     Review.action.setData('form.content', editorToHtml);
@@ -114,9 +124,9 @@ export default function Form({ }: IForm) {
   //   }
   // }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (strCnt < 10) return alert('10글자 이상 입력해주세요.');
+    if (textLength < 10) return alert('10글자 이상 입력해주세요.');
     if (!confirm("등록하시겠습니까?")) {
       return;
     } else {
@@ -127,8 +137,11 @@ export default function Form({ }: IForm) {
           formData.append('image', Review.state.form.imageUrl);
           formData.append('content', Review.state.form.content);
           formData.append('rate', Review.state.form.rate);
-          const res = await Post.createReview(idx, ProductId,formData);
-          if (res.success) alert('등록이 완료되었습니다.');
+          const res = await Post.createReview(idx, ProductId, formData);
+          if (res.success) {
+            alert('등록이 완료되었습니다.');
+            router.back();
+          }
         } catch (error: any) {
           console.log('error: ', error?.response?.data?.message);
           alert(error?.response?.data?.message);
@@ -137,9 +150,13 @@ export default function Form({ }: IForm) {
     }
   }
 
-  const handleImage =  (e) => {
+  const handleImage = (e) => {
     Review.action.setData('form.imageUrl', e.target.files[0]);
   }
+
+  useEffect(() => {
+    Review.action.setData('form.rate', '5');
+  },[])
 
   return (
     <S.Form>
@@ -188,7 +205,7 @@ export default function Form({ }: IForm) {
         </S.ImagBox>
 
         <S.ButtonBox className='button-box'>
-          <Button white type='submit' onClick={handleSubmit}>등록</Button>
+          <Button white type='submit'>등록</Button>
           <Button black>취소</Button>
         </S.ButtonBox>
 

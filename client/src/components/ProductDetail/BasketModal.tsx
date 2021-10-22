@@ -136,7 +136,6 @@ const S = {
 
 export default function BasketModal() {
   const [getLocalItem, setGetLocalItem] = useState<IBasketItem[]>([]);
-  console.log('getLocalItem: ', getLocalItem);
   const { action, state } = useBasketContext();
   const App = useAppContext();
   const router = useRouter();

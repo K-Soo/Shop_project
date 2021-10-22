@@ -3,7 +3,6 @@ import styled from "styled-components";
 import PageTitle from 'components/Common/PageTitle';
 import FormFieldset from 'components/Forms/FormFieldset';
 import List from 'components/Point/List';
-// import Pagination from 'components/Point/Pagination';
 import Pagination from 'components/Pagination';
 import { queryKeys } from 'constants/queryKeys';
 import { useQuery, UseQueryResult, useQueryClient } from 'react-query';
@@ -25,7 +24,6 @@ export default function Point() {
   const currentPage  = Number(App.state.pagination.currentPage);
   const limit = 4;
 
-
   const selectFc = useCallback((data) => {
       const filtered = data.pointInfo.map((d: any) => d.usedPoint > 0 ? { ...d, point: `-${PriceComma(d.usedPoint)}`, account: '사용 적립금' } :  { ...d, point: PriceComma(d.savedPoint), account: '상품구매 적립금' });
       return { ...data, pointInfo: filtered }
@@ -40,7 +38,6 @@ export default function Point() {
     select: selectFc,
   });
   
-  console.log('data: ', data);
   useEffect(() => {
     if(isSuccess){
       if (currentPage < data.maxPages) {

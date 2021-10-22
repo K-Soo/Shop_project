@@ -19,8 +19,9 @@ const S = {
     ${props =>
       props.text === 'best' &&
       css`
-      color: #fff;
-      background-color: #1B5DF6;
+      color: #505050;
+      background-color: #fff;
+      border: 1px solid #eee;
     `}
     ${props =>
       props.text === 'new' &&

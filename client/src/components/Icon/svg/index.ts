@@ -34,5 +34,6 @@ import { ReactComponent as circlePlus } from "./circlePlus.svg";
 import { ReactComponent as circleCheck } from "./circleCheck.svg";
 import { ReactComponent as note } from "./note.svg";
 import { ReactComponent as arrowRight } from "./arrowRight.svg";
+import { ReactComponent as image } from "./image.svg";
 
-export { bed, ovalCheck, human, cart, search, bookmark, arrowTop, arrowBottom, arrowLeft, close, heart, BigArrowLeft, cartAdd, plus, minus, info, closeSmall, user, home, arrowNoTailBottom, arrowNoTailTop, trashCan, check, location, userNot, coin, warning, back, menu, menu2, pencil, circlePlus, circleCheck, note, arrowRight };
+export { bed, ovalCheck, human, cart, search, bookmark, arrowTop, arrowBottom, arrowLeft, close, heart, BigArrowLeft, cartAdd, plus, minus, info, closeSmall, user, home, arrowNoTailBottom, arrowNoTailTop, trashCan, check, location, userNot, coin, warning, back, menu, menu2, pencil, circlePlus, circleCheck, note, arrowRight, image };

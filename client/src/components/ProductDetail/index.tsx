@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback,SetStateAction } from 'react';
 import styled from 'styled-components';
 import Tap from 'components/ProductDetail/Tap';
 import { IProduct } from 'interfaces/IProduct';
@@ -11,7 +11,8 @@ import BuyInfoTap from 'components/ProductDetail/Tap/BuyInfoTap';
 import { useQuery } from 'react-query';
 import { queryKeys } from 'constants/queryKeys';
 import { Get } from 'api';
-import Rate from 'rc-rate';
+import { useAppContext } from 'context/AppProvider';
+import SelectFilter from 'components/ProductDetail/Tap/ReviewListTap/SelectFilter';
 
 interface IProductDetail {
   item: IProduct[];
@@ -26,45 +27,62 @@ const S = {
 }
 
 export default function ProductDetail({ item }: IProductDetail) {
-  const [userRate, setUserRate] = useState<number>(0);
-  console.log('userRate: ', userRate);
-  const [percentage, setPercentage] = useState<number>(0);
-  const fallback: Array<null> = [];
+  const App = useAppContext();
   const productId = item[0]._id;
-  const { data: reviewData = fallback, isLoading, isSuccess, isError } = useQuery<IReview[]>([queryKeys.REVIEW, productId], async () => await Get.getProductReview(productId), {
-    retry: 0,
-    refetchOnWindowFocus: true,
-    // staleTime: Infinity,
-    // select: selectFc,
-    // enabled: state.openSearch,
-  });
+  const currentPage = Number(App.state.pagination.currentPage);
+  const [sortKey, setSortKey] = useState('createdAt');
+  const [sortValue, setSortValue] = useState(-1);
 
-  useEffect(() => {
-    const startCalc = reviewData.reduce((acc, cur, index, array) => {
-      return acc + Number(cur.rate) / array.length;
-    }, 0);
+  //   const selectFc = useCallback((data) => {
+  //     const test  = data.items.sort((a,b) => a.rate > b.rate ? 1 : -1);
+  //     console.log('test: ', test);
+  //     return data
+  // }, []);
 
-    const percentageCalc = reviewData.reduce((acc, cur, index, array) => {
-      return Math.ceil(startCalc * 100 / 5);
-    }, 0);
+  const { data: reviewData, isLoading, isSuccess, isError, isFetching } = useQuery<IReview>([queryKeys.REVIEW.name, productId, currentPage, queryKeys.REVIEW.limit, sortKey, sortValue],
+    async () => await Get.getProductReview(productId, currentPage, queryKeys.REVIEW.limit, sortKey, sortValue),
+    {
+      retry: 0,
+      keepPreviousData: true,
+      refetchOnWindowFocus: true,
+      staleTime: 2000,
+      // select: selectFc,
+      // enabled: state.openSearch,
+    });
 
-    setUserRate(startCalc);
-    setPercentage(percentageCalc);
-  }, [reviewData]);
-  
+  const handleFiltered = (e:React.ChangeEvent<HTMLSelectElement>) => {
+    const { value, selectedOptions } = e.target
+    const name = selectedOptions[0].getAttribute('data-name');
+    setSortKey(name);
+    setSortValue(Number(value));
+  }
+
   return (
     <S.ProductDetail>
       <ProductInfo item={item} />
-      <ReviewBanner 
+      <ReviewBanner
         isSuccess={isSuccess}
         isLoading={isLoading}
-        reviewCnt={reviewData.length} 
-        userRate={userRate} 
-        percentage={percentage} 
+        reviewCnt={reviewData && reviewData.reviewCnt}
+        userRate={reviewData && reviewData.totalRate}
+        percentage={reviewData && reviewData.totalPercentage}
       />
-      <Tap text={['상품정보', '상품 후기', '문의']} reviewCnt={reviewData.length}>
+      <Tap text={['상품정보', '상품 후기', '문의']} reviewCnt={reviewData && reviewData.reviewCnt}>
         <InfoTap />
-        <ReviewListTap item={item} reviewData={reviewData} />
+        <ReviewListTap
+          isSuccess={isSuccess}
+          isLoading={isLoading}
+          isFetching={isFetching}
+          item={item}
+          items={reviewData && reviewData.items}
+          maxPages={reviewData && reviewData.maxPages}
+        >
+          <SelectFilter
+            reviewCnt={reviewData && reviewData.reviewCnt}
+            totalImageReview={reviewData && reviewData.totalImageReview}
+            handleFiltered={handleFiltered}
+          />
+        </ReviewListTap>
         <BuyInfoTap />
       </Tap>
     </S.ProductDetail>

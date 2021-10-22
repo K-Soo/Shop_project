@@ -1,7 +1,10 @@
 export const queryKeys = {
   HISTORY: 'history',
   SEARCH: 'search',
-  REVIEW: 'review',
+  REVIEW: {
+    name: 'review',
+    limit: 4,
+  },
   INTEREST_PRODUCT: 'interestProduct',
   POINT: 'point',
   POINT_DETAIL: 'pointDetail',

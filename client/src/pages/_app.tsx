@@ -15,6 +15,7 @@ import jwt from "jsonwebtoken";
 import AppProvider, { useAppContext } from 'context/AppProvider';
 import ReviewProvider from 'context/ReviewProvider';
 import OrderProvider from 'context/OrderProvider';
+import AdminProvider from 'context/AdminProvider';
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 export default function App(props: AppProps) {
   const { state, action } = useAppContext();
@@ -31,6 +32,7 @@ export default function App(props: AppProps) {
     <>
       <GlobalStyle />
       <AppProvider AppProps={props}>
+      <AdminProvider >
         <OrderProvider value={props}>
         <ReviewProvider value={props}>
           <QueryClientProvider client={queryClient}>
@@ -47,6 +49,7 @@ export default function App(props: AppProps) {
           </QueryClientProvider>
             </ReviewProvider>
         </OrderProvider>
+        </AdminProvider>
       </AppProvider>
     </>
   );

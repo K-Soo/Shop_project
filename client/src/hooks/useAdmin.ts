@@ -13,6 +13,10 @@ export interface IUseAdmin {
 export interface IAdminState {
   status: { loading: boolean };
   sideOpen: boolean;
+  filter:{
+    product_type: string;
+    category: string,
+  }
   create: {
     new_product: boolean,
     best_product: boolean,
@@ -25,7 +29,9 @@ export interface IAdminState {
     description: string,
     product_colors: { hex_value: string, color_name: string }[],
     imageUrl: { url: string }[],
-  }
+  },
+
+
 }
 
 export const adminDefaultValue: IUseAdmin = {
@@ -34,6 +40,10 @@ export const adminDefaultValue: IUseAdmin = {
   state: {
     status: { loading: false },
     sideOpen: false,
+    filter:{
+      product_type: '',
+      category: '',
+    },
     create: {
       new_product: false,
       best_product: false,
@@ -54,6 +64,10 @@ const initializer = (props: any) => {
   const state: IAdminState = {
     status: { loading: false },
     sideOpen: false,
+    filter:{
+      product_type: '',
+      category: '',
+    },
     create: {
       new_product: false,
       best_product: false,
@@ -128,14 +142,19 @@ const generateAction = (update: (recipe: (draft: IAdminState) => void) => void) 
 
 const useAdmin = (props: any) => {
   const [state, setAppState] = useState(() => initializer(props));
-  console.log('state: ', state);
+  console.log('state useAdmin: ', state);
 
   const update = (recipe: (draft: IAdminState) => void) =>
     setAppState((prev) => produce(prev, recipe));
+    
 
   const action = generateAction(update);
 
   const app = { props, state, action };
+
+  useEffect(() => {
+    action.setData('filter.product_type','necklace');
+  },[])
 
   return app;
 };

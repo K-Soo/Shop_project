@@ -9,11 +9,14 @@ import TurnBtn from 'components/Pagination/TurnBtn';
 
 interface IPagination {
   maxPages: number;
-  isFetching:boolean;
+  isFetching: boolean;
+  pageSize?: number;
+  margin?: string;
 }
 
 const S = {
-  Pagination: styled.div`
+  Pagination: styled.div<{ margin: string }>`
+    margin : ${props => props.margin ? props.margin : '0'};
     .wrapper{
       display:flex;
       justify-content: center;
@@ -22,19 +25,14 @@ const S = {
   `,
 }
 
-export default function Pagination({ maxPages,isFetching }: IPagination) {
+export default function Pagination({ maxPages, isFetching, margin, pageSize = 3 }: IPagination) {
   const { state, action } = useAppContext();
   const [turnPage, setTurnPage] = useState<number>(1);
   const [checkLast, setCheckLast] = useState(false);
-  console.log('----------turnPage: ', turnPage);
-  const pageSize = 3;
   const maxT = Math.ceil(maxPages / pageSize);
   const maxTurn = Array.from({ length: maxT }, (v, i) => i + 1);
-  console.log('maxTurn: ', maxTurn);
   const { array } = usePaginate(maxPages, pageSize, turnPage);
-  console.log('array: ', array);
 
-  console.log('maxPages: ', maxPages);
   useDidMountEffect(() => {
     if (array.length) {
       if (!checkLast) {
@@ -45,7 +43,6 @@ export default function Pagination({ maxPages,isFetching }: IPagination) {
     }
   }, [turnPage, array]);
 
-  // maxPages : Math.ceil(total.pointInfo.length / limit),
 
   const handleFirstPage = () => {
     // 처음
@@ -72,7 +69,7 @@ export default function Pagination({ maxPages,isFetching }: IPagination) {
   }
 
   return (
-    <S.Pagination >
+    <S.Pagination margin={margin}>
       <div className='wrapper'>
         <TurnBtn onClick={handleFirstPage} disabled={isFetching || turnPage === 1}>처음</TurnBtn>
         <TurnBtn
@@ -81,13 +78,13 @@ export default function Pagination({ maxPages,isFetching }: IPagination) {
         >이전
         </TurnBtn>
         {array && array.map(d => (
-          <NumBtn 
+          <NumBtn
             key={d}
-            name='pagination.currentPage' 
-            active={String(d) === state.pagination.currentPage} 
-            value={d} onClick={action.setFormData} 
+            name='pagination.currentPage'
+            active={String(d) === state.pagination.currentPage}
+            value={d} onClick={action.setFormData}
             disabled={isFetching}
-            >{d}</NumBtn>
+          >{d}</NumBtn>
         ))}
         <TurnBtn
           onClick={handleNextPage}

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React from "react";
 import Image from 'next/image'
 import Link from 'next/link'
@@ -29,7 +30,7 @@ interface IProductCard {
 const S = {
   ProductCard: styled.div<{isList:boolean}>`
     height: 100%;
-    padding: 15px;
+    padding: 10px;
     ${props => props.isList && css`
       flex: 1 25%;
       max-width: 25%;
@@ -51,11 +52,12 @@ const S = {
     `}
     .card-inner{
       margin: 0 auto;
-      max-width: 350px;
+      max-width: 260px;
       display: flex;
       flex-direction: column;
       .img-box{
-        height: 350px;
+        height: 300px;
+        margin-bottom: 15px;
         font-size: 0;
         img{
           width: 100%;
@@ -80,11 +82,8 @@ const S = {
           width: 100%;
           text-align: left;
         }
-      }
-      &:hover{
-        S.Line{
-          background: #000;
-          transition: all 0.5s ease;
+        .desc{
+          margin-bottom: 5px;
         }
       }
       ${({ theme }) => theme.mobile`
@@ -103,15 +102,13 @@ const S = {
   `,
   IconBox: styled.p`
     display: flex;
+    align-items: center;
     margin-bottom: 5px;
+    height: 16px;
   `,
   ColorBox: styled.p`
   `,
-  Line: styled.hr`
-    border: 1px solid #f0f0f0;
-    color: #f0f0f0;
-    width: 100%;
-  `,
+
 }
 
 export default function ProductCard({ 
@@ -155,8 +152,7 @@ export default function ProductCard({
 
           <Title level={6} className='title'>{name}</Title>
 
-          <S.Line />
-          <p>{description.slice(0, 30)}</p>
+          <p className='desc'>{description.slice(0, 30)}</p>
           <span style={{ color: '#999' }}><del>{PriceComma(product_price)}원</del></span>
           <b style={{ color: '#4d4d4d' }}>{PriceComma(consumer_price)}원</b>
         </div>

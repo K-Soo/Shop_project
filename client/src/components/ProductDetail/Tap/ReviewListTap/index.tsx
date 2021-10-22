@@ -2,26 +2,28 @@
 import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import Button from 'components/style/Button';
-import ReviewBanner from 'components/ProductDetail/ReviewBanner';
 import Icon from 'components/Icon/Icon';
 import { NextRouter, useRouter } from 'next/router';
 import { useAppContext } from 'context/AppProvider';
-import Link from 'next/link';
-import { Post, Put } from 'api';
 import { IProduct } from 'interfaces/IProduct';
-import { IReview } from 'interfaces/IReview';
+import { IReview, TItems } from 'interfaces/IReview';
 import { useReviewContext } from 'context/ReviewProvider';
 import Select from 'components/style/Select';
-import draftToHtml from 'draftjs-to-html';
-import htmlToDraft from 'html-to-draftjs';
-import { EditorState, convertToRaw, ContentState } from 'draft-js';
 import Rate from 'rc-rate';
 import 'rc-rate/assets/index.css';
 import { charConvert } from 'utils';
+import FsLightbox from 'fslightbox-react';
+import EmptyItem from 'components/Common/EmptyItem';
+import Pagination from 'components/Pagination';
 
 interface IReviewListTap {
   item: IProduct[];
-  reviewData: IReview[];
+  items: TItems[];
+  maxPages: number;
+  isSuccess: boolean;
+  isLoading: boolean;
+  isFetching: boolean;
+  children?: React.ReactNode;
 }
 
 const S = {
@@ -57,38 +59,6 @@ const S = {
     }
   `}
   `,
-  filterTap: styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 20px 0;
-    color: #505050;
-    font-size: 14px;
-    .review-filter{
-      display: flex;
-      align-items: center;
-      p:first-child{
-        border: 1px solid red;
-        margin-right: 10px;
-      }
-      p{
-        display: flex;
-        align-items: flex-end;
-        i{
-          display: inline-block;
-          font-size: 0;
-          padding-right: 5px;
-          svg{
-            color: #505050;
-            height: 16px;
-          }
-        }
-        span{
-          color: #505050;
-        }
-      }
-    }
-  `,
   List: styled.div`
     border-top: 1px solid rgb(144, 144, 144);
     .item{
@@ -99,23 +69,7 @@ const S = {
       color: #505050;
       font-size: 14px;
       border-bottom: 1px solid #eee;
-      &[data-active=true] {
-        min-height: 150px;
-        flex-direction: column;
-        .desc-box{
-          &__text{
-            max-width: 500px;
-            p{
-              overflow: visible;
-              text-overflow: clip;
-              white-space: normal;
-            }
-          }
-        }
-        .image-box{
-          margin: 0;
-        }
-      }
+   
       .desc-box{
         pointer-events: none;
         flex: 1;
@@ -130,7 +84,12 @@ const S = {
         }
       }
       &__text{
+        display: block;
         max-width: 400px;
+        max-height: 40px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
         p{
           overflow: hidden;
           display: block;
@@ -139,24 +98,39 @@ const S = {
           white-space: nowrap;
         }
       }
-      &__text *{
-          /* display: flex; */
-          /* text-align: left; */
-        }
       }
       .image-box{
-        pointer-events: none;
+        cursor: pointer;
         border: 1px solid #eee;
         margin-left: 15px;
         font-size: 0;
-          width: 120px;
-          height: 120px;
-          font-size: 0;
-          img{
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        width: 120px;
+        height: 120px;
+        font-size: 0;
+        img{
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+      &[data-active=true] {
+        min-height: 150px;
+        flex-direction: column;
+        .desc-box{
+          &__text{
+            max-width: 100%;
+            max-height: 100%;
+            border: 1px solid red;
+            p{
+              overflow: hidden;
+              text-overflow: clip;
+              white-space: pre-wrap;
+            }
           }
+        }
+        .image-box{
+          margin: 0;
+        }
       }
     }
     ${({ theme }) => theme.mobile`
@@ -192,21 +166,16 @@ const StyledRate = styled(Rate)`
   }
 `
 
-export default function ReviewListTap({ item, reviewData }: IReviewListTap) {
-  console.log('item: ', item);
-  console.log('reviewData: ', reviewData);
-  const [active,setActive] = useState('');
+export default function ReviewListTap({ item, items, maxPages, isSuccess, isLoading, isFetching ,children}: IReviewListTap) {
+  const [active, setActive] = useState('');
+  const [imageToggler, setImageToggler] = useState({
+    toggle: false,
+    url: '',
+  });
   const router: NextRouter = useRouter();
   const App = useAppContext();
   const Review = useReviewContext();
   const TextRef = useRef(null);
-
-  
-  useEffect(() => {
-    const cntImage = reviewData.reduce((acc,cur) => acc + Number(cur.url),0)
-    console.log('cntImage: ', cntImage);
-  },[])
-
 
   const handleRouter = () => {
     if (App.state.userInfo.idx) {
@@ -220,9 +189,17 @@ export default function ReviewListTap({ item, reviewData }: IReviewListTap) {
     }
   }
 
-  const handleItem = (e) => {
-    const { id } = e.target;
-    setActive(id);
+  const handleItem = (e: React.MouseEvent<HTMLDivElement>) => {
+    const { id } = e.target as HTMLDivElement;
+    setActive(prev => prev === id ? 'false' : id);
+  }
+
+  const handleImage = (e: any) => {
+    setImageToggler({
+      ...imageToggler,
+      toggle: !imageToggler.toggle,
+      url: e.target.src,
+    });
   }
 
   return (
@@ -238,49 +215,51 @@ export default function ReviewListTap({ item, reviewData }: IReviewListTap) {
         </Button>
       </S.ButtonBox>
 
-      <S.filterTap>
-        <div className='review-filter'>
-          <p>
-            <i><Icon name='menu2' /></i>
-            <span>전체 리뷰 ({reviewData.length})</span>
-          </p>
-          <p>
-            <i><Icon name='menu2' /></i>
-            <span>사진 리뷰</span>
-          </p>
-        </div>
-        <Select width='140' height='35'>
-          <option value="">aasd</option>
-          <option value="">aasd</option>
-          <option value="">aasd</option>
-        </Select>
-      </S.filterTap>
+      {children}
 
-      <S.List>
-        {reviewData.map(d => (
-          <div key={d._id} className='item' id={d._id} onClick={handleItem} data-active={d._id === active}>
-            <div className='desc-box'>
-              <div className='desc-box__user-info'>
-                <div>
-                  <StyledRate
-                    defaultValue={Number(d.rate)}
-                    disabled={true}
-                  />
-                  <span style={{ margin: '0 10px' }}>{charConvert(d.commenter.userName)}</span>
+      {isSuccess && (
+        <>
+        {items.length > 0 ? (
+          <>
+          <S.List>
+            {items.length && items.map(d => (
+              <div key={d._id} className='item' id={d._id} onClick={handleItem} data-active={d._id === active}>
+                <div className='desc-box'>
+                  <div className='desc-box__user-info'>
+                    <div>
+                      <StyledRate
+                        defaultValue={Number(d.rate)}
+                        disabled={true}
+                      />
+                      <span style={{ margin: '0 10px' }}>{charConvert(d.commenter.userName)}</span>
+                    </div>
+                    <p className='date'>{d.createdAt}</p>
+                  </div>
+                  <div id='target-height' className='desc-box__text' ref={TextRef} dangerouslySetInnerHTML={{ __html: d.comment }} />
                 </div>
-                <p className='date'>{d.createdAt}</p>
+  
+                {d.url && (
+                  <div className='image-box' onClick={handleImage}>
+                    <img className='image-box__img' src={d.url} alt="dd" />
+                  </div>
+                )}
               </div>
-              <div id='target-height' className='desc-box__text' ref={TextRef} dangerouslySetInnerHTML={{ __html: d.comment }} />
-            </div>
+            ))}
+          </S.List>
+          <Pagination maxPages={maxPages} isFetching={isFetching} margin='20px 0'/>
+          </>
+        ) : (
+          <EmptyItem text='리뷰가 없습니다' />
+        )}
+        </>
+      )}
 
-            {d.url && (
-              <div className='image-box'>
-                <img className='image-box__img' src={d.url} alt="dd" />
-              </div>
-            )}
-          </div>
-        ))}
-      </S.List>
+      <FsLightbox
+        toggler={imageToggler.toggle}
+        sources={[
+          imageToggler.url
+        ]}
+      />
     </S.ReviewListTap>
   );
 }

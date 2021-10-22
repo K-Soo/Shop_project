@@ -8,6 +8,8 @@ interface IRate {
   checked: boolean;
   value: number;
   text: string;
+  defaultChecked?:boolean;
+  defaultValue?:string | number;
 }
 
 const S = {
@@ -33,7 +35,9 @@ export default function Rate({
   onClick,
   checked,
   value,
-  text
+  text,
+  defaultChecked,
+  defaultValue
 }: IRate) {
   return (
     <S.Rate text={text}>
@@ -42,6 +46,8 @@ export default function Rate({
         name={name}
         onClick={onClick}
         value={value}
+        defaultChecked={defaultChecked}
+        defaultValue={defaultValue}
       />
       {checked ? (<i className='check'><Icon name='circleCheck' style={{ color: '#8c4153' }} /></i>) : (<i className='plus'><Icon name='circlePlus' /></i>)}
     </S.Rate>

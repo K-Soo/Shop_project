@@ -21,9 +21,10 @@ interface IButton {
   dataColor?: any;
   disabled?: boolean;
   value?:string;
+  color?:string;
 }
 
-const Button: React.FC<IButton> = ({ className, children, onClick, type, name,dataColor,disabled,onKeyPress,value }) => {
+const Button: React.FC<IButton> = ({ className, children, onClick, type, name,dataColor,disabled,onKeyPress,value,color }) => {
   return (
     <button 
       className={className} 
@@ -48,7 +49,7 @@ export default styled(Button)`
   font-weight: ${({ fontWeight }) => fontWeight ?? "500"};
   cursor: pointer;
   text-align: center;
-  background: #152a69;
+  background: ${({ color }) => color ?? "#152a69"};
   color: #ffffff;
   border: none;
   letter-spacing: 2px;

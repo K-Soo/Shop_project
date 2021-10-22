@@ -22,7 +22,7 @@ const S = {
 export default function AdminContainer({ children }: IAdminContainer) {
   return (
     <S.AdminContainer >
-      <AdminProvider >
+      {/* <AdminProvider > */}
         <Section>
           <Section.Header>
             <AdminNav />
@@ -34,7 +34,7 @@ export default function AdminContainer({ children }: IAdminContainer) {
             {children}
           </Section.Main>
         </Section>
-      </AdminProvider>
+      {/* </AdminProvider> */}
     </S.AdminContainer>
   );
 };

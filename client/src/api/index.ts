@@ -36,9 +36,9 @@ export const Get = {
   getAllProduct: (): Promise<IProduct[]> => requests.get(`/api/products/list`),
   getHistory: (idx: string, page: number,limit:number) => requests.get(`/api/users/history/${idx}?page=${page}&limit=${limit}`),
   getHistoryDetail: (idx: string, orderNum: string) => requests.get(`/api/users/history/${idx}/${orderNum}`),
-  getProductReview: (productId: string) => requests.get(`/api/products/review/${productId}`),
   getInterestProductList: (idx: string, page: number) => requests.get(`/api/users/interest-product/${idx}?page=${page}`),
   getPointInfo: (idx: string) => requests.get(`/api/users/point/${idx}/info`),
+  getProductReview: (productId: string,page:number,limit:number,key:string,value:number) => requests.get(`/api/products/review/${productId}?page=${page}&limit=${limit}&key=${key}&value=${value}`),
   getPointList: (idx: string,page:number,limit:number) => requests.get(`/api/users/point/${idx}?page=${page}&limit=${limit}`),
 };
 

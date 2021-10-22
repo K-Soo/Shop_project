@@ -11,6 +11,7 @@ interface ICheckBox {
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
   marginL?: string;
   marginR?: string;
+  id?:string;
 }
 
 const CheckBoxInput: React.FunctionComponent<ICheckBox> = ({
@@ -20,7 +21,8 @@ const CheckBoxInput: React.FunctionComponent<ICheckBox> = ({
   defaultChecked,
   checked,
   value,
-  required
+  required,
+  id
 }) => {
   return (
     <label className={className}>
@@ -32,6 +34,7 @@ const CheckBoxInput: React.FunctionComponent<ICheckBox> = ({
         defaultChecked={defaultChecked}
         value={value}
         required={required}
+        id={id}
       />
       <div>
         <Icon name='check' />

@@ -86,9 +86,7 @@ const generateAction = (update: (recipe: (draft: IReviewState) => void) => void)
 
 const useReview = (props: any) => {
   const [state, setAppState] = useState(() => initializer(props));
-  console.log('useReview state: ', state);
   const router:NextRouter = useRouter();
-  console.log('router: ', router);
       
   const update = (recipe: (draft: IReviewState) => void) =>
   setAppState((prev) => produce(prev, recipe));
