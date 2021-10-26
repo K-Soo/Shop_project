@@ -121,7 +121,6 @@ const colorInit: TColor = { hex_value: '', color_name: '' };
 
 export default function Create(props: ICreate) {
   const { state, action } = useAdminContext();
-  console.log('state: ', state);
   const { product_type } = state.create;
   const [color, setColor] = useState(colorInit);
   const [content, setContent] = useState();

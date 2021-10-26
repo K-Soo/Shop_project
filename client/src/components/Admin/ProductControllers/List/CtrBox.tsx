@@ -18,14 +18,12 @@ const S = {
       height: 35px;
       padding: 0;
     }
-
   `,
 }
 
 export default function CtrBox({className}:ICtrBox) {
   return (
     <S.CtrBox className={className}>
-      <Button color='crimson'>상품삭제</Button>
       <Button>일괄종료</Button>
       <Button>판매종료</Button>
     </S.CtrBox>

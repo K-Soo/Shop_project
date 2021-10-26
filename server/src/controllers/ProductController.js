@@ -20,11 +20,6 @@ const getProductLists = async (req, res, next) => {
     const { product_type } = req.params;
     const exist = await Product.find({ product_type });
     res.json(exist);
-
-    //   if(result && result.length === 0){
-    //     throwError({statusCode: 404 }); 
-    //  }
-
   } catch (error) {
     console.error('/getProductLists', error);
     next(error);

@@ -20,6 +20,7 @@ export interface IProduct {
   __v?: number;
   _id?: string;
   sold?: number;
+  qty?:number;
 }
 export interface IBasketItem extends IProduct {
   date?: string;

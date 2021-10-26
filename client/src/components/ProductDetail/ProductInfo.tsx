@@ -17,7 +17,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useAppContext } from 'context/AppProvider';
 import useCheckDuplicate from 'hooks/useCheckDuplicate';
-
+import EmptyItem from 'components/Common/EmptyItem';
+import TextIcon from 'components/Common/TextIcon';
 interface IProductInfo {
   item: IProduct[];
 }
@@ -32,15 +33,31 @@ const S = {
     height: 100%;
     margin: 0 auto;
   `,
-  Card: styled.article`
+  Card: styled.article<{ isSoldOut: boolean }>`
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
     .top{
       flex: 1;
+      position: relative;
       font-size: 0;
       min-width: 300px;
       border: 1px solid #eee;
+      max-height: 480px;
+      .sold-out{
+        position: absolute;
+        width: 100%;
+        text-align: center;
+        height: 100%;
+        background-color: rgb(255,255,255,0.6);
+        display: ${props => props.isSoldOut ? 'flex' : 'none'};
+        justify-content: center;
+        align-items: center;
+        p{
+          color: #666;
+          font-size: 24px;
+        }
+      }
       img{
         width: 100%;
         height: 100%;
@@ -70,23 +87,7 @@ const S = {
   `}
   `,
   IconBox: styled.p`
-    margin-bottom:5px;
-    i{
-      border-radius: 3px;
-      &:first-child{
-        margin-right: 5px;
-      }
-    }
-    .new-icon{
-      ${CommonIcon}
-      color: #718FC5;
-      background-color: #FFEF36;
-    }
-    .best-icon{
-      ${CommonIcon}
-      color: #000;
-      background-color: #1B5DF6;
-    }
+    display: flex;
   `,
   TitleBox: styled.div`
     display: flex;
@@ -183,7 +184,7 @@ const S = {
   `,
 
   ProductColorSelect: styled.div`
-    margin: 20px 0;
+    margin-top: 20px;
     display: flex;
     align-items: center;
     /* padding: 10px 0; */
@@ -209,9 +210,18 @@ const S = {
     font-size: 10px;
     display: flex;
     align-items: center;
+    margin-bottom: 5px;
     }
-    p:first-child{
-      margin-bottom: 5px;
+    p:last-child{
+      margin-bottom: 0px;
+    }
+    .qty-name{
+      font-size: 13px;
+      color: #000;
+      &--qty{
+        padding-left: 3px;
+        color: #8c4153;
+      }
     }
     .cnt::after{
       content: '최소주문수량 1개 이상';
@@ -322,10 +332,18 @@ const S = {
       }
     }
   `,
+  SoldOut: styled.div`
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+  `,
 }
 
 export default function ProductInfo({ item }: IProductInfo) {
+  console.log('item: ', item);
   const [showSpec, setShowSpec] = useState<boolean>(false);
+  const [isSoldOut, setIsSoldOut] = useState<boolean>(false);
   const [selectItems, setSelectItems] = useState<IBasketItem[]>([]);
   const [interestProduct, setInterestProduct] = useState<string>('');
   const { action, state } = useBasketContext();
@@ -336,6 +354,7 @@ export default function ProductInfo({ item }: IProductInfo) {
 
   useEffect(() => {
     setInterestProduct(item[0].name);
+    if (Number(item[0].qty) === 0) setIsSoldOut(true);
   }, [item]);
 
   const handleAddInterestProduct = async () => {
@@ -406,6 +425,7 @@ export default function ProductInfo({ item }: IProductInfo) {
     const cnt = +e.target.value;
     if (!cnt) return alert('최소 주문수량은 1개 입니다.');
     if (cnt > 10) return alert('최대 주문수량은 10개 입니다.');
+    if (cnt > item[0].qty) return alert(`최대 주문수량은 ${item[0].qty}개 입니다.`);
     targetItem.qty = cnt;
     targetItem.totalConsumerPrice = String(+targetItem.consumer_price * cnt);
     targetItem.totalProductPrice = String(+targetItem.product_price * cnt);
@@ -438,8 +458,11 @@ export default function ProductInfo({ item }: IProductInfo) {
   return (
     <S.ProductInfo>
       {item && item.map((d: IProduct) => (
-        <S.Card key={d.seq}>
+        <S.Card key={d.seq} isSoldOut={isSoldOut}>
           <div className='top'>
+            <div className='sold-out'>
+              <p>SOLD OUT</p>
+            </div>
             <img
               src={d.imageUrl[0].url}
               alt={d.name}
@@ -453,8 +476,8 @@ export default function ProductInfo({ item }: IProductInfo) {
               ))}
             </S.ColorListShow>
             <S.IconBox >
-              {d.new_product && <i className='new-icon' >new</i>}
-              {d.best_product && <i className='best-icon' >best</i>}
+              {d.new_product && <TextIcon text='new' margin='0 3px 0 0' />}
+              {d.best_product && <TextIcon text='best' />}
             </S.IconBox>
 
             <S.TitleBox>
@@ -475,79 +498,88 @@ export default function ProductInfo({ item }: IProductInfo) {
               {d.summary_description}
             </S.SummaryDesc>
 
-            <S.Spec showSpec={showSpec}>
-              <div className='title' onClick={() => setShowSpec(!showSpec)} >
-                <span>
-                  상품정보
-                </span>
-                {showSpec ? <Icon name='minus' /> : <Icon name='plus' />}
-              </div>
-              <div className='area'>
-                <ul className='area__info'>
-                  <li><del>{PriceComma(d.product_price)}원</del></li>
-                  <li>{PriceComma(d.consumer_price)}원</li>
-                  <li>{d.description}</li>
-                </ul>
-              </div>
-            </S.Spec>
-
-            <S.ProductColorSelect>
-              <div className='title-box'>
-                <span>색상</span>
-                <strong className='required-check'>[필수]</strong>
-              </div>
-              <div className='radio-box'>
-                {d.product_colors.length && d.product_colors.map((d, i) => (
-                  <div key={d.hex_value}>
-                    <CheckBoxColor
-                      className='color-item'
-                      name='checkbox-color'
-                      checked={(selectItems as any).find((f: any) => f.selectColor[0].hexValue === d.hex_value) || false}
-                      dataColorName={d.color_name}
-                      value={d.hex_value}
-                      title={d.color_name}
-                      onChange={(e) => handleSelectItem(e, item)} />
+            {d.qty > 0 ? (
+              <>
+                <S.Spec showSpec={showSpec}>
+                  <div className='title' onClick={() => setShowSpec(!showSpec)} >
+                    <span>
+                      상품정보
+                    </span>
+                    {showSpec ? <Icon name='minus' /> : <Icon name='plus' />}
                   </div>
-                ))}
-              </div>
-            </S.ProductColorSelect>
+                  <div className='area'>
+                    <ul className='area__info'>
+                      <li><del>{PriceComma(d.product_price)}원</del></li>
+                      <li>{PriceComma(d.consumer_price)}원</li>
+                      <li>{d.description}</li>
+                    </ul>
+                  </div>
+                </S.Spec>
 
-            <S.CurrentProducts>
-              <ul>
-                {selectItems.map((d: IBasketItem) => (
-                  <li key={d.selectColor[0].hexValue}>
-                    <div className='current-title'>
-                      <span className='current-title__name'>{d.name}</span>
-                      <b className='current-title__color'>{d.selectColor[0].colorName}</b>
-                    </div>
-                    <div className='current-quantity'>
-                      <input type='number' value={d.qty} name='qtyCount' onChange={(e) => handleCount(e, d)} />
-                    </div>
-                    <span className='current-price'>{PriceComma(Number(d.consumer_price))}원</span>
-                    <button name='close' onClick={() => handleRemoveItem(d)}>
-                      <Icon name='closeSmall' />
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </S.CurrentProducts>
+                <S.ProductColorSelect>
+                  <div className='title-box'>
+                    <span>색상</span>
+                    <strong className='required-check'>[필수]</strong>
+                  </div>
+                  <div className='radio-box'>
+                    {d.product_colors.length && d.product_colors.map((d, i) => (
+                      <div key={d.hex_value}>
+                        <CheckBoxColor
+                          className='color-item'
+                          name='checkbox-color'
+                          checked={(selectItems as any).find((f: any) => f.selectColor[0].hexValue === d.hex_value) || false}
+                          dataColorName={d.color_name}
+                          value={d.hex_value}
+                          title={d.color_name}
+                          onChange={(e) => handleSelectItem(e, item)} />
+                      </div>
+                    ))}
+                  </div>
+                </S.ProductColorSelect>
 
-            <S.Guide>
-              <p className='cnt'><Icon name='info' /></p>
-              <p className='box-select'><Icon name='info' /></p>
-            </S.Guide>
+                <S.CurrentProducts>
+                  <ul>
+                    {selectItems.map((d: IBasketItem) => (
+                      <li key={d.selectColor[0].hexValue}>
+                        <div className='current-title'>
+                          <span className='current-title__name'>{d.name}</span>
+                          <b className='current-title__color'>{d.selectColor[0].colorName}</b>
+                        </div>
+                        <div className='current-quantity'>
+                          <input type='number' value={d.qty} name='qtyCount' onChange={(e) => handleCount(e, d)} />
+                        </div>
+                        <span className='current-price'>{PriceComma(Number(d.consumer_price))}원</span>
+                        <button name='close' onClick={() => handleRemoveItem(d)}>
+                          <Icon name='closeSmall' />
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </S.CurrentProducts>
 
-            <S.TotalPrice>
-              <em> {TotalCnt}개</em>
-              <strong>{PriceComma(ProductAllPriceCalc)}원</strong>
-            </S.TotalPrice>
-            <Button black className='order-button' onClick={handleOrderToProduct}>
-              구매하기
-            </Button>
-            <S.EtcBox>
-              <span className='basket-add' onClick={handleAddToBasket}>장바구니 담기</span>
-              <span className='wishlist' onClick={handleAddInterestProduct}>관심상품 추가</span>
-            </S.EtcBox>
+                <S.Guide>
+                  <p className='qty-name'><Icon name='info' />남은수량<strong className='qty-name--qty'>{d.qty}개</strong></p>
+                  <p className='cnt'><Icon name='info' /></p>
+                  <p className='box-select'><Icon name='info' /></p>
+                </S.Guide>
+
+                <S.TotalPrice>
+                  <em> {TotalCnt}개</em>
+                  <strong>{PriceComma(ProductAllPriceCalc)}원</strong>
+                </S.TotalPrice>
+                <Button black className='order-button' onClick={handleOrderToProduct}>
+                  구매하기
+                </Button>
+                <S.EtcBox>
+                  <span className='basket-add' onClick={handleAddToBasket}>장바구니 담기</span>
+                  <span className='wishlist' onClick={handleAddInterestProduct}>관심상품 추가</span>
+                </S.EtcBox>
+              </>
+            ) : (
+              <S.SoldOut>
+                <EmptyItem text='품절된 상풉입니다' />
+              </S.SoldOut>
+            )}
             <BasketModal />
           </div>
         </S.Card>

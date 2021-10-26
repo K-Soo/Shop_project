@@ -44,7 +44,20 @@ export default function Basket() {
     }
   }, [state.basket.basketList, state.userInfo.idx, state.userInfo.userId])
 
-
+  const initBasket = useCallback(async() => {
+    if (state.userInfo.idx) {
+      // action.InitData('basket.basketList', []);
+      const name = 'all'
+      try {
+        const res = await Delete.deleteBasket(state.userInfo.idx, name);
+        action.setLocalItems(res.items);
+      } catch (error) {
+        console.error('error: ', error);
+      }
+    } else {
+      action.InitData('basket.nonMemberBasket', []);
+    }
+  }, [userId])
 
   const handleRemoveItem = useCallback(async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     if (confirm('선택하신 상품을 삭제하시겠습니까?')) {
@@ -139,13 +152,7 @@ export default function Basket() {
     }
   }, [state.basket.basketList,state.basket.nonMemberBasket,userId])
 
-  const initBasket = useCallback(() => {
-    if (userId) {
-      action.InitData('basket.basketList', []);
-    } else {
-      action.InitData('basket.nonMemberBasket', []);
-    }
-  }, [userId])
+
 
   return (
     <S.Basket>

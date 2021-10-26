@@ -55,13 +55,13 @@ const updateProductQty = async (req, res, next) => {
   const { idx, productId } = req.params;
   try {
     const result = await Basket.findOneAndUpdate(
-      {BasketOwner: idx},
-      {$set: {"items.$[el].qty": req.body.qty } },
-      { 
+      { BasketOwner: idx },
+      { $set: { "items.$[el].qty": req.body.qty } },
+      {
         arrayFilters: [{ "el._id": productId }],
         new: true
       }
-      )
+    )
     res.json(result);
   } catch (error) {
     next(error);
@@ -70,11 +70,23 @@ const updateProductQty = async (req, res, next) => {
 
 const remove = async (req, res, next) => {
   const { user, id } = req.params;
+  console.log('id: ', id);
   try {
-    const exist = await Basket.findOne({ BasketOwner: user });
-    if (exist) exist.items.pull({ _id: id });
-    exist.save();
-    res.json(exist);
+    if (id === 'all') {
+      const exist = await Basket.findOneAndUpdate(
+        { BasketOwner: user },
+        { $set: { items: [] } },
+        { new: true }
+      );
+      exist.save();
+      res.json(exist);
+    } else {
+      const exist = await Basket.findOne({ BasketOwner: user });
+      if (exist) exist.items.pull({ _id: id });
+      exist.save();
+      res.json(exist);
+    }
+
   } catch (error) {
     console.log('remove-error: ', error);
     next(error);

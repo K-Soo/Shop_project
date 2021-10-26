@@ -3,11 +3,13 @@ import User from '../models/User';
 import Basket from '../models/Basket';
 import History from '../models/History';
 import Point from '../models/Point';
+import Product from '../models/Product';
 import throwError from '../error/throwError';
 import response from '../error/response';
 import moment from 'moment-timezone';
 import { createDate, orderNumber } from '../utils';
 import mongoose from 'mongoose';
+import ObjectId from 'bson-objectid';
 
 const register = async (req, res, next) => {
   const { userId, password } = req.body;
@@ -83,19 +85,42 @@ const updateUserInfo = async (req, res, next) => {
 const checkout = async (req, res, next) => {
   const { userId } = req.params;
   const result = req.body;
+  const { Products } = result;
   result._id = new mongoose.Types.ObjectId();
   result.createAt = createDate();
   result.orderNum = orderNumber();
-  let idArray = [];
-  result.Products.map(d => idArray.push(mongoose.Types.ObjectId.createFromHexString(d._id)));
+  
+  const idArray = Products.map(d => mongoose.Types.ObjectId.createFromHexString(d._id));
+  const seqArray = Products.map(d => (d.seq));
+  const test = [1, 2, 3,]
+  
   try {
     const target = await User.findByUserId(userId);
+    console.log('test: ', test);
     if (target) {
+
+      const promises = Products.map(async obj => 
+        await Product.findOneAndUpdate(
+          {seq: obj.seq}, 
+          {$inc:{qty: -obj.qty}},
+          {new:true}
+          )
+          )
+          await Promise.all(promises)
+
       const updatedBasket = await Basket.findOneAndUpdate(
         { BasketOwner: target.id },
         { $pull: { items: { _id: { $in: idArray } } } },
         { new: true }
-      );
+        );
+      // let product = await Product.find({ seq: { $in: seqArray } });
+
+      // const CalculatedQty = [...product, ...Products].reduce((acc, cur) => {
+      //   const element = acc.find(item => item.seq === cur.seq)
+      //   element ? element.qty -= cur.qty : acc.push(cur)
+      //   return acc
+      // }, []);
+
 
       const exist = await History.findOne({ user: target._id });
       await History.findOneAndUpdate(
@@ -105,6 +130,7 @@ const checkout = async (req, res, next) => {
       const findUserPoint = await Point.findOne({ PointOwner: target._id });
 
       const resultValue = findUserPoint.currentPoint - Number(result.pointInfo.totalUsed);
+      console.log('resultValue: ', resultValue);
       const savePoint = result.pointInfo.estimatedPoint;
       if (resultValue < 0) return throwError({ statusCode: 400, msg: 'user Point Error' });
 

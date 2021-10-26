@@ -201,6 +201,7 @@ const S = {
 }
 
 export default function Content({ items, isLoading, isSuccess }: IContent) {
+  console.log('items: ', items);
   return (
     <S.Content>
       <S.Header>

@@ -13,7 +13,7 @@ import { recipientCheck, addrCheck, phoneCheck, pointCheck } from 'components/va
 
 import { CreateOrderActions, OnApproveActions, OnApproveData, UnknownObject, OnClickActions, OnCancelledActions } from "@paypal/paypal-js/types/components/buttons";
 import { DISPATCH_ACTION, FUNDING, PayPalButtons, SCRIPT_LOADING_STATE, usePayPalScriptReducer } from "@paypal/react-paypal-js";
-
+import {ErrorMsg} from 'utils';
 
 interface IPayment {
 
@@ -130,6 +130,18 @@ export default function Payment({ }: IPayment) {
   // console.log('isInitial: ', isInitial);
   // console.groupEnd();
 
+  const arr1 = [{ "id": "1", "quantity": 10 }, { "id": "2", "quantity": 10 }, { "id": "3", "quantity": 10 }];
+  const arr2 = [{ "id": "1", "quantity": 2, value: 3 }, { "id": "2", "quantity": 1, value: 3 }];
+  const test = [...arr1, ...arr2]
+  const result = [...arr1, ...arr2].reduce((acc, cur) => {
+    const element = acc.find(item => item.id === cur.id)
+    console.log('element: ', element);
+    element ? element.quantity -= cur.quantity : acc.push(cur)
+    return acc
+  }, [])
+
+  console.log('result',result)
+
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     if (!pointCheck(state)) return;
@@ -167,7 +179,9 @@ export default function Payment({ }: IPayment) {
       } else {
 
       }
-    } catch (error) {
+    } catch (error:any) {
+      console.error('error: ', error);
+      console.error('paypal-error: ', error.response.data.message);
       alert('결제 실패\n잠시후 다시시도해주세요');
     }
   }
