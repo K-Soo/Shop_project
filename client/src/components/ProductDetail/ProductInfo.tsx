@@ -341,7 +341,6 @@ const S = {
 }
 
 export default function ProductInfo({ item }: IProductInfo) {
-  console.log('item: ', item);
   const [showSpec, setShowSpec] = useState<boolean>(false);
   const [isSoldOut, setIsSoldOut] = useState<boolean>(false);
   const [selectItems, setSelectItems] = useState<IBasketItem[]>([]);
@@ -577,7 +576,7 @@ export default function ProductInfo({ item }: IProductInfo) {
               </>
             ) : (
               <S.SoldOut>
-                <EmptyItem text='품절된 상풉입니다' />
+                <EmptyItem text='품절된 상품입니다' />
               </S.SoldOut>
             )}
             <BasketModal />

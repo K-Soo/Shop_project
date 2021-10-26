@@ -95,16 +95,21 @@ export default function DeliveryInfo() {
 
   const handleToggle = (e: React.MouseEvent<HTMLLIElement>) => {
     const { className } = e.target as HTMLLIElement;
-    action.InitData('deliveryTap',className);
+    action.InitData('deliveryTap', className);
   };
 
   return (
     <S.DeliveryInfo toggleText={state.deliveryTap}>
-      <ul className='tap-box' >
-        {TAP_CATEGORY.map(d => (
-          <li key={d.value} onClick={handleToggle} className={d.value}>{d.label}</li>
-        ))}
-      </ul>
+      {!App.state.status.guest && (
+        <>
+          <ul className='tap-box' >
+            {TAP_CATEGORY.map(d => (
+              <li key={d.value} onClick={handleToggle} className={d.value}>{d.label}</li>
+            ))}
+          </ul>
+        </>
+      )}
+
 
       <S.Group>
         <Label htmlFor='userNameFor' required>받는분</Label>
@@ -142,7 +147,7 @@ export default function DeliveryInfo() {
         <span style={{ width: '15px', textAlign: 'center' }}>-</span>
         <Input name='TemporaryPhone2' maxWidth='90' minLength={3} maxLength={4} value={state.TemporaryPhone2} onChange={e => onlyNum(e, action.setFormData)} required />
         <span style={{ width: '15px', textAlign: 'center' }}>-</span>
-        <Input name='TemporaryPhone3' maxWidth='90' minLength={4}  maxLength={4} value={state.TemporaryPhone3}  onChange={e => onlyNum(e, action.setFormData)}  required />
+        <Input name='TemporaryPhone3' maxWidth='90' minLength={4} maxLength={4} value={state.TemporaryPhone3} onChange={e => onlyNum(e, action.setFormData)} required />
       </S.Group>
 
       <S.Group>
@@ -172,7 +177,7 @@ export default function DeliveryInfo() {
               maxWidth='300'
               margin='5px 0 0 0'
               onChange={action.setFormData}
-              value={state.orderForm.deliveryMessage} 
+              value={state.orderForm.deliveryMessage}
             />
           )}
         </div>

@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { useRegisterContext } from 'context/RegisterProvider';
 import Icon from 'components/Icon/Icon';
 import { useAppContext } from 'context/AppProvider';
+import { useOrderContext } from 'context/OrderProvider';
 import { NextRouter, useRouter } from 'next/router';
 
 const S = {
@@ -39,6 +40,7 @@ const S = {
 export default function DaumPost() {
   const { action } = useRegisterContext();
   const App = useAppContext();
+  const Order = useOrderContext();
   const router: NextRouter = useRouter();
 
   const postCodeStyle = {
@@ -62,8 +64,13 @@ export default function DaumPost() {
     if (router.asPath === "/auth/register" || router.asPath === "/users/modify") {
       action.setData('form.zonecode', zonecode);
       action.setData('form.addr1', fullAddress);
-      App.action.InitData('openDaumPost', false);
+    }else if(router.asPath === "/order/orderform"){
+      Order.action.InitData('orderForm.addr.addr1', fullAddress);
+      Order.action.InitData('orderForm.addr.addr2');
+      Order.action.InitData('orderForm.addr.zoneCode', zonecode);
     }
+    App.action.InitData('openDaumPost', false);
+
   }
 
   return (
