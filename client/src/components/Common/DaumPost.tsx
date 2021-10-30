@@ -64,13 +64,13 @@ export default function DaumPost() {
     if (router.asPath === "/auth/register" || router.asPath === "/users/modify") {
       action.setData('form.zonecode', zonecode);
       action.setData('form.addr1', fullAddress);
+
     }else if(router.asPath === "/order/orderform"){
       Order.action.InitData('orderForm.addr.addr1', fullAddress);
       Order.action.InitData('orderForm.addr.addr2');
       Order.action.InitData('orderForm.addr.zoneCode', zonecode);
     }
     App.action.InitData('openDaumPost', false);
-
   }
 
   return (

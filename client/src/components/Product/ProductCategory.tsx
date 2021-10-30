@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { NextRouter, useRouter } from 'next/router';
-import styled from "styled-components";
+import styled,{css} from "styled-components";
 import { categoryType } from 'components/Product';
 import Title from 'components/style/Title';
 import { PRODUCT ,CategoryEnum } from '../../constants/product';
@@ -14,7 +14,20 @@ interface IProductCategory {
   currentProduct: categoryType
   keyName: keyof typeof CategoryEnum;
 }
-
+const ItemCommon = css`
+  margin: 2px;
+  padding: 5px;
+  font-size: 10px;
+  border-radius: 15px;
+  text-align: center;
+  cursor: pointer;
+  border: 1px solid #fff;
+  &[data-active=true] {
+    color: #212529;
+    border: solid 1px #222529;
+    background-color: #F9F9F9;
+  }
+`;
 const S = {
   ProductCategory: styled.article`
     margin-bottom: 15px;
@@ -78,23 +91,12 @@ const S = {
       display: flex;
       flex-wrap: wrap;
       &__item{
-        margin: 2px;
         flex: 1 30%;
-        padding: 5px;
-        font-size: 10px;
-        border-radius: 15px;
-        text-align: center;
-        cursor: pointer;
-        border: 1px solid #fff;
-        &[data-active=true] {
-          color: #212529;
-          border: solid 1px #222529;
-          background-color: #F9F9F9;
-        }
-        /* :hover{
-          background-color: #F9F9F9;
-          border: 1px solid #dde1e5;
-        } */
+        ${ItemCommon}
+      }
+      &__all{
+        flex: 1 100%;
+        ${ItemCommon}
       }
     }
     ${({ theme }) => theme.mobile`
@@ -117,11 +119,25 @@ export default function ProductCategory({ currentProduct, keyName }: IProductCat
         <HamburgerIcon className='hamburger-icon' toggle={state.openSubMenu} dataName='openSubMenu' onClick={action.setGlobalToggle}/>
         <HamburgerMenuList productSubList={PRODUCT[keyName]} />
       </S.SubTitle>
+
       <S.CategorySubList category={state.targetCategory}>
         <ul className='list'>
-          <li className='list__item' data-name='all' data-active={'all' === state.targetCategory} onClick={action.setCategory} >ALL</li>
+          <li 
+            className='list__all'
+            data-name='all' 
+            data-active={'all' === state.targetCategory} 
+            onClick={action.setCategory} 
+          >
+            ALL
+          </li>
           {keyName && PRODUCT[keyName].map(d => (
-            <li key={d.label} className='list__item' data-name={d.label} data-active={d.label === state.targetCategory} onClick={action.setCategory} >
+            <li 
+              key={d.label} 
+              className='list__item' 
+              data-name={d.label} 
+              data-active={d.label === state.targetCategory} 
+              onClick={action.setCategory}
+             >
               {d.label}
             </li>
           ))}

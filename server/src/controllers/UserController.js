@@ -4,12 +4,12 @@ import Basket from '../models/Basket';
 import History from '../models/History';
 import Point from '../models/Point';
 import Product from '../models/Product';
+import GuestOrder from '../models/GuestOrder';
 import throwError from '../error/throwError';
 import response from '../error/response';
 import moment from 'moment-timezone';
 import { createDate, orderNumber } from '../utils';
 import mongoose from 'mongoose';
-import ObjectId from 'bson-objectid';
 
 const register = async (req, res, next) => {
   const { userId, password } = req.body;
@@ -82,37 +82,51 @@ const updateUserInfo = async (req, res, next) => {
   }
 };
 
+const guestCheckout = async (req, res, next) => {
+  const result = req.body;
+  const { orderPassword } = req.body
+  result.orderNum = orderNumber();
+  const guestOrder = new GuestOrder(result);
+  console.log('guestOrder: ', guestOrder);
+  await guestOrder.setOrderPassword(orderPassword);
+  guestOrder.save();
+  try {
+    res.json({ success: true, guestOrder });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const checkout = async (req, res, next) => {
   const { userId } = req.params;
   const result = req.body;
   const { Products } = result;
   result._id = new mongoose.Types.ObjectId();
-  result.createAt = createDate();
+  result.createdAt = createDate();
   result.orderNum = orderNumber();
-  
+
   const idArray = Products.map(d => mongoose.Types.ObjectId.createFromHexString(d._id));
   const seqArray = Products.map(d => (d.seq));
   const test = [1, 2, 3,]
-  
+
   try {
     const target = await User.findByUserId(userId);
     console.log('test: ', test);
     if (target) {
 
-      const promises = Products.map(async obj => 
+      const promises = Products.map(async obj =>
         await Product.findOneAndUpdate(
-          {seq: obj.seq}, 
-          {$inc:{qty: -obj.qty}},
-          {new:true}
-          )
-          )
-          await Promise.all(promises)
+          { seq: obj.seq },
+          { $inc: { qty: -obj.qty } },
+          { new: true }
+        ))
+      await Promise.all(promises)
 
       const updatedBasket = await Basket.findOneAndUpdate(
         { BasketOwner: target.id },
         { $pull: { items: { _id: { $in: idArray } } } },
         { new: true }
-        );
+      );
       // let product = await Product.find({ seq: { $in: seqArray } });
 
       // const CalculatedQty = [...product, ...Products].reduce((acc, cur) => {
@@ -130,7 +144,6 @@ const checkout = async (req, res, next) => {
       const findUserPoint = await Point.findOne({ PointOwner: target._id });
 
       const resultValue = findUserPoint.currentPoint - Number(result.pointInfo.totalUsed);
-      console.log('resultValue: ', resultValue);
       const savePoint = result.pointInfo.estimatedPoint;
       if (resultValue < 0) return throwError({ statusCode: 400, msg: 'user Point Error' });
 
@@ -156,13 +169,31 @@ const checkout = async (req, res, next) => {
       }
 
       if (exist) {
-        // exist.data.push(result);
-        // exist.save();
         res.json({ success: true, updatedBasket });
       }
     }
   } catch (error) {
     next(error);
+  }
+};
+
+const GuestLogIn = async (req, res, next) => {
+  const { userName, OrderPassword, orderNum } = req.body;
+  try {
+    const exist = await GuestOrder.findOne({ orderNum, userName });
+    console.log('exist: ', exist);
+
+    if (!exist) {
+      return throwError({ statusCode: 401, msg: '아이디를 확인해주세요.' });
+    } else {
+      const valid = await exist.checkPassword(OrderPassword);
+      if (!valid) return throwError({ statusCode: 401 })
+    }
+
+    return res.json({ success: true, message: "로그인 성공", });
+  } catch (error) {
+    next(error);
+    console.log('error-logIn: ', error);
   }
 };
 
@@ -202,5 +233,7 @@ export {
   idCheck,
   userInfo,
   checkout,
-  updateUserInfo
+  updateUserInfo,
+  guestCheckout,
+  GuestLogIn
 }

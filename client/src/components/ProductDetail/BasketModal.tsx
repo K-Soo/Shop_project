@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import Title from 'components/style/Title';
@@ -6,7 +7,6 @@ import Button from 'components/style/Button';
 import Link from 'next/link';
 import DarkBackground from 'components/Common/DarkBackground';
 import { PriceComma } from 'utils/PriceComma';
-import { useBasketContext } from 'context/BasketProvider';
 import { useAppContext } from 'context/AppProvider';
 import Image from 'next/image'
 import { TColor, IProduct, IBasketItem } from 'interfaces/IProduct';
@@ -21,6 +21,18 @@ const CommonIcon = css`
 
 const S = {
   BasketModal: styled.article<{ open: boolean }>`
+  display: ${props => props.open ? 'block' : 'none'};
+  z-index: 99;
+  position: fixed; 
+  top: 0;
+  right: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.6); 
+  width: 100%; 
+  height: 100%;
+  `,
+  Containers: styled.div`
+    z-index: 999;
     position: fixed;
     top: 50%;
     left: 50%;
@@ -28,28 +40,43 @@ const S = {
     background-color: #fff;
     width: 500px;
     height: 600px;
-    display: ${props => props.open ? 'flex' : 'none'};
+    display: flex;
     flex-flow: column nowrap;
     justify-content: space-between;
     border: 1px solid #333;
+
     ${({ theme }) => theme.mobile`
-        width: 95%;
-        height: 550px;
+      width: 95%;
+      height: 550px;
+      .header{
+        padding: 0 15px;
+      }
+      .content{
+        padding: 10px 15px;
+      }
+      .footer{
+        padding: 0 15px;
+      }
     `}
   `,
   Header: styled.div`
     padding: 0 25px;
-    height: 50px;
+    height: 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid #f0f0f0;
+    .close-btn{
+      font-size: 0;
+      cursor: pointer;
+    }
   `,
   Content: styled.div`
-    padding: 25px;
+    padding: 10px 25px;
     flex-basis: 100%;
     .total-cnt{
-      margin-bottom : 15px;
+      margin-bottom : 10px;
+      font-size: 14px;
     }
     table{
       width: 100%;
@@ -76,55 +103,54 @@ const S = {
             text-align: center;
             vertical-align: middle;
           }
-          .img-td{
+          .image{
             font-size: 0;
             padding: 0;
-            display: inline-block;
-            height: 100%;
-            width: 100%;
+            img{
+              height: 100%;
+              width: 100%;
+              object-fit: cover;
+            }
           }
           .option-info{
             text-align: left;
+            padding-left: 10px;
             p{
               margin-bottom:5px;
               display: flex;
               align-items: flex-end;
               .name{margin-right: 5px;}
-              i{
-                border-radius: 3px;
-                margin-right: 5px;
-              }
-              .new-icon{
-                ${CommonIcon}
-                color: #718FC5;
-                background-color: #FFEF36;
-              }
-              .best-icon{
-                ${CommonIcon}
-                color: #000;
-                background-color: #1B5DF6;
-              }
             }
+          }
+          .price{
+            border: 1px solid red;
           }
         }
       }
     }
   `,
   Pagination: styled.div`
-    height: 55px;
+    flex-basis: 70px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin: 0 auto;
   `,
   Footer: styled.div`
-    border-top: 1px solid #f0f0f0;
-    border: 1px solid red;
-    flex-basis:70px;
-    padding: 15px 25px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #f0f0f0;
+    flex-basis:70px;
+    padding: 0 25px;
+    button{
+      font-size: 13px;
+      height: 40px;
+    }
     .button-group{
       display: flex;
       font-size: 0;
-      border: 1px solid red;
       svg{
         width: 10px;
         height: 10px;
@@ -135,16 +161,15 @@ const S = {
 }
 
 export default function BasketModal() {
-  const [getLocalItem, setGetLocalItem] = useState<IBasketItem[]>([]);
-  const { action, state } = useBasketContext();
+  const [basket, setBasket] = useState<IBasketItem[]>([]);
   const App = useAppContext();
   const router = useRouter();
 
   useEffect(() => {
     if (App.state.userInfo.userId) {
-      setGetLocalItem(App.state.basket.basketList);
+      setBasket(App.state.basket.basketList);
     } else {
-      setGetLocalItem(App.state.basket.nonMemberBasket);
+      setBasket(App.state.basket.nonMemberBasket);
     }
   }, [App.state.userInfo.userId, App.state.basket]);
 
@@ -152,22 +177,23 @@ export default function BasketModal() {
   }
 
   return (
-    <DarkBackground active={state.openModal}>
-      <S.BasketModal open={state.openModal} >
-        <S.Header>
+    <S.BasketModal open={App.state.openBasketModal} >
+      <S.Containers >
+        <S.Header className='header'>
           <Title level={3} size="18">장바구니 담기</Title>
-          <i onClick={action.setOpenModal}>
+          <i className='close-btn' data-name='openBasketModal' onClick={App.action.setGlobalToggle}>
             <Icon name='closeSmall' />
           </i>
         </S.Header>
-        <S.Content>
-          <p className='total-cnt'>총 {getLocalItem?.length ?? 0}개의 상품이 있습니다.</p>
+
+        <S.Content className='content'>
+          <p className='total-cnt'>총 {basket?.length ?? 0}개의 상품이 있습니다.</p>
           <table>
             <caption>장바구니 목록 확인</caption>
             <colgroup>
               <col width="15%" />
-              <col width="70%" />
-              <col width="15%" />
+              <col width="60%" />
+              <col width="35%" />
             </colgroup>
             <thead>
               <tr>
@@ -177,53 +203,57 @@ export default function BasketModal() {
               </tr>
             </thead>
             <tbody>
-              {getLocalItem.length > 0 && getLocalItem.map((d, i) =>
+              {basket.length > 0 && basket.map((d, i) =>
                 <tr className='row' key={i}>
-
-                  <td className='img-td'>
-                    <Image
+                  <td className='image'>
+                    <img
                       src={d.imageUrl[0].url}
                       alt={d.name}
-                      width={50}
-                      height={55}
-                      // layout="fill"
-                      className='img'
-                    // objectFit="cover"
                     />
                   </td>
 
                   <td className='option-info'>
                     <p>
                       <span className='name'>{d.name}</span>
-                      {d.new_product && <i className='new-icon' >new</i>}
-                      {d.best_product && <i className='best-icon' >best</i>}
                       <span>({d.qty}개)</span>
                     </p>
                     <span>[옵션:{d.selectColor[0].colorName}]</span>
                   </td>
 
-                  <td>
-                    <del>
-                      {PriceComma(d.product_price)}원
-                    </del>
-                    {PriceComma(d.consumer_price)}원
+                  <td className='price'>
+                    <del>{PriceComma(d.product_price)}원</del>
+                    <p>{PriceComma(d.consumer_price)}원</p>
                   </td>
-                  
+
                 </tr>
               )}
             </tbody>
           </table>
-          <S.Pagination>페이지</S.Pagination>
+
         </S.Content>
-        <S.Footer>
+
+        <S.Pagination>페이지</S.Pagination>
+
+        <S.Footer className='footer'>
           <div className='button-group'>
-            <Button onClick={action.setOpenModal} fontSize='13px' width='80px' white height='40px' margin='0 15px 0 0'><Icon name='close' />닫기</Button>
-            <Button fontSize='13px' width='auto' white height='40px'>
-              <Link href='/order/basket'><a >장바구니 이동</a></Link></Button>
+            <Button
+              onClick={App.action.setBasketModal}
+              width='80px'
+              white
+              margin='0 15px 0 0'
+            >
+              <Icon name='close' />닫기</Button>
+            <Button
+              width='auto'
+              white
+            >
+              <Link href='/order/basket'><a >장바구니 이동</a></Link>
+            </Button>
           </div>
-          <Button margin='0 0 0 20px' fontSize='13px' login height='40px' onClick={handleSubmit}>바로구매 하기</Button>
+
+          <Button margin='0 0 0 20px' login onClick={handleSubmit}>바로구매 하기</Button>
         </S.Footer>
-      </S.BasketModal>
-    </DarkBackground>
+      </S.Containers>
+    </S.BasketModal>
   );
 }

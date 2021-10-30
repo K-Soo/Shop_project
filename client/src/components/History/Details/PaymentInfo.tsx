@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { IOrderDetail } from 'interfaces/IOrder';
 import { PriceComma } from 'utils';
+import { useRouter, NextRouter } from 'next/router';
 
 interface IPaymentInfo {
   items: IOrderDetail[]
@@ -30,7 +31,8 @@ const S = {
       .order-price{
         th,td{
           font-weight: 500;
-          border: 1px solid #f0f0f0;
+          border: solid #f0f0f0;
+          border-width: 1px 1px 0 1px;
         }
 
       }
@@ -91,12 +93,13 @@ const S = {
         }
     `}
   }
-
   `,
 }
 
 export default function PaymentInfo({ items }: IPaymentInfo) {
-  console.log('items: ', items);
+  const router: NextRouter = useRouter();
+  console.log('router: ', router);
+
   return (
     <S.PaymentInfo>
       {items && items.map(d => (
@@ -110,14 +113,20 @@ export default function PaymentInfo({ items }: IPaymentInfo) {
               <th>총 주문결제금액</th>
               <td>{PriceComma(d.amountInfo.consumerAmount + d.amountInfo.deliveryAmount)}원</td>
             </tr>
-            <tr className='total-used-point'>
-              <th>총 부가결제금액</th>
-              <td>{PriceComma(d.pointInfo.totalUsed || 0)}원</td>
-            </tr>
-            <tr className='point'>
-              <th>적립금</th>
-              <td>{PriceComma(d.pointInfo.estimatedPoint || 0)}원</td>
-            </tr>
+
+            {router.pathname !== "/users/history/guest-detail/[idx]" && (
+              <>
+                <tr className='total-used-point'>
+                  <th>총 부가결제금액</th>
+                  <td>{PriceComma(d.pointInfo.totalUsed || 0)}원</td>
+                </tr>
+                <tr className='point'>
+                  <th>적립금</th>
+                  <td>{PriceComma(d.pointInfo.estimatedPoint || 0)}원</td>
+                </tr>
+              </>
+            )}
+
             <tr className='payment-price'>
               <th>총 결제금액</th>
               <td>{PriceComma(d.amountInfo.paymentAmount)}원</td>

@@ -17,6 +17,7 @@ import { idCheck, passwordCheck, allTermCheck, userNameCheck } from 'components/
 import { PHONE_NUMBER } from 'constants/phone';
 import { onlyNum } from 'utils';
 import axios from 'axios';
+import PAGE from 'constants/path';
 
 const S = {
   Register: styled.section`
@@ -161,7 +162,7 @@ export default function Register() {
       try {
         const res = await Post.register(formData);
         if(res.success) alert('가입이 완료되었습니다.');
-        router.push('/');
+        router.push(PAGE.MAIN.path);
       } catch (error) {
         if (axios.isAxiosError(error)) {
           console.error('Register-error: ', error);
@@ -179,7 +180,7 @@ export default function Register() {
         });
         if(res.success){
          alert('정보가 변경되었습니다.');
-         router.push('/');
+         router.push(PAGE.MAIN.path);
         }
       } catch (error) {
         if (axios.isAxiosError(error)) {

@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
-import { useRouter } from 'next/router';
 import { useAppContext } from 'context/AppProvider';
 import { useOrderContext } from 'context/OrderProvider';
 import Button from 'components/style/Button';
@@ -10,7 +9,7 @@ import { PriceComma, currencyConvert } from 'utils';
 import LoadingOverlay from 'react-loading-overlay-ts';
 import { Post } from 'api';
 import { recipientCheck, addrCheck, phoneCheck, pointCheck } from 'components/validation';
-
+import { NextRouter, useRouter } from 'next/router';
 import { CreateOrderActions, OnApproveActions, OnApproveData, UnknownObject, OnClickActions, OnCancelledActions } from "@paypal/paypal-js/types/components/buttons";
 import { DISPATCH_ACTION, FUNDING, PayPalButtons, SCRIPT_LOADING_STATE, usePayPalScriptReducer } from "@paypal/react-paypal-js";
 import {ErrorMsg} from 'utils';
@@ -104,12 +103,6 @@ const S = {
   `,
 }
 
-// 1. 유저 콜렉션에 history 필드안에 간단한 결제정보
-
-// 2. payment collection 안에 자세한 결제정보 입력.
-
-// 3. product collection 안에있는 sold 필드 업데이트.
-
 const paypalStyles: TPaypalStyles = {
   color: "blue",
   shape: "pill",
@@ -119,28 +112,17 @@ const paypalStyles: TPaypalStyles = {
 }
 
 export default function Payment({ }: IPayment) {
-  const router = useRouter();
   const { state } = useOrderContext();
   const App = useAppContext();
+  const router: NextRouter = useRouter();
   const [{ isInitial, isPending, isRejected, isResolved }, Dispatch] = usePayPalScriptReducer();
-  // console.group('before');
-  // console.log('isResolved: ', isResolved);
-  // console.log('isRejected: ', isRejected);
-  // console.log('isPending: ', isPending);
-  // console.log('isInitial: ', isInitial);
-  // console.groupEnd();
-
-  const arr1 = [{ "id": "1", "quantity": 10 }, { "id": "2", "quantity": 10 }, { "id": "3", "quantity": 10 }];
-  const arr2 = [{ "id": "1", "quantity": 2, value: 3 }, { "id": "2", "quantity": 1, value: 3 }];
-  const test = [...arr1, ...arr2]
-  const result = [...arr1, ...arr2].reduce((acc, cur) => {
-    const element = acc.find(item => item.id === cur.id)
-    console.log('element: ', element);
-    element ? element.quantity -= cur.quantity : acc.push(cur)
-    return acc
-  }, [])
-
-  console.log('result',result)
+  
+  console.group('before');
+  console.log('isResolved: ', isResolved);
+  console.log('isRejected: ', isRejected);
+  console.log('isPending: ', isPending);
+  console.log('isInitial: ', isInitial);
+  console.groupEnd();
 
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
@@ -148,6 +130,13 @@ export default function Payment({ }: IPayment) {
     if (!recipientCheck(state)) return;
     if (!addrCheck(state)) return;
     if (!phoneCheck(state)) return;
+
+    if(App.state.status.guest){
+      if (state.orderForm.orderPassword !== state.orderForm.orderPasswordConfirm) {
+        return alert('비밀번호가 일치하지않습니다.');
+      }
+    }
+
     Dispatch({ type: DISPATCH_ACTION.LOADING_STATUS, value: SCRIPT_LOADING_STATE.PENDING });
   }
 
@@ -163,21 +152,25 @@ export default function Payment({ }: IPayment) {
     })
   };
 
-  App.state.userInfo.userId
-
   const onApprove = async (data: OnApproveData, actions: OnApproveActions) => {
     try {
       const details = await actions.order.capture();
       if (!App.state.status.guest) {
         const res = await Post.checkout(App.state.userInfo.userId, state.orderForm);
-        console.log('checkout POST: ', res);
         Dispatch({ type: DISPATCH_ACTION.LOADING_STATUS, value: SCRIPT_LOADING_STATE.INITIAL });
         if(res.success){
           App.action.setLocalItems(res.updatedBasket.items);
-          alert('결제완료');
+          alert('결제완료\n주문상세페이지로 이동합니다');
         }
       } else {
-
+        const res = await Post.guestCheckout(state.orderForm);
+        if(res.success) {
+          alert('결제완료');
+          const result = App.state.basket.nonMemberBasket.filter(({date:date1}) => !state.orderForm.Products.some(({date: date2}) => date1 === date2))
+          App.action.setNonMemberBasket(result);
+          Dispatch({ type: DISPATCH_ACTION.LOADING_STATUS, value: SCRIPT_LOADING_STATE.INITIAL });
+          return router.push(`/users/history/guest-detail/${res.guestOrder._id}`);
+        }
       }
     } catch (error:any) {
       console.error('error: ', error);
@@ -249,7 +242,6 @@ export default function Payment({ }: IPayment) {
               fundingSource={FUNDING.PAYPAL}
             />
           )}
-
         </div>
       </S.PaymentButtonBox>
     </S.Payment>

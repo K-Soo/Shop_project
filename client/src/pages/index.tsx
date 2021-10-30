@@ -1,7 +1,7 @@
 import MainContainer from 'containers/MainContainer';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Head from 'next/head';
-
+import Main from 'components/Main';
 
 export default function Home(propss) {
   return (
@@ -9,9 +9,10 @@ export default function Home(propss) {
       <Head>
         <title>쥬얼리 | 메인</title>
         <meta name="description" content="메인 페이지" />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
-      <MainContainer />
+      <MainContainer>
+        <Main />
+      </MainContainer>
     </>
   )
 }

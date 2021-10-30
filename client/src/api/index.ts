@@ -35,11 +35,13 @@ export const Get = {
   getProductDetail: (category: string, id: string): Promise<IProduct> => requests.get(`/api/products/${category}/${id}`),
   getAllProduct: (): Promise<IProduct[]> => requests.get(`/api/products/list`),
   getHistory: (idx: string, page: number,limit:number) => requests.get(`/api/users/history/${idx}?page=${page}&limit=${limit}`),
-  getHistoryDetail: (idx: string, orderNum: string) => requests.get(`/api/users/history/${idx}/${orderNum}`),
+  getUserHistoryDetail: (idx: string, orderNum: string) => requests.get(`/api/users/history/${idx}/${orderNum}`),
+  getGuestHistoryDetail: (idx: string) => requests.get(`/api/users/history/guest-detail/${idx}`),
   getInterestProductList: (idx: string, page: number) => requests.get(`/api/users/interest-product/${idx}?page=${page}`),
   getPointInfo: (idx: string) => requests.get(`/api/users/point/${idx}/info`),
   getProductReview: (productId: string,page:number,limit:number,key:string,value:number) => requests.get(`/api/products/review/${productId}?page=${page}&limit=${limit}&key=${key}&value=${value}`),
   getPointList: (idx: string,page:number,limit:number) => requests.get(`/api/users/point/${idx}?page=${page}&limit=${limit}`),
+  getNoticeList: (page:number,limit:number) => requests.get(`/api/board/notice?page=${page}&limit=${limit}`),
 };
 
 export const Post = {
@@ -47,10 +49,13 @@ export const Post = {
   createProductImage: (body: any) => requests.post('/api/products/image', body),
   createCart: (body: any) => requests.post('/api/users/cart', body),
   login: (body: any) => requests.post('/api/users/login', body),
+  guestLogin: (body: any) => requests.post('/api/users/guest-login', body),
   register: (body: any) => requests.post('/api/users/register', body),
   checkId: (body: { userId: string }) => requests.post('/api/users/check', body),
   checkout: (userId: string, body: any) => requests.post(`/api/users/checkout/${userId}`, body),
+  guestCheckout: (body: any) => requests.post(`/api/users/guest-checkout`, body),
   createReview: (idx: string, productId: string, body: any) => requests.post(`/api/products/review/${idx}/${productId}`, body),
+  createNotice:(body:any) => requests.post('/api/board/notice', body),
 };
 
 export const Put = {

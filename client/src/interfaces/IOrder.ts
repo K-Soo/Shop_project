@@ -15,7 +15,7 @@ export interface IOrderDetail {
     paymentAmount: number,
     productAmount: number,
   },
-  createAt: string,
+  createdAt: string,
   deliveryMessage: string,
   email: string,
   orderNum: string,

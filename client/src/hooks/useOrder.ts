@@ -39,6 +39,8 @@ export interface IOrderState {
       deliveryAmount: number,
     },
     userName: string,
+    orderPassword:string,
+    orderPasswordConfirm:string,
     phone: string,
     email: string,
     deliveryMessage: string,
@@ -80,6 +82,8 @@ export const orderDefaultValue: IApp = {
         deliveryAmount: 2500,
       },
       userName: '',
+      orderPassword:'',
+      orderPasswordConfirm:'',
       phone: '',
       email: '',
       deliveryMessage: '',
@@ -119,6 +123,8 @@ const initializer = (props: any) => {
         deliveryAmount: 2500,
       },
       userName: '',
+      orderPassword:'',
+      orderPasswordConfirm:'',
       phone: '',
       email: '',
       deliveryMessage: '',
@@ -204,9 +210,12 @@ const generateAction = (update: (recipe: (draft: IOrderState) => void) => void) 
       draft.TemporaryArray = orderDefaultValue.state.TemporaryArray;
       draft.TemporaryEmail1 = orderDefaultValue.state.TemporaryEmail1;
       draft.TemporaryEmail2 = orderDefaultValue.state.TemporaryEmail2;
-      draft.orderForm = orderDefaultValue.state.orderForm;
+      draft.TemporaryPhone1 = orderDefaultValue.state.TemporaryPhone1;
+      draft.TemporaryPhone2 = orderDefaultValue.state.TemporaryPhone2;
+      draft.TemporaryPhone3 = orderDefaultValue.state.TemporaryPhone3;
       draft.currentPoint = orderDefaultValue.state.currentPoint;
       draft.directText = orderDefaultValue.state.directText;
+      // draft.orderForm = orderDefaultValue.state.orderForm;
     });
 
   const setInitDelivery = () =>
@@ -218,9 +227,8 @@ const generateAction = (update: (recipe: (draft: IOrderState) => void) => void) 
       draft.TemporaryPhone2 = orderDefaultValue.state.TemporaryPhone2;
       draft.TemporaryPhone3 = orderDefaultValue.state.TemporaryPhone3;
       draft.orderForm.userName = orderDefaultValue.state.orderForm.userName;
-      draft.orderForm.addr = orderDefaultValue.state.orderForm.addr
+      draft.orderForm.addr = orderDefaultValue.state.orderForm.addr;
     });
-
 
   const setCheckBox = (e: React.ChangeEvent<HTMLInputElement>, userId: string) =>
     update((draft) => {

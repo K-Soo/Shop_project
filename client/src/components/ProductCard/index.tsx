@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import React from "react";
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -25,10 +25,11 @@ interface IProductCard {
   new_product:boolean;
   best_product:boolean;
   isList?:boolean;
+  qty:number;
 }
 
 const S = {
-  ProductCard: styled.div<{isList:boolean}>`
+  ProductCard: styled.div<{isList:boolean,isSoldOut:boolean}>`
     height: 100%;
     padding: 10px;
     ${props => props.isList && css`
@@ -59,6 +60,21 @@ const S = {
         height: 300px;
         margin-bottom: 15px;
         font-size: 0;
+        position: relative;
+        &__sold-out{
+          position: absolute;
+        width: 100%;
+        text-align: center;
+        height: 100%;
+        background-color: rgb(255,255,255,0.6);
+        display: ${props => props.isSoldOut ? 'flex' : 'none'};
+        justify-content: center;
+        align-items: center;
+        p{
+          color: #666;
+          font-size: 24px;
+        }
+        }
         img{
           width: 100%;
           height: 100%;
@@ -122,14 +138,24 @@ export default function ProductCard({
   product_colors,
   best_product,
   new_product,
-  isList
+  isList,
+  qty
 }: IProductCard) {
+  const [isSoldOut, setIsSoldOut] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (qty === 0) setIsSoldOut(true);
+  }, [qty]);
+
   return (
-    <S.ProductCard isList={isList}>
+    <S.ProductCard isList={isList} isSoldOut={isSoldOut}>
       <div className='card-inner'>
         <Link href={product_type + "/" + seq}>
           <a>
             <div className='img-box'>
+            <div className='img-box__sold-out'>
+              <p>SOLD OUT</p>
+            </div>
               <img
                 src={imageUrl[0].url}
                 alt="Picture of the author"

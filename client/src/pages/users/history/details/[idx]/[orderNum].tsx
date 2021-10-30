@@ -3,7 +3,6 @@ import Head from 'next/head'
 import MainContainer from 'containers/MainContainer';
 import Basket from 'components/Basket';
 import { useAppContext } from 'context/AppProvider';
-import BasketProvider, { BasketContext } from 'context/BasketProvider';
 import OrderProvider from 'context/OrderProvider';
 import Details from 'components/History/Details';
 import PageTitle from 'components/Common/PageTitle';
@@ -36,7 +35,7 @@ export default function DetailsPage(props: InferGetServerSidePropsType<typeof ge
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { idx, orderNum } = context.query as { idx: string, orderNum: string };
   try {
-    const res = await Get.getHistoryDetail(idx, orderNum);
+    const res = await Get.getUserHistoryDetail(idx, orderNum);
     return {
       props: {
         items: res

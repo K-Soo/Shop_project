@@ -38,6 +38,18 @@ const PAGE: IPage = {
     path: "/admin",
     tag: "관리자 메인",
   },
-}
+  ORDER: {
+    path: '/order/orderform',
+    tag: "상품주문",
+  },
+  NOTICE:{
+    path: '/board/notice',
+    tag: '공지사항 리스트'
+  },
+  CREATE_NOTICE:{
+    path: '/board/notice/write',
+    tag: '공지사항 포스트작성'
+  }
+} as const
 
 export default PAGE;

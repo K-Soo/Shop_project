@@ -19,6 +19,7 @@ import { useAppContext } from 'context/AppProvider';
 import useCheckDuplicate from 'hooks/useCheckDuplicate';
 import EmptyItem from 'components/Common/EmptyItem';
 import TextIcon from 'components/Common/TextIcon';
+import PAGE from 'constants/path';
 interface IProductInfo {
   item: IProduct[];
 }
@@ -375,19 +376,19 @@ export default function ProductInfo({ item }: IProductInfo) {
     if (duplicate || nonMemDuplicate) {
       alert("이미동일한 상품이 장바구니에 있습니다.\n장바구니에서 확인 후 다시 추가해주세요.");
       setSelectItems([]);
-      return action.setOpenModal();
+      return App.action.setBasketModal();
     } else {
       if (App.state.userInfo.userId) {
         try {
           const res = await Put.updateBasket({ userId: App.state.userInfo.userId, items: selectItems });
           App.action.setLocalItems(res.items);
-          return action.setOpenModal();
+          return App.action.setBasketModal();
         } catch (error) {
           console.log('error: ', error);
         }
       } else {
         App.action.setNonMemberBasketPush(selectItems);
-        return action.setOpenModal();
+        return App.action.setBasketModal();
       }
     }
   };
@@ -450,7 +451,7 @@ export default function ProductInfo({ item }: IProductInfo) {
       return action.setOpenModal();
     } else {
       action.setCurrentOrder(selectItems);
-      router.push('/order/orderform');
+      router.push(PAGE.ORDER.path);
     }
   };
 

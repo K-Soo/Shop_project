@@ -3,7 +3,9 @@ import styled from "styled-components";
 import Button from "components/style/Button";
 import Icon from 'components/Icon/Icon';
 import { useAppContext } from 'context/AppProvider';
+import { useOrderContext } from 'context/OrderProvider';
 import { useRouter, NextRouter } from 'next/router';
+import PAGE from 'constants/path';
 
 const S = {
   NonMemBox: styled.div`
@@ -40,11 +42,13 @@ const S = {
 export default function NonMemBox() {
   const router: NextRouter = useRouter();
   const { action } = useAppContext();
+  const Order = useOrderContext();
 
   const handleNonMemLogin = () => {
     action.InitData('status.guest', true);
     localStorage.setItem('guest', 'on');
-    router.push('/order/orderform');
+    Order.action.setInitOrderForm();
+    router.push(PAGE.ORDER.path);
   };
 
   return (

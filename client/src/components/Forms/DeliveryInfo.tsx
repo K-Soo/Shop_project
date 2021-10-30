@@ -110,6 +110,19 @@ export default function DeliveryInfo() {
         </>
       )}
 
+    {App.state.status.guest && (
+      <>
+        <S.Group>
+          <Label htmlFor='orderPasswordFor' required>주문조회<br/>비밀번호</Label>
+          <Input name='orderForm.orderPassword' type='password' id='orderPasswordFor' maxWidth='200' maxLength={12} onChange={action.setFormData} value={state.orderForm.orderPassword} />
+        </S.Group>
+
+        <S.Group>
+          <Label htmlFor='orderPasswordConfirmFor' required>비밀번호<br/>확인</Label>
+          <Input name='orderForm.orderPasswordConfirm' type='password' id='orderPasswordConfirmFor' maxWidth='200' maxLength={12}  onChange={action.setFormData} value={state.orderForm.orderPasswordConfirm} />
+        </S.Group>
+      </>
+    )}
 
       <S.Group>
         <Label htmlFor='userNameFor' required>받는분</Label>

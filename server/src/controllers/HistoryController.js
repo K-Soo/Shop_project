@@ -1,7 +1,8 @@
 
 import History from '../models/History';
-import throwError from '../../src/error/throwError';
 import mongoose from 'mongoose';
+import GuestOrder from '../models/GuestOrder';
+import throwError from '../error/throwError';
 
 const list = async (req, res, next) => {
   const { idx } = req.params;
@@ -32,7 +33,7 @@ const list = async (req, res, next) => {
   }
 };
 
-const historyDetail = async (req, res, next) => {
+const userDetail = async (req, res, next) => {
   const { idx, orderNum } = req.params;
   try {
     if (!mongoose.Types.ObjectId.isValid(idx)) {
@@ -52,7 +53,23 @@ const historyDetail = async (req, res, next) => {
   }
 };
 
+const guestDetail = async (req, res, next) => {
+  const { idx } = req.params;
+  try {
+    const exist = await GuestOrder.find({_id:idx},{orderPassword: 0});
+    if(exist){
+      res.json(exist);
+    } else{
+      throwError({statusCode:404});
+    }
+  } catch (error) {
+    next(error);
+    console.error('error-guestDetail: ', error);
+  }
+};
+
 export {
   list,
-  historyDetail,
+  userDetail,
+  guestDetail
 }

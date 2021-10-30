@@ -19,6 +19,7 @@ export interface IAppState {
     arrNumbers:[],
   },
   status: { guest: false },
+  openBasketModal:boolean;
   openSideMenu: boolean;
   openSubMenu: boolean,
   openSearch: boolean,
@@ -53,6 +54,7 @@ export const appDefaultValue: IApp = {
       arrNumbers:[],
     },
     status: { guest: false },
+    openBasketModal: false,
     openSideMenu: false,
     openSubMenu: false,
     openSearch: false,
@@ -86,6 +88,7 @@ const initializer = (props:any) => {
       arrNumbers:[],
     },
     status: { guest: false },
+    openBasketModal: false,
     openSideMenu: false,
     openSubMenu: false,
     openSearch: false,
@@ -114,6 +117,7 @@ const initializer = (props:any) => {
 };
 
 const generateAction = (update: (recipe: (draft: IAppState) => void) => void) => {
+
   const setGlobalToggle = (e:any) => {
     update((draft) => {
       const dataSetName = e.target?.dataset?.name;
@@ -143,6 +147,12 @@ const generateAction = (update: (recipe: (draft: IAppState) => void) => void) =>
   const setToggleSideMenu = () => {
     update((draft) => {
       draft.openSideMenu = !draft.openSideMenu;
+    })
+  }
+
+  const setBasketModal = () => {
+    update((draft) => {
+      draft.openBasketModal = !draft.openBasketModal;
     })
   }
 
@@ -199,7 +209,6 @@ const generateAction = (update: (recipe: (draft: IAppState) => void) => void) =>
       draft.basket.nonMemberBasket.push(...data);
     });
 
-
   // const setCurrentOrderItem = (data: IBasketItem) =>
   //   update((draft) => {
   //     draft.currentOrderItem.push(data);
@@ -215,12 +224,10 @@ const generateAction = (update: (recipe: (draft: IAppState) => void) => void) =>
       if (draft.userInfo.userId) {
         const result = draft.basket.basketList.find(d => d._id === name);
         result.qty = cnt;
-
       } else {
         const result = draft.basket.nonMemberBasket.find(d => d.date === name);
         result.qty = cnt;
       }
-
     });
 
   return {
@@ -237,7 +244,8 @@ const generateAction = (update: (recipe: (draft: IAppState) => void) => void) =>
     setNonMemberBasket,
     setGuestLocalItem,
     setGlobalToggle,
-    setFormData
+    setFormData,
+    setBasketModal
   };
 };
 
@@ -300,12 +308,6 @@ const useApp = (props:any) => {
       localStorage.setItem('unknown-basket', JSON.stringify(app.state.basket.nonMemberBasket));
     }
   }, [app.state.basket.nonMemberBasket]);
-
-  // useEffect(() => {
-  //   // 비회원
-  //   const result = JSON.parse(localStorage.getItem("unknown-basket"));
-  //   if (result) action.setNonMemberBasket(result);
-  // }, []);
 
   useDidMountEffect(() => {
     // 비회원

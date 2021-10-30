@@ -152,8 +152,6 @@ export default function Basket() {
     }
   }, [state.basket.basketList,state.basket.nonMemberBasket,userId])
 
-
-
   return (
     <S.Basket>
       <PageTitle TitleText='장바구니' />

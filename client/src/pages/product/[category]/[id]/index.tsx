@@ -18,38 +18,6 @@ export default function ProductDetailPage(props: InferGetServerSidePropsType<typ
   console.log('cookies: ', cookies);
   console.log('ProductDetailPage: ', item);
   const router: NextRouter = useRouter();
-  const { category, id } = router.query as { category: string, id: string };
-
-
-  // const { data, isLoading, isSuccess, isError, status, error } = useQuery<IProduct>(['productDetail', category, id], async () => await Get.getProduct(category, id), {
-  //   retry: 0,
-  // });
-
-  // console.log('data: ', data);
-
-  // const [item, setItem] = useState<IProduct[] | null>(null);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const result = await axios.get(URL);
-  //       setItem(result.data);
-  //       console.log('result: ', result);
-  //     } catch (error) {
-  //       console.log('error: ', error);
-  //     }
-  //   }
-  //   fetchData()
-  // }, [])
-
-  // if (isLoading) {
-  //   // return <Loading isLoading={isLoading} text='loading' />
-  //   return <h1>loading</h1>
-  // }
-
-  // if (isError) {
-  //   return <h1>error..</h1>
-  // }
 
   return (
     <>

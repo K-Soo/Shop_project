@@ -9,6 +9,7 @@ import dynamic from "next/dynamic";
 import CartIcon from 'components/Common/CartIcon';
 // import ReactTooltip from 'react-tooltip';
 import MyShopMenuBar from 'components/Common/MyShopMenuBar';
+import PAGE from 'constants/path';
 
 const ReactTooltip = dynamic(() => import("react-tooltip"), {
   ssr: false,
@@ -97,7 +98,7 @@ export default function MenuRight() {
       customCookie.remove('access_token');
       localStorage.removeItem('basket');
       localStorage.removeItem('guest');
-      return router.push('/');
+      return router.push(PAGE.MAIN.path);
     }
   }
 

@@ -21,7 +21,6 @@ const S = {
   overflow: hidden;
   background-color: rgba(0, 0, 0, 0.6); 
   z-index: 99;
-
   ${props =>
       props.active &&
       css`

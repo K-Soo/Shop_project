@@ -3,7 +3,6 @@ import Head from 'next/head'
 import MainContainer from 'containers/MainContainer';
 import Basket from 'components/Basket';
 import { useAppContext } from 'context/AppProvider';
-import BasketProvider, { BasketContext } from 'context/BasketProvider';
 import OrderProvider from 'context/OrderProvider';
 
 interface IBasketPage {

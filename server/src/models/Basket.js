@@ -14,12 +14,8 @@ const itemSchema = Schema({
   ProductId: {
     type: ObjectId,
   },
-  new_product: {
-    type: Boolean,
-  },
-  best_product: {
-    type: Boolean,
-  },
+  new_product: Boolean,
+  best_product: Boolean,
   product_type: {
     type: String,
   },

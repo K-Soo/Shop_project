@@ -43,6 +43,7 @@ const S = {
 }
 
 export default function OrderInfo({ items }: IOrderInfo) {
+  console.log('items: ', items);
   return (
     <S.OrderInfo>
       {items && items.map(d => (
@@ -58,7 +59,7 @@ export default function OrderInfo({ items }: IOrderInfo) {
             </tr>
             <tr>
               <th>주문일자</th>
-              <td>{d.createAt}</td>
+              <td>{d.createdAt}</td>
             </tr>
             <tr>
               <th>주문자</th>

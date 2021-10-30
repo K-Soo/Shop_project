@@ -1,7 +1,6 @@
 import { createContext,useContext } from "react";
 import useRegister, { registerDefaultValue } from 'hooks/useRegister';
 import { AppProps } from "next/app";
-
 interface IApp {
   children: React.ReactNode;
   value: any;

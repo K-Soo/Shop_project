@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import styled, { css } from "styled-components";
 import Button from "components/style/Button";
 import { useRouter } from "next/router";
@@ -9,7 +9,8 @@ import PageTitle from 'components/Common/PageTitle';
 import Input from "components/style/Input";
 import NonMemBox from 'components/Auth/Login/NonMemBox';
 import QuickBox from 'components/Auth/Login/QuickBox';
-
+import useDidMountEffect from 'hooks/useDidMountEffect';
+import PAGE from 'constants/path';
 interface ILogin {
   type: string;
 }
@@ -55,6 +56,12 @@ const initLogin = {
   password: '',
 }
 
+const initOrderFind = {
+  userName: '',
+  orderNum: '',
+  orderPassword:'',
+}
+
 type TUusers = 'member' | 'nonMember';
 
 const category = [
@@ -64,10 +71,15 @@ const category = [
 
 export default function Login({ type }: ILogin) {
   const [login, setLogin] = useState<{ userId: string, password: string }>(initLogin);
+  const [orderFind, setOrderFind] = useState<{ userName: string, orderPassword: string,orderNum:string }>(initOrderFind);
   const [users, setUsers] = useState<TUusers>('member');
-  console.log('users: ', users);
   const { action } = useAppContext();
   const router = useRouter();
+
+  useDidMountEffect(() => {
+    setLogin(initLogin);
+    setOrderFind(initOrderFind);
+  },[users]);
 
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -80,23 +92,46 @@ export default function Login({ type }: ILogin) {
       if (res.basket?.items) action.setLocalItems(res.basket.items);
       localStorage.removeItem('unknown-basket');
       localStorage.removeItem('guest');
-      router.push("/");
+      router.push(PAGE.MAIN.path);
     } catch (error) {
       console.error('login: ', error);
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleGuestSubmit = async (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    if ([orderFind.userName, orderFind.orderPassword,orderFind.orderNum].includes('')) {
+      return alert('주문정보를 모두 입력해주세요.');
+    }
+    try {
+      const res = await Post.guestLogin(orderFind);
+      if(res.success) router.push(PAGE.MAIN.path);
+    } catch (error) {
+      alert('주문정보를 다시확인해주세요');
+      console.error('login: ', error);
+    }
+  };
+
+  const handleChangeLogin = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target as HTMLInputElement;
     setLogin({
       ...login,
       [name]: value,
-    })
-  }
+    });
+  };
+
+  const handleChangeGuest = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target as HTMLInputElement;
+    setOrderFind({
+      ...orderFind,
+      [name]: value,
+    });
+  };
+
   const handleCategory = (e: React.MouseEvent<HTMLLIElement>) => {
     const { className } = e.target as HTMLLIElement;
     setUsers(className as TUusers);
-  }
+  };
 
   return (
     <S.Login >
@@ -109,12 +144,11 @@ export default function Login({ type }: ILogin) {
         </S.LoginTap>
       )}
 
-
     {users === 'member' && (
       <form onSubmit={handleSubmit}>
         <fieldset >
-          <Input placeholder='아이디' margin='0 0 10px 0' name='userId' onChange={handleChange} />
-          <Input placeholder='비밀번호' type='password' name='password' onChange={handleChange} />
+          <Input placeholder='아이디' margin='0 0 10px 0' name='userId' onChange={handleChangeLogin} />
+          <Input placeholder='비밀번호' type='password' name='password' onChange={handleChangeLogin} />
         </fieldset>
 
         <fieldset className='security'>
@@ -127,11 +161,11 @@ export default function Login({ type }: ILogin) {
      )}
 
       {type === 'history' && users === 'nonMember' && (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleGuestSubmit}>
           <fieldset >
-            <Input placeholder='주문자명' margin='0 0 10px 0' name='userId' onChange={handleChange} />
-            <Input placeholder='주문번호 하이픈(-)포함' margin='0 0 10px 0' name='password' onChange={handleChange} />
-            <Input placeholder='비회원 패스워드' margin='0 0 10px 0' type='password' name='password' onChange={handleChange} />
+            <Input placeholder='주문자명' margin='0 0 10px 0' name='userName' onChange={handleChangeGuest} />
+            <Input placeholder='주문번호 하이픈(-)포함' margin='0 0 10px 0' name='orderNum' onChange={handleChangeGuest} />
+            <Input placeholder='비회원 패스워드' margin='0 0 10px 0' type='password' name='orderPassword' onChange={handleChangeGuest} />
           </fieldset>
 
           <Button login type='submit'>조회</Button>

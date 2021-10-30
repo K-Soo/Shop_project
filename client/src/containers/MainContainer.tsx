@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Link from "next/link";
 import Breadcrumb from "components/Common/Breadcrumb";
 import PAGE from "constants/path";
+import {useRouter} from 'next/router';
 
 interface IMainContainer {
   className?: string;
@@ -25,15 +26,20 @@ const S = {
 }
 
 export default function MainContainer(props: IMainContainer) {
+  const router = useRouter();
+  console.log('router: ', router);
+
   return (
     <S.MainContainer >
-      <Breadcrumb>
+      {router.pathname !== '/' && (
+        <Breadcrumb>
         {[PAGE.MAIN].map(({ path, tag }) => (
           <Link key={path} href={path}>
             {tag}
           </Link>
         ))}
-      </Breadcrumb>
+        </Breadcrumb>
+      )}
       {props.children}
     </S.MainContainer>
   );

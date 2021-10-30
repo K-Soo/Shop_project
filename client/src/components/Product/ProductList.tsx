@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router'
 import styled from "styled-components";
 import 'slick-carousel/slick/slick.css';
@@ -34,7 +34,7 @@ const S = {
 }
 
 export default function ProductList({ item, isLoading, isSuccess }: IProductList) {
-  const router = useRouter();
+  console.log('item: ', item);
 
   return (
     <S.ProductList>
@@ -54,9 +54,9 @@ export default function ProductList({ item, isLoading, isSuccess }: IProductList
               product_colors={d.product_colors}
               best_product={d.best_product}
               new_product={d.new_product}
+              qty={d.qty}
               isList={true}
             />
-      
           )) : (
             <S.EmptyItems >
               <i><Icon name='menu' style={{ color: '#000' }} /></i>

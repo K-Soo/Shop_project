@@ -15,6 +15,7 @@ import { Post } from "api";
 import FileUpload from 'components/Common/FileUpload';
 import { useMutation } from 'react-query';
 import {TColor,IProduct} from 'interfaces/IProduct';
+import axios from 'axios';
 
 interface ICreate {
 
@@ -160,7 +161,11 @@ export default function Create(props: ICreate) {
           const res = await Post.createProduct(state.create);
           alert('등록이 완료되었습니다.');
         } catch (error:any) {
-          alert(error.response.data.message);
+          console.log('error: ', error);
+          if (axios.isAxiosError(error)) {
+            console.error('create-error: ', error);
+            alert(error.response.data.message);
+          }
         }
       })();
     }
@@ -175,8 +180,9 @@ export default function Create(props: ICreate) {
       try {
         const res = await Post.createProductImage(formData);
         action.setData('create.imageUrl', res)
-      } catch (error) {
-        console.error('image-error: ', error);
+      } catch (error:any) {
+        console.log('error: ', error.response);
+        console.error('handleDrop-error: ', error);
         // alert(error.response?.data.message);
       }
     })();

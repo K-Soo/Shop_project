@@ -8,4 +8,8 @@ export const queryKeys = {
   INTEREST_PRODUCT: 'interestProduct',
   POINT: 'point',
   POINT_DETAIL: 'pointDetail',
+  NOTICE_LIST: {
+    name: 'notice-list',
+    limit: 4,
+  },
 } as const;

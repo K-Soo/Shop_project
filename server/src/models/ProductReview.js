@@ -24,6 +24,7 @@ const ProductReviewSchema = new Schema({
   },
   url:{
     type: String,
+    required: true,
   },
   rate:{
     type: String,

@@ -4,7 +4,6 @@ import MainContainer from 'containers/MainContainer';
 import Basket from 'components/Basket';
 import List from 'components/History/List';
 import { useAppContext } from 'context/AppProvider';
-import BasketProvider, { BasketContext } from 'context/BasketProvider';
 import OrderProvider from 'context/OrderProvider';
 import { InferGetServerSidePropsType, GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';

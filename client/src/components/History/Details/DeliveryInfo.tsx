@@ -1,14 +1,13 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import styled from "styled-components";
 import { IOrderDetail } from 'interfaces/IOrder';
 import Button from 'components/style/Button';
 import Icon from 'components/Icon/Icon';
-import { useRouter } from 'next/router';
-import { useReactToPrint } from 'react-to-print';
-
+import { useRouter, NextRouter } from 'next/router';
+import PAGE from 'constants/path';
 interface IDeliveryInfo {
   items: IOrderDetail[]
-  handlePrint:any;
+  handlePrint: any;
 }
 
 const S = {
@@ -75,8 +74,15 @@ const S = {
   `,
 }
 
-export default function DeliveryInfo({ items,handlePrint }: IDeliveryInfo) {
-  const router = useRouter();
+export default function DeliveryInfo({ items, handlePrint }: IDeliveryInfo) {
+  const router: NextRouter = useRouter();
+  const handleRoute = () => {
+    if (router.pathname !== "/users/history/guest-detail/[idx]") {
+      router.back();
+    } else {
+      router.push(PAGE.MAIN.path);
+    }
+  }
 
   return (
     <S.DeliveryInfo>
@@ -93,7 +99,7 @@ export default function DeliveryInfo({ items,handlePrint }: IDeliveryInfo) {
             </tr>
             <tr>
               <th>주문일자</th>
-              <td>{d.createAt}</td>
+              <td>{d.createdAt}</td>
             </tr>
             <tr>
               <th>주문자</th>
@@ -108,9 +114,10 @@ export default function DeliveryInfo({ items,handlePrint }: IDeliveryInfo) {
       ))}
       <S.ButtonBox>
         <Button className='print' height='20px' white width='100px' onClick={handlePrint}>프린트</Button>
-        <Button className='back' height='30px' black width='120px' onClick={() => router.back()}>
+        <Button className='back' height='30px' black width='120px' onClick={handleRoute}>
           <i><Icon name='back' /></i>
-          <span>주문목록 보기</span>
+          {router.pathname !== "/users/history/guest-detail/[idx]" && <span>주문목록 보기</span>}
+          {router.pathname === "/users/history/guest-detail/[idx]" && <span>메인으로</span>}
         </Button>
       </S.ButtonBox>
     </S.DeliveryInfo>
