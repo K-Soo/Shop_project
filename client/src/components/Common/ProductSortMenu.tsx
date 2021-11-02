@@ -9,7 +9,7 @@ interface IProductSortMenu {
 
 const S = {
   ProductSortMenu: styled.article`
-    height: 40px;
+    height: 35px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -17,9 +17,6 @@ const S = {
     .select-box{
       height: 100%;
       ${({ theme }) => theme.mobile`
-        flex: 1 33%;
-        display: flex;
-        justify-content: flex-end;
         select{
           width: 100px;
         }
@@ -27,59 +24,44 @@ const S = {
     }
     ${({ theme }) => theme.mobile`
       height: 25px;
+      padding: 0 15px;
     `}
   `,
   ProductCount: styled.div`
-  color: #222;
-    width: 100px;
+    color: #222;
+    /* width: 100px; */
     font-weight: 400;
     text-align: center;
     height: 100%;
     display: flex;
+    justify-content: space-between;
     align-items: center;
     strong{
       font-size: 18px;
       width: 100%;
+      color: #000;
       &::after{
-        content: '개 상품'
+        content: 'ITEMS';
+        margin-left: 5px;
+        font-size: 16px;
+        color: #353535;
       }
     }
-    ${({ theme }) => theme.mobile`
-      flex: 1 33%;
-    `}
-  `,
-  Layout: styled.div`
-    display: none;
-    flex: 1 33%;
-    border: 1px solid red;
-    height: 100%;
-    span{
-      text-align: center;
-      border: 1px solid red;
-    }
-    ${({ theme }) => theme.mobile`
-      font-size: 11px;
-      display: block;
-    `}
   `,
 }
 
 export default function ProductSortMenu({ itemCount, setSort }: IProductSortMenu) {
   return (
     <S.ProductSortMenu>
-      <S.Layout>
-        <span>icon</span>
-        <span>icon</span>
-        <span>icon</span>
-        <span>icon</span>
-      </S.Layout>
+
       <S.ProductCount>
         <strong>
           {itemCount}
         </strong>
       </S.ProductCount>
+
       <div className='select-box'>
-        <Select width='200' onChange={(e) => setSort(e.target.value)}>
+        <Select width='140' onChange={(e) => setSort(e.target.value)}>
           <option value="">상품정렬</option>
           <option value="row">낮은가격</option>
           <option value="hight">높은가격</option>

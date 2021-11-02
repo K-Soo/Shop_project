@@ -11,25 +11,26 @@ import Title from 'components/style/Title';
 import { PriceComma } from 'utils';
 import TextIcon from 'components/Common/TextIcon';
 import ColorIcon from 'components/style/ColorIcon';
-import {TColor ,TUrl} from 'interfaces/IProduct';
+import { TColor, TUrl } from 'interfaces/IProduct';
 
 interface IProductCard {
   product_type: string;
   seq: number;
   name: string;
   description: string;
+  summary_description: string;
   product_price: string;
   consumer_price: string;
-  imageUrl:TUrl[];
-  product_colors:TColor[];
-  new_product:boolean;
-  best_product:boolean;
-  isList?:boolean;
-  qty:number;
+  imageUrl: TUrl[];
+  product_colors: TColor[];
+  new_product: boolean;
+  best_product: boolean;
+  isList?: boolean;
+  qty: number;
 }
 
 const S = {
-  ProductCard: styled.div<{isList:boolean,isSoldOut:boolean}>`
+  ProductCard: styled.div<{ isList: boolean, isSoldOut: boolean }>`
     height: 100%;
     padding: 10px;
     ${props => props.isList && css`
@@ -56,50 +57,57 @@ const S = {
       max-width: 260px;
       display: flex;
       flex-direction: column;
-      .img-box{
-        height: 300px;
-        margin-bottom: 15px;
-        font-size: 0;
+      &__top{
         position: relative;
-        &__sold-out{
-          position: absolute;
-        width: 100%;
-        text-align: center;
-        height: 100%;
-        background-color: rgb(255,255,255,0.6);
-        display: ${props => props.isSoldOut ? 'flex' : 'none'};
-        justify-content: center;
-        align-items: center;
-        p{
-          color: #666;
-          font-size: 24px;
-        }
-        }
-        img{
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          z-index: -1;
-          &:hover{
-            transform: scale(1.01);
-            transition: all .5s ease;
+        border: 1px solid #eee;
+        margin-bottom: 15px;
+        overflow: hidden;
+        .img-box{
+          height: 300px;
+          font-size: 0;
+          position: relative;
+          img{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            overflow: hidden;
+            &:hover{
+              transform: scale(1.02);
+              transition: all .3s ease;
+            }
+          }
+          &__sold-out{
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            height: 100%;
+            background-color: rgb(255,255,255,0.6);
+            display: ${props => props.isSoldOut ? 'flex' : 'none'};
+            justify-content: center;
+            align-items: center;
+            p{
+              color: #666;
+              font-size: 24px;
+            }
           }
         }
       }
-      .desc-box{
+      &__bottom{
         height: 100px;
         display: flex;
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center;
         font-size: 13px;
         ${Title}{
-          display: block;
+          color: #333;
           font-size: 16px;
-          width: 100%;
-          text-align: left;
+          font-weight: 400;
         }
         .desc{
           margin-bottom: 5px;
+          font-size: 12px;
+          color: #666;
         }
       }
       ${({ theme }) => theme.mobile`
@@ -123,16 +131,22 @@ const S = {
     height: 16px;
   `,
   ColorBox: styled.p`
+    z-index: 9999;
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    display: flex;
+    align-items: center;
   `,
-
 }
 
-export default function ProductCard({ 
-  product_type, 
-  seq, 
-  name, 
-  description, 
-  product_price, 
+export default function ProductCard({
+  product_type,
+  seq,
+  name,
+  description,
+  summary_description,
+  product_price,
   consumer_price,
   imageUrl,
   product_colors,
@@ -151,26 +165,25 @@ export default function ProductCard({
     <S.ProductCard isList={isList} isSoldOut={isSoldOut}>
       <div className='card-inner'>
         <Link href={product_type + "/" + seq}>
-          <a>
+          <a className='card-inner__top'>
             <div className='img-box'>
-            <div className='img-box__sold-out'>
-              <p>SOLD OUT</p>
-            </div>
+              <div className='img-box__sold-out'>
+                <p>SOLD OUT</p>
+              </div>
               <img
                 src={imageUrl[0].url}
                 alt="Picture of the author"
               />
             </div>
+            <S.ColorBox >
+              {product_colors?.map((d: TColor) => (
+                <ColorIcon key={d.hex_value} color={d.hex_value} />
+              ))}
+            </S.ColorBox>
           </a>
         </Link>
 
-        <div className='desc-box'>
-          <S.ColorBox >
-            {product_colors?.map((d: TColor) => (
-              <ColorIcon key={d.hex_value} color={d.hex_value} />
-            ))}
-          </S.ColorBox>
-
+        <div className='card-inner__bottom'>
           <S.IconBox >
             {best_product && <TextIcon text='best' margin='0 5px 0 0' />}
             {new_product && <TextIcon text='new' />}
@@ -178,7 +191,7 @@ export default function ProductCard({
 
           <Title level={6} className='title'>{name}</Title>
 
-          <p className='desc'>{description.slice(0, 30)}</p>
+          <p className='desc'>{summary_description}</p>
           <span style={{ color: '#999' }}><del>{PriceComma(product_price)}원</del></span>
           <b style={{ color: '#4d4d4d' }}>{PriceComma(consumer_price)}원</b>
         </div>

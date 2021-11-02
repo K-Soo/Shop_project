@@ -29,7 +29,7 @@ const S = {
     top: 0;
     left: 0;
     height: 100vh;
-    width: 280px;
+    width: 260px;
     padding: 20px;
     visibility: ${props => props.openSideMenu && props.directionSwap ? 'visible' : 'hidden'};
     z-index: 9999;

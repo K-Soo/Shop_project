@@ -4,9 +4,13 @@ import MainContainer from 'containers/MainContainer';
 import Detail from 'components/Board/Notice/Detail';
 import { InferGetServerSidePropsType, GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { Get } from "api";
+import Error from 'next/error';
 
 export default function NoticeDetailPage(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  console.log('DetailDetail: ', props);
+
+  if (props.errorCode) {
+    return <Error statusCode={props.errorCode} />
+  }
 
   return (
     <>
@@ -15,7 +19,7 @@ export default function NoticeDetailPage(props: InferGetServerSidePropsType<type
         <meta name="description" content="공지사항 디테일" />
       </Head>
         <MainContainer >
-          <Detail />
+          <Detail item={props.item}/>
         </MainContainer>
     </>
   );
@@ -23,28 +27,18 @@ export default function NoticeDetailPage(props: InferGetServerSidePropsType<type
 
 export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
   const { idx } = context.query as { idx: string };
-  // if (!access_token) {
-  //   return {
-  //     redirect: {
-  //       destination: '/auth/login',
-  //       permanent: false,
-  //     }
-  //   }
-  // 
-  return {
-    props: {
-      idx
-    },
+  try {
+    const res = await Get.getNoticeDetail(idx);
+    return {
+      props: {
+        item:res,
+      },
+    }
+  } catch (error:any) {
+    return {
+      props: {
+        errorCode: error.response.status,
+      },
+    }
   }
-
-  // try {
-  //   const userDetail = await Get.UserInfo(decodedJwt.id);
-  //   return {
-  //     props: {
-  //       userDetail
-  //     },
-  //   }
-  // } catch (error) {
-  //   throw error;
-  // }
 };

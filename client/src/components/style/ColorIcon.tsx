@@ -13,6 +13,7 @@ const S = {
     border-radius: 50%;
     margin-right: 5px;
     background-color: ${props => props.color ? `${props.color};` : 'none'};
+    border: 1px solid #eee;
   `,
 }
 

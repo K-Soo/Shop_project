@@ -9,7 +9,7 @@ import TitleLine from 'components/SideMenu/common/TitleLine';
 import Info from 'components/SideMenu/common/Info';
 import Copyright from 'components/SideMenu/common/Copyright';
 import QuickIcon from 'components/SideMenu/common/QuickIcon';
-import {QUICK_ICON_RIGHT} from 'constants/sideMenu';
+import { QUICK_ICON_RIGHT } from 'constants/sideMenu';
 interface IRightSide {
   directionSwap: boolean;
   onClick: React.MouseEventHandler<HTMLLIElement>;
@@ -20,7 +20,7 @@ const S = {
     height: 100vh;
     top: 0;
     right: 0;
-    width: 280px;
+    width: 260px;
     z-index: 9999;
     visibility: ${props => props.openSideMenu && props.directionSwap === false ? 'visible' : 'hidden'};
     background-color: #fff;
@@ -115,12 +115,12 @@ export default function RightSide({ directionSwap, onClick }: IRightSide) {
           </S.Panel>
 
           <S.ImageBanner>
-          <img className='main-logo' src="/images/41p61tShGfL._AC_.jpg" alt='side_left_main_logo' />
+            <img className='main-logo' src="/images/41p61tShGfL._AC_.jpg" alt='side_left_main_logo' />
           </S.ImageBanner>
 
           <TitleLine text='MY SHOPPING' />
           <S.IconMenu>
-            <QuickIcon lists={QUICK_ICON_RIGHT}/>
+            <QuickIcon lists={QUICK_ICON_RIGHT} />
           </S.IconMenu>
 
           <TitleLine text='POINT / COUPON' />

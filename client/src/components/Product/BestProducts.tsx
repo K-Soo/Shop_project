@@ -2,6 +2,7 @@ import React, { useCallback } from "react";
 import styled from "styled-components";
 import ImageSlider from 'components/Common/ImageSlider';
 import { IProduct } from 'interfaces/IProduct';
+import TitleLine from 'components/SideMenu/common/TitleLine';
 
 interface IBestProducts {
   item?: IProduct[];

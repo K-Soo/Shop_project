@@ -48,6 +48,7 @@ export default function ProductList({ item, isLoading, isSuccess }: IProductList
               seq={d.seq}
               name={d.name} 
               description={d.description}
+              summary_description={d.summary_description}
               product_price={d.product_price}
               consumer_price={d.consumer_price}
               imageUrl={d.imageUrl}

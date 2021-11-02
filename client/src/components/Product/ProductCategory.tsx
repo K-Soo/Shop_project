@@ -17,15 +17,15 @@ interface IProductCategory {
 const ItemCommon = css`
   margin: 2px;
   padding: 5px;
-  font-size: 10px;
+  font-size: 12px;
   border-radius: 15px;
   text-align: center;
   cursor: pointer;
   border: 1px solid #fff;
   &[data-active=true] {
-    color: #212529;
+    color: #fff;
     border: solid 1px #222529;
-    background-color: #F9F9F9;
+    background-color: #333;
   }
 `;
 const S = {

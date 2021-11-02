@@ -62,7 +62,7 @@ export default function Write({ }) {
   const [textLength,setTextLength] = useState(0);
   const [noticeType,setNoticeType] = useState('notice')
   const titleRef = useRef<HTMLInputElement>(null);
-  const router = useRouter();
+  const router:NextRouter = useRouter();
   const editorToHtml = draftToHtml(convertToRaw(editorState.getCurrentContent()));
 
   useEffect(() => {

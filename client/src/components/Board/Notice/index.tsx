@@ -30,19 +30,21 @@ export default function Notice({ }: INotice) {
   const currentPage = Number(App.state.pagination.currentPage);
   const router:NextRouter = useRouter();
 
-  const { data: items = [], isLoading, isSuccess, isError, isFetching } = useQuery<NoticeProps[]>([queryKeys.NOTICE_LIST.name, currentPage, queryKeys.NOTICE_LIST.limit], async () => await Get.getNoticeList(currentPage, queryKeys.NOTICE_LIST.limit), {
+  const { data, isLoading, isSuccess, isError, isFetching } = useQuery<NoticeProps>([queryKeys.NOTICE_LIST.name, currentPage, queryKeys.NOTICE_LIST.limit], async () => await Get.getNoticeList(currentPage, queryKeys.NOTICE_LIST.limit), {
     retry: 0,
     keepPreviousData: true,
     refetchOnWindowFocus: false,
     staleTime: 2000,
     // select: selectFc,
   });
-  console.log('items: ', items);
+  console.log('items: ', data);
+
+  if(isLoading) return <div>loading</div>
 
   return (
     <S.Notice>
       <PageTitle TitleText='공지사항' />
-      <List items={items} />
+      <List items={data.items} isLoading={isLoading}/>
       <S.ButtonBox className='button-box'>
         <Button 
           white 

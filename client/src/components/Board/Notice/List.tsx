@@ -1,39 +1,48 @@
 import React from "react";
 import styled from "styled-components";
-import { NoticeProps } from 'interfaces/INotice';
+import { NoticeProps, TItems } from 'interfaces/INotice';
 import Link from 'next/link';
 
 interface IList {
-  items: NoticeProps[];
+  items: TItems[];
+  isLoading: boolean;
 }
 
 const S = {
   List: styled.div`
     table{
-      border: 1px solid red;
       width: 100%;
       border-collapse: collapse;
       font-size: 12px;
       padding: 0 15px;
+      border-top: 1px solid #f0f0f0;
       thead{
         tr{
           th{
             padding: 10px 15px;
             font-weight: normal;
+            border-bottom: 1px solid #f0f0f0;
+            background-color: #f9f9f9;
           }
         }
       }
       tbody{
         tr{
           td{
+            a{
+              display: block;
+              height: 100%;
+            }
+            padding: 10px 15px;
           }
           .index{
             font-size: 11px;
             color: #939393;
+            text-align: center;
+            padding: 10px 5px;
           }
           .title{
             cursor: pointer;
-            border: 1px solid red;
             color: #000;
           }
         }
@@ -49,11 +58,11 @@ export default function List({ items }: IList) {
   return (
     <S.List>
       <table>
-        <caption>총 주문금액</caption>
+        <caption>공지사항 리스트</caption>
         <colgroup>
           <col width="5%" />
-          <col width="80%" />
-          <col width="15%" />
+          <col width="85%" />
+          <col width="10%" />
         </colgroup>
         <thead>
           <tr>
@@ -62,15 +71,13 @@ export default function List({ items }: IList) {
         </thead>
         <tbody>
           {items.map((d, i) => (
-            <tr key={d._id}>
-              <td className='index'>{i}</td>
-
+            <tr key={d._id} className='notice-tr'>
+              <td className='index'>{i+ 1}</td>
               <td className='title'>
                 <Link href={`/board/notice/${d._id}`}>
                   <a>{d.title}</a>
                 </Link>
               </td>
-
               <td className='date'>{d.createdAt}</td>
             </tr>
           ))}

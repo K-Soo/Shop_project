@@ -82,7 +82,6 @@ const IntroduceContent = styled.div`
 
 const starArray = ['★', '★★', '★★★', '★★★★', '★★★★★']
 
-
 export default function Form({ }: IForm) {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [textLength,setTextLength] = useState(0);
@@ -150,7 +149,7 @@ export default function Form({ }: IForm) {
     }
   }
 
-  const handleImage = (e) => {
+  const handleImage = (e:React.ChangeEvent<HTMLInputElement>) => {
     Review.action.setData('form.imageUrl', e.target.files[0]);
   }
 

@@ -1,4 +1,4 @@
-export interface NoticeProps {
+export type TItems = {
   _id: string,
   title: string,
   type:string;
@@ -6,4 +6,8 @@ export interface NoticeProps {
   createdAt: string,
 }
 
+export interface NoticeProps  {
+  items:TItems[]
+  maxPages:number,
+}
 

@@ -31,8 +31,8 @@ const requests = {
 
 export const Get = {
   products: (category: string): Promise<IProduct[]> => requests.get(`/api/products/${category}`),
-  UserInfo: (id: string): Promise<IProduct> => requests.get(`/api/users/${id}`),
   getProductDetail: (category: string, id: string): Promise<IProduct> => requests.get(`/api/products/${category}/${id}`),
+  UserInfo: (id: string): Promise<IProduct> => requests.get(`/api/users/${id}`),
   getAllProduct: (): Promise<IProduct[]> => requests.get(`/api/products/list`),
   getHistory: (idx: string, page: number,limit:number) => requests.get(`/api/users/history/${idx}?page=${page}&limit=${limit}`),
   getUserHistoryDetail: (idx: string, orderNum: string) => requests.get(`/api/users/history/${idx}/${orderNum}`),
@@ -42,6 +42,7 @@ export const Get = {
   getProductReview: (productId: string,page:number,limit:number,key:string,value:number) => requests.get(`/api/products/review/${productId}?page=${page}&limit=${limit}&key=${key}&value=${value}`),
   getPointList: (idx: string,page:number,limit:number) => requests.get(`/api/users/point/${idx}?page=${page}&limit=${limit}`),
   getNoticeList: (page:number,limit:number) => requests.get(`/api/board/notice?page=${page}&limit=${limit}`),
+  getNoticeDetail: (idx:string) => requests.get(`/api/board/notice/${idx}`),
 };
 
 export const Post = {
