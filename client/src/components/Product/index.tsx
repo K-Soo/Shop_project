@@ -40,7 +40,7 @@ export default function Product({ item, isLoading, isSuccess }: IProductProps) {
       {isSuccess && <BestProducts item={item} />}
 
       <ProductSortMenu itemCount={selectedItem?.length} setSort={setSort} />
-      <ProductList item={sortingData} isLoading={isLoading} isSuccess={isSuccess} />
+      <ProductList items={sortingData} isLoading={isLoading} isSuccess={isSuccess} />
     </S.Product>
   )
 };

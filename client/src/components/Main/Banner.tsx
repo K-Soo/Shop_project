@@ -1,15 +1,15 @@
+/* eslint-disable @next/next/no-img-element */
 import React from "react";
 import styled from "styled-components";
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 interface IBanner {
-  
+
 }
 
 const S = {
-  Banner: styled.div`
-    /* width: 100%; */
+  Banner: styled.article`
     font-size: 0;
     img{
       width: 100%;
@@ -45,7 +45,7 @@ const settings = {
   ],
 };
 
-export default function Banner({}:IBanner) {
+export default function Banner({ }: IBanner) {
   return (
     <S.Banner>
       <img className='main-logo' src="/images/single-first.jpeg" alt='side_left_main_logo' />

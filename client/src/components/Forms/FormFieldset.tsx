@@ -2,11 +2,15 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Title from 'components/style/Title';
 import Icon from 'components/Icon/Icon';
+import { useRouter, NextRouter } from 'next/router';
+
 interface IFormFieldset {
   children: React.ReactNode
   title?: string;
   titleDisable?: boolean;
   margin?: string;
+  className?: string;
+  LinkBtn?: boolean;
 }
 
 const S = {
@@ -23,11 +27,13 @@ const S = {
     position: relative;
     display: ${props => props.titleDisable ? 'none' : 'flex'};
     justify-content: space-between;
-    align-items: flex-end;
+    align-items: center;
     border-bottom: 2px solid #e8e8e8;
     margin-bottom: 10px;
-    height: 35px;
     width: 100%;
+    i{
+      cursor: pointer;
+    }
     ${Title}{
       position: relative;
       &::after{
@@ -49,10 +55,19 @@ const S = {
         width: 16px;
       }
     }
+    .plus{
+      font-size: 0;
+      padding-right: 5px;
+      svg{
+        height: 14px;
+        width: 14px;
+      }
+    }
     ${({ theme }) => theme.mobile`
       align-items: center;
       border-bottom: none;
       margin-bottom: 0px;
+      height: 35px;
       ${Title}{
         font-size: 14px;
         &::after{
@@ -73,16 +88,27 @@ const S = {
   `,
 }
 
-export default function FormFieldset({ children, title, titleDisable, margin }: IFormFieldset) {
+export default function FormFieldset({ className, children, title, titleDisable, margin, LinkBtn }: IFormFieldset) {
   const [disable, setDisable] = useState(true);
+  const router = useRouter();
 
   return (
-    <S.FormFieldset margin={margin}>
+    <S.FormFieldset margin={margin} className={className}>
       <S.SubTitle disable={disable} titleDisable={titleDisable}>
         <Title level={3} size='18' textAlign='left'>{title}</Title>
-        <i onClick={() => setDisable(!disable)} className='arrow-icon'><Icon style={{ color: '#333' }} name='arrowNoTailBottom' /></i>
+        {LinkBtn || (
+          <i onClick={() => setDisable(!disable)} className='arrow-icon'>
+            <Icon style={{ color: '#333' }} name='arrowNoTailBottom' />
+          </i>
+        )}
+
+        {LinkBtn && (
+          <i onClick={() => router.push('/board/notice')} className='plus'>
+            <Icon style={{ color: '#333' }} name='plus' />
+          </i>
+        )}
       </S.SubTitle>
-      <S.Content disable={disable} >
+      <S.Content disable={disable} className='content'>
         {children}
       </S.Content>
     </S.FormFieldset>

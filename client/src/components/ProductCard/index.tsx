@@ -109,6 +109,14 @@ const S = {
           font-size: 12px;
           color: #666;
         }
+        &--product-price{
+          font-size: 12px;
+          color: #999;
+        }
+        &--consumer-price{
+          font-size: 15px;
+          color: #4d4d4d;
+        }
       }
       ${({ theme }) => theme.mobile`
        .img-box{
@@ -192,8 +200,8 @@ export default function ProductCard({
           <Title level={6} className='title'>{name}</Title>
 
           <p className='desc'>{summary_description}</p>
-          <span style={{ color: '#999' }}><del>{PriceComma(product_price)}원</del></span>
-          <b style={{ color: '#4d4d4d' }}>{PriceComma(consumer_price)}원</b>
+          <span className='card-inner__bottom--product-price'><del>{PriceComma(product_price)}원</del></span>
+          <b className='card-inner__bottom--consumer-price'>{PriceComma(consumer_price)}원</b>
         </div>
       </div>
     </S.ProductCard>

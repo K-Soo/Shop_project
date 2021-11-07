@@ -15,7 +15,7 @@ const S = {
     right: -10%;
     font-size: 0px;
     cursor: pointer;
-    ${props => props.scrollActive &&`
+    ${props => props.scrollActive && `
       right: 3%;
       transition: all .5s ease;
     `}
@@ -49,7 +49,7 @@ const QuickScroll: React.FC<IQuickScroll> = ({ className }) => {
 
   const scrollToTop = () => {
     window.scrollTo({
-      top:0,
+      top: 0,
       behavior: 'smooth',
     })
   }

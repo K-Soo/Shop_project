@@ -185,10 +185,9 @@ const S = {
   `,
 
   ProductColorSelect: styled.div`
-    margin-top: 20px;
+    margin: 20px 0;
     display: flex;
     align-items: center;
-    /* padding: 10px 0; */
     .title-box{
       color: #333;
       width: 100px;
@@ -207,11 +206,12 @@ const S = {
   `,
   Guide: styled.div`
     font-size: 12px;
+    margin-top: 10px;
     p{
-    font-size: 10px;
-    display: flex;
-    align-items: center;
-    margin-bottom: 5px;
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      margin-bottom: 5px;
     }
     p:last-child{
       margin-bottom: 0px;
@@ -256,9 +256,13 @@ const S = {
   CurrentProducts: styled.div`
     max-height: 200px;
     overflow: auto;
-    li{
+    .selected-item{
       height: 65px;
-      margin-bottom: 5px;
+      margin-top: 5px;
+      border: 1px solid #e5e5e5;
+      :first-child{
+      margin-top: 0px;
+      }
       background-color: #F9F9F9;
       display: flex;
       font-size: 13px;
@@ -300,6 +304,7 @@ const S = {
       button{
         all: unset;
         height: 100%;
+        cursor: pointer;
           svg{
             color: #000;
             width: 16px;
@@ -540,7 +545,7 @@ export default function ProductInfo({ item }: IProductInfo) {
                 <S.CurrentProducts>
                   <ul>
                     {selectItems.map((d: IBasketItem) => (
-                      <li key={d.selectColor[0].hexValue}>
+                      <li key={d.selectColor[0].hexValue} className='selected-item'>
                         <div className='current-title'>
                           <span className='current-title__name'>{d.name}</span>
                           <b className='current-title__color'>{d.selectColor[0].colorName}</b>

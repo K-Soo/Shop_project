@@ -113,9 +113,11 @@ const S = {
           letter-spacing: 0.5px;
           font-size: 13px;
           font-weight: 600;
+          white-space: nowrap;
         }
         ul{
           display: flex;
+          white-space: nowrap;
           li{
             background-color: #f5f5f5;
             color: #666;
@@ -199,9 +201,7 @@ export default function NavSearchBar() {
 
   return (
     <S.NavSearchBar toggle={state.openSearch}>
-      {isLoading && (
-        <div>Loading...</div>
-      )}
+      {isLoading && <div>Loading...</div>}
       {isSuccess && (
         <S.form toggle={state.openSearch} onSubmit={handleSubmit}>
           <fieldset className='search-field'>
@@ -210,6 +210,7 @@ export default function NavSearchBar() {
               <Icon name='search' />
             </button>
           </fieldset>
+
           <fieldset className='search-data'>
             <div className='search-data__keyword'>
               <span>KEYWORD</span>
@@ -233,6 +234,7 @@ export default function NavSearchBar() {
               ))}
             </ul>
           </fieldset>
+
           <fieldset className='bottom-field'>
             <button className='close-btn' type='button' name='openSearch' onClick={action.setGlobalToggle}>
               <Icon name='close' />

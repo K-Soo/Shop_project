@@ -1,5 +1,6 @@
 import Notice from '../models/Notice';
 import throwError from '../../src/error/throwError';
+
 const create = async (req, res, next) => {
   const result = req.body;
   const notice = new Notice(result);
@@ -15,7 +16,7 @@ const list = async (req, res, next) => {
   const { page, limit } = req.query;
   const skip = Number(limit) * (Number(page) - 1);
 
-  const exist = await Notice.find({}, null, { sort: { type: -1 } })
+  const exist = await Notice.find({}, null, { sort: { createdAt: -1 } })
 
   const response = {
     items: exist,

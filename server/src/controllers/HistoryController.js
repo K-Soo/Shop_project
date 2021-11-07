@@ -9,7 +9,6 @@ const list = async (req, res, next) => {
   const { page, limit } = req.query;
   const skip = Number(limit) * (Number(page) - 1);
   try {
- 
     const _id = mongoose.Types.ObjectId.createFromHexString(idx);
     let total = await History.findOne({ user: _id }, { data: 1 }).lean();
 

@@ -14,7 +14,7 @@ import Link from "next/link";
 import { useRouter } from 'next/router';
 import { useAppContext } from 'context/AppProvider';
 import Category from 'components/SideMenu/common/Category';
-import {QUICK_ICON_LEFT,TQuickIconProps} from 'constants/sideMenu';
+import { QUICK_ICON_LEFT, TQuickIconProps } from 'constants/sideMenu';
 import TitleLine from 'components/SideMenu/common/TitleLine';
 
 interface ILeftSide {
@@ -155,6 +155,11 @@ export default function LeftSide({ directionSwap, onClick }: ILeftSide) {
     router.push(`/auth/${name}`);
   }
 
+  const handleText = (e: React.MouseEvent<HTMLLIElement>) => {
+    const { className } = e.target;
+    setText(className);
+  }
+
   return (
     <S.LeftSide
       openSideMenu={state.openSideMenu}
@@ -173,7 +178,7 @@ export default function LeftSide({ directionSwap, onClick }: ILeftSide) {
           <S.ImageBanner>
             <img className='main-logo' src="/images/single-first.jpeg" alt='side_left_main_logo' />
           </S.ImageBanner>
-          
+
           <S.Top>
             <Button login height='35px' fontSize='12px' name='login' onClick={handleRouter}>
               로그인
@@ -182,14 +187,14 @@ export default function LeftSide({ directionSwap, onClick }: ILeftSide) {
               회원가입
             </Button>
           </S.Top>
-          
+
           <TitleLine text='MY SHOPPING' />
-          <QuickIcon lists={QUICK_ICON_LEFT}/>
+          <QuickIcon lists={QUICK_ICON_LEFT} />
 
           <S.Tap text={text}>
             <ul className='tap-list'>
-              <li className='product' onClick={(e: React.MouseEventHandler<HTMLLIElement>) => setText(e.target.className)}>상품</li>
-              <li className='interest' onClick={(e: React.MouseEventHandler<HTMLLIElement>) => setText(e.target.className)}>관심상품</li>
+              <li className='product' onClick={handleText}>상품</li>
+              <li className='interest' onClick={handleText}>관심상품</li>
             </ul>
 
             <div className='tap-data'>

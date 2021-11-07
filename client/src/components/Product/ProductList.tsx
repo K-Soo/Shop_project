@@ -9,7 +9,7 @@ import Loading from 'components/Loading';
 import ProductCard from 'components/ProductCard';
 
 interface IProductList {
-  item?: IProduct[];
+  items?: IProduct[];
   isLoading: boolean;
   isSuccess: boolean;
 }
@@ -33,15 +33,13 @@ const S = {
   `,
 }
 
-export default function ProductList({ item, isLoading, isSuccess }: IProductList) {
-  console.log('item: ', item);
-
+export default function ProductList({ items, isLoading, isSuccess }: IProductList) {
   return (
     <S.ProductList>
       {isLoading && <Loading isLoading={isLoading} height={300} text='상품 갱신중...' />}
       {isSuccess && (
         <>
-          {item.length > 0 ? item.map((d: IProduct, i) => (
+          {items && items.length > 0 ? items.map((d: IProduct, i) => (
             <ProductCard 
               key={d._id}
               product_type={d.product_type}

@@ -33,7 +33,7 @@ export const Get = {
   products: (category: string): Promise<IProduct[]> => requests.get(`/api/products/${category}`),
   getProductDetail: (category: string, id: string): Promise<IProduct> => requests.get(`/api/products/${category}/${id}`),
   UserInfo: (id: string): Promise<IProduct> => requests.get(`/api/users/${id}`),
-  getAllProduct: (): Promise<IProduct[]> => requests.get(`/api/products/list`),
+  getAllProduct: (type?:string,page?:number): Promise<IProduct[]> => requests.get(`/api/products/list?type=${type}&page=${page}`),
   getHistory: (idx: string, page: number,limit:number) => requests.get(`/api/users/history/${idx}?page=${page}&limit=${limit}`),
   getUserHistoryDetail: (idx: string, orderNum: string) => requests.get(`/api/users/history/${idx}/${orderNum}`),
   getGuestHistoryDetail: (idx: string) => requests.get(`/api/users/history/guest-detail/${idx}`),

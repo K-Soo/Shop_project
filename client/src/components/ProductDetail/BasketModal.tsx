@@ -44,7 +44,6 @@ const S = {
     flex-flow: column nowrap;
     justify-content: space-between;
     border: 1px solid #333;
-
     ${({ theme }) => theme.mobile`
       width: 95%;
       height: 550px;

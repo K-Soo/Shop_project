@@ -28,7 +28,7 @@ export default function ProductSearch() {
       <PageTitle TitleText='상품검색' />
       <SearchBox filter={filter} setFilter={setFilter} />
       <ProductSortMenu itemCount={FilteredData.length} setSort={setSort}/>
-      {isSuccess && <ProductList item={sortingData} isLoading={isLoading} isSuccess={isSuccess} />}
+      {isSuccess && <ProductList items={sortingData} isLoading={isLoading} isSuccess={isSuccess} />}
     </S.ProductSearch>
   );
 }

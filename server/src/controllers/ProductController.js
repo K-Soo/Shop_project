@@ -3,11 +3,39 @@ import throwError from '../../src/error/throwError';
 import ProductReview from '../models/ProductReview';
 
 const list = async (req, res, next) => {
+  const { type, page } = req.query;
+  console.log('type: ', type);
+  const limit = 4;
+  const num = (limit) * Number(page);
+
   try {
-    const exist = await Product.find();
-    res.json(exist);
-    if (!exist.length) {
-      throwError({ statusCode: 404, mgs: '상품이 없습니다.' });
+    if (type !== 'undefined') {
+      if (type === 'best') {
+        const productCnt = await Product.find({ best_product: true });
+        const exist = await Product.find({ best_product: true }).limit(num);
+
+        const response = {
+          items:exist,
+          total:productCnt.length,
+        }
+        res.json(response);
+      }
+      if (type === 'new') {
+        const productCnt = await Product.find({ new_product: true });
+        const exist = await Product.find({ new_product: true }).limit(num);
+        const response = {
+          items:exist,
+          total:productCnt.length,
+        }
+        res.json(response);
+      }
+    } else {
+      const exist = await Product.find();
+      console.log('exist: ', exist);
+      res.json(exist);
+      if (!exist.length) {
+        throwError({ statusCode: 404, mgs: '상품이 없습니다.' });
+      }
     }
   } catch (error) {
     console.error('/list error', error);
