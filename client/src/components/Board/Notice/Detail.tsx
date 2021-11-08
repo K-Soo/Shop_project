@@ -1,9 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import PageTitle from 'components/Common/PageTitle';
-import { NoticeProps } from 'interfaces/INotice';
+import { TItems } from 'interfaces/INotice';
+import Button from 'components/style/Button'
+import { useRouter, NextRouter } from 'next/router';
+
 interface IDetail {
-  item: NoticeProps
+  item: TItems
 }
 
 const S = {
@@ -36,15 +39,22 @@ const S = {
   .text{
     border: 1px solid #f0f0f0;
     padding: 30px;
+    min-height: 300px;
     ${({ theme }) => theme.mobile`
-    padding: 10px;
+      padding: 10px;
     }
   `}
   }
+  ${({ theme }) => theme.mobile`
+      padding: 0 15px;
+    }
+  `}
   `,
 }
 
 export default function Detail({ item }: IDetail) {
+  const router: NextRouter = useRouter();
+
   return (
     <S.Detail>
       <PageTitle TitleText='공지사항' />
@@ -53,9 +63,16 @@ export default function Detail({ item }: IDetail) {
           <p>제목</p>
           <p>{item.title}</p>
         </div>
-
-        <div className='text' dangerouslySetInnerHTML={{ __html: item.content }} >
-        </div>
+        <div className='text' dangerouslySetInnerHTML={{ __html: item.content }} />
+        <Button
+          white
+          margin='15px 0 0 0'
+          width='100' 
+          height='30px'
+          onClick={() => router.push('/board/notice')}
+        >
+        목록으로
+      </Button>
       </S.Content>
     </S.Detail>
   );

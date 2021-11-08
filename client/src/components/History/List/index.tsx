@@ -3,7 +3,6 @@ import styled from "styled-components";
 import PageTitle from 'components/Common/PageTitle';
 import Guide from 'components/History/List/Guide';
 import Content from 'components/History/List/Content';
-// import Pagination from 'components/History/List/Pagination';
 import FormFieldset from 'components/Forms/FormFieldset';
 import { useQuery, useQueryClient } from 'react-query';
 import { Get } from "api";

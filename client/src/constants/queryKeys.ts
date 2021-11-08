@@ -10,6 +10,6 @@ export const queryKeys = {
   POINT_DETAIL: 'pointDetail',
   NOTICE_LIST: {
     name: 'notice-list',
-    limit: 4,
+    limit: 10,
   },
 } as const;

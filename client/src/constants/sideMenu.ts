@@ -4,7 +4,7 @@ export type TQuickIconProps = { [K in TList]: string };
 export const QUICK_ICON_LEFT: TQuickIconProps[] = [
   { label: '장바구니', url: '/order/basket', icon: 'cart' },
   { label: '상품후기', url: '/2', icon: 'bed' },
-  { label: '고객센터', url: '/4', icon: 'bed' },
+  { label: '공지사항', url: '/board/notice', icon: 'warning' },
   { label: '마이쇼핑', url: '/users', icon: 'user' },
 ]
 

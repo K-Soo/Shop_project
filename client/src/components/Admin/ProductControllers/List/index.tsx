@@ -16,6 +16,7 @@ const S = {
     padding: 15px;
     background-color: #F0F3F7;
     font-size: 14px;
+    overflow-y: auto;
     .header{
       display: flex;
       align-items: center;
@@ -37,7 +38,6 @@ const S = {
       p:nth-child(4){
         flex: 1;
       }
-
     }
     .item{
       background-color: #fff;
@@ -49,51 +49,65 @@ const S = {
       align-items: center;
       justify-content: space-between;
       &__status{
-          flex-basis:100px;
+        flex-basis:100px;
+        display: inline-block;
+        span{
           display: inline-block;
+          height: 100%;
+          color: #fff;
+          font-size: 13px;
+          padding: 3px 5px;
+          border-radius: 5px;
         }
-        &__category{
-          flex-basis:120px;
-          display: inline-block;
+      }
+      &__category{
+        flex-basis:120px;
+        display: inline-block;
+      }
+      &__name{
+        flex-basis:200px;
+        display: inline-block;
+        min-width: 130px;
+      }
+      &__edit-qty{
+        flex: 1;
+        input[type=number]::-webkit-inner-spin-button {
+          opacity: 1;
+          position: absolute;
+          top: 0;
+          right: 0;
+          height: 110%;
+          cursor: pointer;
         }
-        &__name{
-          flex-basis:200px;
-          display: inline-block;
-          min-width: 130px;
+        button{
+          font-size: 14px;
         }
-        &__edit-qty{
-          flex: 1;
-          input[type=number]::-webkit-inner-spin-button {
-            opacity: 1;
-            position: absolute;
-            top: 0;
-            right: 0;
-            height: 110%;
-            cursor: pointer;
-          }
-          button{
-            font-size: 14px;
-          }
+      }
+      &__check-box{
+        font-size: 0;
+        display: flex;
+        align-items: center;
+        label{
+          font-size: 14px;
         }
-        &__check-box{
-          font-size: 0;
-          display: flex;
-          align-items: center;
-          label{
-            font-size: 14px;
-          }
-        }
- 
+      }
     }
   `,
 }
 
 export default function List({ className, items }: IList) {
   console.log('items: ', items);
+
+  const handleCount = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value, name } = e.target;
+    let find = items.filter(el => el._id === name);
+    find[0].qty = +value;
+  };
+
   return (
     <S.List className={className}>
       {items.length > 0 ? (
-        <ul>
+        <ul>ㄴ
           <li className='header'>
             <p>상태</p>
             <p>카테고리</p>
@@ -104,7 +118,7 @@ export default function List({ className, items }: IList) {
           {items.map(d => (
             <li key={d._id} className='item'>
               <p className='item__status'>
-                판매중
+                {d.qty > 0 ? <span style={{ backgroundColor: 'green' }}>판매중</span> : <span style={{ backgroundColor: 'crimson' }}>마감</span>}
               </p>
               <p className='item__category'>
                 {d.category}
@@ -120,8 +134,8 @@ export default function List({ className, items }: IList) {
                   width='70'
                   margin='0 15px 0 0'
                   value={d.qty}
-                // onChange={action.setChangeQty}
-                // name={userId ? d._id : d.date}
+                  onChange={handleCount}
+                  name={d._id}
                 />
                 <Button white height='30px' width='50px' name={d._id} onClick={() => { }}>변경</Button>
               </div>

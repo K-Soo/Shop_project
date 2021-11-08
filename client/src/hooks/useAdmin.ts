@@ -13,7 +13,11 @@ export interface IUseAdmin {
 export interface IAdminState {
   status: { loading: boolean };
   sideOpen: boolean;
-  filter:{
+  user:{
+    id: string,
+    password: string,
+  },
+  filter: {
     product_type: string;
     category: string,
   }
@@ -40,7 +44,11 @@ export const adminDefaultValue: IUseAdmin = {
   state: {
     status: { loading: false },
     sideOpen: false,
-    filter:{
+    user:{
+      id:'',
+      password:'',
+    },
+    filter: {
       product_type: '',
       category: '',
     },
@@ -64,7 +72,11 @@ const initializer = (props: any) => {
   const state: IAdminState = {
     status: { loading: false },
     sideOpen: false,
-    filter:{
+    user:{
+      id:'',
+      password:'',
+    },
+    filter: {
       product_type: '',
       category: '',
     },
@@ -146,15 +158,21 @@ const useAdmin = (props: any) => {
 
   const update = (recipe: (draft: IAdminState) => void) =>
     setAppState((prev) => produce(prev, recipe));
-    
+
 
   const action = generateAction(update);
 
   const app = { props, state, action };
 
   useEffect(() => {
-    action.setData('filter.product_type','necklace');
-  },[])
+    action.setData('filter.product_type', 'necklace');
+  }, []);
+
+  useEffect(() => {
+    if(app.state.filter.product_type){
+      action.setData('filter.category', '');
+    }
+  }, [app.state.filter.product_type])
 
   return app;
 };

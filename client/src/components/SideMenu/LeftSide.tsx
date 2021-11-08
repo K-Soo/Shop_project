@@ -156,8 +156,8 @@ export default function LeftSide({ directionSwap, onClick }: ILeftSide) {
   }
 
   const handleText = (e: React.MouseEvent<HTMLLIElement>) => {
-    const { className } = e.target;
-    setText(className);
+    const { className } = e.target as HTMLLIElement
+    setText(className as TTap);
   }
 
   return (

@@ -16,11 +16,13 @@ const list = async (req, res, next) => {
   const { page, limit } = req.query;
   const skip = Number(limit) * (Number(page) - 1);
 
-  const exist = await Notice.find({}, null, { sort: { createdAt: -1 } })
+  const total = await Notice.find().lean();
+  const exist = await Notice.find({}, null, { sort: { createdAt: -1 } }).skip(skip)
+  .limit(+limit)
 
   const response = {
     items: exist,
-    maxPages: Math.ceil(exist.length / limit),
+    maxPages: Math.ceil(total.length / limit),
   }
 
   try {

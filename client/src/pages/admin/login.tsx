@@ -13,6 +13,7 @@ import Admin from 'components/Admin';
 import LoginControllers from 'components/Admin/LoginControllers';
 import Home from 'components/Admin/HomeControllers/Home';
 import styled from "styled-components";
+import { useAdminContext } from 'context/AdminProvider';
 
 const S = {
   Login: styled.div`
@@ -24,6 +25,7 @@ const S = {
 
 
 export default function LoginPage() {
+  const { state, action } = useAdminContext();
   const router: NextRouter = useRouter();
 
   return (

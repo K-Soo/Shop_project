@@ -34,7 +34,7 @@ export default function Notice() {
     staleTime: 2000,
     // select: selectFc,
   });
-  console.log('items: ', data);
+  if (isError) return <div>isError</div>
 
   if (isLoading) return <div>loading</div>
 
@@ -52,6 +52,7 @@ export default function Notice() {
           등록
         </Button>
       </S.ButtonBox>
+      {isSuccess && (<Pagination maxPages={data.maxPages} isFetching={isFetching}/>)}
     </S.Notice>
   );
 }

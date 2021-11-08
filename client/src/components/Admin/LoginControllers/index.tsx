@@ -3,8 +3,8 @@ import styled from "styled-components";
 import Aside from 'components/Admin/Aside';
 import Title from 'components/style/Title';
 import Input from 'components/style/Input';
-import Label from 'components/style/Label';
 import Button from 'components/style/Button';
+import { useAdminContext } from 'context/AdminProvider';
 
 const S = {
   LoginControllers: styled.div`
@@ -32,17 +32,32 @@ const S = {
 }
 
 export default function LoginControllers(props) {
+  const { state, action } = useAdminContext();
+
+  const handleSubmit = (e:React.SyntheticEvent) => {
+    e.preventDefault();
+  }
 
   return (
     <S.LoginControllers>
       <S.Content>
-        <form action="" className='form-box'>
+        <form onSubmit={handleSubmit} className='form-box'>
           <fieldset>
             <Title level={6} marginB='20'>
               LOGIN
             </Title>
-            <Input margin='0 0 10px 0' placeholder='아이디'/>
-            <Input margin='0 0 10px 0' placeholder='비밀번호' type='password'/>
+            <Input 
+              name='user.id' 
+              margin='0 0 10px 0' 
+              placeholder='아이디' 
+              onChange={action.setFormData}
+            />
+            <Input name='user.password' 
+              margin='0 0 10px 0' 
+              placeholder='비밀번호' 
+              type='password'
+              onChange={action.setFormData}
+            />
           </fieldset>
           <Button black>로그인</Button>
         </form>

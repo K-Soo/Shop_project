@@ -16,6 +16,9 @@ const S = {
       font-size: 12px;
       padding: 0 15px;
       border-top: 1px solid #f0f0f0;
+      caption{
+        display: none;
+      }
       thead{
         tr{
           th{
@@ -36,19 +39,20 @@ const S = {
             padding: 10px 15px;
           }
           .index{
+            white-space: nowrap;
             font-size: 11px;
             color: #939393;
             text-align: center;
-            padding: 10px 5px;
+            padding: 10px;
           }
           .title{
             cursor: pointer;
             color: #000;
           }
+          .date{
+            white-space: nowrap;
+          }
         }
-      }
-      caption{
-        display: none;
       }
     }
   `,
@@ -70,9 +74,9 @@ export default function List({ items }: IList) {
           </tr>
         </thead>
         <tbody>
-          {items.map((d, i) => (
+          {items.map((d) => (
             <tr key={d._id} className='notice-tr'>
-              <td className='index'>{i+ 1}</td>
+              <td className='index'>공지</td>
               <td className='title'>
                 <Link href={`/board/notice/${d._id}`}>
                   <a>{d.title}</a>

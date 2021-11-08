@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { Get } from "api";
 import { queryKeys } from 'constants/queryKeys';
 import { useQuery } from 'react-query';
-import PAGE from 'constants/path';
 import { NoticeProps } from 'interfaces/INotice';
 
 const S = {
@@ -16,13 +15,13 @@ const S = {
     flex-wrap: wrap;
     .block-1{
         flex: 1 33%;
+        /* min-width: 330px; */
         padding:0px;
         .content{
           padding: 0px;
         }
         &__notice{
           ul{
-            padding-right: 10px;
             .item{
               margin-bottom: 10px;
               &:last-child{
@@ -48,7 +47,8 @@ const S = {
       }
       .block-2{
         font-size: 0;
-        flex: 1 1 33%;
+        /* flex: 1 1 33%; */
+        max-width: 330px;
         img{
           width: 100%;
           height: 100%;
@@ -56,7 +56,9 @@ const S = {
       }
       .block-3{
         font-size: 0;
-        flex: 1 1 33%;
+        /* flex: 1 1 33% */
+        max-width: 330px;
+        ;
         img{
           width: 100%;
           height: 100%;
@@ -64,6 +66,7 @@ const S = {
       }
       ${props => props.theme.mobile`
         flex-direction: column;
+        padding: 0 10px;
       `}
   `,
 }
@@ -75,9 +78,7 @@ export default function MultiBanner() {
     keepPreviousData: true,
     refetchOnWindowFocus: false,
     staleTime: 2000,
-    // select: selectFc,
   });
-  console.log('items: ', data);
 
   return (
     <S.MultiBanner>
@@ -86,7 +87,7 @@ export default function MultiBanner() {
           {isLoading && <div>loading</div>}
           {isSuccess && (
             <ul>
-              {data.items.map(d => (
+              {data.items.slice(0,5).map(d => (
                 <li className='item' key={d._id}>
                   <Link href={`/board/notice/${d._id}`}>
                     <a>

@@ -257,18 +257,18 @@ const S = {
     max-height: 200px;
     overflow: auto;
     .selected-item{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       height: 65px;
       margin-top: 5px;
       border: 1px solid #e5e5e5;
-      :first-child{
+      &:first-child{
       margin-top: 0px;
       }
       background-color: #F9F9F9;
-      display: flex;
       font-size: 13px;
-      align-items: center;
       padding: 10px 15px;
-      justify-content: space-between;
       .current-title{
         flex-basis: 50%;
         display: flex;
@@ -290,7 +290,6 @@ const S = {
           padding-left: 15px;
           border: 1px solid #dee2e6;
           margin: 0
-     
         }
         input[type=number]::-webkit-inner-spin-button {
           opacity: 1;
@@ -301,15 +300,26 @@ const S = {
           cursor: pointer;
         }
       }
+      .current-price{
+        white-space: nowrap;
+      }
       button{
         all: unset;
-        height: 100%;
+        height: auto;
         cursor: pointer;
-          svg{
-            color: #000;
-            width: 16px;
-            height: 16px;
-          }
+        font-size: 0;
+        border-radius: 50%;
+        padding: 5px;
+        border : 1px solid transparent;
+        &:hover{
+          border: 1px solid #e5e5e5;
+          background: #f5f5f5;
+        }
+        svg{
+          color: #000;
+          width: 16px;
+          height: 16px;
+        }
       }
     }
   `,

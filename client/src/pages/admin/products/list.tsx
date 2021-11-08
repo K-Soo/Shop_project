@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import styled from "styled-components";
 import Head from "next/head";
 import AdminContainer from 'containers/AdminContainer';
@@ -14,6 +14,8 @@ import { useQuery } from 'react-query';
 import { useAdminContext } from 'context/AdminProvider';
 import Loading from 'components/Loading';
 import PageTitle from 'components/Common/PageTitle';
+import {IProduct} from 'interfaces/IProduct';
+
 const Block = styled.div`
   height: 100%;
   display: flex;
@@ -26,21 +28,28 @@ const Block = styled.div`
   }
 `;
 
-export default function ProductsListPage(props){
+export default function ProductsListPage(props:any) {
   const { state, action } = useAdminContext();
   console.log('filter: ', state.filter);
 
-  const { data = [], isLoading, isSuccess, isError, isFetching } = useQuery([queryKeys.REVIEW.name, state.filter.product_type || 'necklace'],
+  const selectFc = useCallback((data:IProduct[]) => {
+    if (state.filter.category) {
+      return data.filter(el => el.category === state.filter.category);
+    } else {
+      return data;
+    }
+  }, [state.filter]);
+
+  const { data = [], isLoading, isSuccess, isError, isFetching } = useQuery<IProduct[]>([queryKeys.REVIEW.name, state.filter.product_type || 'necklace'],
     async () => await Get.products(state.filter.product_type || 'necklace'),
     {
       retry: 0,
       keepPreviousData: true,
       refetchOnWindowFocus: true,
       staleTime: 2000,
-      // select: selectFc,
-      // enabled: state.openSearch,
+      select: selectFc,
     });
-    
+
   return (
     <>
       <Head>
@@ -49,16 +58,14 @@ export default function ProductsListPage(props){
       <AdminContainer>
         <ProductControllers>
           <Block>
-          <PageTitle TitleText='상품 리스트 / 수정'/>
-          <Filter className='filter'/>
-          {isSuccess && <List items={data} className='list'/>}
-          {isLoading && <div>loading</div>}
-          {/* <Loading text='' isLoading={true}/> */}
-          <CtrBox />
-           </Block> 
-
+            <PageTitle TitleText='상품 리스트 / 수정' />
+            <Filter className='filter' />
+            {isSuccess && <List items={data} className='list' />}
+            {isLoading && <div>loading</div>}
+            <CtrBox />
+          </Block>
         </ProductControllers>
-        
+
       </AdminContainer>
     </>
   );

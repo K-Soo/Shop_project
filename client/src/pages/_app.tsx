@@ -80,7 +80,6 @@ App.getInitialProps = async (context: NextAppContext) => {
 
   pageProps = { ...pageProps, userInfo };
 
-  console.log('userId: ', userId);
   // const cookie = ctx.req ? ctx.req.headers.cookie : '';
 
   // axios.defaults.headers.Cookie = access_token;
@@ -88,7 +87,6 @@ App.getInitialProps = async (context: NextAppContext) => {
   //   ctx.res.writeHead(307, { Location: '/' })
   //   ctx.res.end()
   // }
-
 
 
   // console.log('scr', document?.cookie);
