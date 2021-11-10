@@ -23,6 +23,12 @@ const category= [
       { label: '상품추가', url: '/admin/products/create', target: '판매관리' },
     ]
   },
+  {
+    CategoryIcon: 'menu2',
+    '공지사항': [
+      { label: '공지사항 관리', url: '/admin/notice/list', target: '공지사항' },
+    ]
+  },
 ]
 
 const S = {

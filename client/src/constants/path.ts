@@ -46,8 +46,12 @@ const PAGE: IPage = {
     path: '/board/notice',
     tag: '공지사항 리스트'
   },
+  ADMIN_NOTICE:{
+    path: '/admin/notice',
+    tag: '공지사항 리스트'
+  },
   CREATE_NOTICE:{
-    path: '/board/notice/write',
+    path: '/admin/notice/write',
     tag: '공지사항 포스트작성'
   }
 } as const

@@ -1,5 +1,5 @@
 import { IProduct } from 'interfaces/IProduct';
-import { useQuery, useMutation, useQueryClient,UseMutateFunction } from 'react-query';
+import { useMutation, useQueryClient,UseMutateFunction } from 'react-query';
 import { queryKeys } from 'constants/queryKeys';
 import { useAdminContext } from 'context/AdminProvider';
 import { Get, Put } from "api";

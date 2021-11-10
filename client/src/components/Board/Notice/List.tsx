@@ -9,7 +9,7 @@ interface IList {
 }
 
 const S = {
-  List: styled.div`
+  List: styled.article`
     table{
       width: 100%;
       border-collapse: collapse;
