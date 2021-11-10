@@ -4,7 +4,6 @@ import ProductReview from '../models/ProductReview';
 
 const list = async (req, res, next) => {
   const { type, page } = req.query;
-  console.log('type: ', type);
   const limit = 4;
   const num = (limit) * Number(page);
 
@@ -15,8 +14,8 @@ const list = async (req, res, next) => {
         const exist = await Product.find({ best_product: true }).limit(num);
 
         const response = {
-          items:exist,
-          total:productCnt.length,
+          items: exist,
+          total: productCnt.length,
         }
         res.json(response);
       }
@@ -24,8 +23,8 @@ const list = async (req, res, next) => {
         const productCnt = await Product.find({ new_product: true });
         const exist = await Product.find({ new_product: true }).limit(num);
         const response = {
-          items:exist,
-          total:productCnt.length,
+          items: exist,
+          total: productCnt.length,
         }
         res.json(response);
       }
@@ -46,7 +45,17 @@ const list = async (req, res, next) => {
 const getProductLists = async (req, res, next) => {
   try {
     const { product_type } = req.params;
-    const exist = await Product.find({ product_type });
+    const exist = await Product.find({ product_type, qty: { $gte: 0 } });
+    res.json(exist);
+  } catch (error) {
+    console.error('/getProductLists', error);
+    next(error);
+  }
+};
+const getProductListsA = async (req, res, next) => {
+  try {
+    const { product_type } = req.params;
+    const exist = await Product.find({ product_type});
     res.json(exist);
   } catch (error) {
     console.error('/getProductLists', error);
@@ -54,18 +63,33 @@ const getProductLists = async (req, res, next) => {
   }
 };
 
+
 const updateProductQty = async (req, res, next) => {
   const reqData = req.body[0]
   try {
-     await Product.findOneAndUpdate(
+    await Product.findOneAndUpdate(
       { _id: reqData._id },
       { $set: { qty: reqData.qty } },
     )
-    res.json({ success: '등록완료' });
+    res.json({ success: true });
   } catch (error) {
     next(error);
   }
 };
+
+const updateProductClose = async (req, res, next) => {
+  console.log('req: ', req.body);
+  try {
+    await Product.updateMany(
+      { _id: { $in: req.body } },
+      { $set: { qty: -1 } },
+    )
+    res.json({ success: true });
+  } catch (error) {
+    next(error);
+  }
+};
+
 
 
 const getProductItem = async (req, res, next) => {
@@ -105,6 +129,6 @@ const Images = async (req, res, next) => {
 };
 
 
-export { list, getProductLists, getProductItem, createProduct, Images,updateProductQty }
+export { list, getProductLists,getProductListsA, getProductItem, createProduct, Images, updateProductQty, updateProductClose }
 
 

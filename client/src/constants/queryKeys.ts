@@ -1,5 +1,6 @@
 export const queryKeys = {
   PRODUCT: 'product',
+  PRODUCT_CLOSE: 'product-close',
   HISTORY: 'history',
   SEARCH: 'search',
   REVIEW: {

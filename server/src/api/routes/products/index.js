@@ -19,8 +19,9 @@ product.post('/image', (req, res, next) => {
   });
 }, ProductController.Images);
 
-product.get('/list', ProductController.list); // 모든상품 가져옴
+product.put('/close', ProductController.updateProductClose); //상품마감
 product.put('/qty/:idx', ProductController.updateProductQty); // 단일상품 수량변경
+product.get('/admin/:product_type', ProductController.getProductListsA); // 상품타입에 따라 모든상품을 가져온다
 
 product.get('/:product_type', ProductController.getProductLists); // 상품타입에 따라 모든상품을 가져온다
 

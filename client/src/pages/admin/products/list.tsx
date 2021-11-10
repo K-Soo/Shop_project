@@ -11,10 +11,10 @@ import { NAV_MENU } from "constants/header";
 import { queryKeys } from 'constants/queryKeys';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { useAdminContext } from 'context/AdminProvider';
-import Loading from 'components/Loading';
 import PageTitle from 'components/Common/PageTitle';
 import { IProduct } from 'interfaces/IProduct';
 import { stubFalse } from "lodash";
+import {useChangeQty,useCloseProducts} from 'components/Admin/hooks/useListModify';
 
 const Block = styled.div`
   height: 100%;
@@ -30,24 +30,17 @@ const Block = styled.div`
 
 export default function ProductsListPage(props: any) {
   const { state, action } = useAdminContext();
-  const [targetItem, setTargetItem] = useState<IProduct[] | null>(null);
-  const queryClient = useQueryClient();
-
-  const idx = '123';
-
-  const { mutate } = useMutation(async (item: IProduct[]) => await Put.updateProductQty(idx, item), {
-    onSuccess: () => {
-      alert('변경이 완료되었습니다');
-      queryClient.invalidateQueries([queryKeys.PRODUCT, state.filter.product_type])
-    }
-  });
+  const [targetItem, setTargetItem] = useState<null | IProduct[]>(null);
+  const [checkedItem, setCheckedItem] = useState<null | string[]>([]);
+  const changeQty = useChangeQty();
+  const closeProducts = useCloseProducts();
 
   const selectFc = useCallback((data: IProduct[]) => {
     return data.filter(el => el.category === state.filter.category);
   }, [state.filter.category]);
 
   const { data = [], isLoading, isSuccess, isError, isFetching } = useQuery<IProduct[]>([queryKeys.PRODUCT, state.filter.product_type],
-    async () => await Get.products(state.filter.product_type),
+    async () => await Get.getProductsA(state.filter.product_type),
     {
       retry: 0,
       staleTime: 2000,
@@ -71,8 +64,36 @@ export default function ProductsListPage(props: any) {
       setTargetItem(null);
       return alert('현재수량과 동일합니다');
     }
-    mutate(targetItem);
-  }, [targetItem, mutate]);
+    changeQty(targetItem);
+  }, [targetItem, changeQty]);
+
+  const handleChecked = useCallback((e) => {
+    const { checked, name } = e.target;
+    if (checked) {
+      setCheckedItem(prev => [...prev, name]);
+    } else {
+      const result = checkedItem.filter(d => d !== name);
+      setCheckedItem(result);
+    }
+  }, [checkedItem]);
+
+  const handleAllChecked = useCallback((e) => {
+    const { checked, name } = e.target;
+    if (name === 'checkAll' && checked) {
+      const ids: string[] = [];
+      data.map(d => ids.push(d._id));
+      setCheckedItem(ids);
+    } else if (name === 'checkAll' && !checked) {
+      setCheckedItem([]);
+    }
+  }, [data]);
+
+  const handleCloseProducts = () => {
+    if(!checkedItem.length){
+      return alert('상품을 먼저 선택해주세요');
+    }
+    closeProducts(checkedItem);
+  } 
 
   return (
     <>
@@ -83,17 +104,19 @@ export default function ProductsListPage(props: any) {
         <ProductControllers>
           <Block>
             <PageTitle TitleText='상품 리스트 / 수정' />
-            <Filter className='filter' />
+            <Filter className='filter' handleAllChecked={handleAllChecked} />
             {isSuccess && (
               <List
                 className='list'
                 items={data}
                 handleCount={handleCount}
                 handleQty={handleQty}
+                handleChecked={handleChecked}
+                checkedItem={checkedItem}
               />
             )}
             {isLoading && <div>loading</div>}
-            <CtrBox />
+            <CtrBox handleCloseProducts={handleCloseProducts}/>
           </Block>
 
         </ProductControllers>

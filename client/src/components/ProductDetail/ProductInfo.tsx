@@ -369,7 +369,7 @@ export default function ProductInfo({ item }: IProductInfo) {
 
   useEffect(() => {
     setInterestProduct(item[0].name);
-    if (Number(item[0].qty) === 0) setIsSoldOut(true);
+    if (Number(item[0].qty) <= 0) setIsSoldOut(true);
   }, [item]);
 
   const handleAddInterestProduct = async () => {
@@ -592,7 +592,7 @@ export default function ProductInfo({ item }: IProductInfo) {
               </>
             ) : (
               <S.SoldOut>
-                <EmptyItem text='품절된 상품입니다' />
+                <EmptyItem text={d.qty === 0 ? '품절된 상품입니다.' : '판매종료된 상품입니다.'} />
               </S.SoldOut>
             )}
             <BasketModal />

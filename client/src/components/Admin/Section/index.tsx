@@ -57,7 +57,6 @@ const MainStyle = styled.main`
   margin-left: 56px;
   height: 100%;
   padding: 20px;
-  /* border: 3px solid green; */
   background-color: #F0F3F7;
   ${({ theme }) => theme.mobile`
     width: 100%;
@@ -71,6 +70,7 @@ const SideStyle = styled.aside<{toggle: boolean}>`
   min-width:56px;
   height: 100%;
   background-color: #fff;
+  z-index: 9999;
   ${({ theme }) => theme.mobile`
     left: -100px;
   `}

@@ -9,6 +9,7 @@ import CheckBox from 'components/style/CheckBox';
 
 interface IFilter {
   className?: string;
+  handleAllChecked?: React.ChangeEventHandler<HTMLInputElement>;
 }
 
 const S = {
@@ -23,7 +24,7 @@ const S = {
   `,
 }
 
-export default function Filter({ className }: IFilter) {
+export default function Filter({ className, handleAllChecked }: IFilter) {
   const { state, action } = useAdminContext();
   const { product_type } = state.filter;
 
@@ -49,8 +50,8 @@ export default function Filter({ className }: IFilter) {
       </div>
 
       <div className='all-check-box'>
-        <label htmlFor="product-all" style={{marginRight:'5px'}}>전체선택</label>
-        <CheckBox id='product-all' name='checkItem' onChange={() => { }} />
+        <label htmlFor="product-all" style={{ marginRight: '5px' }}>전체선택</label>
+        <CheckBox id='product-all' name='checkAll' onChange={handleAllChecked} />
       </div>
     </S.Filter>
   );

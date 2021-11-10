@@ -10,6 +10,8 @@ interface IList {
   className?: string;
   handleCount?: React.ChangeEventHandler<HTMLInputElement>;
   handleQty?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  handleChecked?: React.ChangeEventHandler<HTMLInputElement>;
+  checkedItem: string[];
 }
 
 const S = {
@@ -97,8 +99,7 @@ const S = {
   `,
 }
 
-export default function List({ className, items, handleCount,handleQty }: IList) {
-  console.log('items: ', items);
+export default function List({ className, items, handleCount, handleQty, handleChecked, checkedItem }: IList) {
 
   return (
     <S.List className={className}>
@@ -114,7 +115,7 @@ export default function List({ className, items, handleCount,handleQty }: IList)
           {items.map(d => (
             <li key={d._id} className='item'>
               <p className='item__status'>
-                {d.qty > 0 ? <span style={{ backgroundColor: 'green' }}>판매중</span> : <span style={{ backgroundColor: 'crimson' }}>마감</span>}
+                {d.qty > 0 ? <span style={{ backgroundColor: 'green' }}>판매중</span> : d.qty === 0 ? <span style={{ backgroundColor: 'crimson' }}>품절</span>: <span style={{ backgroundColor: '#999' }}>마감</span>}
               </p>
               <p className='item__category'>
                 {d.category}
@@ -146,7 +147,7 @@ export default function List({ className, items, handleCount,handleQty }: IList)
               </div>
 
               <div className='item__check-box'>
-                <CheckBox id='select-check' name='checkItem' value={d._id} onChange={() => { }} />
+                <CheckBox id='select-check' name={d._id} checked={checkedItem.includes(d._id)} value={d._id} onChange={handleChecked} />
               </div>
 
             </li>

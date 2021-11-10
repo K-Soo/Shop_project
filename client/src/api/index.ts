@@ -30,6 +30,7 @@ const requests = {
 
 export const Get = {
   products: (category: string): Promise<IProduct[]> => requests.get(`/api/products/${category}`),
+  getProductsA: (category: string): Promise<IProduct[]> => requests.get(`/api/products/admin/${category}`),
   getProductDetail: (category: string, id: string): Promise<IProduct> => requests.get(`/api/products/${category}/${id}`),
   UserInfo: (id: string): Promise<IProduct> => requests.get(`/api/users/${id}`),
   getAllProduct: (type?:string,page?:number): Promise<IProduct[]> => requests.get(`/api/products/list?type=${type}&page=${page}`),
@@ -63,6 +64,7 @@ export const Put = {
   updateInterestProduct: (body: any) => requests.put('/api/users/interest-product', body),
   updateUserBasketQty: (idx: string, productId: string, body: any) => requests.put(`/api/users/basket/${idx}/${productId}`, body),
   updateProductQty: (idx: string,body: any) => requests.put(`/api/products/qty/${idx}`, body),
+  updateProductClose: (body: any) => requests.put('/api/products/close', body),
   updateUserInfo: (idx: string,body: any) => requests.put(`/api/users/${idx}`, body),
 };
 

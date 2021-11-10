@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Button from 'components/style/Button';
 
 interface ICtrBox {
-  className?:string;
+  handleCloseProducts: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
 const S = {
@@ -21,11 +21,10 @@ const S = {
   `,
 }
 
-export default function CtrBox({className}:ICtrBox) {
+export default function CtrBox({handleCloseProducts}:ICtrBox) {
   return (
-    <S.CtrBox className={className}>
-      <Button>일괄종료</Button>
-      <Button>판매종료</Button>
+    <S.CtrBox >
+      <Button onClick={handleCloseProducts}>판매마감</Button>
     </S.CtrBox>
   );
 }

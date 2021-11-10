@@ -51,9 +51,8 @@ export default function LoginControllers() {
       const res = await Post.login(obj);
       if(res.success){
         customCookie.set("access_token", res.token);
-        router.push('/admin')
+        router.push('/admin');
       }
-      console.log('res: ', res);
     } catch (error) {
       alert('로그인 정보가 정확하지않습니다.');
     }

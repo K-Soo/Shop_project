@@ -4,7 +4,7 @@ import Icon, { IconType } from 'components/Icon/Icon';
 import Link from 'next/link';
 import {useRouter} from 'next/router';
 
-const category = [
+const category= [
   {
     CategoryIcon: 'home',
     '홈': [] as any[],
@@ -31,6 +31,7 @@ const S = {
     width: 56px;
     border:solid #dee2e6;
     border-width: 1px 1px 0 0;
+    background-color: #fff;
     i{font-size: 0;}
     &:hover{
       width: 240px;
@@ -61,7 +62,6 @@ const S = {
           justify-content: space-between;
           cursor: pointer;
           height: 20px;
-          border: 1px solid red;
           &--icon{
             transform: rotate(180deg);
             &[data-active=true] {
@@ -110,9 +110,7 @@ export default function Aside() {
     if(name === '홈') router.push('/admin');
     if(name !== '홈') setNameValue(name);
   }
-  const test = category.map(d => {
-    return Object.entries(d)
-  })
+ 
   return (
     <S.Aside>
       <ul>
@@ -128,9 +126,7 @@ export default function Aside() {
                 data-name={Object.entries(d)?.[1]?.[0]}
                 onClick={handleList}
               >
-                <span>
                 {Object.entries(d)?.[1]?.[0]}
-                </span>
                 {Object.entries(d)?.[1]?.[0] !== '홈' && (
                   <i className='lists-category__title--icon'
                     data-active={Object.entries(d)?.[1]?.[0] === nameValue}
