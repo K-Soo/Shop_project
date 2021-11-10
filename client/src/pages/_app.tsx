@@ -19,7 +19,18 @@ import AdminProvider from 'context/AdminProvider';
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 export default function App(props: AppProps) {
   const { state, action } = useAppContext();
-  const queryClient = new QueryClient()
+
+  function queryErrorHandler(error: unknown): void {
+    alert('잠시후 다시 시도해주세요');
+  }
+
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      mutations: {
+        onError: queryErrorHandler
+      }
+    }
+  })
   // useApp(props.pageProps.userId);
 
   const initialOptions = {
@@ -32,23 +43,23 @@ export default function App(props: AppProps) {
     <>
       <GlobalStyle />
       <AppProvider AppProps={props}>
-      <AdminProvider >
-        <OrderProvider value={props}>
-        <ReviewProvider value={props}>
-          <QueryClientProvider client={queryClient}>
-            {/* <Hydrate state={props.pageProps.dehydratedState}> */}
-            <Theme>
-              <Layout >
-                <PayPalScriptProvider options={initialOptions} deferLoading={true}>
-                  <props.Component {...props.pageProps} />
-                </PayPalScriptProvider>
-              </Layout>
-            </Theme>
-            {/* </Hydrate> */}
-            <ReactQueryDevtools initialIsOpen={false} />
-          </QueryClientProvider>
+        <AdminProvider >
+          <OrderProvider value={props}>
+            <ReviewProvider value={props}>
+              <QueryClientProvider client={queryClient}>
+                {/* <Hydrate state={props.pageProps.dehydratedState}> */}
+                <Theme>
+                  <Layout >
+                    <PayPalScriptProvider options={initialOptions} deferLoading={true}>
+                      <props.Component {...props.pageProps} />
+                    </PayPalScriptProvider>
+                  </Layout>
+                </Theme>
+                {/* </Hydrate> */}
+                <ReactQueryDevtools initialIsOpen={false} />
+              </QueryClientProvider>
             </ReviewProvider>
-        </OrderProvider>
+          </OrderProvider>
         </AdminProvider>
       </AppProvider>
     </>
@@ -56,14 +67,17 @@ export default function App(props: AppProps) {
 }
 App.getInitialProps = async (context: NextAppContext) => {
   const { ctx, Component } = context;
+
   if (ctx.req) {
     console.log('서버사이드');
   } else {
     console.log('클라이언트 사이드');
   }
+
   const { access_token } = cookies(ctx);
-  const decodedJwt = access_token && jwt.decode(access_token) as any;
+  const decodedJwt = access_token && jwt.decode(access_token) as { [key: string]: string };
   console.log('decodedJwt: ', decodedJwt);
+  console.log('access_token: ', access_token);
 
   let pageProps = {};
   if (Component.getInitialProps) {
@@ -80,9 +94,17 @@ App.getInitialProps = async (context: NextAppContext) => {
 
   pageProps = { ...pageProps, userInfo };
 
+
+  //  if(access_token){
+  //   ctx.res.writeHead(307, { Location: '/auth/register' })
+  //   ctx.res.end()
+  // }
+  // axios.defaults.headers['ㅁㄴㅇㅁㄴㅇ'] = access_token;
+  // axios.defaults.headers['Authorization'] = `Bearer ${access_token}`;
+
+
   // const cookie = ctx.req ? ctx.req.headers.cookie : '';
 
-  // axios.defaults.headers.Cookie = access_token;
   // if(access_token){
   //   ctx.res.writeHead(307, { Location: '/' })
   //   ctx.res.end()
@@ -90,7 +112,6 @@ App.getInitialProps = async (context: NextAppContext) => {
 
 
   // console.log('scr', document?.cookie);
-
 
   //  console.log(Object.keys(ctx));
   // _app에서 props 추가 (모든 컴포넌트에서 공통적으로 사용할 값 추가)

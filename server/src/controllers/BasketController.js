@@ -70,7 +70,6 @@ const updateProductQty = async (req, res, next) => {
 
 const remove = async (req, res, next) => {
   const { user, id } = req.params;
-  console.log('id: ', id);
   try {
     if (id === 'all') {
       const exist = await Basket.findOneAndUpdate(

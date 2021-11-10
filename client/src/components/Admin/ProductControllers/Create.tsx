@@ -205,7 +205,7 @@ export default function Create(props: ICreate) {
 
         <S.Group>
           <Label htmlFor='' required>상품 타입</Label>
-          <Select height='30' width='200px' name='create.product_type' onChange={action.setFormData}>
+          <Select height='30' width='200' name='create.product_type' onChange={action.setFormData}>
             <option value="">선택</option>
             {Object.entries(PRODUCT).map((d) => (
               <option key={d[0]} value={d[0]}>
@@ -217,7 +217,7 @@ export default function Create(props: ICreate) {
 
         <S.Group>
           <Label htmlFor='' required>카테고리</Label>
-          <Select height='30' width='200px' name='create.category' onChange={action.setFormData}>
+          <Select height='30' width='200' name='create.category' onChange={action.setFormData}>
             <option value=''>선택</option>
             {PRODUCT[product_type]?.map((d) => (
               <option value={d.label} key={d.label}>
@@ -228,22 +228,22 @@ export default function Create(props: ICreate) {
         </S.Group>
 
         <S.Group>
-          <Label htmlFor='' required>상품 이름</Label>
-          <Input height='30' required name='create.name' width='250' value={state.create.name} onChange={action.setFormData} />
+          <Label htmlFor='create-productName-for' required>상품 이름</Label>
+          <Input id='create-productName-for' height='30' required name='create.name' width='250' value={state.create.name} onChange={action.setFormData} />
         </S.Group>
 
         <S.Group>
-          <Label htmlFor='' required>상품 가격</Label>
-          <Input height='30' maxLength={10} required name='create.product_price' placeholder='숫자만 입력가능' width='250' value={PriceComma(state.create.product_price)} onChange={e => onlyNum(e, action.setFormData)} />
+          <Label htmlFor='create-product-price-for' required>상품 가격</Label>
+          <Input id='create-product-price-for' height='30' maxLength={10} required name='create.product_price' width='250' value={PriceComma(state.create.product_price)} onChange={e => onlyNum(e, action.setFormData)} />
         </S.Group>
 
         <S.Group>
-          <Label htmlFor='' required>소비자 가격</Label>
-          <Input height='30' maxLength={10} required name='create.consumer_price' placeholder='숫자만 입력가능' width='250' value={PriceComma(state.create.consumer_price)} onChange={e => onlyNum(e, action.setFormData)} />
+          <Label htmlFor='create-consumer-price-for' required>소비자 가격</Label>
+          <Input id='create-consumer-price-for' height='30' maxLength={10} required name='create.consumer_price' width='250' value={PriceComma(state.create.consumer_price)} onChange={e => onlyNum(e, action.setFormData)} />
         </S.Group>
 
         <S.Group>
-          <Label htmlFor='' required>상품 색상</Label>
+          <Label htmlFor='create-color-for' required>상품 색상</Label>
           <div className='color-box'>
             <div className='color-box--add'>
               <div className='color-box-add wrapper'>
@@ -253,7 +253,7 @@ export default function Create(props: ICreate) {
                 <S.InputColor className='color-input' id='color-label' required name='hex_value' value={color.hex_value || '#ffffff'} width='100px' type='color' onChange={handleColor} />
 
               </div>
-              <Input height='30' required name='color_name' maxLength={5} value={color.color_name} placeholder='색상 이름' width='100' onChange={handleColor} />
+              <Input id='create-color-for' height='30' required name='color_name' maxLength={5} value={color.color_name} placeholder='색상 이름' width='100' onChange={handleColor} />
               <Button width='80px' fontSize='14px' height='30px' onClick={handleColorAdd}>색상추가</Button>
             </div>
             <ul className='color-box__list'>
@@ -269,13 +269,13 @@ export default function Create(props: ICreate) {
         </S.Group>
 
         <S.Group>
-          <Label htmlFor='' required>상품요약 설명</Label>
-          <Input height='30' required name='create.summary_description' width='250' value={state.create.summary_description} onChange={action.setFormData} />
+          <Label htmlFor='create-summary-for' required>상품요약 설명</Label>
+          <Input id='create-summary-for' height='30' required name='create.summary_description' width='250' value={state.create.summary_description} onChange={action.setFormData} />
         </S.Group>
 
         <S.Group>
-          <Label htmlFor='' required>상품 설명</Label>
-          <TextArea required name='create.description' width='250' value={state.create.description} onChange={action.setFormData} />
+          <Label htmlFor='create-desc-for' required>상품 설명</Label>
+          <TextArea id='create-desc-for' required name='create.description' width='250' value={state.create.description} onChange={action.setFormData} />
         </S.Group>
 
         <S.Group>
@@ -283,7 +283,7 @@ export default function Create(props: ICreate) {
           <FileUpload handleDrop={handleDrop} />
         </S.Group>
 
-        <Button type='submit'>등록</Button>
+        <Button type='submit' black width='340px' >등록</Button>
       </form>
     </S.Create>
   );

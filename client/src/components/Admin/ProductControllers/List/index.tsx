@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import styled from "styled-components";
 import { IProduct } from 'interfaces/IProduct';
 import Input from 'components/style/Input';
@@ -8,6 +8,8 @@ import EmptyItem from 'components/Common/EmptyItem';
 interface IList {
   items: IProduct[];
   className?: string;
+  handleCount?: React.ChangeEventHandler<HTMLInputElement>;
+  handleQty?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
 const S = {
@@ -95,19 +97,13 @@ const S = {
   `,
 }
 
-export default function List({ className, items }: IList) {
+export default function List({ className, items, handleCount,handleQty }: IList) {
   console.log('items: ', items);
-
-  const handleCount = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value, name } = e.target;
-    let find = items.filter(el => el._id === name);
-    find[0].qty = +value;
-  };
 
   return (
     <S.List className={className}>
       {items.length > 0 ? (
-        <ul>ㄴ
+        <ul>
           <li className='header'>
             <p>상태</p>
             <p>카테고리</p>
@@ -134,10 +130,19 @@ export default function List({ className, items }: IList) {
                   width='70'
                   margin='0 15px 0 0'
                   value={d.qty}
+                  min={0}
                   onChange={handleCount}
                   name={d._id}
                 />
-                <Button white height='30px' width='50px' name={d._id} onClick={() => { }}>변경</Button>
+                <Button
+                  white
+                  height='30px'
+                  width='50px'
+                  name={d._id}
+                  onClick={handleQty}
+                >
+                  변경
+                </Button>
               </div>
 
               <div className='item__check-box'>

@@ -42,7 +42,7 @@ export default function OrderFormPage(props: InferGetServerSidePropsType<typeof 
 
 export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
   const { access_token } = cookies(context);
-  const decodedJwt = access_token && jwt.decode(access_token) as any;
+  const decodedJwt = access_token && jwt.decode(access_token) as { [index: string]: string };
 
   // if (!access_token) {
   //   return {

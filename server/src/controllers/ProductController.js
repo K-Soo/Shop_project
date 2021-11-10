@@ -54,6 +54,20 @@ const getProductLists = async (req, res, next) => {
   }
 };
 
+const updateProductQty = async (req, res, next) => {
+  const reqData = req.body[0]
+  try {
+     await Product.findOneAndUpdate(
+      { _id: reqData._id },
+      { $set: { qty: reqData.qty } },
+    )
+    res.json({ success: '등록완료' });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
 const getProductItem = async (req, res, next) => {
   const { id, product_type } = req.params;
   try {
@@ -91,6 +105,6 @@ const Images = async (req, res, next) => {
 };
 
 
-export { list, getProductLists, getProductItem, createProduct, Images }
+export { list, getProductLists, getProductItem, createProduct, Images,updateProductQty }
 
 

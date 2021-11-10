@@ -12,9 +12,17 @@ import { Get } from "api";
 import Admin from 'components/Admin';
 import HomeControllers from 'components/Admin/HomeControllers';
 import Home from 'components/Admin/HomeControllers/Home';
+import { useAppContext } from 'context/AppProvider';
 
 export default function AdminPage() {
   const router: NextRouter = useRouter();
+  const { state: { userInfo } } = useAppContext();
+
+  useEffect(() => {
+    if (userInfo.userId !== 'admin') {
+      router.push('/admin/login')
+    }
+  }, [userInfo.userId, router]);
 
   return (
     <>

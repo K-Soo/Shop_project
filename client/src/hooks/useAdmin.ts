@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import produce from "immer";
+import useDidMountEffect from 'hooks/useDidMountEffect';
 
 export type TAppAction = typeof generateAction extends (...args: any[]) => infer R ? R : never;
 
@@ -49,8 +50,8 @@ export const adminDefaultValue: IUseAdmin = {
       password:'',
     },
     filter: {
-      product_type: '',
-      category: '',
+      product_type: 'necklace',
+      category: 'all',
     },
     create: {
       new_product: false,
@@ -77,8 +78,8 @@ const initializer = (props: any) => {
       password:'',
     },
     filter: {
-      product_type: '',
-      category: '',
+      product_type: 'necklace',
+      category: 'all',
     },
     create: {
       new_product: false,
@@ -164,13 +165,9 @@ const useAdmin = (props: any) => {
 
   const app = { props, state, action };
 
-  useEffect(() => {
-    action.setData('filter.product_type', 'necklace');
-  }, []);
-
-  useEffect(() => {
+  useDidMountEffect(() => {
     if(app.state.filter.product_type){
-      action.setData('filter.category', '');
+      action.setData('filter.category', 'all');
     }
   }, [app.state.filter.product_type])
 

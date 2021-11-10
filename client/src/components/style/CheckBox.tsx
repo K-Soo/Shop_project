@@ -61,7 +61,6 @@ export default styled(CheckBoxInput)`
   }
   input[type='checkbox'] {
     display: none;
-
   }
   input[type='checkbox'] + div {
     box-sizing: border-box;

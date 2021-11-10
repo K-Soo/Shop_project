@@ -14,11 +14,12 @@ interface ITextArea {
   margin?: string;
   maxWidth?:string
   onChange?: React.ChangeEventHandler<HTMLTextAreaElement>
+  id?:string;
 }
 
-const TextArea: React.FC<ITextArea> = ({ className, value, readOnly, name, placeholder, onChange, required, height, color,margin,maxWidth }) => {
+const TextArea: React.FC<ITextArea> = ({ id,className, value, readOnly, name, placeholder, onChange, required, height, color,margin,maxWidth }) => {
   return (
-    <textarea className={className} rows={13} readOnly={readOnly} color={color} value={value} name={name} placeholder={placeholder} required={required} onChange={onChange} />
+    <textarea id={id} className={className} rows={13} readOnly={readOnly} color={color} value={value} name={name} placeholder={placeholder} required={required} onChange={onChange} />
   )
 };
 

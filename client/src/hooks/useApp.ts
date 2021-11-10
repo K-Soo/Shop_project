@@ -209,11 +209,6 @@ const generateAction = (update: (recipe: (draft: IAppState) => void) => void) =>
       draft.basket.nonMemberBasket.push(...data);
     });
 
-  // const setCurrentOrderItem = (data: IBasketItem) =>
-  //   update((draft) => {
-  //     draft.currentOrderItem.push(data);
-  //   });
-
   const setChangeQty = (e: React.ChangeEvent<HTMLInputElement>) =>
     update((draft) => {
       const { name, value } = e.target as HTMLInputElement;
@@ -238,7 +233,6 @@ const generateAction = (update: (recipe: (draft: IAppState) => void) => void) =>
     setIsFooter,
     setLocalItems,
     setBasketList,
-    // setCurrentOrderItem,
     setChangeQty,
     setNonMemberBasketPush,
     setNonMemberBasket,
@@ -251,7 +245,6 @@ const generateAction = (update: (recipe: (draft: IAppState) => void) => void) =>
 
 const useApp = (props:any) => {
   const [state, setAppState] = useState(initializer(props));
-  console.log('useApp state: ', state);
   const update = (recipe: (draft: IAppState) => void) =>
     setAppState((prev) => produce(prev, recipe));
   const router = useRouter();

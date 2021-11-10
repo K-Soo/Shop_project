@@ -2,21 +2,9 @@ import React, { useState, useCallback } from "react";
 import styled from "styled-components";
 import Banner from 'components/Main/Banner';
 import MultiBanner from 'components/Main/MultiBanner';
-import MainTitle from 'components/Main/MainTitle';
 import SectionLayout from 'components/Main/SectionLayout';
-import PageTitle from 'components/Common/PageTitle';
-import List from 'components/Board/Notice/List';
 import { Get } from "api";
-import { queryKeys } from 'constants/queryKeys';
-import Pagination from 'components/Pagination';
-import { useQuery, UseQueryResult, useQueryClient, useQueries } from 'react-query';
-import { useAppContext } from 'context/AppProvider';
-import Button from 'components/style/Button';
-import { useRouter, NextRouter } from 'next/router';
-import PAGE from 'constants/path';
-import { NoticeProps } from 'interfaces/INotice';
-import { IProduct } from 'interfaces/IProduct';
-import ProductList from 'components/Product/ProductList';
+import { useQueries } from 'react-query';
 
 interface IMain {
 

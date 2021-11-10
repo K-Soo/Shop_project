@@ -33,7 +33,7 @@ export default function Basket() {
     console.log('target: ', target.qty);
     if (state.userInfo.userId) {
       try {
-        const res = await Put.updateProductQty(state.userInfo.idx, name, { qty: target.qty });
+        const res = await Put.updateUserBasketQty(state.userInfo.idx, name, { qty: target.qty });
         action.setLocalItems(res.items);
         alert('변경되었습니다.');
       } catch (error) {

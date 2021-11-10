@@ -5,6 +5,9 @@ import Title from 'components/style/Title';
 import Input from 'components/style/Input';
 import Button from 'components/style/Button';
 import { useAdminContext } from 'context/AdminProvider';
+import { Post } from 'api';
+import { customCookie } from 'utils';
+import { NextRouter, useRouter } from 'next/router';
 
 const S = {
   LoginControllers: styled.div`
@@ -31,11 +34,29 @@ const S = {
   `,
 }
 
-export default function LoginControllers(props) {
+export default function LoginControllers() {
   const { state, action } = useAdminContext();
+  const router: NextRouter = useRouter();
 
-  const handleSubmit = (e:React.SyntheticEvent) => {
+  const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
+    if ([state.user.id, state.user.password].includes('')) {
+      return alert('로그인 정보를 모두 입력해주세요.');
+    }
+    const obj = {
+      userId: state.user.id,
+      password: state.user.password,
+    }
+    try {
+      const res = await Post.login(obj);
+      if(res.success){
+        customCookie.set("access_token", res.token);
+        router.push('/admin')
+      }
+      console.log('res: ', res);
+    } catch (error) {
+      alert('로그인 정보가 정확하지않습니다.');
+    }
   }
 
   return (
@@ -46,20 +67,20 @@ export default function LoginControllers(props) {
             <Title level={6} marginB='20'>
               LOGIN
             </Title>
-            <Input 
-              name='user.id' 
-              margin='0 0 10px 0' 
-              placeholder='아이디' 
+            <Input
+              name='user.id'
+              margin='0 0 10px 0'
+              placeholder='아이디'
               onChange={action.setFormData}
             />
-            <Input name='user.password' 
-              margin='0 0 10px 0' 
-              placeholder='비밀번호' 
+            <Input name='user.password'
+              margin='0 0 10px 0'
+              placeholder='비밀번호'
               type='password'
               onChange={action.setFormData}
             />
           </fieldset>
-          <Button black>로그인</Button>
+          <Button black type='submit'>로그인</Button>
         </form>
       </S.Content>
     </S.LoginControllers >

@@ -14,6 +14,7 @@ import LoginControllers from 'components/Admin/LoginControllers';
 import Home from 'components/Admin/HomeControllers/Home';
 import styled from "styled-components";
 import { useAdminContext } from 'context/AdminProvider';
+import { useAppContext } from 'context/AppProvider';
 
 const S = {
   Login: styled.div`
@@ -22,17 +23,15 @@ const S = {
   `,
 }
 
-
-
 export default function LoginPage() {
   const { state, action } = useAdminContext();
   const router: NextRouter = useRouter();
+  const { state: { userInfo } } = useAppContext();
 
   return (
     <>
       <Head>
-        <title>관리자 | 로그인</title>
-        <meta name="description" content="??" />
+        <title>관리자</title>
       </Head>
       <LoginControllers/>
     </>

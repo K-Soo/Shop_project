@@ -21,7 +21,6 @@ const instance = axios.create(config);
 const responseBody = (response: AxiosResponse) => response.data;
 
 
-
 const requests = {
   get: (url: string) => instance.get(url).then(responseBody),
   post: (url: string, body: {}) => instance.post(url, body).then(responseBody),
@@ -62,7 +61,8 @@ export const Post = {
 export const Put = {
   updateBasket: (body: any) => requests.put('/api/users/basket', body),
   updateInterestProduct: (body: any) => requests.put('/api/users/interest-product', body),
-  updateProductQty: (idx: string, productId: string, body: any) => requests.put(`/api/users/basket/${idx}/${productId}`, body),
+  updateUserBasketQty: (idx: string, productId: string, body: any) => requests.put(`/api/users/basket/${idx}/${productId}`, body),
+  updateProductQty: (idx: string,body: any) => requests.put(`/api/products/qty/${idx}`, body),
   updateUserInfo: (idx: string,body: any) => requests.put(`/api/users/${idx}`, body),
 };
 

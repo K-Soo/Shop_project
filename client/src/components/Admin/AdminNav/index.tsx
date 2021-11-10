@@ -58,7 +58,7 @@ export default function AdminNav({ }: IAdminNav) {
 
       <S.UserInfo >
         <span>
-          관리자님 안녕
+          Admin
         </span>
       </S.UserInfo>
     </S.AdminNav>

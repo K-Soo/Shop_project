@@ -2,16 +2,12 @@ import React, { useState, useEffect } from "react";
 import styled, { css } from "styled-components";
 import Icon, { IconType } from 'components/Icon/Icon';
 import Link from 'next/link';
-
-interface IAside {
-
-}
-
+import {useRouter} from 'next/router';
 
 const category = [
   {
     CategoryIcon: 'home',
-    '홈': [],
+    '홈': [] as any[],
   },
   {
     CategoryIcon: 'plus',
@@ -29,7 +25,6 @@ const category = [
   },
 ]
 
-
 const S = {
   Aside: styled.div`
     height: 100%;
@@ -39,7 +34,7 @@ const S = {
     i{font-size: 0;}
     &:hover{
       width: 240px;
-      transition: all 0.3s ease;
+      transition: width 0.3s ease;
       .item{
         .lists-category{
           display: flex;
@@ -53,20 +48,12 @@ const S = {
       display: flex;
       padding: 15px 10px 15px 15px;
       border-bottom: 1px solid #999;
-      /* align-items: center; */
-      /* justify-content: center; */
       white-space: nowrap;
       .lists-category{
         margin-left: 10px;
         flex: 1;
         flex-direction: column;
         display: none;
-        /* opacity: 0; */
-        /* display: none; */
-        /* border: 2px solid orange; */
-        /* padding: 0 10px; */
-        /* justify-content: space-between; */
-        /* align-items: center; */
         &__title{
           display: flex;
           align-items: flex-end;
@@ -74,8 +61,8 @@ const S = {
           justify-content: space-between;
           cursor: pointer;
           height: 20px;
+          border: 1px solid red;
           &--icon{
-            font-size: 0;
             transform: rotate(180deg);
             &[data-active=true] {
               transform: rotate(0deg);
@@ -83,7 +70,6 @@ const S = {
           }
         }
         &__inner-list{
-          margin-top: 10px;
           display: none;
           li{
             width: 100%;
@@ -104,6 +90,7 @@ const S = {
             }
           }
           &[data-active=true] {
+            margin-top: 10px;
             display: block;
             transition: all 1s ease;
           }
@@ -112,22 +99,23 @@ const S = {
     }
 
   `,
-  List: styled.nav`
- 
-  `,
 }
 
-export default function Aside({ }: IAside) {
+export default function Aside() {
   const [nameValue, setNameValue] = useState<string>('');
+  const router = useRouter();
 
   const handleList = (e: React.MouseEvent<HTMLDivElement>) => {
     const { name } = (e.target as HTMLDivElement).dataset;
-    setNameValue(name);
+    if(name === '홈') router.push('/admin');
+    if(name !== '홈') setNameValue(name);
   }
-
+  const test = category.map(d => {
+    return Object.entries(d)
+  })
   return (
-    <S.Aside >
-      <ul >
+    <S.Aside>
+      <ul>
         {category.map((d => (
           <li key={d.CategoryIcon} className='item'>
             <i>
@@ -135,15 +123,28 @@ export default function Aside({ }: IAside) {
             </i>
 
             <div className='lists-category'>
-              <div className='lists-category__title' data-name={Object.entries(d)?.[1]?.[0]} onClick={handleList}>
+              <div
+                className='lists-category__title'
+                data-name={Object.entries(d)?.[1]?.[0]}
+                onClick={handleList}
+              >
+                <span>
                 {Object.entries(d)?.[1]?.[0]}
+                </span>
                 {Object.entries(d)?.[1]?.[0] !== '홈' && (
-                  <i className='lists-category__title--icon' data-active={Object.entries(d)?.[1]?.[0] === nameValue}><Icon name='arrowNoTailBottom' /></i>
+                  <i className='lists-category__title--icon'
+                    data-active={Object.entries(d)?.[1]?.[0] === nameValue}
+                  >
+                    <Icon name='arrowNoTailBottom' />
+                  </i>
                 )}
               </div>
 
-              <ul className='lists-category__inner-list' data-active={Object.entries(d)?.[1]?.[0] === nameValue}>
-                {Object.entries(d)?.[1]?.[1].map(d => (
+              <ul
+                className='lists-category__inner-list'
+                data-active={Object.entries(d)?.[1]?.[0] === nameValue}
+              >
+                {Object.entries(d)?.[1]?.[1].length && Object.entries(d)?.[1]?.[1].map((d) => (
                   <li key={d.url} data-name={d.target}>
                     <Link href={d.url}>
                       <a >

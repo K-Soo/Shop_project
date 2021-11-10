@@ -200,26 +200,32 @@ const GuestLogIn = async (req, res, next) => {
 const logIn = async (req, res, next) => {
   // console.log('req: ', req.headers);
   const { userId, password } = req.body;
+  console.log('req.body: ', req.body);
   try {
     // id check
     const exist = await User.findByUserId(userId);
-    if (!exist) return throwError({ statusCode: 401, msg: '아이디를 확인해주세요.' });
+    console.log('exist: ', exist);
+    if (!exist) return throwError({ statusCode: 401 });
     // password check
     const valid = await exist.checkPassword(password);
-    if (!valid) return throwError({ statusCode: 401 })
-    // 장바구니 정보
-    const basket = await Basket.findOne({ BasketOwner: exist.id }, { BasketOwner: 0 });
-    console.log('basket: ', basket);
+    if (!valid) return throwError({ statusCode: 401 });
 
-    const token = exist.generateToken();
-    res.cookie('access_token', token, {
-      maxAge: 1000 * 60 * 2,
-      httpOnly: false,
-      sameSite: "none",
-      secure: true,
-    });
+    if (exist.userId === 'admin') {
+      const token = exist.generateToken();
+      return res.json({ success: true, token });
+    } else {
+      const basket = await Basket.findOne({ BasketOwner: exist.id }, { BasketOwner: 0 });
+      const token = exist.generateToken();
+      // res.cookie('access_token', token, {
+      //   maxAge: 1000 * 60 * 2,
+      //   httpOnly: false,
+      //   sameSite: "none",
+      //   secure: true,
+      // });
 
-    return res.json({ success: true, message: "로그인 성공", token, basket });
+      return res.json({ success: true, message: "로그인 성공", token, basket });
+    }
+
 
   } catch (error) {
     next(error);

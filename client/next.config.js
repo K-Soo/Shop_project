@@ -7,7 +7,7 @@ module.exports = {
         source: '/product/review',
         destination: '/',
         permanent: false
-      }
+      },
     ]
   },
 

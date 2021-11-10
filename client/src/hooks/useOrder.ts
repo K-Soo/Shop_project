@@ -333,7 +333,6 @@ const useOrder = (props: any) => {
   const update = (recipe: (draft: IOrderState) => void) =>
   setAppState((prev) => produce(prev, recipe));
   
-  console.log('useOrder state: ', state);
   const action = generateAction(update);
   const app = { props, state, action };
 
