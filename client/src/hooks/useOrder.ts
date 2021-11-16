@@ -328,6 +328,7 @@ const generateAction = (update: (recipe: (draft: IOrderState) => void) => void) 
 
 const useOrder = (props: any) => {
   const [state, setAppState] = useState(initializer(props));
+  console.log('useOrder state: ', state);
   const App = useAppContext();
   const router = useRouter();
   const update = (recipe: (draft: IOrderState) => void) =>

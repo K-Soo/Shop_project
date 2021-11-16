@@ -214,7 +214,7 @@ export default function Content({ items, isLoading, isSuccess }: IContent) {
           <div key={d._id} className='item-box'>
             <div className='order-number'>
               <div className='order-number__info'>
-                <p className='order-number__info--date'>{d.createAt.split(' ')[0]}</p>
+                <p className='order-number__info--date'>{d.createAt}</p>
                 <p className='order-number__info--number'>
                   <Link href={`/users/history/details/${items.user}/${d.orderNum}`}>
                     <a>

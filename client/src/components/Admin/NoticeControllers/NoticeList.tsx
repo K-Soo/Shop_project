@@ -18,6 +18,10 @@ interface INoticeList {
 
 const S = {
   NoticeList: styled.div`
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   `,
   ButtonBox: styled.div`
     button{
@@ -44,8 +48,11 @@ export default function NoticeList({}:INoticeList) {
 
   return (
     <S.NoticeList>
+      <div>
       <PageTitle TitleText='공지사항' />
       <List items={data.items} isLoading={isLoading} />
+      </div>
+      <div>
       <S.ButtonBox className='button-box'>
         <Button
           white
@@ -57,6 +64,7 @@ export default function NoticeList({}:INoticeList) {
         </Button>
       </S.ButtonBox>
       {isSuccess && (<Pagination maxPages={data.maxPages} isFetching={isFetching}/>)}
+      </div>
     </S.NoticeList>
   );
 }

@@ -41,7 +41,6 @@ const detail = async (req, res, next) => {
     } else {
       throwError({ statusCode: 404 });
     }
-    console.log('exist: ', exist);
   } catch (error) {
     next(error);
   }

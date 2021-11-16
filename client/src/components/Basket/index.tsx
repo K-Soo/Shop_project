@@ -13,6 +13,7 @@ import { useAppContext } from 'context/AppProvider';
 import { useOrderContext } from 'context/OrderProvider';
 import Button from 'components/style/Button';
 import { Delete, Put } from 'api';
+import PAGE from 'constants/path';
 
 const S = {
   Basket: styled.section`
@@ -128,11 +129,11 @@ export default function Basket() {
     if (userId) {
       if (!state.basket.basketList.length) return alert('장바구니에 상품이없습니다.');
       Order.action.setEntireProducts(state.basket.basketList);
-      router.push('/order/orderform');
+      router.push(PAGE.ORDER.path);
     } else {
       if (!state.basket.nonMemberBasket.length) return alert('장바구니에 상품이없습니다.');
       Order.action.setEntireProducts(state.basket.nonMemberBasket);
-      router.push('/order/orderform');
+      router.push(PAGE.ORDER.path);
     }
   }
 

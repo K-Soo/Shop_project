@@ -14,7 +14,7 @@ import { useAdminContext } from 'context/AdminProvider';
 import PageTitle from 'components/Common/PageTitle';
 import { IProduct } from 'interfaces/IProduct';
 import { stubFalse } from "lodash";
-import {useChangeQty,useCloseProducts} from 'components/Admin/hooks/useListModify';
+import { useChangeQty, useSelectCloseProducts } from 'components/Admin/hooks/useListModify';
 
 const Block = styled.div`
   height: 100%;
@@ -33,7 +33,7 @@ export default function ProductsListPage(props: any) {
   const [targetItem, setTargetItem] = useState<null | IProduct[]>(null);
   const [checkedItem, setCheckedItem] = useState<null | string[]>([]);
   const changeQty = useChangeQty();
-  const closeProducts = useCloseProducts();
+  const closeProducts = useSelectCloseProducts();
 
   const selectFc = useCallback((data: IProduct[]) => {
     return data.filter(el => el.category === state.filter.category);
@@ -89,11 +89,11 @@ export default function ProductsListPage(props: any) {
   }, [data]);
 
   const handleCloseProducts = () => {
-    if(!checkedItem.length){
+    if (!checkedItem.length) {
       return alert('상품을 먼저 선택해주세요');
     }
     closeProducts(checkedItem);
-  } 
+  }
 
   return (
     <>
@@ -116,7 +116,7 @@ export default function ProductsListPage(props: any) {
               />
             )}
             {isLoading && <div>loading</div>}
-            <CtrBox handleCloseProducts={handleCloseProducts}/>
+            <CtrBox handleCloseProducts={handleCloseProducts} />
           </Block>
 
         </ProductControllers>

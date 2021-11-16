@@ -23,7 +23,25 @@ export function useChangeQty():UseMutateFunction<
   return mutate;
 }
 
-export function useCloseProducts():UseMutateFunction<
+export function useSelectCloseProducts():UseMutateFunction<
+  void,
+  unknown,
+  string[],
+  unknown
+>{
+  const queryClient = useQueryClient();
+  const { state } = useAdminContext();
+
+  const { mutate } = useMutation(async (ids: string[]) => await Put.updateProductClose(ids), {
+    onSuccess: () => {
+      alert('선택상품이 마감되었습니다');
+      queryClient.invalidateQueries([queryKeys.PRODUCT_CLOSE, state.filter.product_type])
+    }
+  });
+  return mutate;
+}
+
+export function useAllCloseProducts():UseMutateFunction<
   void,
   unknown,
   string[],

@@ -181,7 +181,6 @@ const GuestLogIn = async (req, res, next) => {
   const { userName, OrderPassword, orderNum } = req.body;
   try {
     const exist = await GuestOrder.findOne({ orderNum, userName });
-    console.log('exist: ', exist);
 
     if (!exist) {
       return throwError({ statusCode: 401, msg: '아이디를 확인해주세요.' });
@@ -204,7 +203,6 @@ const logIn = async (req, res, next) => {
   try {
     // id check
     const exist = await User.findByUserId(userId);
-    console.log('exist: ', exist);
     if (!exist) return throwError({ statusCode: 401 });
     // password check
     const valid = await exist.checkPassword(password);

@@ -43,6 +43,8 @@ export const Get = {
   getPointList: (idx: string,page:number,limit:number) => requests.get(`/api/users/point/${idx}?page=${page}&limit=${limit}`),
   getNoticeList: (page:number,limit:number) => requests.get(`/api/board/notice?page=${page}&limit=${limit}`),
   getNoticeDetail: (idx:string) => requests.get(`/api/board/notice/${idx}`),
+  getAdminSales: () => requests.get(`/api/admin/sales`),
+  getAdminPoint: () => requests.get(`/api/admin/point`),
 };
 
 export const Post = {

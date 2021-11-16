@@ -1,4 +1,3 @@
-
 export function pageNumber(maxPages:number) {
   var arr = new Array(); 
 

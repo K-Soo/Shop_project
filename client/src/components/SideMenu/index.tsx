@@ -22,8 +22,14 @@ export default function SideMenu()  {
   return (
     <>
       <DarkBackground  directionSwap={directionSwap} >
-        <LeftSide onClick={handler} directionSwap={directionSwap}/>
-        <RightSide onClick={handler} directionSwap={directionSwap}/>
+        <LeftSide 
+          onClick={handler} 
+          directionSwap={directionSwap}
+        />
+        <RightSide 
+          onClick={handler} 
+          directionSwap={directionSwap}
+        />
       </DarkBackground >
       </>
   );

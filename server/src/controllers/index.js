@@ -7,4 +7,5 @@ export * as ReviewController from './ReviewController';
 export * as InterestProductController from './InterestProductController';
 export * as PointController from './PointController';
 export * as NoticeController from './NoticeController';
+export * as AdminController from './AdminController';
 

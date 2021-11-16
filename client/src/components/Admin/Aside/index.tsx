@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import styled, { css } from "styled-components";
 import Icon, { IconType } from 'components/Icon/Icon';
 import Link from 'next/link';
-import {useRouter} from 'next/router';
+import { useRouter } from 'next/router';
 
-const category= [
+const category = [
   {
     CategoryIcon: 'home',
     '홈': [] as any[],
@@ -26,7 +26,7 @@ const category= [
   {
     CategoryIcon: 'menu2',
     '공지사항': [
-      { label: '공지사항 관리', url: '/admin/notice/list', target: '공지사항' },
+      { label: '공지사항 관리', url: '/admin/notice', target: '공지사항' },
     ]
   },
 ]
@@ -34,22 +34,11 @@ const category= [
 const S = {
   Aside: styled.div`
     height: 100%;
-    width: 56px;
+    width: 250px;
     border:solid #dee2e6;
     border-width: 1px 1px 0 0;
     background-color: #fff;
     i{font-size: 0;}
-    &:hover{
-      width: 240px;
-      transition: width 0.3s ease;
-      .item{
-        .lists-category{
-          display: flex;
-          opacity: 1;
-          transition: opacity 1s ease;
-        }
-      }
-    }
     .item{
       min-height: 50px;
       display: flex;
@@ -57,10 +46,10 @@ const S = {
       border-bottom: 1px solid #999;
       white-space: nowrap;
       .lists-category{
-        margin-left: 10px;
+        margin-left: 20px;
         flex: 1;
         flex-direction: column;
-        display: none;
+        display: flex;
         &__title{
           display: flex;
           align-items: flex-end;
@@ -72,6 +61,7 @@ const S = {
             transform: rotate(180deg);
             &[data-active=true] {
               transform: rotate(0deg);
+              /* transition: all 0.3s ease; */
             }
           }
         }
@@ -113,10 +103,10 @@ export default function Aside() {
 
   const handleList = (e: React.MouseEvent<HTMLDivElement>) => {
     const { name } = (e.target as HTMLDivElement).dataset;
-    if(name === '홈') router.push('/admin');
-    if(name !== '홈') setNameValue(name);
+    if (name === '홈') router.push('/admin');
+    if (name !== '홈') setNameValue(name);
   }
- 
+
   return (
     <S.Aside>
       <ul>

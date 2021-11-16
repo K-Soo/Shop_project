@@ -1,33 +1,33 @@
 import { useCallback, Dispatch, SetStateAction, useState } from 'react';
 import { IProduct } from 'interfaces/IProduct';
 import { useEffect } from 'react';
+import useDidMountEffect from 'hooks/useDidMountEffect';
 
 export function useSort(sortingData: IProduct[]) {
   const [sort, setSort] = useState<string>('');
-  console.log('sort: ', sort);
 
-  useEffect(() => {
+  useDidMountEffect(() => {
     const sortingFc = (sort: any) => {
+      console.log('ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ');
       switch (sort) {
         case 'row':
-          (sortingData.sort((a, b) => Number(b.product_price) - Number(a.product_price)));
+          sortingData.sort((a, b) => Number(b.product_price) - Number(a.product_price)).sort(x => x.qty ? -1 : 1);
           break;
         case 'hight':
-          (
-            sortingData.sort((a, b) => Number(a.product_price) - Number(b.product_price)));
+          sortingData.sort((a, b) => Number(a.product_price) - Number(b.product_price)).sort(x => x.qty ? -1 : 1);
           break;
-        case 'new':
-          (sortingData.sort((x) => x.new_product ? -1 : 1));
-          break;
-        case 'best':
-          (sortingData.sort((x) => x.best_product ? -1 : 1));
-          break;
+        // case 'new':
+        //   sortingData.sort((x) => x.new_product ? -1 : 1).sort(x => x.qty ? -1 : 1);
+        //   break;
+        // case 'best':
+        //   sortingData.sort((x) => x.best_product ? -1 : 1).sort(x => x.qty ? -1 : 1);
+        //   break;
         default:
-          return sortingData;
+          return sortingData.sort(x => x.qty ? -1 : 1);
       }
     };
     sortingFc(sort);
-  }, [sort,sortingData])
+  }, [sort, sortingData])
 
   return {
     setSort,

@@ -30,7 +30,6 @@ const list = async (req, res, next) => {
       }
     } else {
       const exist = await Product.find();
-      console.log('exist: ', exist);
       res.json(exist);
       if (!exist.length) {
         throwError({ statusCode: 404, mgs: '상품이 없습니다.' });

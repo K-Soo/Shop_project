@@ -1,11 +1,9 @@
 import React, { ReactNode } from "react";
-import styled,{css} from "styled-components";
+import styled, { css } from "styled-components";
 import { useAdminContext } from 'context/AdminProvider';
 interface ISection {
   children: ReactNode
 }
-
-
 
 export default function Section({ children }: ISection) {
   return (
@@ -41,7 +39,7 @@ Section.Main = function Main({ children }: ISection) {
 }
 
 const SectionStyle = styled.div`
-  height: calc(100vh - 40px );
+  height: calc(100vh - 40px);
 `;
 
 const HeaderStyle = styled.header`
@@ -53,35 +51,17 @@ const HeaderStyle = styled.header`
 `;
 
 const MainStyle = styled.main`
-  width: calc(100% - 56px );
-  margin-left: 56px;
+  width: calc(100% - 250px);
+  margin-left: 250px;
   height: 100%;
   padding: 20px;
   background-color: #F0F3F7;
-  ${({ theme }) => theme.mobile`
-    width: 100%;
-    margin-left: 0;
-    padding: 10px;
-  `}
 `;
 
-const SideStyle = styled.aside<{toggle: boolean}>`
+const SideStyle = styled.aside<{ toggle: boolean }>`
   position: fixed;
-  min-width:56px;
+  width: 250px;
   height: 100%;
   background-color: #fff;
   z-index: 9999;
-  ${({ theme }) => theme.mobile`
-    left: -100px;
-  `}
-  ${props => props.toggle ? css`
-    ${({ theme }) => theme.mobile`
-      left: 0;
-      transition: all 0.3s ease;
-    `}
-  ` : css`
-    ${({ theme }) => theme.mobile`
-      left: -100px;
-    `}
-  `}
 `;

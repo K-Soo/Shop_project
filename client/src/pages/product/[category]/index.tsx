@@ -9,7 +9,7 @@ import { IProduct } from 'interfaces/IProduct';
 import { Get } from "api";
 import { CategoryEnum } from 'constants/product';
 
-export default function ProductType(props: any) {
+export default function ProductType() {
   const router: NextRouter = useRouter();
   const { category } = router.query as { category: string };
   const fallback: Array<null> = [];

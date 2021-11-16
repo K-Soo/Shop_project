@@ -245,6 +245,7 @@ const generateAction = (update: (recipe: (draft: IAppState) => void) => void) =>
 
 const useApp = (props:any) => {
   const [state, setAppState] = useState(initializer(props));
+  console.log('useApp state: ', state);
   const update = (recipe: (draft: IAppState) => void) =>
     setAppState((prev) => produce(prev, recipe));
   const router = useRouter();

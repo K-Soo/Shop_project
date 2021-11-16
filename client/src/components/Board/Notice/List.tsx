@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import { NoticeProps, TItems } from 'interfaces/INotice';
 import Link from 'next/link';
-
 interface IList {
   items: TItems[];
   isLoading: boolean;

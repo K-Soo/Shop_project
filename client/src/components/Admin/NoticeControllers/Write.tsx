@@ -19,8 +19,9 @@ const Editor = dynamic(async () => {
 
 const S = {
   Write: styled.div`
+    height: 100%;
     .editor {
-      height: 300px !important;
+      height: 500px;
       border: 1px solid #f1f1f1 !important;
       padding: 5px !important;
       border-radius: 2px !important;
@@ -38,6 +39,7 @@ const S = {
     }
   `,
   NoticeType: styled.div`
+    margin-bottom: 15px;
     p{
       min-width: 50px;
     }
@@ -140,6 +142,7 @@ export default function Write() {
           editorState={editorState}
           onEditorStateChange={(editorState) => setEditorState(editorState)}
         />
+
         <S.ButtonBox className='button-box'>
           <Button white type='submit'>등록</Button>
           <Button black onClick={() => router.back()}>취소</Button>

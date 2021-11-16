@@ -10,6 +10,7 @@ import { useAppContext } from 'context/AppProvider';
 import { useSelectCategory } from 'hooks/useSelectCategory';
 import { useSort } from 'hooks/useSort';
 import { IProduct } from 'interfaces/IProduct';
+import Loading from 'components/Loading';
 
 
 interface IProductProps {
@@ -31,16 +32,37 @@ export default function Product({ item, isLoading, isSuccess }: IProductProps) {
   const keyName = router.query.category as keyof typeof CategoryEnum
   const currentProduct: categoryType = CategoryEnum[keyName]
   const selectedItem = useSelectCategory(item);
+  console.log('selectedItem: ', selectedItem);
   const { setSort, sortingData } = useSort(selectedItem);
+  console.log('sortingData: ', sortingData);
 
   return (
     <S.Product>
-      <ProductCategory currentProduct={currentProduct} keyName={keyName} />
+      <ProductCategory
+        currentProduct={currentProduct}
+        keyName={keyName}
+      />
 
-      {isSuccess && <BestProducts item={item} />}
+      {isLoading && (
+        <Loading
+          isLoading={isLoading}
+          height={300}
+          text='상품 갱신중...'
+        />
+      )}
 
-      <ProductSortMenu itemCount={selectedItem?.length} setSort={setSort} />
-      <ProductList items={sortingData} isLoading={isLoading} isSuccess={isSuccess} />
+      {isSuccess && (
+        <>
+          <BestProducts item={item} />
+          <ProductSortMenu
+            itemCount={selectedItem?.length}
+            setSort={setSort}
+          />
+          <ProductList
+            items={sortingData}
+          />
+        </>
+      )}
     </S.Product>
   )
 };

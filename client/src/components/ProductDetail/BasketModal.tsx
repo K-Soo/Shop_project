@@ -11,6 +11,7 @@ import { useAppContext } from 'context/AppProvider';
 import Image from 'next/image'
 import { TColor, IProduct, IBasketItem } from 'interfaces/IProduct';
 import { useRouter } from "next/router";
+import { useOrderContext } from 'context/OrderProvider';
 
 const CommonIcon = css`
   padding: 1px 5px;
@@ -48,7 +49,7 @@ const S = {
       width: 95%;
       height: 550px;
       .header{
-        padding: 0 15px;
+        padding: 10px 15px;
       }
       .content{
         padding: 10px 15px;
@@ -59,12 +60,13 @@ const S = {
     `}
   `,
   Header: styled.div`
-    padding: 0 25px;
+    padding: 10px 25px;
     height: 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid #f0f0f0;
+    font-size: 14px;
     .close-btn{
       font-size: 0;
       cursor: pointer;
@@ -122,7 +124,13 @@ const S = {
             }
           }
           .price{
-            border: 1px solid red;
+            del{
+              font-size: 12px;
+            }
+            p{
+              color: #333;
+              font-weight: 600;
+            }
           }
         }
       }
@@ -161,26 +169,38 @@ const S = {
 
 export default function BasketModal() {
   const [basket, setBasket] = useState<IBasketItem[]>([]);
-  const App = useAppContext();
+  const Order = useOrderContext();
+  const { state, action } = useAppContext();
+  const { userId } = state.userInfo;
+  console.log('userId: ', userId);
+
   const router = useRouter();
 
   useEffect(() => {
-    if (App.state.userInfo.userId) {
-      setBasket(App.state.basket.basketList);
+    if (userId) {
+      setBasket(state.basket.basketList);
     } else {
-      setBasket(App.state.basket.nonMemberBasket);
+      setBasket(state.basket.nonMemberBasket);
     }
-  }, [App.state.userInfo.userId, App.state.basket]);
+  }, [userId, state.basket]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = () => {
+    // 전체상품 주문
+    if (userId) {
+      Order.action.setEntireProducts(state.basket.basketList);
+      router.push('/order/orderform');
+    } else {
+      Order.action.setEntireProducts(state.basket.nonMemberBasket);
+      router.push('/order/orderform');
+    }
   }
 
   return (
-    <S.BasketModal open={App.state.openBasketModal} >
+    <S.BasketModal open={state.openBasketModal} >
       <S.Containers >
         <S.Header className='header'>
-          <Title level={3} size="18">장바구니 담기</Title>
-          <i className='close-btn' data-name='openBasketModal' onClick={App.action.setGlobalToggle}>
+          <Title level={3} size="16">장바구니 담기</Title>
+          <i className='close-btn' data-name='openBasketModal' onClick={action.setGlobalToggle}>
             <Icon name='closeSmall' />
           </i>
         </S.Header>
@@ -236,7 +256,7 @@ export default function BasketModal() {
         <S.Footer className='footer'>
           <div className='button-group'>
             <Button
-              onClick={App.action.setBasketModal}
+              onClick={action.setBasketModal}
               width='80px'
               white
               margin='0 15px 0 0'

@@ -22,19 +22,19 @@ const S = {
 export default function AdminContainer({ children }: IAdminContainer) {
   return (
     <S.AdminContainer >
-      {/* <AdminProvider > */}
-        <Section>
-          <Section.Header>
-            <AdminNav />
-          </Section.Header>
-           <Section.Side>
-            <Aside />
-          </Section.Side> 
-          <Section.Main>
-            {children}
-          </Section.Main>
-        </Section>
-      {/* </AdminProvider> */}
+      <Section>
+        <Section.Header>
+          <AdminNav />
+        </Section.Header>
+
+        <Section.Side>
+          <Aside />
+        </Section.Side>
+
+        <Section.Main>
+          {children}
+        </Section.Main>
+      </Section>
     </S.AdminContainer>
   );
 };

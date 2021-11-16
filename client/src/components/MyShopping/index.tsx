@@ -6,7 +6,7 @@ import QuickMove from 'components/MyShopping/QuickMove';
 import UserInfo from 'components/Forms/UserInfo';
 import { queryKeys } from 'constants/queryKeys';
 import { Get } from "api";
-import { useQuery, UseQueryResult, useQueryClient } from 'react-query';
+import { useQuery, UseQueryResult, useQueryClient,useQueries } from 'react-query';
 import { useAppContext } from 'context/AppProvider';
 import { IPointInfo } from 'interfaces/IPoint';
 
