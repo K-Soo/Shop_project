@@ -12,7 +12,7 @@ import { recipientCheck, addrCheck, phoneCheck, pointCheck } from 'components/va
 import { NextRouter, useRouter } from 'next/router';
 import { CreateOrderActions, OnApproveActions, OnApproveData, UnknownObject, OnClickActions, OnCancelledActions } from "@paypal/paypal-js/types/components/buttons";
 import { DISPATCH_ACTION, FUNDING, PayPalButtons, SCRIPT_LOADING_STATE, usePayPalScriptReducer } from "@paypal/react-paypal-js";
-import {ErrorMsg} from 'utils';
+import { ErrorMsg } from 'utils';
 
 interface IPayment {
 
@@ -116,7 +116,8 @@ export default function Payment({ }: IPayment) {
   const App = useAppContext();
   const router: NextRouter = useRouter();
   const [{ isInitial, isPending, isRejected, isResolved }, Dispatch] = usePayPalScriptReducer();
-  
+  const { userInfo: { idx } } = App.state;
+
   console.group('before');
   console.log('isResolved: ', isResolved);
   console.log('isRejected: ', isRejected);
@@ -131,7 +132,7 @@ export default function Payment({ }: IPayment) {
     if (!addrCheck(state)) return;
     if (!phoneCheck(state)) return;
 
-    if(App.state.status.guest){
+    if (App.state.status.guest) {
       if (state.orderForm.orderPassword !== state.orderForm.orderPasswordConfirm) {
         return alert('비밀번호가 일치하지않습니다.');
       }
@@ -151,28 +152,28 @@ export default function Payment({ }: IPayment) {
       ]
     })
   };
-
   const onApprove = async (data: OnApproveData, actions: OnApproveActions) => {
     try {
       const details = await actions.order.capture();
       if (!App.state.status.guest) {
         const res = await Post.checkout(App.state.userInfo.userId, state.orderForm);
         Dispatch({ type: DISPATCH_ACTION.LOADING_STATUS, value: SCRIPT_LOADING_STATE.INITIAL });
-        if(res.success){
+        if (res.success) {
           App.action.setLocalItems(res.updatedBasket.items);
           alert('결제완료\n주문상세페이지로 이동합니다');
+          return router.push(`/users/history/details/${idx}/${res.orderNum}`);
         }
       } else {
         const res = await Post.guestCheckout(state.orderForm);
-        if(res.success) {
+        if (res.success) {
           alert('결제완료');
-          const result = App.state.basket.nonMemberBasket.filter(({date:date1}) => !state.orderForm.Products.some(({date: date2}) => date1 === date2))
+          const result = App.state.basket.nonMemberBasket.filter(({ date: date1 }) => !state.orderForm.Products.some(({ date: date2 }) => date1 === date2))
           App.action.setNonMemberBasket(result);
           Dispatch({ type: DISPATCH_ACTION.LOADING_STATUS, value: SCRIPT_LOADING_STATE.INITIAL });
           return router.push(`/users/history/guest-detail/${res.guestOrder._id}`);
         }
       }
-    } catch (error:any) {
+    } catch (error: any) {
       console.error('error: ', error);
       console.error('paypal-error: ', error.response.data.message);
       alert('결제 실패\n잠시후 다시시도해주세요');
@@ -194,7 +195,7 @@ export default function Payment({ }: IPayment) {
       <S.PaymentMethod>
         <Title level={6} textAlign='left' size='14'>결제수단 선택</Title>
         <div className='payment-select'>
-          <input type='radio' id='paypalFor' defaultChecked={true} style={{marginRight:'5px'}}/>
+          <input type='radio' id='paypalFor' defaultChecked={true} style={{ marginRight: '5px' }} />
           <label htmlFor='paypalFor'>페이팔</label>
         </div>
         <ul className='payment-guide'>

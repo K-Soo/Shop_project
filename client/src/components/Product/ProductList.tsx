@@ -32,7 +32,7 @@ const S = {
   `,
 }
 
-export default function ProductList({ items, isLoading, isSuccess }: IProductList) {
+export default function ProductList({ items }: IProductList) {
   return (
     <S.ProductList>
       {items && items.length > 0 ? items.map((d: IProduct, i) => (

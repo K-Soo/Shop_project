@@ -1,10 +1,7 @@
 import mongoose from 'mongoose';
-import moment from 'moment-timezone';
 
 const { Schema } = mongoose;
 const { Types: { ObjectId } } = Schema;
-
-const dateSeoul = moment.tz("Asia/Seoul");
 
 const HistorySchema = Schema({
   user: {

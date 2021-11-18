@@ -38,7 +38,7 @@ const MainLogo: React.FC<IMainLogo> = ({ className }) => {
     <S.MainLogo className={className}>
       <Link href={PAGE.MAIN.path}>
         <a>
-          <Image className='main-logo' src="/images/main_logo.jpeg" width={300} height={80} alt='main_logo' />
+          <Image className='main-logo' src="/images/main_logo.png" width={300} height={70} alt='main_logo' />
         </a>
       </Link>
     </S.MainLogo>

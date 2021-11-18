@@ -18,7 +18,7 @@ const S = {
 
 export default function BestProducts({ item }: IBestProducts) {
   const bestItems = useCallback(() => {
-    return item?.filter(d => d.best_product);
+    return item?.filter(d => d.best_product && d.qty >= 1);
   }, [item]);
 
   return (

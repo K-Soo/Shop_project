@@ -100,6 +100,7 @@ const guestCheckout = async (req, res, next) => {
 const checkout = async (req, res, next) => {
   const { userId } = req.params;
   const result = req.body;
+  console.log('result: ', result);
   const { Products } = result;
   result._id = new mongoose.Types.ObjectId();
   result.createdAt = createDate();
@@ -113,7 +114,6 @@ const checkout = async (req, res, next) => {
     const target = await User.findByUserId(userId);
     console.log('test: ', test);
     if (target) {
-
       const promises = Products.map(async obj =>
         await Product.findOneAndUpdate(
           { seq: obj.seq },
@@ -127,14 +127,6 @@ const checkout = async (req, res, next) => {
         { $pull: { items: { _id: { $in: idArray } } } },
         { new: true }
       );
-      // let product = await Product.find({ seq: { $in: seqArray } });
-
-      // const CalculatedQty = [...product, ...Products].reduce((acc, cur) => {
-      //   const element = acc.find(item => item.seq === cur.seq)
-      //   element ? element.qty -= cur.qty : acc.push(cur)
-      //   return acc
-      // }, []);
-
 
       const exist = await History.findOne({ user: target._id });
       await History.findOneAndUpdate(
@@ -169,7 +161,7 @@ const checkout = async (req, res, next) => {
       }
 
       if (exist) {
-        res.json({ success: true, updatedBasket });
+        res.json({ success: true, updatedBasket, orderNum: result.orderNum });
       }
     }
   } catch (error) {

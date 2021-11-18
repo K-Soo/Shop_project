@@ -51,7 +51,7 @@ export default function AdminNav({ }: IAdminNav) {
       <S.Logo>
         <Link href={PAGE.MAIN.path}>
           <a>
-            <Image className='main-logo' src="/images/main_logo.jpeg" width={100} height={40} alt='main_logo' />
+            <Image className='main-logo' src="/images/main_logo.png" width={100} height={35} alt='main_logo' />
           </a>
         </Link>
       </S.Logo>

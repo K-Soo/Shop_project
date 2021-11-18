@@ -22,23 +22,23 @@ const S = {
 
 export default function List({ idx }: IList) {
   const App = useAppContext();
-  const currentPage  = Number(App.state.pagination.currentPage);
+  const currentPage = Number(App.state.pagination.currentPage);
   const fallback: Array<null> = [];
   const queryClient = useQueryClient();
   const limit = 2;
 
-  const { data = fallback, isLoading, isSuccess, isError, error, isFetching } = useQuery([queryKeys.HISTORY, idx, currentPage,limit], async () => await Get.getHistory(idx, currentPage,limit), {
+  const { data = fallback, isLoading, isSuccess, isError, isFetching } = useQuery([queryKeys.HISTORY, idx, currentPage, limit], async () => await Get.getHistory(idx, currentPage, limit), {
     retry: 0,
     keepPreviousData: true,
     refetchOnWindowFocus: false,
     staleTime: 2000,
-    enabled: !!idx,                                      
+    enabled: !!idx,
   });
   
   useEffect(() => {
     if (currentPage < data.total) {
       const nextPreFetchPage = currentPage + 1;
-      queryClient.prefetchQuery([queryKeys.HISTORY, idx, nextPreFetchPage], () => Get.getHistory(idx, currentPage,limit));
+      queryClient.prefetchQuery([queryKeys.HISTORY, idx, nextPreFetchPage], () => Get.getHistory(idx, currentPage, limit));
     }
   }, [currentPage, queryClient, idx, data.total]);
   
@@ -47,8 +47,8 @@ export default function List({ idx }: IList) {
       <PageTitle TitleText='주문내역 리스트' />
       <Guide />
       <FormFieldset title={isSuccess && `주문 상품 정보 (${data.total})`}>
-        <Content items={data} isLoading={isLoading} isSuccess={isSuccess}/>
-        {isSuccess && (<Pagination maxPages={data.maxPages} isFetching={isFetching}/>)}
+        <Content items={data} isLoading={isLoading} isSuccess={isSuccess} />
+        {isSuccess && (<Pagination maxPages={data.maxPages} isFetching={isFetching} />)}
       </FormFieldset>
     </S.List>
   );

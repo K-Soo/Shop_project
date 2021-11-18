@@ -29,7 +29,6 @@ const S = {
   `,
   ProductCount: styled.div`
     color: #222;
-    /* width: 100px; */
     font-weight: 400;
     text-align: center;
     height: 100%;

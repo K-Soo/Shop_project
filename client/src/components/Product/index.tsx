@@ -32,35 +32,7 @@ export default function Product({ item, isLoading, isSuccess }: IProductProps) {
   const keyName = router.query.category as keyof typeof CategoryEnum
   const currentProduct: categoryType = CategoryEnum[keyName]
   const selectedItem = useSelectCategory(item);
-  // const { setSort, sortingData } = useSort(item);
-  const [sort, setSort] = useState<string>('');
-  const [listItem,setListItem] = useState([]);
-
-// sortingData.sort(x => x.qty >= 1 ? -1 : 1);
-  const bestItemFiltered = item.filter(el => el.qty >= 1);
-
-  useEffect(() => {
-    const sortingFc = (sort: string) => {
-      switch (sort) {
-        case 'row':
-          item.sort((a, b) => Number(a.consumer_price) - Number(b.consumer_price)).sort(x => x.qty ? -1 : 1);
-          break;
-        case 'hight':
-          item.sort((a, b) => Number(b.consumer_price) - Number(a.consumer_price)).sort(x => x.qty ? -1 : 1);
-          break;
-        case 'new':
-          item.sort((x) => x.new_product ? 1 : -1).sort(x => x.qty ? -1 : 1);
-          break;
-        case 'best':
-          console.log('dddasdasdsadsad');
-          item.sort((x) => x.best_product ? -1 : 1).sort(x => x.qty ? -1 : 1);
-          break;
-        default:
-          return item.sort(x => x.qty ? -1 : 1);
-      }
-    };
-    sortingFc(sort);
-  }, [sort, item]);
+  const { setSort, sortingData } = useSort(item);
 
   return (
     <S.Product>
@@ -79,13 +51,13 @@ export default function Product({ item, isLoading, isSuccess }: IProductProps) {
 
       {isSuccess && (
         <>
-          <BestProducts item={bestItemFiltered} />
+          <BestProducts item={item} />
           <ProductSortMenu
             itemCount={selectedItem?.length}
             setSort={setSort}
           />
           <ProductList
-            items={item}
+            items={sortingData}
           />
         </>
       )}
