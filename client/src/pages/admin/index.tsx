@@ -27,7 +27,6 @@ export default function AdminPage() {
     <>
       <Head>
         <title>관리자 | 메인</title>
-        <meta name="description" content="??" />
       </Head>
       <AdminContainer>
         <HomeControllers >

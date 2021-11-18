@@ -3,9 +3,14 @@ export interface ISalesData {
   paymentComplete: number,
   totalAmount: number
 }
-
 export interface PointData {
   ProductCnt: number,
   totalPoints: number,
   totalAmount: number
 }
+export interface IIineCartData {
+  date: string,
+  value: number,
+}
+
+export type TFiltered = 'cnt' | 'amount'

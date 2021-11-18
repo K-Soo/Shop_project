@@ -11,7 +11,6 @@ import { IProduct } from 'interfaces/IProduct';
 import { Get } from "api";
 import Admin from 'components/Admin';
 import LoginControllers from 'components/Admin/LoginControllers';
-import Home from 'components/Admin/HomeControllers/Home';
 import styled from "styled-components";
 import { useAdminContext } from 'context/AdminProvider';
 import { useAppContext } from 'context/AppProvider';

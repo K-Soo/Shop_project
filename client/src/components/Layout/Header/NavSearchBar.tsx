@@ -1,13 +1,9 @@
-import React, { useRef, useEffect, useState, useCallback } from 'react';
+import React, { useRef } from 'react';
 import styled, { css } from 'styled-components';
 import { useAppContext } from 'context/AppProvider';
 import useDidMountEffect from 'hooks/useDidMountEffect';
 import Icon from 'components/Icon/Icon';
-import { useQuery, UseQueryResult, useQueryClient } from 'react-query';
-import { queryKeys } from 'constants/queryKeys';
-import { IProduct } from 'interfaces/IProduct';
 import { SEARCH_KEYWORD } from 'constants/keyword';
-import { Get } from "api";
 import Link from 'next/link';
 import { NextRouter, useRouter } from 'next/router';
 import useSearch from 'hooks/useSearch';

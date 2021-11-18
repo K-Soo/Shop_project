@@ -6,7 +6,7 @@ export const customCookie = {
     return Cookie.get(name);
   },
   set: (name: string, token: string, days?: number) => {
-    let time = new Date(new Date().getTime() + 60 * 1000);
+    let time = new Date(new Date().getTime() + 60 * 60 * 1000);
     return Cookie.set(name, token, { expires: time});
     // const prevCookie = document.cookie ?? "path=/";
     // const ck = cookie.parse(prevCookie);

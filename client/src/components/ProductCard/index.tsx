@@ -172,7 +172,7 @@ export default function ProductCard({
   return (
     <S.ProductCard isList={isList} isSoldOut={isSoldOut}>
       <div className='card-inner'>
-        <Link href={product_type + "/" + seq}>
+        <Link href={`/product/${product_type}/${seq}`}>
           <a className='card-inner__top'>
             <div className='img-box'>
               <div className='img-box__sold-out'>

@@ -33,18 +33,19 @@ export const Get = {
   getProductsA: (category: string): Promise<IProduct[]> => requests.get(`/api/products/admin/${category}`),
   getProductDetail: (category: string, id: string): Promise<IProduct> => requests.get(`/api/products/${category}/${id}`),
   UserInfo: (id: string): Promise<IProduct> => requests.get(`/api/users/${id}`),
-  getAllProduct: (type?:string,page?:number): Promise<IProduct[]> => requests.get(`/api/products/list?type=${type}&page=${page}`),
-  getHistory: (idx: string, page: number,limit:number) => requests.get(`/api/users/history/${idx}?page=${page}&limit=${limit}`),
+  getAllProduct: (type?: string, page?: number): Promise<IProduct[]> => requests.get(`/api/products/list?type=${type}&page=${page}`),
+  getHistory: (idx: string, page: number, limit: number) => requests.get(`/api/users/history/${idx}?page=${page}&limit=${limit}`),
   getUserHistoryDetail: (idx: string, orderNum: string) => requests.get(`/api/users/history/${idx}/${orderNum}`),
   getGuestHistoryDetail: (idx: string) => requests.get(`/api/users/history/guest-detail/${idx}`),
   getInterestProductList: (idx: string, page: number) => requests.get(`/api/users/interest-product/${idx}?page=${page}`),
   getPointInfo: (idx: string) => requests.get(`/api/users/point/${idx}/info`),
-  getProductReview: (productId: string,page:number,limit:number,key:string,value:number) => requests.get(`/api/products/review/${productId}?page=${page}&limit=${limit}&key=${key}&value=${value}`),
-  getPointList: (idx: string,page:number,limit:number) => requests.get(`/api/users/point/${idx}?page=${page}&limit=${limit}`),
-  getNoticeList: (page:number,limit:number) => requests.get(`/api/board/notice?page=${page}&limit=${limit}`),
-  getNoticeDetail: (idx:string) => requests.get(`/api/board/notice/${idx}`),
+  getProductReview: (productId: string, page: number, limit: number, key: string, value: number) => requests.get(`/api/products/review/${productId}?page=${page}&limit=${limit}&key=${key}&value=${value}`),
+  getPointList: (idx: string, page: number, limit: number) => requests.get(`/api/users/point/${idx}?page=${page}&limit=${limit}`),
+  getNoticeList: (page: number, limit: number) => requests.get(`/api/board/notice?page=${page}&limit=${limit}`),
+  getNoticeDetail: (idx: string) => requests.get(`/api/board/notice/${idx}`),
   getAdminSales: () => requests.get(`/api/admin/sales`),
   getAdminPoint: () => requests.get(`/api/admin/point`),
+  getAdminStatistics: (type: string) => requests.get(`/api/admin/statistics?type=${type}`),
 };
 
 export const Post = {
@@ -58,16 +59,16 @@ export const Post = {
   checkout: (userId: string, body: any) => requests.post(`/api/users/checkout/${userId}`, body),
   guestCheckout: (body: any) => requests.post(`/api/users/guest-checkout`, body),
   createReview: (idx: string, productId: string, body: any) => requests.post(`/api/products/review/${idx}/${productId}`, body),
-  createNotice:(body:any) => requests.post('/api/board/notice', body),
+  createNotice: (body: any) => requests.post('/api/board/notice', body),
 };
 
 export const Put = {
   updateBasket: (body: any) => requests.put('/api/users/basket', body),
   updateInterestProduct: (body: any) => requests.put('/api/users/interest-product', body),
   updateUserBasketQty: (idx: string, productId: string, body: any) => requests.put(`/api/users/basket/${idx}/${productId}`, body),
-  updateProductQty: (idx: string,body: any) => requests.put(`/api/products/qty/${idx}`, body),
+  updateProductQty: (idx: string, body: any) => requests.put(`/api/products/qty/${idx}`, body),
   updateProductClose: (body: any) => requests.put('/api/products/close', body),
-  updateUserInfo: (idx: string,body: any) => requests.put(`/api/users/${idx}`, body),
+  updateUserInfo: (idx: string, body: any) => requests.put(`/api/users/${idx}`, body),
 };
 
 export const Delete = {

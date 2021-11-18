@@ -6,20 +6,16 @@ import QuickMove from 'components/MyShopping/QuickMove';
 import UserInfo from 'components/Forms/UserInfo';
 import { queryKeys } from 'constants/queryKeys';
 import { Get } from "api";
-import { useQuery, UseQueryResult, useQueryClient,useQueries } from 'react-query';
+import { useQuery } from 'react-query';
 import { useAppContext } from 'context/AppProvider';
 import { IPointInfo } from 'interfaces/IPoint';
-
-interface IMyShopping {
-
-}
 
 const S = {
   MyShopping: styled.section`
   `,
 }
 
-export default function MyShopping({ }: IMyShopping) {
+export default function MyShopping() {
   const [totalUsedPoint, setTotalUsedPoint] = useState<number | null>(null);
   const [totalAccPoint, setTotalAccPoint] = useState<number | null>(null);
   const { state: { userInfo: { idx } } } = useAppContext();

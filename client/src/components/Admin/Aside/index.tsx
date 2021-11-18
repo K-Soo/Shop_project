@@ -43,13 +43,21 @@ const S = {
       min-height: 50px;
       display: flex;
       padding: 15px 10px 15px 15px;
-      border-bottom: 1px solid #999;
+      /* border-bottom: 1px solid #999; */
       white-space: nowrap;
+      cursor: pointer;
+      &__main-icon{
+        font-size: 0;
+        svg{
+          color: #475669;
+        }
+      }
       .lists-category{
         margin-left: 20px;
         flex: 1;
         flex-direction: column;
         display: flex;
+        pointer-events: none;
         &__title{
           display: flex;
           align-items: flex-end;
@@ -57,38 +65,51 @@ const S = {
           justify-content: space-between;
           cursor: pointer;
           height: 20px;
+          color: #475669;
+          font-weight: 600;
           &--icon{
             transform: rotate(180deg);
+            min-height: 22px;
+            svg{
+              width: 14px;
+              height: 14px;
+              font-size: 0;
+            }
             &[data-active=true] {
               transform: rotate(0deg);
-              /* transition: all 0.3s ease; */
+              transition: all 0.3s ease;
             }
           }
         }
         &__inner-list{
-          display: none;
+          visibility: hidden;
+          opacity: 0;
+          pointer-events: all;
+          height: 0px;
           li{
             width: 100%;
             margin-bottom: 5px;
             border-radius: 5px;
-            font-size: 12px;
+            font-size: 13px;
             color: #444;
             a{
               padding: 5px 0;
               padding-left: 5px;
               display: inline-block;
-              height: 100%;
               width: 100%;
             }
             &:hover{
               background-color: #eff1f3;
+              color: #000;
               opacity: 1;
             }
           }
           &[data-active=true] {
             margin-top: 10px;
-            display: block;
-            transition: all 1s ease;
+            visibility: visible;
+            height: 100%;
+            opacity: 1;
+            transition: all 0.3s ease;
           }
         }
       }
@@ -101,8 +122,8 @@ export default function Aside() {
   const [nameValue, setNameValue] = useState<string>('');
   const router = useRouter();
 
-  const handleList = (e: React.MouseEvent<HTMLDivElement>) => {
-    const { name } = (e.target as HTMLDivElement).dataset;
+  const handleList = (e: React.MouseEvent<HTMLLIElement>) => {
+    const { name } = (e.target as HTMLLIElement).dataset;
     if (name === '홈') router.push('/admin');
     if (name !== '홈') setNameValue(name);
   }
@@ -111,16 +132,19 @@ export default function Aside() {
     <S.Aside>
       <ul>
         {category.map((d => (
-          <li key={d.CategoryIcon} className='item'>
-            <i>
+          <li 
+            key={d.CategoryIcon} 
+            className='item'
+            data-name={Object.entries(d)?.[1]?.[0]}
+            onClick={handleList}
+          >
+            <i className='item__main-icon'>
               <Icon name={d.CategoryIcon as IconType} />
             </i>
 
             <div className='lists-category'>
               <div
                 className='lists-category__title'
-                data-name={Object.entries(d)?.[1]?.[0]}
-                onClick={handleList}
               >
                 {Object.entries(d)?.[1]?.[0]}
                 {Object.entries(d)?.[1]?.[0] !== '홈' && (

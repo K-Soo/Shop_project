@@ -19,6 +19,14 @@ const Editor = dynamic(async () => {
 
 const S = {
   Write: styled.div`
+  display: flex;
+  flex-direction: column;
+  form{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1;
+  }
     height: 100%;
     .editor {
       height: 500px;
@@ -51,8 +59,10 @@ const S = {
   ButtonBox: styled.div`
     margin-top: 15px;
     display: flex;
+    justify-content: center;
     button{
       height: 40px;
+      width: 400px;
     }
   `,
 }

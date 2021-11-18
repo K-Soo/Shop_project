@@ -18,8 +18,10 @@ const S = {
     justify-content: space-between;
     align-items: center;
     .all-check-box{
+      font-size: 14px;
       display: flex;
       align-items: center;
+      margin-right: 25px;
     }
   `,
 }

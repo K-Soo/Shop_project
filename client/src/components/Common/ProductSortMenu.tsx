@@ -53,7 +53,6 @@ const S = {
 export default function ProductSortMenu({ itemCount, setSort }: IProductSortMenu) {
   return (
     <S.ProductSortMenu>
-
       <S.ProductCount>
         <strong>
           {itemCount}

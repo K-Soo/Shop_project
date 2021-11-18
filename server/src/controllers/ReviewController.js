@@ -1,6 +1,5 @@
 import ProductReview from '../models/ProductReview';
 import throwError from '../../src/error/throwError';
-import mongoose from 'mongoose';
 import util from 'util';
 
 const createReview = async (req, res, next) => {

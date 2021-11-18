@@ -90,7 +90,7 @@ const S = {
 
 export default function FormFieldset({ className, children, title, titleDisable, margin, LinkBtn }: IFormFieldset) {
   const [disable, setDisable] = useState(true);
-  const router = useRouter();
+  const router: NextRouter = useRouter();
 
   return (
     <S.FormFieldset margin={margin} className={className}>

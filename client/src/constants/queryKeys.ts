@@ -17,6 +17,7 @@ export const queryKeys = {
   ADMIN: {
     sales: 'admin-sales',
     usedPoint: 'admin-usedPoint',
-    notice: 'admin-notice'
+    notice: 'admin-notice',
+    statistics: 'admin-statistics'
   },
 } as const;
