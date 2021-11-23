@@ -10,9 +10,13 @@ export function useScroll() {
 
   const delay: number = 15;
   useEffect(() => {
-    window.addEventListener("scroll", debounce(listener, delay));
+    let mounted = true;
+    if(mounted){
+      window.addEventListener("scroll", debounce(listener, delay));
+    }
     return () => {
       window.removeEventListener("scroll", listener);
+      mounted = false;
     };
   });
 

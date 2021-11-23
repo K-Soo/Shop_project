@@ -4,7 +4,6 @@ import { IReview } from 'interfaces/IReview';
 import Rate from 'rc-rate';
 import 'rc-rate/assets/index.css';
 import Loading from 'components/Loading';
-
 interface IReviewBanner {
   reviewCnt: number;
   userRate: number;
@@ -77,7 +76,6 @@ const StyledRate = styled(Rate)`
   }
 `
 export default function ReviewBanner({ reviewCnt, userRate, percentage, isSuccess ,isLoading}: IReviewBanner) {
-  console.log('userRate: ', userRate);
 
   return (
     <S.Review>

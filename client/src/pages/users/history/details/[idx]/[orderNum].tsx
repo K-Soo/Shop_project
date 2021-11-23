@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Head from 'next/head'
 import MainContainer from 'containers/MainContainer';
 import Basket from 'components/Basket';
-import { useAppContext } from 'context/AppProvider';
-import OrderProvider from 'context/OrderProvider';
 import Details from 'components/History/Details';
-import PageTitle from 'components/Common/PageTitle';
 import { useRouter } from 'next/router';
 import { InferGetServerSidePropsType, GetServerSideProps } from 'next';
 import { Get } from "api";
 import Error from 'next/error';
-
+import PAGE from "constants/path";
+import Breadcrumb from "components/Common/Breadcrumb";
+import Link from "next/link";
 
 export default function DetailsPage(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const router = useRouter();
+  const { idx, orderNum } = router.query as { idx: string, orderNum: string };
 
   if (props.errorCode) {
     return <Error statusCode={props.errorCode} />
@@ -26,7 +26,14 @@ export default function DetailsPage(props: InferGetServerSidePropsType<typeof ge
         <meta name="description" content="상품 주문내역 상세" />
       </Head>
       <MainContainer >
-        <Details items={props.items}/>
+        <Breadcrumb>
+          {[PAGE.MAIN, { path: `${PAGE.HISTORY_DETAIL.path}/${idx}/${orderNum}`, tag: PAGE.HISTORY_DETAIL.tag }].map(({ path, tag }) => (
+            <Link key={path} href={path}>
+              {tag}
+            </Link>
+          ))}
+        </Breadcrumb>
+        <Details items={props.items} />
       </MainContainer>
     </>
   );

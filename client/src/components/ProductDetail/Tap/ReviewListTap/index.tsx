@@ -69,7 +69,6 @@ const S = {
       color: #505050;
       font-size: 14px;
       border-bottom: 1px solid #eee;
-   
       .desc-box{
         pointer-events: none;
         flex: 1;
@@ -117,10 +116,10 @@ const S = {
         min-height: 150px;
         flex-direction: column;
         .desc-box{
+          margin-bottom: 15px;
           &__text{
             max-width: 100%;
             max-height: 100%;
-            border: 1px solid red;
             p{
               overflow: hidden;
               text-overflow: clip;

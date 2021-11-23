@@ -73,15 +73,15 @@ const initializer = (props: any) => {
     TemporaryEmail1: '',
     TemporaryEmail2: '',
     form: {
-      userId: props?.userDetail.userId ?? '',
+      userId: props?.userDetail?.userId ?? '',
       password: '',
       passwordConfirm: '',
-      userName: props?.userDetail.userName ?? '',
+      userName: props?.userDetail?.userName ?? '',
       phone: '',
       email: '',
-      addr1: props?.userDetail.addr1 ?? '',
-      addr2: props?.userDetail.addr2 ?? '',
-      zonecode: props?.userDetail.zonecode ?? '',
+      addr1: props?.userDetail?.addr1 ?? '',
+      addr2: props?.userDetail?.addr2 ?? '',
+      zonecode: props?.userDetail?.zonecode ?? '',
     }
   };
   return state;

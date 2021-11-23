@@ -2,6 +2,7 @@ import React, { useState, useCallback } from "react";
 import styled from "styled-components";
 import Banner from 'components/Main/Banner';
 import MultiBanner from 'components/Main/MultiBanner';
+import BestPick from 'components/Main/BestPick';
 import SectionLayout from 'components/Main/SectionLayout';
 import { Get } from "api";
 import { useQueries } from 'react-query';
@@ -27,7 +28,6 @@ export default function Main({ }: IMain) {
   ])
   const handlePages = useCallback((e) => {
     const { name,id } = e.target;
-    console.log('id: ', id);
     setQueryString({ ...queryString, [name]: queryString[name] + 1 });
     let buttonHeight = document.getElementById(id);
     let topPos = buttonHeight.offsetTop;
@@ -44,6 +44,7 @@ export default function Main({ }: IMain) {
     <S.Main>
       <Banner />
       <MultiBanner />
+      <BestPick />
       <SectionLayout
         name='best'
         title='BEST ITEM'

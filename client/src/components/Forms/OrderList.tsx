@@ -210,7 +210,11 @@ export default function OrderList({
           <S.Item key={userId ? d._id : d.date} asPath={router.asPath}>
             <S.MainContent>
               <div className='icon-box'>
-                <CheckBox name='checkItem' value={userId ? d._id : d.date} onChange={handleCheckbox} />
+                <CheckBox
+                  name='checkItem'
+                  value={userId ? d._id : d.date}
+                  onChange={handleCheckbox}
+                />
               </div>
               <div className='product-info'>
                 <div className='product-info__left'>
@@ -239,10 +243,10 @@ export default function OrderList({
                       {d.new_product && <TextIcon text='new' margin='0 0 0 5px' />}
                     </div>
 
-                      <p className='point-price'>{PriceComma(d.point)}</p>
-                      {router.asPath === '/order/orderform' && <p className='qty'>{d.qty}</p>}
-                      <p className='product-price'><del>{PriceComma(d.product_price)}</del></p>
-                      <p className='consumer-price'>{PriceComma(d.consumer_price)}</p>
+                    <p className='point-price'>{PriceComma(d.point)}</p>
+                    {router.asPath === '/order/orderform' && <p className='qty'>{d.qty}</p>}
+                    <p className='product-price'><del>{PriceComma(d.product_price)}</del></p>
+                    <p className='consumer-price'>{PriceComma(d.consumer_price)}</p>
                   </div>
                   {router.asPath === "/order/basket" && (
                     <div className='product-info__right--count'>
@@ -255,7 +259,15 @@ export default function OrderList({
                         onChange={action.setChangeQty}
                         name={userId ? d._id : d.date}
                       />
-                      <Button white height='30px' width='50px' name={userId ? d._id : d.date} onClick={handleChangeQty}>변경</Button>
+                      <Button
+                        white
+                        height='30px'
+                        width='50px'
+                        name={userId ? d._id : d.date}
+                        onClick={handleChangeQty}
+                      >
+                        변경
+                      </Button>
                     </div>
                   )}
                 </div>
@@ -277,15 +289,29 @@ export default function OrderList({
             {router.asPath === "/order/basket" && (
               <S.BasketButtonBox>
                 <div className='button-wrapper'>
-                  <Button white height='25px' name={userId ? d._id : d.date} onClick={handleRemoveItem}>삭제</Button>
-                  <Button white height='25px' name={d.name} onClick={handleAddInterestProduct}>관심상품</Button>
+                  <Button
+                    white
+                    height='25px'
+                    name={userId ? d._id : d.date}
+                    onClick={handleRemoveItem}
+                  >
+                    삭제
+                  </Button>
+                  <Button
+                    white
+                    height='25px'
+                    name={d.name}
+                    onClick={handleAddInterestProduct}
+                  >
+                    관심상품
+                  </Button>
                 </div>
               </S.BasketButtonBox>
             )}
           </S.Item>
         ))
       ) : (
-        <EmptyItem text='장바구니가 비어있습니다'/>
+        <EmptyItem text='장바구니가 비어있습니다' />
       )}
 
       {router.asPath === "/order/orderform" && item.length > 0 && (

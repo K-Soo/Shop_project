@@ -38,5 +38,6 @@ import { ReactComponent as arrowRight2 } from "./arrowRight2.svg";
 import { ReactComponent as image } from "./image.svg";
 import { ReactComponent as triangle } from "./triangle.svg";
 import { ReactComponent as plus2 } from "./plus2.svg";
+import { ReactComponent as arrowLeft2 } from "./arrowLeft2.svg";
 
-export { bed, ovalCheck, human, cart, search, bookmark, arrowTop, arrowBottom, arrowLeft, close, heart, BigArrowLeft, cartAdd, plus, minus, info, closeSmall, user, home, arrowNoTailBottom, arrowNoTailTop, trashCan, check, location, userNot, coin, warning, back, menu, menu2, pencil, circlePlus, circleCheck, note, arrowRight, image, triangle, plus2,arrowRight2 };
+export { bed, ovalCheck, human, cart, search, bookmark, arrowTop, arrowBottom, arrowLeft, close, heart, BigArrowLeft, cartAdd, plus, minus, info, closeSmall, user, home, arrowNoTailBottom, arrowNoTailTop, trashCan, check, location, userNot, coin, warning, back, menu, menu2, pencil, circlePlus, circleCheck, note, arrowRight, image, triangle, plus2,arrowRight2,arrowLeft2 };

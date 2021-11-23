@@ -9,6 +9,9 @@ import PAGE from "constants/path";
 import Breadcrumb from "components/Common/Breadcrumb";
 import Link from "next/link";
 import { useRouter } from 'next/router';
+import AdminContainer from 'containers/AdminContainer';
+import NoticeControllers from 'components/Admin/NoticeControllers';
+import NoticeDetail from 'components/Admin/NoticeControllers/NoticeDetail';
 
 export default function NoticeDetailPage(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const router = useRouter();
@@ -24,16 +27,12 @@ export default function NoticeDetailPage(props: InferGetServerSidePropsType<type
         <title>쥬얼리 | 공지사항</title>
         <meta name="description" content="공지사항 디테일" />
       </Head>
-      <MainContainer >
-        <Breadcrumb>
-          {[PAGE.MAIN, PAGE.NOTICE].map(({ path, tag }) => (
-            <Link key={path} href={path}>
-              {tag}
-            </Link>
-          ))}
-        </Breadcrumb>
-        <Detail item={props.item} />
-      </MainContainer>
+      <AdminContainer>
+        <NoticeControllers>
+          <NoticeDetail />
+          {/* <Detail item={props.item} /> */}
+        </NoticeControllers>
+      </AdminContainer>
     </>
   );
 };

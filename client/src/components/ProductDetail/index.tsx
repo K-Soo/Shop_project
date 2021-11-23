@@ -33,21 +33,12 @@ export default function ProductDetail({ item }: IProductDetail) {
   const [sortKey, setSortKey] = useState('createdAt');
   const [sortValue, setSortValue] = useState(-1);
 
-  //   const selectFc = useCallback((data) => {
-  //     const test  = data.items.sort((a,b) => a.rate > b.rate ? 1 : -1);
-  //     console.log('test: ', test);
-  //     return data
-  // }, []);
-
   const { data: reviewData, isLoading, isSuccess, isError, isFetching } = useQuery<IReview>([queryKeys.REVIEW.name, productId, currentPage, queryKeys.REVIEW.limit, sortKey, sortValue],
     async () => await Get.getProductReview(productId, currentPage, queryKeys.REVIEW.limit, sortKey, sortValue),
     {
       retry: 0,
       keepPreviousData: true,
-      refetchOnWindowFocus: true,
       staleTime: 2000,
-      // select: selectFc,
-      // enabled: state.openSearch,
     });
 
   const handleFiltered = (e:React.ChangeEvent<HTMLSelectElement>) => {
@@ -56,6 +47,7 @@ export default function ProductDetail({ item }: IProductDetail) {
     setSortKey(name);
     setSortValue(Number(value));
   }
+
 
   return (
     <S.ProductDetail>

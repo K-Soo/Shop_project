@@ -1,9 +1,9 @@
 export const COMPANY_INFO = {
-  COMPANY: "아파주식회사 자뎅",
+  COMPANY: "주식회사 포폴",
   OWNER: "주상복합",
   "BUSINESS LICENSE": "228-33-333333",
-  ADDRESS: "46288 부산광역시 금정구 부산대학로 62-1 (장전동) 4층",
-  TEL: "1600-3217",
+  ADDRESS: "경기도 남양주시 별내동",
+  TEL: "010-6479-7825",
   FAX: "133-3333",
   "CONTACT US": "kanabun102@naver.com",
 } as const;
@@ -36,8 +36,6 @@ export const RETURN_EXCHANGE = [
 ] as const;
 
 export const SUB_TOP_LISTS = [
-  { label: '회사소개', value: 'login', url: '/shop-info/company' },
   { label: '이용약관', value: 'register', url: '/shop-info/agreement' },
   { label: '개인정보 취급 방침', value: '개인정보', url: '/shop-info/privacy' },
-  { label: '이용안내', value: '이용안내', url: '/shop-info/guide' },
 ] as const

@@ -100,7 +100,6 @@ const guestCheckout = async (req, res, next) => {
 const checkout = async (req, res, next) => {
   const { userId } = req.params;
   const result = req.body;
-  console.log('result: ', result);
   const { Products } = result;
   result._id = new mongoose.Types.ObjectId();
   result.createdAt = createDate();
@@ -109,7 +108,6 @@ const checkout = async (req, res, next) => {
   const idArray = Products.map(d => mongoose.Types.ObjectId.createFromHexString(d._id));
   const seqArray = Products.map(d => (d.seq));
   const test = [1, 2, 3,]
-
   try {
     const target = await User.findByUserId(userId);
     console.log('test: ', test);
@@ -189,7 +187,6 @@ const GuestLogIn = async (req, res, next) => {
 };
 
 const logIn = async (req, res, next) => {
-  // console.log('req: ', req.headers);
   const { userId, password } = req.body;
   console.log('req.body: ', req.body);
   try {

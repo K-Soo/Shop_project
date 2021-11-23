@@ -13,12 +13,13 @@ const list = async (req, res, next) => {
     let total = await History.findOne({ user: _id }, { data: 1 }).lean();
 
     let exist = await History.findOne({ user: _id },
-      { data: { $slice: [skip, Number(limit)] }, createdAt: 0, updatedAt: 0, __v: 0, _id: 0 }).lean();
+      { data: { $slice: [skip, Number(limit)] }, createdAt: 0, updatedAt: 0, __v: 0, _id: 0 },
+    ).lean();
 
     const response = {
       ...exist,
-      total : total.data.length,
-      maxPages : Math.ceil(total.data.length / limit),
+      total: total.data.length,
+      maxPages: Math.ceil(total.data.length / limit),
     }
 
     if (exist) {
@@ -55,11 +56,11 @@ const userDetail = async (req, res, next) => {
 const guestDetail = async (req, res, next) => {
   const { idx } = req.params;
   try {
-    const exist = await GuestOrder.find({_id:idx},{orderPassword: 0});
-    if(exist){
+    const exist = await GuestOrder.find({ _id: idx }, { orderPassword: 0 });
+    if (exist) {
       res.json(exist);
-    } else{
-      throwError({statusCode:404});
+    } else {
+      throwError({ statusCode: 404 });
     }
   } catch (error) {
     next(error);

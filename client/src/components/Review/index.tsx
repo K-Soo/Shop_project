@@ -6,16 +6,12 @@ import { useReviewContext } from 'context/ReviewProvider';
 import Form from 'components/Review/Form';
 
 
-interface IReview {
-
-}
-
 const S = {
   Review: styled.div`
   `,
 }
 
-export default function Review({ }: IReview) {
+export default function Review() {
   const Review = useReviewContext();
   
   return (

@@ -44,7 +44,7 @@ const getProductReview = async (req, res, next) => {
       items: exist,
       maxPages: Math.ceil(total.length / limit),
       reviewCnt: total.length,
-      totalRate,
+      totalRate: +totalRate.toFixed(1),
       totalPercentage: Math.ceil(totalRate * 100 / 5),
       totalImageReview,
     }

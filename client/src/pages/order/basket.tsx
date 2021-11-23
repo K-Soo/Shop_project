@@ -2,14 +2,11 @@ import React, { useEffect, useState } from "react";
 import Head from 'next/head'
 import MainContainer from 'containers/MainContainer';
 import Basket from 'components/Basket';
-import { useAppContext } from 'context/AppProvider';
-import OrderProvider from 'context/OrderProvider';
+import PAGE from "constants/path";
+import Breadcrumb from "components/Common/Breadcrumb";
+import Link from "next/link";
 
-interface IBasketPage {
-
-}
-
-export default function BasketPage(props: IBasketPage) {
+export default function BasketPage(props:any) {
 
   return (
     <>
@@ -17,11 +14,16 @@ export default function BasketPage(props: IBasketPage) {
         <title>쥬얼리 | 장바구니</title>
         <meta name="description" content="장바구니 정보" />
       </Head>
-      {/* <OrderProvider value={props}> */}
-        <MainContainer >
-          <Basket />
-        </MainContainer>
-      {/* </OrderProvider> */}
+      <MainContainer >
+        <Breadcrumb>
+          {[PAGE.MAIN, PAGE.BASKET].map(({ path, tag }) => (
+            <Link key={path} href={path}>
+              {tag}
+            </Link>
+          ))}
+        </Breadcrumb>
+        <Basket />
+      </MainContainer>
     </>
   );
 };

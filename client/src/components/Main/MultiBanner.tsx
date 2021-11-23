@@ -14,9 +14,9 @@ const S = {
     display:flex;
     flex-wrap: wrap;
     .block-1{
-        flex: 1 33%;
-        /* min-width: 330px; */
+        flex: 1 55%;
         padding:0px;
+        margin-right: 30px;
         .content{
           padding: 0px;
         }
@@ -47,21 +47,13 @@ const S = {
       }
       .block-2{
         font-size: 0;
-        /* flex: 1 1 33%; */
-        max-width: 330px;
+        display: flex;
+        flex: 1 40%;
+        height: 155px;
         img{
           width: 100%;
           height: 100%;
-        }
-      }
-      .block-3{
-        font-size: 0;
-        /* flex: 1 1 33% */
-        max-width: 330px;
-        ;
-        img{
-          width: 100%;
-          height: 100%;
+          object-fit: fill;
         }
       }
       ${props => props.theme.mobile`
@@ -87,7 +79,7 @@ export default function MultiBanner() {
           {isLoading && <div>loading</div>}
           {isSuccess && (
             <ul>
-              {data.items.slice(0,5).map(d => (
+              {data.items.slice(0, 5).map(d => (
                 <li className='item' key={d._id}>
                   <Link href={`/board/notice/${d._id}`}>
                     <a>
@@ -110,9 +102,6 @@ export default function MultiBanner() {
         <img src="/images/main/02.jpeg" alt="banner-1" />
       </div>
 
-      <div className='block-3'>
-        <img src="/images/main/dangil.jpg" alt="banner-2" />
-      </div>
     </S.MultiBanner>
   );
 }

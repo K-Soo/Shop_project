@@ -13,11 +13,12 @@ import { Post,Put } from 'api';
 import PageTitle from 'components/Common/PageTitle';
 import Icon from 'components/Icon/Icon';
 import { useRouter, NextRouter } from 'next/router';
-import { idCheck, passwordCheck, allTermCheck, userNameCheck } from 'components/validation';
+import { idCheck, passwordCheck, allTermCheck } from 'components/validation';
 import { PHONE_NUMBER } from 'constants/phone';
 import { onlyNum } from 'utils';
 import axios from 'axios';
 import PAGE from 'constants/path';
+import {validate} from 'utils';
 
 const S = {
   Register: styled.section`
@@ -117,6 +118,11 @@ export default function Register() {
   const addrDetailRef = useRef<HTMLInputElement>(null);
   const [isNotModify, setIsNotModify] = useState(false);
 
+  if(!validate.id('xx1111')){
+    console.log('xx');
+  }
+
+
   useEffect(() => {
     if (router.asPath === '/auth/register') setIsNotModify(true);
   }, [router.asPath])
@@ -157,7 +163,12 @@ export default function Register() {
         action.InitData('form.passwordConfirm');
         return passwordRef.current.focus();
       }
-      if (!userNameCheck(state)) return userNameRef.current.focus();
+
+      if(!validate.name(state.form.userName)){
+        alert('이름을 입력해주세요.');
+        return userNameRef.current.focus();
+      }
+
       if (!allTermCheck(state)) return;
       try {
         const res = await Post.register(formData);
@@ -171,17 +182,17 @@ export default function Register() {
       }
     }else{
       try {
-        const res = await Put.updateUserInfo(App.state.userInfo.idx,{
-          phone: state.form.phone,
-          email: state.form.email,
-          zonecode: state.form.zonecode,
-          addr1: state.form.addr1,
-          addr2: state.form.addr2,
-        });
-        if(res.success){
-         alert('정보가 변경되었습니다.');
-         router.push(PAGE.MAIN.path);
-        }
+        // const res = await Put.updateUserInfo(App.state.userInfo.idx,{
+        //   phone: state.form.phone,
+        //   email: state.form.email,
+        //   zonecode: state.form.zonecode,
+        //   addr1: state.form.addr1,
+        //   addr2: state.form.addr2,
+        // });
+        // if(res.success){
+        //  alert('정보가 변경되었습니다.');
+        //  router.push(PAGE.MAIN.path);
+        // }
       } catch (error) {
         if (axios.isAxiosError(error)) {
           console.error('Register-error: ', error);
@@ -193,10 +204,12 @@ export default function Register() {
 
   const DuplicateCheckId = async (e: React.SyntheticEvent) => {
     e.preventDefault();
+    if(!validate.id(state.form.userId)){
+      return alert("아이디는 영 소문자, 숫자 6~20자리로 입력해주세요.");
+    }
     if (!state.form.userId) return alert('아이디를 입력해주세요.');
     try {
       const res = await Post.checkId({ userId: state.form.userId });
-      console.log('res: ', res);
       if (res.success) {
         action.setData('isDuplicateId', false);
       } else {
@@ -254,7 +267,7 @@ export default function Register() {
 
             <S.Group >
               <Label htmlFor='nameFor' required>이름</Label>
-              <Input readOnly={!isNotModify} minLength={2} refValue={userNameRef} maxWidth='200' placeholder='이름' id='nameFor' name='form.userName' value={state.form.userName} onChange={action.setFormData} />
+              <Input readOnly={!isNotModify} minLength={2} refValue={userNameRef} maxWidth='200' placeholder='한글2~5자' id='nameFor' name='form.userName' value={state.form.userName} onChange={action.setFormData} />
             </S.Group>
 
             <S.Group >

@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import styled, { css } from "styled-components";
 import Button from "components/style/Button";
 import { useRouter } from "next/router";
@@ -11,6 +11,7 @@ import NonMemBox from 'components/Auth/Login/NonMemBox';
 import QuickBox from 'components/Auth/Login/QuickBox';
 import useDidMountEffect from 'hooks/useDidMountEffect';
 import PAGE from 'constants/path';
+import { useSnackbar } from 'notistack';
 interface ILogin {
   type: string;
 }
@@ -59,7 +60,7 @@ const initLogin = {
 const initOrderFind = {
   userName: '',
   orderNum: '',
-  orderPassword:'',
+  orderPassword: '',
 }
 
 type TUusers = 'member' | 'nonMember';
@@ -71,18 +72,21 @@ const category = [
 
 export default function Login({ type }: ILogin) {
   const [login, setLogin] = useState<{ userId: string, password: string }>(initLogin);
-  const [orderFind, setOrderFind] = useState<{ userName: string, orderPassword: string,orderNum:string }>(initOrderFind);
+  const [orderFind, setOrderFind] = useState<{ userName: string, orderPassword: string, orderNum: string }>(initOrderFind);
   const [users, setUsers] = useState<TUusers>('member');
   const { action } = useAppContext();
   const router = useRouter();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
 
   useDidMountEffect(() => {
     setLogin(initLogin);
     setOrderFind(initOrderFind);
-  },[users]);
+  }, [users]);
 
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
+    closeSnackbar();
     if ([login.userId, login.password].includes('')) {
       return alert('로그인 정보를 모두 입력해주세요.');
     }
@@ -94,18 +98,18 @@ export default function Login({ type }: ILogin) {
       localStorage.removeItem('guest');
       router.push(PAGE.MAIN.path);
     } catch (error) {
-      console.error('login: ', error);
+      enqueueSnackbar('아이디 또는 비밀번호를 확인해주세요.', { variant: 'error' });
     }
   };
 
   const handleGuestSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    if ([orderFind.userName, orderFind.orderPassword,orderFind.orderNum].includes('')) {
+    if ([orderFind.userName, orderFind.orderPassword, orderFind.orderNum].includes('')) {
       return alert('주문정보를 모두 입력해주세요.');
     }
     try {
       const res = await Post.guestLogin(orderFind);
-      if(res.success) router.push(PAGE.MAIN.path);
+      if (res.success) router.push(PAGE.MAIN.path);
     } catch (error) {
       alert('주문정보를 다시확인해주세요');
       console.error('login: ', error);
@@ -136,7 +140,7 @@ export default function Login({ type }: ILogin) {
   return (
     <S.Login >
       <PageTitle TitleText='로그인' />
-      {type == 'history' && (
+      {type === 'history' && (
         <S.LoginTap users={users}>
           {category.map(d => (
             <li key={d.value} className={d.value} onClick={handleCategory}>{d.label}</li>
@@ -144,21 +148,21 @@ export default function Login({ type }: ILogin) {
         </S.LoginTap>
       )}
 
-    {users === 'member' && (
-      <form onSubmit={handleSubmit}>
-        <fieldset >
-          <Input placeholder='아이디' margin='0 0 10px 0' name='userId' onChange={handleChangeLogin} />
-          <Input placeholder='비밀번호' type='password' name='password' onChange={handleChangeLogin} />
-        </fieldset>
+      {users === 'member' && (
+        <form onSubmit={handleSubmit}>
+          <fieldset >
+            <Input placeholder='아이디' margin='0 0 10px 0' name='userId' onChange={handleChangeLogin} />
+            <Input placeholder='비밀번호' type='password' name='password' onChange={handleChangeLogin} />
+          </fieldset>
 
-        <fieldset className='security'>
-          <span >보안접속</span>
-          <span >아이디 저장</span>
-        </fieldset>
-        <Button login type='submit'>로그인</Button>
-        <QuickBox />
-      </form>
-     )}
+          <fieldset className='security'>
+            <span >보안접속</span>
+            <span >아이디 저장</span>
+          </fieldset>
+          <Button login type='submit'>로그인</Button>
+          <QuickBox />
+        </form>
+      )}
 
       {type === 'history' && users === 'nonMember' && (
         <form onSubmit={handleGuestSubmit}>
@@ -170,7 +174,7 @@ export default function Login({ type }: ILogin) {
 
           <Button login type='submit'>조회</Button>
 
-          <p style={{fontSize: '12px',marginTop: '10px', color: '#757575'}}>비회원인 경우 주문번호로 주문조회만 가능합니다.</p>
+          <p style={{ fontSize: '12px', marginTop: '10px', color: '#757575' }}>비회원인 경우 주문번호로 주문조회만 가능합니다.</p>
         </form>
       )}
 

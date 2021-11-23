@@ -6,5 +6,4 @@ export { addrCheck } from 'components/validation/addrCheck'
 export { phoneCheck } from 'components/validation/phoneCheck'
 export { emailCheck } from 'components/validation/emailCheck'
 export { pointCheck } from 'components/validation/pointCheck'
-export { userNameCheck } from 'components/validation/userNameCheck'
 

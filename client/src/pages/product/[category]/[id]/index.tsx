@@ -9,12 +9,15 @@ import { Get } from "api";
 import { AppContext, AppInitialProps, AppProps } from "next/app"
 import BasketProvider from 'context/BasketProvider';
 import cookies from 'next-cookies'
+import PAGE from "constants/path";
+import Breadcrumb from "components/Common/Breadcrumb";
+import Link from "next/link";
+import { CategoryEnum } from 'constants/product';
 
 export default function ProductDetailPage(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const { item ,cookies} = props;
-  console.log('cookies: ', cookies);
-  console.log('ProductDetailPage: ', item);
   const router: NextRouter = useRouter();
+  const { item ,cookies} = props;
+  const { category } = router.query as { category: string };
 
   return (
     <>
@@ -24,6 +27,13 @@ export default function ProductDetailPage(props: InferGetServerSidePropsType<typ
       </Head>
       <BasketProvider value={props}>
         <MainContainer >
+        <Breadcrumb>
+          {[PAGE.MAIN, {path: `/product/${category}`,tag: `${CategoryEnum[category]}`}].map(({ path, tag }) => (
+            <Link key={path} href={path}>
+              {tag}
+            </Link>
+          ))}
+        </Breadcrumb>
           <ProductDetail item={[item]} />
         </MainContainer>
       </BasketProvider>
@@ -43,7 +53,6 @@ export const getServerSideProps: GetServerSideProps = async (context): Promise<{
       },
     }
   } catch (error) {
-    // console.log('error: ', error);
     throw error;
   }
 };

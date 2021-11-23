@@ -13,13 +13,8 @@ import PAGE from 'constants/path';
 import { NoticeProps } from 'interfaces/INotice';
 
 const S = {
-  Notice: styled.div`
+  Notice: styled.section`
   `,
-  ButtonBox: styled.div`
-   button{
-     height: 25px;
-   }
- `,
 }
 
 export default function Notice() {
@@ -42,16 +37,6 @@ export default function Notice() {
     <S.Notice>
       <PageTitle TitleText='공지사항' />
       <List items={data.items} isLoading={isLoading} />
-      <S.ButtonBox className='button-box'>
-        <Button
-          white
-          type='submit'
-          width='100'
-          onClick={() => router.push(PAGE.CREATE_NOTICE.path)}
-        >
-          등록
-        </Button>
-      </S.ButtonBox>
       {isSuccess && (<Pagination maxPages={data.maxPages} isFetching={isFetching}/>)}
     </S.Notice>
   );

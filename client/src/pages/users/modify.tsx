@@ -7,6 +7,9 @@ import { InferGetServerSidePropsType, GetServerSideProps, GetServerSidePropsCont
 import cookies from 'next-cookies';
 import jwt from "jsonwebtoken";
 import { Get } from "api";
+import PAGE from "constants/path";
+import Breadcrumb from "components/Common/Breadcrumb";
+import Link from "next/link";
 
 export default function ModifyPage(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
   return (
@@ -17,6 +20,13 @@ export default function ModifyPage(props: InferGetServerSidePropsType<typeof get
       </Head>
       <RegisterProvider value={props}>
         <MainContainer >
+          <Breadcrumb>
+            {[PAGE.MAIN, PAGE.USERS_MODIFY].map(({ path, tag }) => (
+              <Link key={path} href={path}>
+                {tag}
+              </Link>
+            ))}
+          </Breadcrumb>
           <Register />
         </MainContainer>
       </RegisterProvider>
@@ -27,7 +37,7 @@ export default function ModifyPage(props: InferGetServerSidePropsType<typeof get
 export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
   const { access_token } = cookies(context);
   const decodedJwt = access_token && jwt.decode(access_token) as any;
-  
+
   if (access_token) {
     try {
       const userDetail = await Get.UserInfo(decodedJwt.id);

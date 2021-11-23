@@ -1,27 +1,27 @@
 import React from "react";
-import Head from 'next/head'
+import Head from "next/head";
 import MainContainer from 'containers/MainContainer';
-import MyShopping from 'components/MyShopping';
+import FindId from "components/Auth/FindId";
 import PAGE from "constants/path";
 import Breadcrumb from "components/Common/Breadcrumb";
 import Link from "next/link";
 
-export default function usersPage() {
+export default function LoginPage() {
+
   return (
     <>
       <Head>
-        <title>쥬얼리 | 마이쇼핑</title>
-        <meta name="description" content="마이쇼핑 홈" />
+        <title>아이디찾기</title>
       </Head>
-      <MainContainer >
+      <MainContainer>
         <Breadcrumb>
-          {[PAGE.MAIN,PAGE.MY_SHOP].map(({ path, tag }) => (
+          {[PAGE.MAIN, PAGE.LOGIN, PAGE.FIND_ID].map(({ path, tag }) => (
             <Link key={path} href={path}>
               {tag}
             </Link>
           ))}
         </Breadcrumb>
-        <MyShopping />
+        <FindId />
       </MainContainer>
     </>
   );

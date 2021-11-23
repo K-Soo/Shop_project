@@ -3,6 +3,7 @@ import styled, { css } from "styled-components";
 import { MAIN_MENU } from "constants/header";
 import PAGE from "constants/path";
 import Link from "next/link";
+import Icon from 'components/Icon/Icon';
 
 interface IMenuLeft {
   ScrollActive: boolean;
@@ -28,13 +29,13 @@ const S = {
       }
     }
   `,
-  Home: styled.li<{ScrollActive:boolean}>`
+  Home: styled.li<{ ScrollActive: boolean }>`
     opacity: 0;
     width: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    ${({ScrollActive}) => ScrollActive && css`
+    ${({ ScrollActive }) => ScrollActive && css`
       color: #fff;
       width: 40px;
       background-color: rgba(55, 55, 55, 0.9);
@@ -60,6 +61,9 @@ export default function MenuLeft({ ScrollActive }: IMenuLeft) {
           </Link>
         </li>
       ))}
+      <li className='item'>
+        <span>한국어</span>
+      </li>
     </S.MenuLeft>
   );
 }

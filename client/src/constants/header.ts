@@ -20,7 +20,6 @@ interface IMain {
 export const MAIN_MENU: IMain = {
   left: [
     { label: "관리자", value: "admin", url: "/admin" },
-    { label: "즐겨찾기", value: "개인정보", url: "/shop-info/privacy" },
   ],
   right: [
     { label: "로그인", value: "login", url: "/auth/login" },

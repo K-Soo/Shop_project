@@ -32,7 +32,7 @@ export default function Product({ item, isLoading, isSuccess }: IProductProps) {
   const keyName = router.query.category as keyof typeof CategoryEnum
   const currentProduct: categoryType = CategoryEnum[keyName]
   const selectedItem = useSelectCategory(item);
-  const { setSort, sortingData } = useSort(item);
+  const { setSort, sortingData } = useSort(selectedItem);
 
   return (
     <S.Product>

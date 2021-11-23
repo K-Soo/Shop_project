@@ -137,7 +137,6 @@ export default function Payment({ }: IPayment) {
         return alert('비밀번호가 일치하지않습니다.');
       }
     }
-
     Dispatch({ type: DISPATCH_ACTION.LOADING_STATUS, value: SCRIPT_LOADING_STATE.PENDING });
   }
 
@@ -152,6 +151,7 @@ export default function Payment({ }: IPayment) {
       ]
     })
   };
+  
   const onApprove = async (data: OnApproveData, actions: OnApproveActions) => {
     try {
       const details = await actions.order.capture();

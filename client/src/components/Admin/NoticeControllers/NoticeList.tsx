@@ -12,10 +12,6 @@ import { useRouter, NextRouter } from 'next/router';
 import PAGE from 'constants/path';
 import { NoticeProps } from 'interfaces/INotice';
 
-interface INoticeList {
-  
-}
-
 const S = {
   NoticeList: styled.div`
     height: 100%;
@@ -30,7 +26,7 @@ const S = {
   `,
 }
 
-export default function NoticeList({}:INoticeList) {
+export default function NoticeList() {
   const App = useAppContext();
   const currentPage = Number(App.state.pagination.currentPage);
   const router: NextRouter = useRouter();
@@ -40,7 +36,6 @@ export default function NoticeList({}:INoticeList) {
     keepPreviousData: true,
     refetchOnWindowFocus: false,
     staleTime: 2000,
-    // select: selectFc,
   });
   if (isError) return <div>isError</div>
 
@@ -49,21 +44,21 @@ export default function NoticeList({}:INoticeList) {
   return (
     <S.NoticeList>
       <div>
-      <PageTitle TitleText='공지사항' />
-      <List items={data.items} isLoading={isLoading} />
+        <PageTitle TitleText='공지사항' />
+        <List items={data.items} isLoading={isLoading} />
       </div>
       <div>
-      <S.ButtonBox className='button-box'>
-        <Button
-          white
-          type='submit'
-          width='100'
-          onClick={() => router.push(PAGE.CREATE_NOTICE.path)}
-        >
-          등록
-        </Button>
-      </S.ButtonBox>
-      {isSuccess && (<Pagination maxPages={data.maxPages} isFetching={isFetching}/>)}
+        <S.ButtonBox className='button-box'>
+          <Button
+            white
+            type='submit'
+            width='100'
+            onClick={() => router.push(PAGE.CREATE_NOTICE.path)}
+          >
+            등록
+          </Button>
+        </S.ButtonBox>
+        {isSuccess && (<Pagination maxPages={data.maxPages} isFetching={isFetching} />)}
       </div>
     </S.NoticeList>
   );

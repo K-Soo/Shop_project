@@ -1,6 +1,5 @@
 import Cookie from "js-cookie";
 
-
 export const customCookie = {
   get: (name: string) => {
     return Cookie.get(name);

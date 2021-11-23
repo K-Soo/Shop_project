@@ -17,6 +17,8 @@ import ReviewProvider from 'context/ReviewProvider';
 import OrderProvider from 'context/OrderProvider';
 import AdminProvider from 'context/AdminProvider';
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import { SnackbarProvider } from 'notistack';
+// import Slide from '@material-ui/core/Slide';
 export default function App(props: AppProps) {
   const { state, action } = useAppContext();
 
@@ -42,26 +44,31 @@ export default function App(props: AppProps) {
   return (
     <>
       <GlobalStyle />
-      <AppProvider AppProps={props}>
-        <AdminProvider >
-          <OrderProvider value={props}>
-            <ReviewProvider value={props}>
-              <QueryClientProvider client={queryClient}>
-                {/* <Hydrate state={props.pageProps.dehydratedState}> */}
-                <Theme>
-                  <Layout >
-                    <PayPalScriptProvider options={initialOptions} deferLoading={true}>
-                      <props.Component {...props.pageProps} />
-                    </PayPalScriptProvider>
-                  </Layout>
-                </Theme>
-                {/* </Hydrate> */}
-                <ReactQueryDevtools initialIsOpen={false} />
-              </QueryClientProvider>
-            </ReviewProvider>
-          </OrderProvider>
-        </AdminProvider>
-      </AppProvider>
+      <SnackbarProvider 
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }} 
+        autoHideDuration={1500
+      }>
+        <AppProvider AppProps={props}>
+          <AdminProvider >
+            <OrderProvider value={props}>
+              <ReviewProvider value={props}>
+                <QueryClientProvider client={queryClient}>
+                  {/* <Hydrate state={props.pageProps.dehydratedState}> */}
+                  <Theme>
+                    <Layout >
+                      <PayPalScriptProvider options={initialOptions} deferLoading={true}>
+                        <props.Component {...props.pageProps} />
+                      </PayPalScriptProvider>
+                    </Layout>
+                  </Theme>
+                  {/* </Hydrate> */}
+                  <ReactQueryDevtools initialIsOpen={false} />
+                </QueryClientProvider>
+              </ReviewProvider>
+            </OrderProvider>
+          </AdminProvider>
+        </AppProvider>
+      </SnackbarProvider>
     </>
   );
 }

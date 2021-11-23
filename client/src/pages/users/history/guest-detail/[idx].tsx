@@ -10,9 +10,11 @@ import { useRouter } from 'next/router';
 import Details from 'components/History/Details';
 import Error from 'next/error';
 import { Get } from "api";
+import PAGE from "constants/path";
+import Breadcrumb from "components/Common/Breadcrumb";
+import Link from "next/link";
 
 export default function GuestDetailsPage(props: any) {
-  console.log('GuestDetailsPage: ', props);
   const router = useRouter();
   console.log('router: ', router);
   const { state: { userInfo } } = useAppContext();
@@ -28,6 +30,13 @@ export default function GuestDetailsPage(props: any) {
         <meta name="description" content="상품 주문내역 상세" />
       </Head>
       <MainContainer >
+        <Breadcrumb>
+          {[PAGE.MAIN].map(({ path, tag }) => (
+            <Link key={path} href={path}>
+              {tag}
+            </Link>
+          ))}
+        </Breadcrumb>
         <Details items={props.items} />
       </MainContainer>
     </>

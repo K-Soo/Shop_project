@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Link from "next/link";
 import Breadcrumb from "components/Common/Breadcrumb";
 import PAGE from "constants/path";
-import {useRouter} from 'next/router';
+import { useRouter } from 'next/router';
 
 interface IMainContainer {
   className?: string;
@@ -31,15 +31,6 @@ export default function MainContainer(props: IMainContainer) {
 
   return (
     <S.MainContainer >
-      {router.pathname !== '/' && (
-        <Breadcrumb>
-        {[PAGE.MAIN].map(({ path, tag }) => (
-          <Link key={path} href={path}>
-            {tag}
-          </Link>
-        ))}
-        </Breadcrumb>
-      )}
       {props.children}
     </S.MainContainer>
   );
