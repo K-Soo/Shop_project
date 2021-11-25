@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import styled, { css } from "styled-components";
+import React, { useState } from "react";
+import styled from "styled-components";
 import Button from "components/style/Button";
 import { useRouter } from "next/router";
 import { Post } from 'api';
@@ -12,6 +12,8 @@ import QuickBox from 'components/Auth/Login/QuickBox';
 import useDidMountEffect from 'hooks/useDidMountEffect';
 import PAGE from 'constants/path';
 import { useSnackbar } from 'notistack';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
 interface ILogin {
   type: string;
 }
@@ -21,11 +23,18 @@ const S = {
     max-width: 350px;
     margin: 0 auto;
     .security{
-      margin: 10px 0;
       font-size: 13px;
       display: flex;
       justify-content: space-between;
+      align-items: center;
+      .MuiFormControlLabel-root{
+      margin: 0;
+      .css-ahj2mt-MuiTypography-root{
+        font-size: 13px;
+      }
     }
+    }
+
   `,
   LoginTap: styled.ul<{ users: string }>`
     display: flex;
@@ -77,7 +86,7 @@ export default function Login({ type }: ILogin) {
   const { action } = useAppContext();
   const router = useRouter();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-
+  const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
   useDidMountEffect(() => {
     setLogin(initLogin);
@@ -156,7 +165,11 @@ export default function Login({ type }: ILogin) {
           </fieldset>
 
           <fieldset className='security'>
-            <span >보안접속</span>
+            <FormControlLabel 
+              labelPlacement="start" 
+              control={<Switch defaultChecked size="small" color="default"/>} 
+              label="보안접속" 
+            />
             <span >아이디 저장</span>
           </fieldset>
           <Button login type='submit'>로그인</Button>

@@ -18,6 +18,10 @@ const PAGE: IPage = {
     path: "/auth/login/find-id",
     tag: "아이디 찾기",
   },
+  FIND_PASSWORD: {
+    path: "/auth/login/find-password",
+    tag: "비밀번호 찾기",
+  },
   REGISTER: {
     path: "/auth/register",
     tag: "회원가입",

@@ -123,8 +123,13 @@ export default function MenuRight() {
             </li>
             <li className='item'>
               <Link href="/auth/register">
-                <a>회원가입</a>
+              <a data-tip data-for='ddd' data-border={true} >
+                회원가입
+              </a>
               </Link>
+              <ReactTooltip id='ddd' type='light' place="bottom" effect="solid" className='Tool' >
+                마이쇼핑
+              </ReactTooltip>
             </li>
           </>
         )}
@@ -139,7 +144,7 @@ export default function MenuRight() {
         <a data-tip data-for='happyFace' data-border={true} >
           <Icon name='human' />
         </a>
-        <ReactTooltip id='happyFace' type='light' place="left" effect="solid" className='Tool' >
+        <ReactTooltip id='happyFace' type='light' place="bottom" effect="solid" className='Tool' >
           마이쇼핑
         </ReactTooltip>
       </MyShop>

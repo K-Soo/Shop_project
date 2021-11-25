@@ -188,12 +188,10 @@ const GuestLogIn = async (req, res, next) => {
 
 const logIn = async (req, res, next) => {
   const { userId, password } = req.body;
-  console.log('req.body: ', req.body);
   try {
-    // id check
     const exist = await User.findByUserId(userId);
     if (!exist) return throwError({ statusCode: 401 });
-    // password check
+
     const valid = await exist.checkPassword(password);
     if (!valid) return throwError({ statusCode: 401 });
 
@@ -212,11 +210,52 @@ const logIn = async (req, res, next) => {
 
       return res.json({ success: true, message: "로그인 성공", token, basket });
     }
-
-
   } catch (error) {
     next(error);
     console.log('error-logIn: ', error);
+  }
+};
+
+const findUserId = async (req, res, next) => {
+  try {
+    const existUserName = await User.findOne({ userName: req.body.userName });
+    if (!existUserName) {
+      return throwError({ statusCode: 401 });
+    } else {
+      if (existUserName.email === req.body.email) {
+        return res.json({ success: true, userId: existUserName.userId });
+      } else {
+        return throwError({ statusCode: 401 });
+      }
+    }
+  } catch (error) {
+    next(error);
+    console.error('find-id: ', error);
+  }
+};
+
+const findUserPassword = async (req, res, next) => {
+  const { userId, userName, email } = req.body;
+
+  try {
+    const exist = await User.findByUserId(userId);
+    if (exist) {
+      if (exist.email === email) {
+        if (exist.userName === userName) {
+          // const valid = await exist.checkPassword(password);
+          return res.json({ success: true });
+        } else {
+          return throwError({ statusCode: 401 });
+        }
+      } else {
+        return throwError({ statusCode: 401 });
+      }
+    } else {
+      return throwError({ statusCode: 401 });
+    }
+  } catch (error) {
+    next(error);
+    console.error('find-password: ', error);
   }
 };
 
@@ -228,5 +267,7 @@ export {
   checkout,
   updateUserInfo,
   guestCheckout,
-  GuestLogIn
+  GuestLogIn,
+  findUserId,
+  findUserPassword
 }

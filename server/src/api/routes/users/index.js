@@ -20,6 +20,8 @@ users.use('/basket',basket);
 users.post('/register', UserController.register);
 users.post('/check', UserController.idCheck);
 users.post('/login', UserController.logIn);
+users.post('/find-id', UserController.findUserId);
+users.post('/find-password', UserController.findUserPassword);
 users.post('/guest-login', UserController.GuestLogIn);
 users.post('/guest-checkout/', UserController.guestCheckout);
 

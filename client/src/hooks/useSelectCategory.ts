@@ -1,14 +1,18 @@
-import { useCallback } from "react";
+import { useCallback,useState,useEffect } from "react";
 import { useAppContext } from 'context/AppProvider';
 import {IProduct} from 'interfaces/IProduct';
 
 export function useSelectCategory(item:IProduct[]) {
   const { state } = useAppContext();
+  const [filtered,setFiltered] = useState<IProduct[]>([]);
 
-  const handleFiltering = useCallback((item:IProduct[]) => {
-    if (state.targetCategory === 'all') return item;
-    return item?.filter(d => d.category === state.targetCategory);
-  }, [state.targetCategory]);
+  useEffect(() => {
+    if (state.targetCategory === 'all') {
+      setFiltered(item);
+    }else{
+      setFiltered(item.filter(d => d.category === state.targetCategory))
+    }
+  }, [state.targetCategory,item]);
   
-  return handleFiltering(item);
+  return filtered
 }

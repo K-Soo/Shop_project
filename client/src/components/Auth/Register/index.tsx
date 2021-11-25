@@ -9,7 +9,7 @@ import FieldsetTos from 'components/Auth/Register/FieldsetTos';
 import useScrollFadeIn from 'hooks/useScrollFadeIn';
 import { useRegisterContext } from 'context/RegisterProvider';
 import { useAppContext } from 'context/AppProvider';
-import { Post,Put } from 'api';
+import { Post, Put } from 'api';
 import PageTitle from 'components/Common/PageTitle';
 import Icon from 'components/Icon/Icon';
 import { useRouter, NextRouter } from 'next/router';
@@ -18,7 +18,7 @@ import { PHONE_NUMBER } from 'constants/phone';
 import { onlyNum } from 'utils';
 import axios from 'axios';
 import PAGE from 'constants/path';
-import {validate} from 'utils';
+import { validate } from 'utils';
 
 const S = {
   Register: styled.section`
@@ -118,11 +118,6 @@ export default function Register() {
   const addrDetailRef = useRef<HTMLInputElement>(null);
   const [isNotModify, setIsNotModify] = useState(false);
 
-  if(!validate.id('xx1111')){
-    console.log('xx');
-  }
-
-
   useEffect(() => {
     if (router.asPath === '/auth/register') setIsNotModify(true);
   }, [router.asPath])
@@ -142,6 +137,10 @@ export default function Register() {
     if ([state.TemporaryPhone1.trim(), state.TemporaryPhone2.trim(), state.TemporaryPhone3.trim()].includes('')) {
       return alert('휴대폰 번호를 입력해주세요.');
     }
+    if ([state.form.userName.trim()].includes('')) {
+      alert('이름을 입력해주세요.');
+      return userNameRef.current.focus();
+    }
 
     if ([state.form.zonecode.trim(), state.form.addr1.trim()].includes('')) {
       return alert('주소정보를 입력해주세요');
@@ -158,21 +157,29 @@ export default function Register() {
         return userIdRef.current.focus();
       }
       if (!idCheck(state)) return;
+
+      if(!validate.password(state.form.password)){
+        return alert('비밀번호 숫자와 영문자 조합으로 8~16자리를 사용해야 합니다.');
+      }
+ 
+      if(!validate.MixedPassword(state.form.password)){
+        return alert("숫자와 영문자를 혼용하여야 합니다.");
+      }
       if (!passwordCheck(state)) {
         action.InitData('form.password');
         action.InitData('form.passwordConfirm');
         return passwordRef.current.focus();
       }
 
-      if(!validate.name(state.form.userName)){
-        alert('이름을 입력해주세요.');
+      if (!validate.name(state.form.userName)) {
+        alert('한글단어만 입력가능합니다.');
         return userNameRef.current.focus();
       }
 
       if (!allTermCheck(state)) return;
       try {
         const res = await Post.register(formData);
-        if(res.success) alert('가입이 완료되었습니다.');
+        if (res.success) alert('가입이 완료되었습니다.');
         router.push(PAGE.MAIN.path);
       } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -180,19 +187,19 @@ export default function Register() {
           alert(error.response.data.message);
         }
       }
-    }else{
+    } else {
       try {
-        // const res = await Put.updateUserInfo(App.state.userInfo.idx,{
-        //   phone: state.form.phone,
-        //   email: state.form.email,
-        //   zonecode: state.form.zonecode,
-        //   addr1: state.form.addr1,
-        //   addr2: state.form.addr2,
-        // });
-        // if(res.success){
-        //  alert('정보가 변경되었습니다.');
-        //  router.push(PAGE.MAIN.path);
-        // }
+        const res = await Put.updateUserInfo(App.state.userInfo.idx,{
+          phone: state.form.phone,
+          email: state.form.email,
+          zonecode: state.form.zonecode,
+          addr1: state.form.addr1,
+          addr2: state.form.addr2,
+        });
+        if(res.success){
+         alert('정보가 변경되었습니다.');
+         router.push(PAGE.MAIN.path);
+        }
       } catch (error) {
         if (axios.isAxiosError(error)) {
           console.error('Register-error: ', error);
@@ -204,8 +211,9 @@ export default function Register() {
 
   const DuplicateCheckId = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    if(!validate.id(state.form.userId)){
-      return alert("아이디는 영 소문자, 숫자 6~20자리로 입력해주세요.");
+    if (!validate.id(state.form.userId)) {
+      alert("아이디는 영소문자, 숫자 6~20자리로 입력해주세요.");
+      return userIdRef.current.focus();
     }
     if (!state.form.userId) return alert('아이디를 입력해주세요.');
     try {
@@ -254,20 +262,19 @@ export default function Register() {
               <>
                 <S.Group >
                   <Label htmlFor='passwordFor' required>비밀번호</Label>
-                  <Input type='password' refValue={passwordRef} placeholder='비밀번호' name='form.password' id='passwordFor' value={state.form.password} onChange={action.setFormData} />
+                  <Input type='password' refValue={passwordRef} placeholder='숫자와 영문자 조합 8~16자리' name='form.password' id='passwordFor' value={state.form.password} onChange={action.setFormData} />
                 </S.Group>
 
                 <S.Group>
                   <Label htmlFor='passwordConfirmFor' required>비밀번호확인</Label>
-                  <Input type='password' placeholder='비밀번호' name='form.passwordConfirm' id='passwordConfirmFor' value={state.form.passwordConfirm} onChange={action.setFormData} />
+                  <Input type='password' placeholder='숫자와 영문자 조합 8~16자리' name='form.passwordConfirm' id='passwordConfirmFor' value={state.form.passwordConfirm} onChange={action.setFormData} />
                 </S.Group>
               </>
             )}
 
-
             <S.Group >
               <Label htmlFor='nameFor' required>이름</Label>
-              <Input readOnly={!isNotModify} minLength={2} refValue={userNameRef} maxWidth='200' placeholder='한글2~5자' id='nameFor' name='form.userName' value={state.form.userName} onChange={action.setFormData} />
+              <Input readOnly={!isNotModify} minLength={2} refValue={userNameRef} maxWidth='200' placeholder='한글 2~5자' id='nameFor' name='form.userName' value={state.form.userName} onChange={action.setFormData} />
             </S.Group>
 
             <S.Group >

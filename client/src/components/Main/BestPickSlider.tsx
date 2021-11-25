@@ -5,12 +5,14 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import Icon from 'components/Icon/Icon';
+
 interface IBestPickSlider {
 
 }
 
 const S = {
   BestPickSlider: styled.div`
+    width: 100%;
     position: relative;
     &:hover {
       background: rgba(21, 13, 12, 0.6);

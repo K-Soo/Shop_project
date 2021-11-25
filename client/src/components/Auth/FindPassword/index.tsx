@@ -9,7 +9,7 @@ import { useRouter } from "next/router";
 import PAGE from 'constants/path';
 
 const S = {
-  FindId: styled.section`
+  FindPassword: styled.section`
     max-width: 350px;
     margin: 0 auto;
     button{
@@ -33,12 +33,13 @@ const S = {
 }
 
 const initFind = {
+  userId:'',
   userName: '',
   email: ''
 }
 
-export default function FindId() {
-  const [findId, setFindId] = useState(initFind);
+export default function FindPassword() {
+  const [findPassword, setFindPassword] = useState(initFind);
   const [data, setData] = useState<string | null>(null);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const router = useRouter();
@@ -46,32 +47,30 @@ export default function FindId() {
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     closeSnackbar();
-    if ([findId.userName, findId.email].includes('')) {
+    if ([findPassword.userName, findPassword.email,findPassword.userId].includes('')) {
       return alert('정보를 모두 입력해주세요.');
     }
     try {
-      const res = await Post.findUserId(findId);
-      if (res.success) {
-        setData(res.userId);
-      }
+      const res = await Post.findUserPassword(findPassword);
+      console.log('res: ', res);
     } catch (error) {
       enqueueSnackbar('존재하지않는 회원입니다.', { variant: 'error' });
     }
   };
   const handleChangeLogin = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target as HTMLInputElement;
-    setFindId({
-      ...findId,
+    setFindPassword({
+      ...findPassword,
       [name]: value,
     });
   };
 
   return (
-    <S.FindId>
-      <PageTitle TitleText='아이디 찾기' />
+    <S.FindPassword>
+      <PageTitle TitleText='비밀번호 찾기' />
       {data ? (
         <S.View>
-          <p>회원님의 아이디는 <strong>{data}</strong> 입니다</p>
+          {/* <p>회원님의 아이디는 <strong>{data}</strong> 입니다</p> */}
           <Button 
             login 
             onClick={() => router.push(PAGE.MAIN.path)}
@@ -83,23 +82,30 @@ export default function FindId() {
         <form onSubmit={handleSubmit}>
           <fieldset >
             <Input
-              placeholder='이름'
-              name='userName'
+              placeholder='아이디'
+              name='userId'
               onChange={handleChangeLogin}
               margin='0 0 10px 0'
-              value={findId.userName}
+              value={findPassword.userId}
+            />
+            <Input
+              name='userName'
+              placeholder='이름'
+              onChange={handleChangeLogin}
+              margin='0 0 10px 0'
+              value={findPassword.userName}
             />
             <Input
               name='email'
               placeholder='이메일'
               onChange={handleChangeLogin}
               margin='0 0 10px 0'
-              value={findId.email}
+              value={findPassword.email}
             />
           </fieldset>
           <Button login type='submit'>이메일로 찾기</Button>
         </form>
       )}
-    </S.FindId>
+    </S.FindPassword>
   );
 }

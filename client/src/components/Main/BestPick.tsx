@@ -51,7 +51,11 @@ const S = {
       }
     }
     .slider{
-      width: 300px;
+      max-width: 300px;
+      display: block;
+      ${props => props.theme.mobile`
+        display: none;
+      `}
     }
   `,
 }

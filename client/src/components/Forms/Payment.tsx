@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { useAppContext } from 'context/AppProvider';
 import { useOrderContext } from 'context/OrderProvider';
 import Button from 'components/style/Button';
-import Radio from 'components/style/Radio';
 import Title from 'components/style/Title';
 import { PriceComma, currencyConvert } from 'utils';
 import LoadingOverlay from 'react-loading-overlay-ts';
@@ -14,9 +13,6 @@ import { CreateOrderActions, OnApproveActions, OnApproveData, UnknownObject, OnC
 import { DISPATCH_ACTION, FUNDING, PayPalButtons, SCRIPT_LOADING_STATE, usePayPalScriptReducer } from "@paypal/react-paypal-js";
 import { ErrorMsg } from 'utils';
 
-interface IPayment {
-
-}
 interface TPaypalStyles {
   color?: "gold" | "blue" | "silver" | "white" | "black";
   shape?: "rect" | "pill";
@@ -111,7 +107,7 @@ const paypalStyles: TPaypalStyles = {
   layout: "horizontal"
 }
 
-export default function Payment({ }: IPayment) {
+export default function Payment() {
   const { state } = useOrderContext();
   const App = useAppContext();
   const router: NextRouter = useRouter();
