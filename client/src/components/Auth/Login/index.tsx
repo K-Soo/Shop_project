@@ -149,6 +149,7 @@ export default function Login({ type }: ILogin) {
   return (
     <S.Login >
       <PageTitle TitleText='로그인' />
+      
       {type === 'history' && (
         <S.LoginTap users={users}>
           {category.map(d => (
@@ -170,7 +171,6 @@ export default function Login({ type }: ILogin) {
               control={<Switch defaultChecked size="small" color="default"/>} 
               label="보안접속" 
             />
-            <span >아이디 저장</span>
           </fieldset>
           <Button login type='submit'>로그인</Button>
           <QuickBox />

@@ -6,14 +6,16 @@ import Button from 'components/style/Button';
 import { ISalesData } from 'interfaces/IAdmin';
 import { PriceComma } from 'utils';
 import { useRouter, NextRouter } from 'next/router';
+import { useAdminContext } from 'context/AdminProvider';
 interface ISalesBoard {
   salesData: ISalesData;
   salesStatus?: any;
 }
 
 const S = {
-  SalesBoard: styled.div`
-    background-color: #fff;
+  SalesBoard: styled.div<{ isWhite: boolean }>`
+    background-color: ${props => props.isWhite ? '#fff' : '#1F2A40'};
+    transition: background-color 0.3s ease;
     margin-bottom :15px;
     padding: 20px;
     border-radius: 5px;
@@ -38,7 +40,8 @@ const S = {
     }
     .board{
       display: flex;
-      background-color: #f8f8f8;
+      background-color: ${props => props.isWhite ? '#f8f8f8' : '#131C2D'};
+      transition: background-color 0.3s ease;
       justify-content: space-between;
       flex: 1;
       padding: 20px;
@@ -57,13 +60,14 @@ const S = {
 
 export default function SalesBoard({ salesData, salesStatus }: ISalesBoard) {
   const router: NextRouter = useRouter();
+  const { state } = useAdminContext();
 
   if (salesStatus === 'loading') {
     return <div>loading</div>
   }
 
   return (
-    <S.SalesBoard>
+    <S.SalesBoard isWhite={state.isWhite}>
       <div className='header'>
         <div className='header__title-box'>
           <Title level={2}>오늘 판매현황</Title>

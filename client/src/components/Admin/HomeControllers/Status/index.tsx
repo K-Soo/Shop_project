@@ -3,6 +3,7 @@ import styled from "styled-components";
 import SalesBoard from 'components/Admin/HomeControllers/Status/SalesBoard';
 import LineCartBoard from 'components/Admin/HomeControllers/Status/LineCartBoard';
 import { ISalesData, IIineCartData, TFiltered } from 'interfaces/IAdmin';
+import { useAdminContext } from 'context/AdminProvider';
 
 interface IStatus {
   salesData: ISalesData;
@@ -14,10 +15,11 @@ interface IStatus {
 }
 
 const S = {
-  Status: styled.div`
+  Status: styled.div<{ isWhite: boolean }>`
     flex: 1 1 65%;
     margin-right: 15px;
-    background-color: #F0F3F7;
+    background-color: ${props => props.isWhite ? '#F0F3F7' : '#131C2D'};
+    transition: background-color 0.3s ease;
   `,
 }
 
@@ -29,8 +31,10 @@ export default function Status({
   handleFilter,
   filtered
 }: IStatus) {
+  const { state } = useAdminContext();
+
   return (
-    <S.Status>
+    <S.Status isWhite={state.isWhite}>
       <SalesBoard
         salesData={salesData}
         salesStatus={salesStatus}

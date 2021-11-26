@@ -4,6 +4,7 @@ import { Line, defaults } from 'react-chartjs-2';
 import Title from 'components/style/Title';
 import { Days } from 'utils'
 import { IIineCartData, TFiltered } from 'interfaces/IAdmin';
+import { useAdminContext } from 'context/AdminProvider';
 
 interface ILineCartBoard {
   lineCartData: IIineCartData[];
@@ -13,8 +14,9 @@ interface ILineCartBoard {
 }
 
 const S = {
-  LineCartBoard: styled.div`
-    background-color: #fff;
+  LineCartBoard: styled.div<{ isWhite: boolean }>`
+    background-color: ${props => props.isWhite ? '#fff' : '#1F2A40'};
+    transition: background-color 0.3s ease;
     padding: 20px;
     border-radius: 5px;
     margin-bottom: 15px;
@@ -31,7 +33,7 @@ const S = {
       align-items: center;
     }
   `,
-  FilterChart: styled.div<{ filtered: TFiltered }>`
+  FilterChart: styled.div<{ filtered: TFiltered,isWhite: boolean }>`
     border-bottom: 1px solid #bdbdbd;
     margin: 30px 15px;
     .lists{
@@ -43,7 +45,7 @@ const S = {
         padding: 10px 20px;
         position: relative;
         &:hover{
-          background-color: #f5f5f5;
+          background-color: ${props => props.isWhite ? '#f5f5f5' : '#131C2D'};
         }
       }
       .cnt{
@@ -106,13 +108,9 @@ const options = {
         beginAtZero: true,
         display: true,
       },
-      grid:{
-        color: '#fff'
-      }
     }
   }
 };
-
 
 
 enum labelText {
@@ -128,6 +126,7 @@ export default function LineCartBoard({
 }: ILineCartBoard) {
   const [chartDate, setChartDate] = useState([]);
   const [chartValue, setChartValue] = useState([]);
+  const { state } = useAdminContext();
 
   useEffect(() => {
     if (lineCartStatus === 'success') {
@@ -151,12 +150,12 @@ export default function LineCartBoard({
   };
 
   return (
-    <S.LineCartBoard>
+    <S.LineCartBoard isWhite={state.isWhite}>
       <div className='header'>
         <Title level={2}>상품 통계</Title>
         <p>지난 7일</p>
       </div>
-      <S.FilterChart filtered={filtered}>
+      <S.FilterChart filtered={filtered} isWhite={state.isWhite}>
         <ul className='lists'>
           <li className='cnt' onClick={handleFilter}>판매수</li>
           <li className='amount' onClick={handleFilter}>판매액</li>

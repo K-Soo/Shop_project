@@ -3,6 +3,7 @@ import styled, { css } from "styled-components";
 import Icon, { IconType } from 'components/Icon/Icon';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useAdminContext } from 'context/AdminProvider';
 
 const category = [
   {
@@ -32,18 +33,14 @@ const category = [
 ]
 
 const S = {
-  Aside: styled.div`
+  Aside: styled.div<{ isWhite: boolean }>`
     height: 100%;
-    width: 250px;
-    border:solid #dee2e6;
-    border-width: 1px 1px 0 0;
-    background-color: #fff;
+    width: 100%;
     i{font-size: 0;}
     .item{
       min-height: 50px;
       display: flex;
       padding: 15px 10px 15px 15px;
-      /* border-bottom: 1px solid #999; */
       white-space: nowrap;
       cursor: pointer;
       &__main-icon{
@@ -99,7 +96,7 @@ const S = {
               width: 100%;
             }
             &:hover{
-              background-color: #eff1f3;
+              background-color: ${props => props.isWhite ? '#eff1f3' : '#131C2D'};
               color: #000;
               opacity: 1;
             }
@@ -121,6 +118,7 @@ const S = {
 export default function Aside() {
   const [nameValue, setNameValue] = useState<string>('');
   const router = useRouter();
+  const { state } = useAdminContext();
 
   const handleList = (e: React.MouseEvent<HTMLLIElement>) => {
     const { name } = (e.target as HTMLLIElement).dataset;
@@ -129,11 +127,11 @@ export default function Aside() {
   }
 
   return (
-    <S.Aside>
+    <S.Aside isWhite={state.isWhite}>
       <ul>
         {category.map((d => (
-          <li 
-            key={d.CategoryIcon} 
+          <li
+            key={d.CategoryIcon}
             className='item'
             data-name={Object.entries(d)?.[1]?.[0]}
             onClick={handleList}
@@ -160,7 +158,7 @@ export default function Aside() {
                 className='lists-category__inner-list'
                 data-active={Object.entries(d)?.[1]?.[0] === nameValue}
               >
-                {Object.entries(d)?.[1]?.[1].length && Object.entries(d)?.[1]?.[1].map((d) => (
+                {Object.entries(d)?.[1]?.[1].length && Object.entries(d)?.[1]?.[1].map((d:any) => (
                   <li key={d.url} data-name={d.target}>
                     <Link href={d.url}>
                       <a >

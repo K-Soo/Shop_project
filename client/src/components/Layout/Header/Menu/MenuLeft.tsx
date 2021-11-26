@@ -18,12 +18,21 @@ const S = {
     font-size: 12px;
     letter-spacing: 0.5px;
     .item{
-      width: 60px;
+      width: 70px;
       border-right: 1px solid #999;
       text-align: center;
       padding: 0 5px;
       color: #323232;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      ${({ theme }) => theme.mobile`
+        display: none;
+      `}
+      img{
+        margin-right: 5px;
+      }
       &:last-child{
         border: none;
       }
@@ -35,6 +44,7 @@ const S = {
     display: flex;
     align-items: center;
     justify-content: center;
+    box-sizing: border-box;
     ${({ ScrollActive }) => ScrollActive && css`
       color: #fff;
       width: 40px;
@@ -62,6 +72,7 @@ export default function MenuLeft({ ScrollActive }: IMenuLeft) {
         </li>
       ))}
       <li className='item'>
+        <img src="/images/main/ko.png"/>
         <span>한국어</span>
       </li>
     </S.MenuLeft>

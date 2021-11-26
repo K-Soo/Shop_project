@@ -14,6 +14,7 @@ export interface IUseAdmin {
 export interface IAdminState {
   status: { loading: boolean };
   sideOpen: boolean;
+  isWhite: boolean,
   user:{
     id: string,
     password: string,
@@ -45,6 +46,7 @@ export const adminDefaultValue: IUseAdmin = {
   state: {
     status: { loading: false },
     sideOpen: false,
+    isWhite: true,
     user:{
       id:'',
       password:'',
@@ -73,6 +75,7 @@ const initializer = (props: any) => {
   const state: IAdminState = {
     status: { loading: false },
     sideOpen: false,
+    isWhite: true,
     user:{
       id:'',
       password:'',

@@ -4,6 +4,7 @@ import Title from 'components/style/Title';
 import { PointData } from 'interfaces/IAdmin';
 import { PriceComma, CurrentDate } from 'utils';
 import Loading from 'components/Loading';
+import { useAdminContext } from 'context/AdminProvider';
 
 interface IPointBoard {
   pointData: PointData;
@@ -11,8 +12,9 @@ interface IPointBoard {
 }
 
 const S = {
-  PointBoard: styled.div`
-    background-color: #fff;
+  PointBoard: styled.div<{ isWhite: boolean }>`
+    background-color: ${props => props.isWhite ? '#fff' : '#1F2A40'};
+    transition: background-color 0.3s ease;
     padding: 20px;
     border-radius: 5px;
     margin-bottom: 15px;
@@ -49,13 +51,14 @@ const S = {
 }
 
 export default function PointBoard({ pointData, PointStatus }: IPointBoard) {
+  const { state } = useAdminContext();
 
   if(PointStatus === 'error'){
     return <div>error</div>
   }
   
   return (
-    <S.PointBoard>
+    <S.PointBoard isWhite={state.isWhite}>
       <div className='header'>
         <Title level={2}>포인트</Title>
       </div>

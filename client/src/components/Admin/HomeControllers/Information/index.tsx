@@ -16,7 +16,6 @@ interface IInformation {
 const S = {
   Information: styled.div`
     flex: 1 1 35%;
-    background-color: #F0F3F7;
   `,
 }
 

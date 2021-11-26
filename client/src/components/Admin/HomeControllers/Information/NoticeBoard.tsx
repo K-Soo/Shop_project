@@ -6,14 +6,17 @@ import Link from 'next/link';
 import Loading from 'components/Loading';
 import Icon from 'components/Icon/Icon';
 import {useRouter} from 'next/router';
+import { useAdminContext } from 'context/AdminProvider';
+
 interface INoticeBoard {
   noticeData: NoticeProps;
   noticeStatus: string;
 }
 
 const S = {
-  NoticeBoard: styled.div`
-    background-color: #fff;
+  NoticeBoard: styled.div<{ isWhite: boolean }>`
+    background-color: ${props => props.isWhite ? '#fff' : '#1F2A40'};
+    transition: background-color 0.3s ease;
     padding: 20px;
     border-radius: 5px;
     .header{
@@ -65,13 +68,14 @@ const S = {
 
 export default function NoticeBoard({ noticeData, noticeStatus }: INoticeBoard) {
   const router = useRouter();
+  const { state } = useAdminContext();
 
   if (noticeStatus === 'error') {
     return <div>error</div>
   }
 
   return (
-    <S.NoticeBoard>
+    <S.NoticeBoard isWhite={state.isWhite}>
       <div className='header'>
         <div className='header__wrapper' onClick={() => router.push('admin/notice')}>
           <Title level={2}>공지사항</Title>
