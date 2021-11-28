@@ -1,8 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import Title from 'components/style/Title';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
 import { useAdminContext } from 'context/AdminProvider';
 
 const S = {
@@ -26,7 +24,7 @@ export default function QuickSettingBoard() {
   
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {name,checked} = event.target;
-    action.setData(name, checked)
+    action.setData(name, checked);
   };
 
   return (
@@ -35,17 +33,7 @@ export default function QuickSettingBoard() {
         <Title level={2}>빠른설정</Title>
       </div>
       <div>
-      <FormControlLabel 
-        label="보안접속" 
-        labelPlacement="start" 
-        control={<Switch 
-          onChange={handleChange} 
-          defaultChecked 
-          size="small" 
-          name='isWhite'
-          color="default"
-        />} 
-        />
+ 
       </div>
     </S.QuickSettingBoard>
   );

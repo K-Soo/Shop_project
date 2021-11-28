@@ -1,9 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import Breadcrumb from "components/Common/Breadcrumb";
-import Link from "next/link";
-import PAGE from "constants/path";
 import * as S from "components/ShopInfo/style";
+import PageTitle from 'components/Common/PageTitle';
 
 interface IPrivacy {
   className?: string;
@@ -11,18 +9,9 @@ interface IPrivacy {
 
 const Privacy: React.FC<IPrivacy> = ({ className }) => {
   return (
-    <div className={className}>
-      <Breadcrumb>
-        {[PAGE.MAIN, PAGE.PRIVACY].map(({ path, tag }) => (
-          <Link key={path} href={path}>
-            {tag}
-          </Link>
-        ))}
-      </Breadcrumb>
+    <section className={className}>
+      <PageTitle TitleText='이용약관' />
       <article className='container'>
-        <div className='container__title-box'>
-          <S.Title>개인정보취급방침</S.Title>
-        </div>
         <div className='container__desc-box'>
           <div className='container__desc-box--inner'>
             <S.P>
@@ -51,7 +40,7 @@ const Privacy: React.FC<IPrivacy> = ({ className }) => {
           </div>
         </div>
       </article>
-    </div>
+    </section>
   );
 };
 
@@ -60,9 +49,6 @@ export default styled(Privacy)`
   margin: 0 auto;
   padding: 0 20px;
   .container {
-    &__title-box {
-      margin: 10px 0 10px;
-    }
     &__desc-box {
       border: 1px solid;
       border-color: #e7e7e7;

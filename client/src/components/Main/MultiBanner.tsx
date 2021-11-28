@@ -56,10 +56,13 @@ const S = {
           object-fit: fill;
         }
       }
-      ${props => props.theme.mobile`
+      ${({theme}) => theme.mobile`
         flex-direction: column;
         padding: 0 10px;
-      `}
+        .block-1{
+          margin-right: 0px;
+        }
+      `};
   `,
 }
 

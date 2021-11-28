@@ -10,17 +10,17 @@ export default function agreement() {
   return (
     <>
       <Head>
-        <title>A | 이용약관</title>
+        <title>쥬얼리 | 이용약관</title>
       </Head>
       <MainContainer>
-      <Breadcrumb>
-        {[PAGE.MAIN, PAGE.AGREEMENT].map(({ path, tag }) => (
-          <Link key={path} href={path}>
-            {tag}
-          </Link>
-        ))}
-      </Breadcrumb>
-      <Agreement />
+        <Breadcrumb>
+          {[PAGE.MAIN, PAGE.AGREEMENT].map(({ path, tag }) => (
+            <Link key={path} href={path}>
+              {tag}
+            </Link>
+          ))}
+        </Breadcrumb>
+        <Agreement />
       </MainContainer>
     </>
   );

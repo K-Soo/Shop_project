@@ -1,8 +1,39 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import styled,{css} from "styled-components";
 import { NAV_MENU } from "constants/header";
 import { NextRouter, useRouter } from 'next/router';
 import Link from "next/link";
+
+const StyledBorder = css`
+    &:nth-child(1){
+      border: solid #e8e8e8;
+      border-width: 1px 1px 1px 0;
+    }
+    &:nth-child(2){
+      border: solid #e8e8e8;
+      border-width: 1px 0 1px 0;
+    }
+    &:nth-child(3){
+      border: solid #e8e8e8;
+      border-width: 0 1px 1px 0;
+    }
+    &:nth-child(4){
+      border: solid #e8e8e8;
+      border-width: 0 0 1px 0;
+    }
+    &:nth-child(5){
+      border: solid #e8e8e8;
+      border-width: 0 1px 1px 0;
+    }
+    &:nth-child(6){
+      border: solid #e8e8e8;
+      border-width: 0 0 1px 0;
+    }
+    &:nth-child(7){
+      border: solid #e8e8e8;
+      border-width: 0 1px 0 0;
+    }
+`;
 
 const S = {
   CategoryGroup: styled.ul<{ pathname: string }>`
@@ -31,23 +62,22 @@ const S = {
       vertical-align: bottom;
       &[data-active=true] {
         color: #000;
-        border-bottom: solid 2px #000;
+        border-bottom: solid 2px #333;
       }
       &:hover {
         color: #000;
       }
-      ${({ theme }) => theme.mobile`
-        line-height: normal;
-          &[data-active=true] {
-            color: #000;
-            border: none;
-          };
-      `};
     }
-    ${({ theme }) => theme.mobile`
-      flex-basis:40%;
+    ${({theme}) => theme.mobile`
+      flex-basis:50%;
       padding: 5px;
-      border: 1px solid #e8e8e8;
+      ${StyledBorder}
+      a{
+        line-height: normal;
+        &[data-active=true] {
+          border: none;
+        };
+      }
     `};
   `,
 }

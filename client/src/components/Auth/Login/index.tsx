@@ -28,7 +28,7 @@ const S = {
       justify-content: space-between;
       align-items: center;
       .MuiFormControlLabel-root{
-      margin: 0;
+        margin: 0;
       .css-ahj2mt-MuiTypography-root{
         font-size: 13px;
       }

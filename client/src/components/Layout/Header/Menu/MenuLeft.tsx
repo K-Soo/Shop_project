@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React from "react";
 import styled, { css } from "styled-components";
 import { MAIN_MENU } from "constants/header";
@@ -72,7 +73,7 @@ export default function MenuLeft({ ScrollActive }: IMenuLeft) {
         </li>
       ))}
       <li className='item'>
-        <img src="/images/main/ko.png"/>
+        <img src="/images/main/ko.png" alt='kor-img'/>
         <span>한국어</span>
       </li>
     </S.MenuLeft>
