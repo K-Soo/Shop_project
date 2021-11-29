@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Button from "components/style/Button";
 import { useRouter } from "next/router";
@@ -97,11 +97,11 @@ export default function Login({ type }: ILogin) {
 
   useEffect(() => {
     const existId = JSON.parse(localStorage.getItem("remember_id"));
-    if(existId){
+    if (existId) {
       setRememberId(true);
-      setLogin({ ...login,userId:existId});
+      setLogin({ ...login, userId: existId });
     }
-  },[]);
+  }, []);
 
   useDidMountEffect(() => {
     setLogin(initLogin);
@@ -121,7 +121,7 @@ export default function Login({ type }: ILogin) {
         if (res.basket?.items) action.setLocalItems(res.basket.items);
         localStorage.removeItem('unknown-basket');
         localStorage.removeItem('guest');
-        if(rememberId){
+        if (rememberId) {
           localStorage.setItem('remember_id', JSON.stringify(login.userId));
         }
         router.push(PAGE.MAIN.path);
@@ -168,10 +168,10 @@ export default function Login({ type }: ILogin) {
 
   const handleRememberId = (e) => {
     const isChecked = e.target.checked;
-    if(isChecked){
-      setRememberId(e.target.checked);
-    }else{
-      setRememberId(e.target.checked);
+    if (isChecked) {
+      setRememberId(isChecked);
+    } else {
+      setRememberId(isChecked);
       localStorage.removeItem('remember_id');
     }
   }
@@ -205,8 +205,8 @@ export default function Login({ type }: ILogin) {
             <FormControlLabel
               className='ctr-label'
               labelPlacement="start"
-              control={<Checkbox className='check' color="default" size="small" checked={rememberId} onChange={handleRememberId}/>}
-              label="아이디저장"
+              control={<Checkbox className='check' color="default" size="small" checked={rememberId} onChange={handleRememberId} />}
+              label="아이디 저장"
             />
           </fieldset>
           <Button login type='submit'>로그인</Button>

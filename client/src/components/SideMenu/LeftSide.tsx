@@ -1,20 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useContext, useState } from "react";
+import React from "react";
 import styled, { css } from 'styled-components';
-import Image from "next/image";
-import DarkBackground from 'components/Common/DarkBackground';
-import CloseButton from 'components/style/CloseButton';
 import Button from 'components/style/Button';
-import Icon from 'components/Icon/Icon';
-import { ACCOUNT_INFO } from 'constants/footer';
 import Info from 'components/SideMenu/common/Info';
 import Copyright from 'components/SideMenu/common/Copyright';
 import QuickIcon from 'components/SideMenu/common/QuickIcon';
-import Link from "next/link";
 import { useRouter } from 'next/router';
 import { useAppContext } from 'context/AppProvider';
 import Category from 'components/SideMenu/common/Category';
-import { QUICK_ICON_LEFT, TQuickIconProps } from 'constants/sideMenu';
+import { QUICK_ICON_LEFT } from 'constants/sideMenu';
 import TitleLine from 'components/SideMenu/common/TitleLine';
 
 interface ILeftSide {
@@ -33,7 +27,7 @@ const S = {
     padding: 20px;
     visibility: ${props => props.openSideMenu && props.directionSwap ? 'visible' : 'hidden'};
     z-index: 9999;
-    overflow-y: scroll;
+    overflow-y: auto;
     ${(props) => props.openSideMenu && props.directionSwap ? css`
       transform: translateX(0%);
       transition: all 0.5s ease;` : css`
@@ -119,11 +113,6 @@ const S = {
   `,
   Tap: styled.div`
     margin-top: 15px;
-    /* max-height: 310px;
-    overflow-y: scroll;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    ::-webkit-scrollbar { display: none; } */
   `,
 }
 

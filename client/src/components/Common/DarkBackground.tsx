@@ -1,7 +1,8 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import styled, { css } from 'styled-components';
 import Icon from 'components/Icon/Icon';
 import { useAppContext } from 'context/AppProvider';
+import { enableBodyScroll, disableBodyScroll } from 'body-scroll-lock';
 
 interface IDarkBackground {
   className?: string;
@@ -34,23 +35,20 @@ const S = {
     font-size: 0;
     cursor: pointer;
     top: 15px;
-    ${(props) => props.openSideMenu === false  && props.directionSwap  && css`
+    ${(props) => props.openSideMenu === false && props.directionSwap  && css`
     // init
       right: -100px;
     `}
-
     ${(props) => props.openSideMenu  && props.directionSwap  && css`
       right: 5px;
       transform: translateX(-50%);
       transition: all 0.5s ease;
     `}
-
     ${(props) => props.openSideMenu  && props.directionSwap === false && css`
       left: 5px;
       transform: translateX(50%);
       transition: all 0.5s ease;
     `}
-
     visibility: ${props => props.openSideMenu ? 'visible' : 'hidden'};
     svg{
       color: #fff;
@@ -63,8 +61,26 @@ const S = {
 
 export default function DarkBackground({ children, directionSwap }: IDarkBackground) {
   const { action, state } = useAppContext();
+
+  useEffect(() => {
+    const body = document.querySelector("body");
+    // if(state.openSideMenu){
+    //   disableBodyScroll(body);
+    // }else{
+    //   enableBodyScroll(body);
+    // }
+  }, [state.openSideMenu]);
+
+  const handle = (e) => {
+    const {className} = e.target;
+    const str = className.split('-');
+    if(str[0] === 'DarkBackground'){
+      action.setToggleSideMenu();
+    }
+  }
+
   return (
-    <S.DarkBackground active={state.openSideMenu} >
+    <S.DarkBackground className='dark-background' active={state.openSideMenu} onClick={handle} >
       <S.Close 
         onClick={action.setToggleSideMenu} 
         directionSwap={directionSwap} 
