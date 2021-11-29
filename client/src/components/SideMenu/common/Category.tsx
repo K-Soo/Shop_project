@@ -5,10 +5,6 @@ import Link from 'next/link';
 import Icon from 'components/Icon/Icon';
 import { useAppContext } from 'context/AppProvider';
 
-interface ICategory {
-
-}
-
 const S = {
   Category: styled.div`
     .category-list{
@@ -57,7 +53,7 @@ const S = {
   `,
 }
 const initNameValue = {target:'',disable: false};
-export default function Category({ }: ICategory) {
+export default function Category() {
   const [nameValue, setNameValue] = useState<{ target: string, disable: boolean }>(initNameValue);
   const { action,state } = useAppContext();
 
@@ -74,7 +70,7 @@ export default function Category({ }: ICategory) {
     }));
   }
 
-  const handleListItem = (e) => {
+  const handleListItem = (e:React.MouseEvent<HTMLLIElement>) => {
     action.setCategory(e);
     action.setToggleSideMenu();
   }

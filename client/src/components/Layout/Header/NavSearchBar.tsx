@@ -33,7 +33,7 @@ const S = {
     border-width: 0px 1px 1px 1px;
     width: 500px;
     height: 0px;
-    top: 48px;
+    top: 49px;
     right: 0;
     padding: 20px;
     background-color: #fff;
@@ -130,8 +130,11 @@ const S = {
         }
       }
       &--filtering{
-        height: 100%;
+        height: 89px;
         padding-left: 20px;
+        width: 100%;
+        overflow-y: auto;
+        border: 1px solid #e8e8e8;
         a{
           display: block;
           padding: 5px 0;
@@ -220,6 +223,7 @@ export default function NavSearchBar() {
                 ))}
               </ul>
             </div>
+
             <ul className='search-data--filtering'>
               {FilteredData.map(d => (
                 <Link key={d._id} href={`/product/search?keyword=${d.name.trim()}`}>

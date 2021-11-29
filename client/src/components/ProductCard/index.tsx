@@ -139,7 +139,6 @@ const S = {
     height: 16px;
   `,
   ColorBox: styled.p`
-    z-index: 9999;
     position: absolute;
     bottom: 5px;
     left: 5px;

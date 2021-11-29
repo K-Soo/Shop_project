@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import styled from "styled-components";
 import Button from "components/style/Button";
 import { useRouter } from "next/router";
@@ -14,6 +14,7 @@ import PAGE from 'constants/path';
 import { useSnackbar } from 'notistack';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
+import Checkbox from '@mui/material/Checkbox';
 interface ILogin {
   type: string;
 }
@@ -27,12 +28,17 @@ const S = {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      .MuiFormControlLabel-root{
+      .ctr-label{
         margin: 0;
-      .css-ahj2mt-MuiTypography-root{
-        font-size: 13px;
+        display: flex;
+        align-items: center;
+        .check{
+          padding: 5px;
+        }
+        .css-ahj2mt-MuiTypography-root{
+          font-size: 13px;
+        }
       }
-    }
     }
 
   `,
@@ -80,13 +86,22 @@ const category = [
 ]
 
 export default function Login({ type }: ILogin) {
-  const [login, setLogin] = useState<{ userId: string, password: string }>(initLogin);
-  const [orderFind, setOrderFind] = useState<{ userName: string, orderPassword: string, orderNum: string }>(initOrderFind);
+  const [login, setLogin] = useState(initLogin);
+  const [orderFind, setOrderFind] = useState(initOrderFind);
   const [users, setUsers] = useState<TUusers>('member');
+  const [rememberId, setRememberId] = useState(false);
+  console.log('rememberId: ', rememberId);
   const { action } = useAppContext();
   const router = useRouter();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  const label = { inputProps: { 'aria-label': 'Switch demo' } };
+
+  useEffect(() => {
+    const existId = JSON.parse(localStorage.getItem("remember_id"));
+    if(existId){
+      setRememberId(true);
+      setLogin({ ...login,userId:existId});
+    }
+  },[]);
 
   useDidMountEffect(() => {
     setLogin(initLogin);
@@ -101,11 +116,16 @@ export default function Login({ type }: ILogin) {
     }
     try {
       const res = await Post.login({ userId: login.userId, password: login.password });
-      customCookie.set("access_token", res.token);
-      if (res.basket?.items) action.setLocalItems(res.basket.items);
-      localStorage.removeItem('unknown-basket');
-      localStorage.removeItem('guest');
-      router.push(PAGE.MAIN.path);
+      if (res.success) {
+        customCookie.set("access_token", res.token);
+        if (res.basket?.items) action.setLocalItems(res.basket.items);
+        localStorage.removeItem('unknown-basket');
+        localStorage.removeItem('guest');
+        if(rememberId){
+          localStorage.setItem('remember_id', JSON.stringify(login.userId));
+        }
+        router.push(PAGE.MAIN.path);
+      }
     } catch (error) {
       enqueueSnackbar('아이디 또는 비밀번호를 확인해주세요.', { variant: 'error' });
     }
@@ -146,10 +166,20 @@ export default function Login({ type }: ILogin) {
     setUsers(className as TUusers);
   };
 
+  const handleRememberId = (e) => {
+    const isChecked = e.target.checked;
+    if(isChecked){
+      setRememberId(e.target.checked);
+    }else{
+      setRememberId(e.target.checked);
+      localStorage.removeItem('remember_id');
+    }
+  }
+
   return (
     <S.Login >
       <PageTitle TitleText='로그인' />
-      
+
       {type === 'history' && (
         <S.LoginTap users={users}>
           {category.map(d => (
@@ -161,15 +191,22 @@ export default function Login({ type }: ILogin) {
       {users === 'member' && (
         <form onSubmit={handleSubmit}>
           <fieldset >
-            <Input placeholder='아이디' margin='0 0 10px 0' name='userId' onChange={handleChangeLogin} />
-            <Input placeholder='비밀번호' type='password' name='password' onChange={handleChangeLogin} />
+            <Input placeholder='아이디' margin='0 0 10px 0' name='userId' value={login.userId} onChange={handleChangeLogin} />
+            <Input placeholder='비밀번호' type='password' name='password' value={login.password} onChange={handleChangeLogin} />
           </fieldset>
 
           <fieldset className='security'>
-            <FormControlLabel 
-              labelPlacement="start" 
-              control={<Switch defaultChecked size="small" color="default"/>} 
-              label="보안접속" 
+            <FormControlLabel
+              className='ctr-label'
+              labelPlacement="start"
+              control={<Switch defaultChecked size="small" color="default" />}
+              label="보안접속"
+            />
+            <FormControlLabel
+              className='ctr-label'
+              labelPlacement="start"
+              control={<Checkbox className='check' color="default" size="small" checked={rememberId} onChange={handleRememberId}/>}
+              label="아이디저장"
             />
           </fieldset>
           <Button login type='submit'>로그인</Button>

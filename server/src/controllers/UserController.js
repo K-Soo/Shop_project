@@ -208,7 +208,7 @@ const logIn = async (req, res, next) => {
       //   secure: true,
       // });
 
-      return res.json({ success: true, message: "로그인 성공", token, basket });
+      return res.json({ success: true, token, basket });
     }
   } catch (error) {
     next(error);
