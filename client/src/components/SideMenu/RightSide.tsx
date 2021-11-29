@@ -22,6 +22,7 @@ const S = {
     right: 0;
     width: 260px;
     z-index: 9999;
+    overflow-y: scroll;
     visibility: ${props => props.openSideMenu && props.directionSwap === false ? 'visible' : 'hidden'};
     background-color: #fff;
     padding: 20px;

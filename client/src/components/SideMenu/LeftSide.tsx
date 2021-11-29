@@ -33,6 +33,7 @@ const S = {
     padding: 20px;
     visibility: ${props => props.openSideMenu && props.directionSwap ? 'visible' : 'hidden'};
     z-index: 9999;
+    overflow-y: scroll;
     ${(props) => props.openSideMenu && props.directionSwap ? css`
       transform: translateX(0%);
       transition: all 0.5s ease;` : css`
@@ -116,48 +117,24 @@ const S = {
       }
     }
   `,
-  Tap: styled.div<{ text: string }>`
+  Tap: styled.div`
     margin-top: 15px;
-    .tap-list{
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 15px;
-      li{
-      text-align: center;
-      flex-basis: 50%;
-      font-size: 14px;
-      padding: 5px 0;
-      font-size: 13px;
-      cursor: pointer;
-    }
-    .product{
-      border: solid #666;
-      border-width: ${props => props.text === 'product' ? '1px 1px 0 1px' : '0 0 1px 0'};
-    }
-    .interest{
-      border: solid #666;
-      border-width: ${props => props.text === 'interest' ? '1px 1px 0 1px' : '0 0 1px 0'};
-    }
-    }
+    /* max-height: 310px;
+    overflow-y: scroll;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    ::-webkit-scrollbar { display: none; } */
   `,
 }
 
-type TTap = 'product' | 'interest'
 export default function LeftSide({ directionSwap, onClick }: ILeftSide) {
   const { action, state } = useAppContext();
   const router = useRouter();
-  const [text, setText] = useState<TTap>('product');
 
   const handleRouter = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
     const { name } = e.currentTarget
     action.setToggleSideMenu();
     router.push(`/auth/${name}`);
-  }
-
-  const handleText = (e: React.MouseEvent<HTMLLIElement>) => {
-    const { className } = e.target as HTMLLIElement
-    setText(className as TTap);
   }
 
   return (
@@ -191,15 +168,9 @@ export default function LeftSide({ directionSwap, onClick }: ILeftSide) {
           <TitleLine text='MY SHOPPING' />
           <QuickIcon lists={QUICK_ICON_LEFT} />
 
-          <S.Tap text={text}>
-            <ul className='tap-list'>
-              <li className='product' onClick={handleText}>상품</li>
-              <li className='interest' onClick={handleText}>관심상품</li>
-            </ul>
-
-            <div className='tap-data'>
-              {text === 'product' && <Category />}
-            </div>
+          <S.Tap >
+            <TitleLine text='PRODUCT' />
+            <Category />
           </S.Tap>
         </div>
 
