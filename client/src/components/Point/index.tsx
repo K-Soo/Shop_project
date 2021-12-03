@@ -9,7 +9,7 @@ import { useQuery, UseQueryResult, useQueryClient } from 'react-query';
 import { useAppContext } from 'context/AppProvider';
 import { PriceComma } from 'utils';
 import { Get } from "api";
-import { IPointList } from 'interfaces/IPoint';
+import IPoint, { IPointList } from 'interfaces/IPoint';
 
 const S = {
   Point: styled.section`
@@ -29,7 +29,7 @@ export default function Point() {
       return { ...data, pointInfo: filtered }
   }, []);
 
-  const { data, isLoading, isSuccess, isError,isFetching } = useQuery<IPointList>([queryKeys.POINT_DETAIL, idx, currentPage, limit], async () => await Get.getPointList(idx, currentPage, limit), {
+  const { data, isLoading, isSuccess, isError,isFetching } = useQuery<IPoint>([queryKeys.POINT_DETAIL, idx, currentPage, limit], async () => await Get.getPointList(idx, currentPage, limit), {
     retry: 0,
     keepPreviousData: true,
     refetchOnWindowFocus: false,
@@ -43,11 +43,10 @@ export default function Point() {
       if (currentPage < data.maxPages) {
         let nextValue = currentPage;
         const nextPreFetchPage = nextValue += 1;
-        console.log('nextPreFetchPage: ', nextPreFetchPage);
         queryClient.prefetchQuery([queryKeys.POINT_DETAIL, idx, nextPreFetchPage,limit], () => Get.getPointList(idx, currentPage,limit));
       }
     }
-  }, [App.state.pagination.currentPage, queryClient, idx,isSuccess,currentPage]);
+  }, [App.state.pagination.currentPage, queryClient, idx, isSuccess, currentPage]);
   
   return (
     <S.Point>
@@ -60,7 +59,7 @@ export default function Point() {
           isError={isError}
         />
       </FormFieldset>
-      {isSuccess && (<Pagination maxPages={data.maxPages} isFetching={isFetching}/>)}
+      {data?.pointInfo?.length && (<Pagination maxPages={data.maxPages} isFetching={isFetching}/>)}
     </S.Point>
   );
 }

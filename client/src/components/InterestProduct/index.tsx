@@ -18,9 +18,9 @@ export default function InterestProduct() {
   const { state: { userInfo:{idx} } } = useAppContext();
   const { data = [], isLoading, isSuccess, isError, error, isFetching } = useQuery([queryKeys.INTEREST_PRODUCT,idx, currentPage], async () => await Get.getInterestProductList(idx, currentPage), {
     retry: 0,
-    // keepPreviousData: true,
-    // refetchOnWindowFocus: false,
-    // staleTime: Infinity,
+    keepPreviousData: false,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
     enabled: !!idx,                                      
   });
   
@@ -30,7 +30,6 @@ export default function InterestProduct() {
         try {
           const res = await Delete.deleteInterestProduct(idx, name);
           if(res.success) alert('삭제되었습니다.');
-          // action.setLocalItems(res.items);
         } catch (error) {
           console.error('remove-error: ', error);
         }
@@ -46,7 +45,7 @@ return (
           isSuccess={isSuccess} 
           isLoading={isLoading}
           handleRemoveItem={handleRemoveItem}
-          />
+        />
       </FormFieldset>
     </S.ProductList>
   );

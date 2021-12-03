@@ -3,11 +3,11 @@ import styled from "styled-components";
 import { useAppContext } from 'context/AppProvider';
 import Link from 'next/link';
 import Loading from 'components/Common/Loading';
-import {IPointList} from 'interfaces/IPoint';
+import IPoint, { IPointList } from 'interfaces/IPoint';
 import EmptyItem from 'components/Common/EmptyItem';
 
 interface IList {
-  data: IPointList;
+  data: IPoint;
   isSuccess: boolean;
   isLoading: boolean;
   isError: boolean;

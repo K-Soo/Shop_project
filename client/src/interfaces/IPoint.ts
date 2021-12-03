@@ -1,21 +1,24 @@
 export default interface IPoint {
   PointOwner: string;
   currentPoint: number;
-  pointInfo:{
+  maxPages?: number;
+  pointInfo: {
     _id: string
     createdAt: string;
     currentPoint: number;
     orderNum: string;
     savedPoint: number;
     usedPoint: number;
+    account?: string;
+    point?: string;
   }[]
 }
 
-export interface IPointInfo extends IPoint{
+export interface IPointInfo extends IPoint {
   totalAmount: number;
   totalLength: number;
 }
 
-export interface IPointList extends IPoint{
+export interface IPointList extends IPoint {
   maxPages: number;
 }

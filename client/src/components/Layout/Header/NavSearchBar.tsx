@@ -204,7 +204,7 @@ export default function NavSearchBar() {
       {isSuccess && (
         <S.form toggle={state.openSearch} onSubmit={handleSubmit}>
           <fieldset className='search-field'>
-            <input className='search-area' autoComplete='off' ref={InputFocus} name='keyword' value={filter} onChange={(e) => setFilter(e.target.value)} />
+            <input className='search-area' autoComplete='off' ref={InputFocus} name='keyword' value={filter} onChange={(e) => setFilter(e.target.value)} />i
             <button className='search-btn' type='submit'>
               <Icon name='search' />
             </button>

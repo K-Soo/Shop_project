@@ -121,9 +121,20 @@ const generateAction = (update: (recipe: (draft: IAppState) => void) => void) =>
   const setGlobalToggle = (e:any) => {
     update((draft) => {
       const dataSetName = e.target?.dataset?.name;
+      console.log('dataSetName: ', dataSetName);
       const tagName = e.target?.name;
+      console.log('tagName: ', tagName);
       if (dataSetName) {
         const keyArray = dataSetName.split('.');
+        if(keyArray[0] === 'openMyShop' || keyArray[1] === 'openMyShop'){
+          draft.openSearch = false;
+          draft.openSubMenu = false;
+        }
+        if(keyArray[0] === 'openSearch' || keyArray[1] === 'openSearch'){
+          draft.openMyShop = false;
+          draft.openSubMenu = false;
+        }
+
         if (keyArray.length === 1) draft[keyArray[0]] = !draft[dataSetName];
         else if (keyArray.length === 2) draft[keyArray[1]] = !draft[dataSetName];
       } else if (tagName) {
