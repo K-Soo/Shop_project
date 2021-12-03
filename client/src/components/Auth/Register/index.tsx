@@ -159,7 +159,7 @@ export default function Register() {
       if (!idCheck(state)) return;
 
       if(!validate.password(state.form.password)){
-        return alert('비밀번호 숫자와 영문자 조합으로 8~16자리를 사용해야 합니다.');
+        return alert('숫자,영문자,특수문자 조합 8자리이상 입력해주세요.');
       }
  
       if(!validate.MixedPassword(state.form.password)){
@@ -262,12 +262,12 @@ export default function Register() {
               <>
                 <S.Group >
                   <Label htmlFor='passwordFor' required>비밀번호</Label>
-                  <Input type='password' refValue={passwordRef} placeholder='숫자와 영문자 조합 8~16자리' name='form.password' id='passwordFor' value={state.form.password} onChange={action.setFormData} />
+                  <Input type='password' refValue={passwordRef} placeholder='숫자,영문자,특수문자 조합8자리 이상' name='form.password' id='passwordFor' value={state.form.password} onChange={action.setFormData} />
                 </S.Group>
 
                 <S.Group>
                   <Label htmlFor='passwordConfirmFor' required>비밀번호확인</Label>
-                  <Input type='password' placeholder='숫자와 영문자 조합 8~16자리' name='form.passwordConfirm' id='passwordConfirmFor' value={state.form.passwordConfirm} onChange={action.setFormData} />
+                  <Input type='password' placeholder='숫자,영문자,특수문자 조합8자리 이상' name='form.passwordConfirm' id='passwordConfirmFor' value={state.form.passwordConfirm} onChange={action.setFormData} />
                 </S.Group>
               </>
             )}

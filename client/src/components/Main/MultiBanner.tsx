@@ -62,6 +62,9 @@ const S = {
         .block-1{
           margin-right: 0px;
         }
+        .block-2{
+          margin-top: 15px;
+        }
       `};
   `,
 }

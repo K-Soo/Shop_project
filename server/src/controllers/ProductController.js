@@ -77,7 +77,6 @@ const updateProductQty = async (req, res, next) => {
 };
 
 const updateProductClose = async (req, res, next) => {
-  console.log('req: ', req.body);
   try {
     await Product.updateMany(
       { _id: { $in: req.body } },
@@ -88,8 +87,6 @@ const updateProductClose = async (req, res, next) => {
     next(error);
   }
 };
-
-
 
 const getProductItem = async (req, res, next) => {
   const { id, product_type } = req.params;

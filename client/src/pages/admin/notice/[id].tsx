@@ -13,9 +13,8 @@ import AdminContainer from 'containers/AdminContainer';
 import NoticeControllers from 'components/Admin/NoticeControllers';
 import NoticeDetail from 'components/Admin/NoticeControllers/NoticeDetail';
 
-export default function NoticeDetailPage(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function AdminNoticeDetailPage(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const router = useRouter();
-  console.log('router: ', router);
 
   if (props.errorCode) {
     return <Error statusCode={props.errorCode} />
@@ -24,13 +23,11 @@ export default function NoticeDetailPage(props: InferGetServerSidePropsType<type
   return (
     <>
       <Head>
-        <title>쥬얼리 | 공지사항</title>
-        <meta name="description" content="공지사항 디테일" />
+        <title>관리자</title>
       </Head>
       <AdminContainer>
         <NoticeControllers>
-          <NoticeDetail />
-          {/* <Detail item={props.item} /> */}
+          <NoticeDetail item={props.item} />
         </NoticeControllers>
       </AdminContainer>
     </>
@@ -38,9 +35,9 @@ export default function NoticeDetailPage(props: InferGetServerSidePropsType<type
 };
 
 export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
-  const { idx } = context.query as { idx: string };
+  const { id } = context.query as { id: string };
   try {
-    const res = await Get.getNoticeDetail(idx);
+    const res = await Get.getNoticeDetail(id);
     return {
       props: {
         item: res,

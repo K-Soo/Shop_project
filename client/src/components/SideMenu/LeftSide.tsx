@@ -10,6 +10,8 @@ import { useAppContext } from 'context/AppProvider';
 import Category from 'components/SideMenu/common/Category';
 import { QUICK_ICON_LEFT } from 'constants/sideMenu';
 import TitleLine from 'components/SideMenu/common/TitleLine';
+import { customCookie } from 'utils';
+import PAGE from 'constants/path';
 
 interface ILeftSide {
   directionSwap: boolean;
@@ -40,7 +42,6 @@ const S = {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    /* overflow-Y: scroll; */
     .side-footer{
       margin-top: 15px;
     }
@@ -59,6 +60,9 @@ const S = {
     button{
       width: 48%;
       padding: 0;
+      height: 35px;
+      font-size: 12px;
+      font-weight: normal;
     }
     a{
       display: inline-block;
@@ -84,7 +88,6 @@ const S = {
         width: 50px;
         color: #555;
         font-size: 14px;
-    
       }
       li:nth-child(3){
         cursor: pointer;
@@ -113,6 +116,7 @@ const S = {
   `,
   Tap: styled.div`
     margin-top: 15px;
+
   `,
 }
 
@@ -124,6 +128,13 @@ export default function LeftSide({ directionSwap, onClick }: ILeftSide) {
     const { name } = e.currentTarget
     action.setToggleSideMenu();
     router.push(`/auth/${name}`);
+  }
+
+  const handleLogOut = () => {
+    customCookie.remove('access_token');
+    localStorage.removeItem('basket');
+    localStorage.removeItem('guest');
+    return router.push(PAGE.MAIN.path);
   }
 
   return (
@@ -146,12 +157,25 @@ export default function LeftSide({ directionSwap, onClick }: ILeftSide) {
           </S.ImageBanner>
 
           <S.Top>
-            <Button login height='35px' fontSize='12px' name='login' onClick={handleRouter}>
-              로그인
-            </Button>
-            <Button height='35px' fontSize='12px' name='register' onClick={handleRouter}>
-              회원가입
-            </Button>
+            {state.userInfo.idx ? (
+              <>
+                <Button black name='login' onClick={() => router.push('/users')}>
+                  마이쇼핑
+                </Button>
+                <Button white name='register' onClick={handleLogOut}>
+                  로그아웃
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button black name='login' onClick={handleRouter}>
+                  로그인
+                </Button>
+                <Button white name='register' onClick={handleRouter}>
+                  회원가입
+                </Button>
+              </>
+            )}
           </S.Top>
 
           <TitleLine text='MY SHOPPING' />

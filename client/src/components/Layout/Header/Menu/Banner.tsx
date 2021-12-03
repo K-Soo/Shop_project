@@ -1,5 +1,9 @@
 import React from "react";
 import styled, { css } from "styled-components";
+import Image from "next/image";
+import Link from 'next/link';
+import PAGE from 'constants/path';
+
 interface IBanner {
   ScrollActive: boolean;
 }
@@ -9,16 +13,10 @@ const S = {
     display: flex;
     justify-content: center;
     align-items: center;
-    transform: translateY(-200%);
     opacity: 0;
     ${props => props.ScrollActive && css`
       opacity: 1;
-      transform: translateY(0%);
-      transition: transform 0.5s ease;
       transition: opacity 1s ease;
-    `}
-    ${({ theme }) => theme.mobile`
-      display: none;
     `}
   `,
 }
@@ -26,7 +24,11 @@ const S = {
 export default function Banner({ ScrollActive }: IBanner) {
   return (
     <S.Banner ScrollActive={ScrollActive}>
-      쇼핑몰 입니다
+      <Link href={PAGE.MAIN.path}>
+        <a>
+          <Image className='main-logo' src="/images/main_logo.png" width={100} height={35} alt='main_logo' />
+        </a>
+      </Link>
     </S.Banner>
   );
 }

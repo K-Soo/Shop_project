@@ -35,13 +35,13 @@ const S = {
       align-items: center;
       top: 8px;
       left: 50%;
-      transform: translateX(-85%);
+      transform: translateX(-80%);
       width: 20px;
       height: 20px;
-      line-height: 30px;
+      line-height: 20px;
       border-radius: 50%;
       ${({ theme }) => theme.mobile`
-        top: 1px;
+        top: 5px;
         width: 18px;
         height: 18px;
         font-size: 12px;

@@ -19,16 +19,16 @@ export default function OrderFormPage(props: InferGetServerSidePropsType<typeof 
   const App = useAppContext();
   const { userDetail } = props;
 
-  useEffect(() => {
-    if (!userDetail) {
-      if (!App.state.status.guest) {
-        router.push({
-          pathname: '/auth/login',
-          query: { type: 'order' },
-        });
-      }
-    }
-  }, [App.state.status.guest, userDetail, router]);
+  // useEffect(() => {
+  //   if (!userDetail) {
+  //     if (!App.state.status.guest) {
+  //       router.push({
+  //         pathname: '/auth/login',
+  //         query: { type: 'order' },
+  //       });
+  //     }
+  //   }
+  // }, [App.state.status.guest, userDetail, router]);
 
   return (
     <>

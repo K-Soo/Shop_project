@@ -242,8 +242,7 @@ const findUserPassword = async (req, res, next) => {
     if (exist) {
       if (exist.email === email) {
         if (exist.userName === userName) {
-          // const valid = await exist.checkPassword(password);
-          return res.json({ success: true });
+          return res.json({ success: true, userId: exist.userId });
         } else {
           return throwError({ statusCode: 401 });
         }
@@ -253,6 +252,34 @@ const findUserPassword = async (req, res, next) => {
     } else {
       return throwError({ statusCode: 401 });
     }
+  } catch (error) {
+    next(error);
+    console.error('find-password: ', error);
+  }
+};
+
+const updatePassword = async (req, res, next) => {
+  const { userId, currentPassword, newPassword1, newPassword2 } = req.body;
+  if(newPassword1 !== newPassword2) {
+    return throwError({ statusCode: 401 });
+  }
+
+  try {
+    const user = await User.findByUserId(userId);
+    console.log('user: ', user);
+    const valid = await user.checkPassword(currentPassword);
+    if (!valid) {
+      return res.json({ success: false });
+    } else {
+      const salt = await bcrypt.genSalt(10);
+      const hash = await bcrypt.hash(newPassword1, salt);
+      await User.findOneAndUpdate(
+        { userId: userId },
+        { $set: { password: hash } },
+      );
+      return res.json({ success: true });
+    }
+
   } catch (error) {
     next(error);
     console.error('find-password: ', error);
@@ -269,5 +296,6 @@ export {
   guestCheckout,
   GuestLogIn,
   findUserId,
-  findUserPassword
+  findUserPassword,
+  updatePassword
 }

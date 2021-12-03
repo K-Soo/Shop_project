@@ -13,7 +13,6 @@ const category = [
   {
     CategoryIcon: 'plus',
     '상품정보': [
-      { label: '상품리스트', url: '/admin/products/list', target: '상품정보' },
       { label: '상품추가', url: '/admin/products/create', target: '상품정보' },
     ]
   },
@@ -21,7 +20,6 @@ const category = [
     CategoryIcon: 'cartAdd',
     '판매관리': [
       { label: '상품리스트', url: '/admin/products/list', target: '판매관리' },
-      { label: '상품추가', url: '/admin/products/create', target: '판매관리' },
     ]
   },
   {

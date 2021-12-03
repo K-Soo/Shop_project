@@ -1,16 +1,16 @@
-import React from "react";
+import React, { useState, useCallback } from "react";
 import styled from "styled-components";
 import PageTitle from 'components/Common/PageTitle';
 import List from 'components/Board/Notice/List';
-import { Get } from "api";
-import { queryKeys } from 'constants/queryKeys';
 import Pagination from 'components/Pagination';
-import { useQuery } from 'react-query';
 import { useAppContext } from 'context/AppProvider';
 import Button from 'components/style/Button';
 import { useRouter, NextRouter } from 'next/router';
 import PAGE from 'constants/path';
-import { NoticeProps } from 'interfaces/INotice';
+import useNotice from 'hooks/ReactQuery/useNotice';
+import {Put} from 'api';
+import { useSnackbar } from 'notistack';
+import { useDeleteNotice } from 'hooks/ReactQuery/mutations';
 
 const S = {
   NoticeList: styled.div`
@@ -18,25 +18,44 @@ const S = {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    .page-nation{
+      margin-top: 25px;
+    }
   `,
   ButtonBox: styled.div`
+    display: flex;
+    justify-content: space-between;
     button{
-      height: 25px;
+      height: 30px;
     }
   `,
 }
 
 export default function NoticeList() {
-  const App = useAppContext();
-  const currentPage = Number(App.state.pagination.currentPage);
   const router: NextRouter = useRouter();
+  const [checkedArray, setCheckedArray] = useState([]);
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { data, isLoading, isSuccess, isError, isFetching } = useNotice();
+  const deleteNotice = useDeleteNotice();
 
-  const { data, isLoading, isSuccess, isError, isFetching } = useQuery<NoticeProps>([queryKeys.NOTICE_LIST.name, currentPage, queryKeys.NOTICE_LIST.limit], async () => await Get.getNoticeList(currentPage, queryKeys.NOTICE_LIST.limit), {
-    retry: 0,
-    keepPreviousData: true,
-    refetchOnWindowFocus: false,
-    staleTime: 2000,
-  });
+  const handleCheckBox = useCallback((e) => {
+    const { value, checked } = e.target
+    if (checked) {
+      setCheckedArray([...checkedArray, value]);
+    } else {
+      const result = checkedArray.filter(d => d !== value);
+      setCheckedArray(result);
+    }
+  }, [checkedArray]);
+
+  const handleDeletePost = async() => {
+    closeSnackbar();
+    if(!checkedArray.length){
+      return enqueueSnackbar('삭제할 항목을 선택해주세요.', { variant: 'info' });
+    }
+    deleteNotice(checkedArray);
+  }
+
   if (isError) return <div>isError</div>
 
   if (isLoading) return <div>loading</div>
@@ -45,7 +64,7 @@ export default function NoticeList() {
     <S.NoticeList>
       <div>
         <PageTitle TitleText='공지사항' />
-        <List items={data.items} isLoading={isLoading} />
+        <List items={data.items} isLoading={isLoading} handleCheckBox={handleCheckBox} checkedArray={checkedArray} />
       </div>
       <div>
         <S.ButtonBox className='button-box'>
@@ -55,10 +74,19 @@ export default function NoticeList() {
             width='100'
             onClick={() => router.push(PAGE.CREATE_NOTICE.path)}
           >
-            등록
+            글쓰기
+          </Button>
+
+          <Button
+            white
+            type='button'
+            width='100'
+            onClick={handleDeletePost}
+          >
+            삭제
           </Button>
         </S.ButtonBox>
-        {isSuccess && (<Pagination maxPages={data.maxPages} isFetching={isFetching} />)}
+        {isSuccess && (<Pagination className='page-nation' maxPages={data.maxPages} isFetching={isFetching} />)}
       </div>
     </S.NoticeList>
   );

@@ -18,7 +18,7 @@ const list = async (req, res, next) => {
 
   const total = await Notice.find().lean();
   const exist = await Notice.find({}, null, { sort: { createdAt: -1 } }).skip(skip)
-  .limit(+limit)
+    .limit(+limit)
 
   const response = {
     items: exist,
@@ -46,8 +46,18 @@ const detail = async (req, res, next) => {
   }
 };
 
+const remove = async (req, res, next) => {
+  try {
+    await Notice.deleteMany({ _id: req.body });
+    res.json({ success: true });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export {
   create,
   list,
-  detail
+  detail,
+  remove
 }

@@ -69,7 +69,7 @@ export default function Detail({ item }: IDetail) {
           margin='15px 0 0 0'
           width='100' 
           height='30px'
-          onClick={() => router.push('/board/notice')}
+          onClick={() => router.back()}
         >
         목록으로
       </Button>

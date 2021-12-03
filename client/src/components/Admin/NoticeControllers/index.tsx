@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-// import ProductCreate from 'components/Admin/ProductControllers/ProductCreate';
+import { useAdminContext } from 'context/AdminProvider';
 
 
 interface INoticeControllers {
@@ -8,18 +8,20 @@ interface INoticeControllers {
 }
 
 const S = {
-  NoticeControllers: styled.section`
+  NoticeControllers: styled.section<{ isWhite: boolean }>`
     height: 100%;
     width: 100%;
-    background-color: #fff;
+    background-color: ${props => props.isWhite ? '#FFF' : '#1F2A40'};
     border-radius: 5px;
     padding: 20px;
   `,
 }
 
 export default function NoticeControllers({ children}: INoticeControllers) {
+  const { state } = useAdminContext();
+
   return (
-    <S.NoticeControllers>
+    <S.NoticeControllers isWhite={state.isWhite}>
       {children}
     </S.NoticeControllers>
   );

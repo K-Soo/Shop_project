@@ -38,7 +38,6 @@ export default function ProductDetail({ item }: IProductDetail) {
     {
       retry: 0,
       keepPreviousData: true,
-      staleTime: 2000,
     });
 
   const handleFiltered = (e:React.ChangeEvent<HTMLSelectElement>) => {
@@ -47,7 +46,6 @@ export default function ProductDetail({ item }: IProductDetail) {
     setSortKey(name);
     setSortValue(Number(value));
   }
-
 
   return (
     <S.ProductDetail>

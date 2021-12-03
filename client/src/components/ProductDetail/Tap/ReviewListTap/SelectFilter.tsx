@@ -27,11 +27,10 @@ const S = {
         align-items: flex-end;
         i{
           display: inline-block;
-          font-size: 0;
           padding-right: 5px;
           svg{
             color: #505050;
-            height: 16px;
+            /* height: 16px; */
           }
         }
         .cnt{

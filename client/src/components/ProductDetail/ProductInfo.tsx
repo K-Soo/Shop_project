@@ -17,6 +17,7 @@ import useCheckDuplicate from 'hooks/useCheckDuplicate';
 import EmptyItem from 'components/Common/EmptyItem';
 import TextIcon from 'components/Common/TextIcon';
 import PAGE from 'constants/path';
+import { useSnackbar } from 'notistack';
 import { useOrderContext } from 'context/OrderProvider';
 interface IProductInfo {
   item: IProduct[];
@@ -183,17 +184,18 @@ const S = {
     align-items: center;
     .title-box{
       color: #333;
-      width: 100px;
+      width: 80px;
+      font-size: 14px;
       .required-check{
         margin-left: 3px;
       }
     }
     .radio-box{
-      flex: 1 70%;
+      flex: 1;
       display: flex;
       flex-wrap: wrap;
       .color-item{
-        margin: 3px
+        /* margin: 3px; */
       }
     }
   `,
@@ -361,6 +363,7 @@ export default function ProductInfo({ item }: IProductInfo) {
   const Order = useOrderContext();
   const [duplicate] = useCheckDuplicate(App.state.basket.basketList, selectItems);
   const [nonMemDuplicate] = useCheckDuplicate(App.state.basket.nonMemberBasket, selectItems);
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   useEffect(() => {
     setInterestProduct(item[0].name);
@@ -381,8 +384,45 @@ export default function ProductInfo({ item }: IProductInfo) {
     }
   }
 
+  const handleOrderToProduct = async() => {
+    // 구매하기
+    if (!selectItems.length) {
+      return enqueueSnackbar('필수 옵션을 선택해주세요.', { variant: 'info' });
+     }
+    if (duplicate || nonMemDuplicate) {
+      alert("이미동일한 상품이 장바구니에 있습니다.\n장바구니에서 확인 후 다시 추가해주세요.");
+      return App.action.setBasketModal();
+    }
+    if (App.state.userInfo.userId){
+      try {
+        const res = await Put.updateBasket({ userId: App.state.userInfo.userId, items: selectItems });
+        App.action.setLocalItems(res.items);
+        const resItems = res.items as IBasketItem[]
+        const result = resItems.filter(({ name: localName, selectColor: color1 }) => selectItems.some(({ name: selectName, selectColor: color2 }) => color2[0].colorName == color1[0].colorName && localName === selectName));
+        Order.action.setEntireProducts(result);
+        router.push(PAGE.ORDER.path);
+      } catch (error) {
+        console.error('error: ', error);
+        return enqueueSnackbar('잠시후 다시시도해주세요.', { variant: 'error' });
+      }
+    }else{
+      Order.action.setEntireProducts(selectItems);
+      if (!App.state.status.guest) {
+        router.push({
+          pathname: '/auth/login',
+          query: { type: 'order' },
+        });
+      }else{
+        router.push(PAGE.ORDER.path);
+      }
+    }
+  };
+
   const handleAddToBasket = async () => {
-    if (!selectItems.length) return alert('필수 옵션을 선택해주세요.');
+    // 장바구니 추가
+    if (!selectItems.length) {
+     return enqueueSnackbar('필수 옵션을 선택해주세요.', { variant: 'info' });
+    }
     if (duplicate || nonMemDuplicate) {
       alert("이미동일한 상품이 장바구니에 있습니다.\n장바구니에서 확인 후 다시 추가해주세요.");
       setSelectItems([]);
@@ -394,7 +434,7 @@ export default function ProductInfo({ item }: IProductInfo) {
           App.action.setLocalItems(res.items);
           return App.action.setBasketModal();
         } catch (error) {
-          console.log('error: ', error);
+          console.error('error: ', error);
         }
       } else {
         App.action.setNonMemberBasketPush(selectItems);
@@ -454,25 +494,7 @@ export default function ProductInfo({ item }: IProductInfo) {
     setSelectItems(filterItem);
   };
 
-  const handleOrderToProduct = () => {
-    if (!selectItems.length) return alert('필수 옵션을 선택해주세요.');
-    if (App.state.userInfo.userId){
-      if (duplicate) {
-        alert("이미동일한 상품이 장바구니에 있습니다.\n장바구니에서 확인 후 다시 추가해주세요.");
-        return App.action.setBasketModal();
-      } else {
-        Order.action.setEntireProducts(selectItems);
-        router.push(PAGE.ORDER.path);
-      }
-    }else{
-      if(nonMemDuplicate){
-        alert("이미동일한 상품이 장바구니에 있습니다.\n장바구니에서 확인 후 다시 추가해주세요.");
-        return App.action.setBasketModal();
-      }
-      Order.action.setEntireProducts(selectItems);
-      router.push(PAGE.ORDER.path);
-    }
-  };
+
 
   return (
     <S.ProductInfo>

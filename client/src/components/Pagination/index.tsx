@@ -8,6 +8,7 @@ import NumBtn from 'components/Pagination/NumBtn';
 import TurnBtn from 'components/Pagination/TurnBtn';
 
 interface IPagination {
+  className?:string;
   maxPages: number;
   isFetching: boolean;
   pageSize?: number;
@@ -25,7 +26,7 @@ const S = {
   `,
 }
 
-export default function Pagination({ maxPages, isFetching, margin, pageSize = 3 }: IPagination) {
+export default function Pagination({ maxPages,className, isFetching, margin, pageSize = 3 }: IPagination) {
   const { state, action } = useAppContext();
   const [turnPage, setTurnPage] = useState<number>(1);
   const [checkLast, setCheckLast] = useState(false);
@@ -69,7 +70,7 @@ export default function Pagination({ maxPages, isFetching, margin, pageSize = 3 
   }
 
   return (
-    <S.Pagination margin={margin}>
+    <S.Pagination margin={margin} className={className}>
       <div className='wrapper'>
         <TurnBtn onClick={handleFirstPage} disabled={isFetching || turnPage === 1}>처음</TurnBtn>
         <TurnBtn

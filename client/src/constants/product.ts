@@ -42,7 +42,8 @@ export const PRODUCT: IProductProps = {
     // { label: '다이아몬드 프로포즈링', value: '' },
   ],
   bracelet: [
-    { label: '팔찌', value: '' },
+    { label: '진주 팔찌', value: '' },
+    { label: '매듭 팔찌', value: '' },
   ],
   anklet: [
     { label: '발찌', value: '' },
@@ -51,11 +52,12 @@ export const PRODUCT: IProductProps = {
     { label: '순금 돌선물', value: '' },
     { label: '순금 목걸이', value: '' },
     { label: '순금 팔찌', value: '' },
-    { label: '순금 카드상패', value: '' },
-    { label: '순금 기념품', value: '' },
+    // { label: '순금 카드상패', value: '' },
+    // { label: '순금 기념품', value: '' },
   ],
   diamond: [
-    { label: '다이아몬드', value: '' },
+    { label: '1부 다이아몬드 목걸이', value: '' },
+    { label: '1부 다이아몬드 귀걸이', value: '' },
   ],
   coupling: [
     { label: '커플링', value: '' },

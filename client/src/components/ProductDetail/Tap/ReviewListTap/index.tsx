@@ -31,7 +31,6 @@ const S = {
   `,
   ButtonBox: styled.div`
     display: flex;
-    justify-content: flex-end;
     button{
       height: 35px;
       font-size: 13px;
@@ -204,14 +203,11 @@ export default function ReviewListTap({ item, items, maxPages, isSuccess, isLoad
   return (
     <S.ReviewListTap>
       <S.ButtonBox className='button-box'>
-        <Button black margin='0 20px 0 0' onClick={handleRouter}>
+        <Button black onClick={handleRouter}>
           <i><Icon name='pencil' /></i>
           <span>상품후기 쓰기</span>
         </Button>
-        <Button white>
-          <i><Icon name='menu2' style={{ color: '#333' }} /></i>
-          <span>전체보기</span>
-        </Button>
+   
       </S.ButtonBox>
 
       {children}

@@ -257,9 +257,10 @@ const useApp = (props:any) => {
   }, [props]);
 
   useEffect(() => {
-    // app.action.InitData('userInfo.userId', props.userInfo.userId);
-    // app.action.InitData('userInfo.idx', props.userInfo.idx);
-  }, [props])
+    if (router.asPath !== '/auth/login/find-password') {
+      sessionStorage.removeItem('permanent_id');
+    }
+  }, [router.asPath]);
 
   useEffect(() => {
     app.action.InitData('openSubMenu', false);

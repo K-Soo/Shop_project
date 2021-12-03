@@ -14,6 +14,9 @@ import { NoticeProps } from 'interfaces/INotice';
 
 const S = {
   Notice: styled.section`
+  .page-nation{
+    margin-top: 25px;
+  }
   `,
 }
 
@@ -37,7 +40,7 @@ export default function Notice() {
     <S.Notice>
       <PageTitle TitleText='공지사항' />
       <List items={data.items} isLoading={isLoading} />
-      {isSuccess && (<Pagination maxPages={data.maxPages} isFetching={isFetching}/>)}
+      {isSuccess && (<Pagination className='page-nation' maxPages={data.maxPages} isFetching={isFetching}/>)}
     </S.Notice>
   );
 }

@@ -2,82 +2,109 @@
 import React from "react";
 import styled, { css } from 'styled-components';
 import Title from 'components/style/Title';
-import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import Icon from 'components/Icon/Icon';
+import Link from 'next/link';
+import {COLLECTION} from 'constants/main';
 import BestPickSlider from 'components/Main/BestPickSlider';
-
-interface IBestPick {
-  
-}
 
 const S = {
   BestPick: styled.div`
     margin: 30px 0;
     font-size: 0;
-    display: flex;
-    img{
-      /* width: 100%;
-      height: auto;
-      object-fit: contain; */
+    ${Title}{
+      font-size: 50px;
+      height: 60px;
+      color: #61499a;
     }
-    .categories{
-      flex: 1 1 60%;
-      margin-right: 15px;
-      ${Title}{
-        font-size: 50px;
-        height: 60px;
-        color: #61499a;
-      }
-      &__image-box{
-        .top-box{
+      .image-box{
+        .list{
           display: flex;
-          justify-content: flex-start;
-          .diamond{
-            /* width: 100%; */
-            height: 200px;
-            object-fit: contain;
-          }
-        }
-        .bottom-box{
-          margin-top: 15px;
-          height: 200px;
-          img{
-            height: 100%;
-            width: 100%;
-          }
+          flex-wrap: wrap;
+          &__item{
+            flex: 1 1 20%;
+            position: relative;
+            margin: 10px;
+            min-width: 150px;
+            border: 1px solid #999;
+            cursor: pointer;
+            overflow: hidden;
+            dl{
+              position: absolute;
+              width: 100%;
+              font-size: 14px;
+              text-align: center;
+              bottom: 0;
+              color: #333;
+              background-color: #f5f5f5;
+              opacity: 0.7;
+              padding: 10px;
+              dt{
+                margin-bottom: 3px;
+                font-size: 16px;
+                font-weight: 500;
+              }
+            }
+            img{
+              width: 100%;
+              height: 100%;
+              &:hover{
+                transform: scale(1.1);
+                transition: all 0.3s ease;
+              }
+            }
+            ${props => props.theme.tablet`
+              flex: 1 1 35%;
+            `};
+            ${({theme}) => theme.mobile`
+              flex: 1 1 35%;
+              dl{
+                font-size: 12px;
+                dt{
+                  font-size: 14px;
+                }
+              }
+            `};
         }
       }
     }
     .slider{
-      max-width: 300px;
-      display: block;
+      max-width: 350px;
+      min-width: 300px;
+      border: 1px solid red;
+      /* display: block; */
       ${props => props.theme.mobile`
-        display: none;
+        // display: none;
       `}
     }
   `,
 }
 
-export default function BestPick({ }: IBestPick) {
+export default function BestPick() {
   return (
     <S.BestPick>
-      <div className='categories'>
-        <Title level={1} textAlign='left'>BEST PICK</Title>
-        <div className='categories__image-box'>
-          <div className='top-box'>
-            <img className='diamond' src="/images/best_pick/pick1.jpeg" alt='' />
-          </div>
-          <div className='bottom-box'>
-            <img className='ring' src="/images/best_pick/pick3.jpeg" alt='' />
-          </div>
-        </div>
+      <Title level={1} textAlign='left'>BEST PICK</Title>
+      <div className='image-box'>
+        <ul className='list'>
+          {COLLECTION.map(d => (
+            <li className='list__item' key={d.label}>
+              <Link href={d.url}>
+                <a>
+                  <img className='diamond' src={d.src} alt='' />
+                  <dl>
+                    <dt>{d.title}</dt>
+                    <dd>{d.desc}</dd>
+                  </dl>
+                </a>
+              </Link>
+            </li>
+          ))}
+        </ul>
       </div>
 
-      <div className='slider'>
+      {/* <div className='slider'>
         <BestPickSlider />
-      </div>
+      </div> */}
     </S.BestPick>
   );
 }

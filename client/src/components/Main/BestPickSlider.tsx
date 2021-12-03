@@ -13,6 +13,7 @@ interface IBestPickSlider {
 const S = {
   BestPickSlider: styled.div`
     width: 100%;
+    height: 100%;
     position: relative;
     &:hover {
       background: rgba(21, 13, 12, 0.6);
@@ -24,9 +25,10 @@ const S = {
     }
     .item-card{
      height: 100%;
+     height: 300px;
      img{
        width: 100%;
-       height: 475px;
+       height: 100%;
       }
     }
   `,

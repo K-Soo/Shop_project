@@ -18,7 +18,6 @@ const S = {
     border-bottom: 1px solid #e8e8e8;
     border-bottom-color: rgba(0, 0, 0, 0.09);
     z-index: 10;
-    
     ${props =>
       props.ScrollActive &&
       css`

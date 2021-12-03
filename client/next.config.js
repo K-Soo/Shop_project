@@ -13,6 +13,11 @@ module.exports = {
         destination: '/',
         permanent: false
       },
+      {
+        source: '/order/orderform',
+        destination: '/',
+        permanent: false
+      },
     ]
   },
   images: {

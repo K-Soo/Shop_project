@@ -6,7 +6,6 @@ import { IProduct } from 'interfaces/IProduct';
 import ProductDetail from 'components/ProductDetail';
 import { InferGetServerSidePropsType, GetServerSideProps } from 'next';
 import { Get } from "api";
-import { AppContext, AppInitialProps, AppProps } from "next/app"
 import BasketProvider from 'context/BasketProvider';
 import cookies from 'next-cookies'
 import PAGE from "constants/path";
@@ -16,7 +15,7 @@ import { CategoryEnum } from 'constants/product';
 
 export default function ProductDetailPage(props: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const router: NextRouter = useRouter();
-  const { item ,cookies} = props;
+  const { item } = props;
   const { category } = router.query as { category: string };
 
   return (

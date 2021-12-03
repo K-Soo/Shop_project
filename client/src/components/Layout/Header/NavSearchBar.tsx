@@ -131,10 +131,9 @@ const S = {
       }
       &--filtering{
         height: 89px;
-        padding-left: 20px;
+        padding-left: 15px;
         width: 100%;
         overflow-y: auto;
-        border: 1px solid #e8e8e8;
         a{
           display: block;
           padding: 5px 0;
@@ -143,6 +142,7 @@ const S = {
           color: #666;
           &:hover{
             color: #000;
+            background-color: #f5f5f5;
           }
         }
 

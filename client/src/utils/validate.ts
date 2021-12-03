@@ -28,8 +28,12 @@ export const validate = {
     if (phoneExp.test(newPhone)) return true;
     else return false;
   },
+  /**
+  * 이름체크 
+  * 최소 8 자, 최소 하나의 문자, 하나의 숫자 및 하나의 특수 문자
+  */
   password: (arg: any) => {
-    const passwordExp = /^[a-zA-Z0-9]{8,16}$/;
+    const passwordExp = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/;
     if (passwordExp.test(arg)) return true;
     else return false;
   },

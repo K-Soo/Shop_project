@@ -2,9 +2,13 @@ import React from "react";
 import styled from "styled-components";
 import { NoticeProps, TItems } from 'interfaces/INotice';
 import Link from 'next/link';
+import CheckBox from 'components/style/CheckBox';
+import { useRouter } from 'next/router';
 interface IList {
   items: TItems[];
   isLoading: boolean;
+  handleCheckBox: React.ChangeEventHandler<HTMLInputElement>;
+  checkedArray: string[];
 }
 
 const S = {
@@ -15,6 +19,7 @@ const S = {
       font-size: 12px;
       padding: 0 15px;
       border-top: 1px solid #f0f0f0;
+      border-bottom: 1px solid #f0f0f0;
       caption{
         display: none;
       }
@@ -31,11 +36,12 @@ const S = {
       tbody{
         tr{
           td{
+            padding: 10px 15px;
+            vertical-align: middle;
             a{
               display: block;
               height: 100%;
             }
-            padding: 10px 15px;
           }
           .index{
             white-space: nowrap;
@@ -57,7 +63,9 @@ const S = {
   `,
 }
 
-export default function List({ items }: IList) {
+export default function List({ items, handleCheckBox, checkedArray }: IList) {
+  const router = useRouter();
+  console.log('router: ', router);
   return (
     <S.List>
       <table>
@@ -65,11 +73,12 @@ export default function List({ items }: IList) {
         <colgroup>
           <col width="5%" />
           <col width="85%" />
-          <col width="10%" />
+          <col width="5%" />
+          <col width="5%" />
         </colgroup>
         <thead>
           <tr>
-            <th colSpan={3}>제목</th>
+            <th colSpan={4}>제목</th>
           </tr>
         </thead>
         <tbody>
@@ -77,11 +86,18 @@ export default function List({ items }: IList) {
             <tr key={d._id} className='notice-tr'>
               <td className='index'>공지</td>
               <td className='title'>
-                <Link href={`/board/notice/${d._id}`}>
+                <Link href={`/admin/notice/${d._id}`}>
                   <a>{d.title}</a>
                 </Link>
               </td>
               <td className='date'>{d.createdAt}</td>
+              {router.asPath !== "/board/notice" && (
+                <>
+                  <td className='date'>
+                    <CheckBox name='delete' value={d._id} onChange={handleCheckBox} checked={checkedArray.includes(d._id)} />
+                  </td>
+                </>
+              )}
             </tr>
           ))}
         </tbody>

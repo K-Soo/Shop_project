@@ -55,6 +55,9 @@ const S = {
       padding: 10px 5px;
       ul{
         font-size: 14px;
+        .star{
+          font-size: 12px;
+        }
         .desc{
           font-size: 12px;
         }

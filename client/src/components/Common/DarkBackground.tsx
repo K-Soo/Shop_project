@@ -1,8 +1,7 @@
-import React,{useEffect} from 'react';
+import React from 'react';
 import styled, { css } from 'styled-components';
 import Icon from 'components/Icon/Icon';
 import { useAppContext } from 'context/AppProvider';
-import { enableBodyScroll, disableBodyScroll } from 'body-scroll-lock';
 
 interface IDarkBackground {
   className?: string;
@@ -62,17 +61,8 @@ const S = {
 export default function DarkBackground({ children, directionSwap }: IDarkBackground) {
   const { action, state } = useAppContext();
 
-  useEffect(() => {
-    const body = document.querySelector("body");
-    // if(state.openSideMenu){
-    //   disableBodyScroll(body);
-    // }else{
-    //   enableBodyScroll(body);
-    // }
-  }, [state.openSideMenu]);
-
-  const handle = (e) => {
-    const {className} = e.target;
+  const handleClose = (e:React.MouseEvent<HTMLDivElement>) => {
+    const {className} = e.target as HTMLDivElement
     const str = className.split('-');
     if(str[0] === 'DarkBackground'){
       action.setToggleSideMenu();
@@ -80,7 +70,7 @@ export default function DarkBackground({ children, directionSwap }: IDarkBackgro
   }
 
   return (
-    <S.DarkBackground className='dark-background' active={state.openSideMenu} onClick={handle} >
+    <S.DarkBackground className='dark-background' active={state.openSideMenu} onClick={handleClose} >
       <S.Close 
         onClick={action.setToggleSideMenu} 
         directionSwap={directionSwap} 

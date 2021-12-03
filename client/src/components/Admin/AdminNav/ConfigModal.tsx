@@ -56,7 +56,7 @@ const S = {
 export default function ConfigModal({ openConfigModal }: IConfigModal) {
   const { state, action } = useAdminContext();
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleColor = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = event.target;
     action.setData(name, checked);
   };
@@ -74,7 +74,7 @@ export default function ConfigModal({ openConfigModal }: IConfigModal) {
               label={state.isWhite ? 'Dark Mode' : 'White Mode'}
               labelPlacement="start"
               control={<Switch
-                onChange={handleChange}
+                onChange={handleColor}
                 defaultChecked
                 size="small"
                 name='isWhite'

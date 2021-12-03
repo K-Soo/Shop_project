@@ -114,12 +114,12 @@ export default function Payment() {
   const [{ isInitial, isPending, isRejected, isResolved }, Dispatch] = usePayPalScriptReducer();
   const { userInfo: { idx } } = App.state;
 
-  console.group('before');
-  console.log('isResolved: ', isResolved);
-  console.log('isRejected: ', isRejected);
-  console.log('isPending: ', isPending);
-  console.log('isInitial: ', isInitial);
-  console.groupEnd();
+  // console.group('before');
+  // console.log('isResolved: ', isResolved);
+  // console.log('isRejected: ', isRejected);
+  // console.log('isPending: ', isPending);
+  // console.log('isInitial: ', isInitial);
+  // console.groupEnd();
 
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
@@ -157,6 +157,7 @@ export default function Payment() {
         if (res.success) {
           App.action.setLocalItems(res.updatedBasket.items);
           alert('결제완료\n주문상세페이지로 이동합니다');
+          localStorage.removeItem('order');
           return router.push(`/users/history/details/${idx}/${res.orderNum}`);
         }
       } else {
@@ -165,11 +166,12 @@ export default function Payment() {
           alert('결제완료');
           const result = App.state.basket.nonMemberBasket.filter(({ date: date1 }) => !state.orderForm.Products.some(({ date: date2 }) => date1 === date2))
           App.action.setNonMemberBasket(result);
+          localStorage.removeItem('order');
           Dispatch({ type: DISPATCH_ACTION.LOADING_STATUS, value: SCRIPT_LOADING_STATE.INITIAL });
           return router.push(`/users/history/guest-detail/${res.guestOrder._id}`);
         }
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error('error: ', error);
       console.error('paypal-error: ', error.response.data.message);
       alert('결제 실패\n잠시후 다시시도해주세요');

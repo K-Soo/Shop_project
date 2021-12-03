@@ -12,7 +12,7 @@ export const queryKeys = {
   POINT_DETAIL: 'pointDetail',
   NOTICE_LIST: {
     name: 'notice-list',
-    limit: 20,
+    limit: 15,
   },
   ADMIN: {
     sales: 'admin-sales',

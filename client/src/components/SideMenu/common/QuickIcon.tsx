@@ -10,7 +10,7 @@ interface IQuickIcon {
 
 const S = {
   QuickIcon: styled.div`
-    /* margin: 30px 0; */
+    margin-bottom: 15px;
   `,
   List: styled.ul`
     display: flex;

@@ -172,7 +172,6 @@ export default function BasketModal() {
   const Order = useOrderContext();
   const { state, action } = useAppContext();
   const { userId } = state.userInfo;
-  console.log('userId: ', userId);
 
   const router = useRouter();
 

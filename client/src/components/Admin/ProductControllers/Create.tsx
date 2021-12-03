@@ -33,6 +33,7 @@ const S = {
     margin-bottom: 15px;
     height: 100%;
     flex-wrap: wrap;
+    align-items: center;
     .color-box{
     width: 250;
     display: flex;
@@ -172,16 +173,14 @@ export default function Create(props: ICreate) {
   }
 
   const handleDrop = (image: any) => {
-    console.log('image: ', image);
     const formData = new FormData();
     formData.append('image', image[0]);
-    console.log('formData: ', formData.append);
     (async () => {
       try {
         const res = await Post.createProductImage(formData);
         action.setData('create.imageUrl', res)
       } catch (error:any) {
-        console.log('error: ', error.response);
+        console.log('error: ', error);
         console.error('handleDrop-error: ', error);
         // alert(error.response?.data.message);
       }

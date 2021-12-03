@@ -24,6 +24,7 @@ users.post('/find-id', UserController.findUserId);
 users.post('/find-password', UserController.findUserPassword);
 users.post('/guest-login', UserController.GuestLogIn);
 users.post('/guest-checkout/', UserController.guestCheckout);
+users.put('/find-password', UserController.updatePassword);
 
 users.get('/point/:idx',PointController.list);
 users.get('/point/:idx/info',PointController.userInfo);

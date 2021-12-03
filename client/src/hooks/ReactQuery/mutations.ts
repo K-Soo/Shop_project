@@ -2,7 +2,7 @@ import { IProduct } from 'interfaces/IProduct';
 import { useMutation, useQueryClient, UseMutateFunction } from 'react-query';
 import { queryKeys } from 'constants/queryKeys';
 import { useAdminContext } from 'context/AdminProvider';
-import { Get, Put } from "api";
+import { Put } from "api";
 import { useAppContext } from 'context/AppProvider';
 
 export function useChangeQty(): UseMutateFunction<
@@ -67,13 +67,12 @@ export function useDeleteNotice(): UseMutateFunction<
   unknown
 > {
   const queryClient = useQueryClient();
-  const { state } = useAdminContext();
   const App = useAppContext();
   const currentPage = Number(App.state.pagination.currentPage);
 
   const { mutate } = useMutation(async (checkedArray: string[]) => await Put.deleteManyNotice(checkedArray), {
     onSuccess: () => {
-      alert('선택상품이 마감되었습니다');
+      alert('선택된 공지가 삭제되었습니다');
       queryClient.invalidateQueries([queryKeys.NOTICE_LIST.name, currentPage, queryKeys.NOTICE_LIST.limit])
     }
   });

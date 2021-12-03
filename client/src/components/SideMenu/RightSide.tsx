@@ -2,14 +2,13 @@
 import React from "react";
 import styled, { css } from 'styled-components';
 import { useAppContext } from 'context/AppProvider';
-import DarkBackground from 'components/Common/DarkBackground';
-import CloseButton from 'components/style/CloseButton';
-import CartIcon from 'components/Common/CartIcon';
 import TitleLine from 'components/SideMenu/common/TitleLine';
 import Info from 'components/SideMenu/common/Info';
 import Copyright from 'components/SideMenu/common/Copyright';
 import QuickIcon from 'components/SideMenu/common/QuickIcon';
+import PointAndCoupon from 'components/SideMenu/common/PointAndCoupon';
 import { QUICK_ICON_RIGHT } from 'constants/sideMenu';
+
 interface IRightSide {
   directionSwap: boolean;
   onClick: React.MouseEventHandler<HTMLLIElement>;
@@ -90,18 +89,46 @@ const S = {
       }
     }
   `,
-  IconMenu: styled.div`
-  `,
   ImageBanner: styled.div`
-     font-size: 0;
+    font-size: 0;
+    margin-bottom: 15px;
     img{
       width: 100%;
       object-fit: cover;
     }
   `,
+  PointList: styled.ul`
+    font-size: 13px;
+    .item{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 15px;
+      &:last-child{
+        padding-bottom: 0px;
+      }
+      &__title{
+        color: #333;
+      }
+      &__value{
+        background: #f5f5f5;
+        padding: 3px 10px;
+        border-radius: 5px;
+        color: #323232;
+        &::after{
+          content: '원';
+        }
+      }
+      .coupon{
+        &::after{
+          content: '개';
+        }
+      }
+    }
+  `,
 }
 export default function RightSide({ directionSwap, onClick }: IRightSide) {
-  const { action, state } = useAppContext();
+  const { state } = useAppContext();
 
   return (
     <S.RightSide openSideMenu={state.openSideMenu} directionSwap={directionSwap}>
@@ -120,15 +147,10 @@ export default function RightSide({ directionSwap, onClick }: IRightSide) {
           </S.ImageBanner>
 
           <TitleLine text='MY SHOPPING' />
-          <S.IconMenu>
-            <QuickIcon lists={QUICK_ICON_RIGHT} />
-          </S.IconMenu>
+          <QuickIcon lists={QUICK_ICON_RIGHT} />
 
           <TitleLine text='POINT / COUPON' />
-          <div>
-            <p>쿠폰</p>
-            <p>쿠폰</p>
-          </div>
+          <PointAndCoupon />
         </div>
 
         <div className='side-footer'>

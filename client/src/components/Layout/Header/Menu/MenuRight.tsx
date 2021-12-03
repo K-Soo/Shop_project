@@ -98,6 +98,7 @@ export default function MenuRight() {
       customCookie.remove('access_token');
       localStorage.removeItem('basket');
       localStorage.removeItem('guest');
+      localStorage.removeItem('order');
       return router.push(PAGE.MAIN.path);
     }
   }

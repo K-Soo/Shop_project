@@ -90,7 +90,6 @@ export default function Login({ type }: ILogin) {
   const [orderFind, setOrderFind] = useState(initOrderFind);
   const [users, setUsers] = useState<TUusers>('member');
   const [rememberId, setRememberId] = useState(false);
-  console.log('rememberId: ', rememberId);
   const { action } = useAppContext();
   const router = useRouter();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -101,6 +100,7 @@ export default function Login({ type }: ILogin) {
       setRememberId(true);
       setLogin({ ...login, userId: existId });
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useDidMountEffect(() => {
@@ -166,7 +166,7 @@ export default function Login({ type }: ILogin) {
     setUsers(className as TUusers);
   };
 
-  const handleRememberId = (e) => {
+  const handleRememberId = (e: React.ChangeEvent<HTMLInputElement>) => {
     const isChecked = e.target.checked;
     if (isChecked) {
       setRememberId(isChecked);
