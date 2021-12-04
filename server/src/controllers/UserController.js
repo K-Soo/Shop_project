@@ -87,7 +87,6 @@ const guestCheckout = async (req, res, next) => {
   const { orderPassword } = req.body
   result.orderNum = orderNumber();
   const guestOrder = new GuestOrder(result);
-  console.log('guestOrder: ', guestOrder);
   await guestOrder.setOrderPassword(orderPassword);
   guestOrder.save();
   try {
@@ -106,11 +105,8 @@ const checkout = async (req, res, next) => {
   result.orderNum = orderNumber();
 
   const idArray = Products.map(d => mongoose.Types.ObjectId.createFromHexString(d._id));
-  const seqArray = Products.map(d => (d.seq));
-  const test = [1, 2, 3,]
   try {
     const target = await User.findByUserId(userId);
-    console.log('test: ', test);
     if (target) {
       const promises = Products.map(async obj =>
         await Product.findOneAndUpdate(

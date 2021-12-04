@@ -3,35 +3,6 @@ import User from '../models/User';
 import Basket from '../models/Basket';
 import mongoose from 'mongoose';
 
-const list = async (req, res, next) => {
-  // console.log('req: ', req.headers);
-  const { userId, password } = req.body;
-  try {
-    // id check
-    const exist = await User.findByUserId(userId);
-    if (!exist) return throwError({ statusCode: 401, msg: '아이디를 확인해주세요.' });
-    // password check
-    const valid = await exist.checkPassword(password);
-    console.log('valid: ', valid);
-    if (!valid) return throwError({ statusCode: 401 })
-
-    const token = exist.generateToken();
-
-    res.cookie('access_token', token, {
-      maxAge: 1000 * 60 * 2,
-      httpOnly: false,
-      sameSite: "none",
-      secure: true,
-    });
-
-    return res.json({ success: true, message: "로그인 성공", token });
-
-  } catch (error) {
-    next(error);
-    console.log('error-logIn: ', error);
-  }
-};
-
 const update = async (req, res, next) => {
   const { userId, items } = req.body
   try {
@@ -93,7 +64,6 @@ const remove = async (req, res, next) => {
 };
 
 export {
-  list,
   update,
   remove,
   updateProductQty

@@ -26,7 +26,6 @@ const S = {
 
 export default function MainContainer(props: IMainContainer) {
   const router = useRouter();
-  console.log('router: ', router);
 
   return (
     <S.MainContainer >

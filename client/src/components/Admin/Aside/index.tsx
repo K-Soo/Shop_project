@@ -120,7 +120,9 @@ export default function Aside() {
 
   const handleList = (e: React.MouseEvent<HTMLLIElement>) => {
     const { name } = (e.target as HTMLLIElement).dataset;
-    if (name === '홈') router.push('/admin');
+    if(router.asPath !== '/admin' && name === '홈'){
+      router.push('/admin');
+    }
     if (name !== '홈') setNameValue(name);
   }
 

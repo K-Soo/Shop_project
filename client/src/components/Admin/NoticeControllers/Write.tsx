@@ -103,7 +103,6 @@ export default function Write() {
           alert('등록이 완료되었습니다.');
           router.push(PAGE.ADMIN_NOTICE.path);
         }
-        console.log('obj: ', obj);
       } catch (error) {
         console.log('error: ', error);
         alert('잠시후 다시시도해주세요')

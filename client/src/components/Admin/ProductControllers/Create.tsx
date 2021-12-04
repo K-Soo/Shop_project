@@ -138,7 +138,6 @@ export default function Create(props: ICreate) {
       return alert('색상을 선택해주세요');
     }
     const exist = state.create.product_colors.filter(d => d === color);
-    console.log('exist: ', exist);
     if (exist.length) {
       setColor(colorInit)
       return alert('색상이 중복되었습니다.');

@@ -1,6 +1,7 @@
 import Product from '../models/Product';
 import throwError from '../../src/error/throwError';
 import ProductReview from '../models/ProductReview';
+import mongoose from 'mongoose';
 
 const list = async (req, res, next) => {
   const { type, page } = req.query;
@@ -88,6 +89,32 @@ const updateProductClose = async (req, res, next) => {
   }
 };
 
+const updateProductColor = async (req, res, next) => {
+  console.log('req: ', req.body);
+  const idArray = req.body.map(d => mongoose.Types.ObjectId.createFromHexString(d));
+  try {
+    // color_name: "옐로우골드",
+    // hex_value: "#ffd900"
+    // color_name: "로즈골드",
+    // hex_value: "#c8a4b5"
+    // color_name: "화이트골드",
+    // hex_value: "#fffff4"
+
+    const exist = await Product.updateMany(
+      { _id: { $in: idArray } },
+      { $push: { product_colors: {
+        color_name: "옐로우골드",
+        hex_value: "#ffd900"
+      } } },
+      )
+      console.log('exist: ', exist);
+    res.json({ success: true });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
 const getProductItem = async (req, res, next) => {
   const { id, product_type } = req.params;
   try {
@@ -125,6 +152,6 @@ const Images = async (req, res, next) => {
 };
 
 
-export { list, getProductLists,getProductListsA, getProductItem, createProduct, Images, updateProductQty, updateProductClose }
+export { list, getProductLists,getProductListsA, getProductItem, createProduct, Images, updateProductQty, updateProductClose,updateProductColor }
 
 

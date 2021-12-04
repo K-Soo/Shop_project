@@ -4,6 +4,7 @@ import Button from 'components/style/Button';
 
 interface ICtrBox {
   handleCloseProducts: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  handleColor: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
 const S = {
@@ -21,10 +22,11 @@ const S = {
   `,
 }
 
-export default function CtrBox({handleCloseProducts}:ICtrBox) {
+export default function CtrBox({ handleCloseProducts ,handleColor}: ICtrBox) {
   return (
     <S.CtrBox >
-      <Button onClick={handleCloseProducts}>판매마감</Button>
+      {/* <Button white onClick={handleColor}>색상추가</Button> */}
+      <Button black onClick={handleCloseProducts}>판매마감</Button>
     </S.CtrBox>
   );
 }

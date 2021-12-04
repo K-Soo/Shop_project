@@ -98,7 +98,6 @@ const S = {
 
 export default function PaymentInfo({ items }: IPaymentInfo) {
   const router: NextRouter = useRouter();
-  console.log('router: ', router);
 
   return (
     <S.PaymentInfo>

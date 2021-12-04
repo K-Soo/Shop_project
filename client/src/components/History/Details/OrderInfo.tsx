@@ -43,7 +43,6 @@ const S = {
 }
 
 export default function OrderInfo({ items }: IOrderInfo) {
-  console.log('items: ', items);
   return (
     <S.OrderInfo>
       {items && items.map(d => (

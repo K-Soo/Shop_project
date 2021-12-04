@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState,useEffect } from "react";
 import styled from "styled-components";
 import Head from "next/head";
 import AdminContainer from 'containers/AdminContainer';
@@ -32,8 +32,11 @@ export default function ProductsListPage(props: any) {
   const { state, action } = useAdminContext();
   const [targetItem, setTargetItem] = useState<null | IProduct[]>(null);
   const [checkedItem, setCheckedItem] = useState<null | string[]>([]);
+  const [AllCheck, setAllCheck] = useState(false);
   const changeQty = useChangeQty();
   const closeProducts = useSelectCloseProducts();
+
+  console.log('checkedItem: ', checkedItem);
 
   const selectFc = useCallback((data: IProduct[]) => {
     return data.filter(el => el.category === state.filter.category);
@@ -47,6 +50,11 @@ export default function ProductsListPage(props: any) {
       select: state.filter.category !== 'all' ? selectFc : undefined,
     });
 
+  useEffect(() => {
+    setCheckedItem([]);
+    setAllCheck(false);
+  },[state.filter.product_type,state.filter.category])
+    
   const handleCount = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
     let find = data.filter(el => el._id === name);
@@ -78,13 +86,15 @@ export default function ProductsListPage(props: any) {
   }, [checkedItem]);
 
   const handleAllChecked = useCallback((e) => {
-    const { checked, name } = e.target;
-    if (name === 'checkAll' && checked) {
+    const { checked } = e.target;
+    if (checked) {
       const ids: string[] = [];
       data.map(d => ids.push(d._id));
       setCheckedItem(ids);
-    } else if (name === 'checkAll' && !checked) {
+      setAllCheck(true);
+    } else {
       setCheckedItem([]);
+      setAllCheck(false);
     }
   }, [data]);
 
@@ -93,6 +103,20 @@ export default function ProductsListPage(props: any) {
       return alert('상품을 먼저 선택해주세요');
     }
     closeProducts(checkedItem);
+  }
+
+  const handleColor = async() => {
+    if (!checkedItem.length) {
+      return alert('상품을 먼저 선택해주세요');
+    }
+    try {
+      const res = await Put.updateProductColor(checkedItem);
+      if(res.success){
+        alert('완료')
+      }
+    } catch (error) {
+      console.log('error: ', error);
+    }
   }
 
   return (
@@ -104,7 +128,7 @@ export default function ProductsListPage(props: any) {
         <ProductControllers>
           <Block>
             <PageTitle TitleText='상품 리스트 / 수정' />
-            <Filter className='filter' handleAllChecked={handleAllChecked} />
+            <Filter className='filter' handleAllChecked={handleAllChecked} AllCheck={AllCheck}/>
             {isSuccess && (
               <List
                 className='list'
@@ -116,9 +140,8 @@ export default function ProductsListPage(props: any) {
               />
             )}
             {isLoading && <div>loading</div>}
-            <CtrBox handleCloseProducts={handleCloseProducts} />
+            <CtrBox handleCloseProducts={handleCloseProducts} handleColor={handleColor}/>
           </Block>
-
         </ProductControllers>
       </AdminContainer>
     </>

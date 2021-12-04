@@ -52,7 +52,7 @@ export default function List({ idx }: IList) {
       <Guide />
       <FormFieldset title={isSuccess && `주문 상품 정보 (${responseData.total})`}>
         <Content items={responseData} isLoading={isLoading} isSuccess={isSuccess} />
-        {isSuccess && responseData.data.length && (
+        {isSuccess && responseData.data.length > 0 && (
           <>
           <Pagination maxPages={responseData.maxPages} isFetching={isFetching} />
           </>

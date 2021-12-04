@@ -147,7 +147,12 @@ export default function List({ className, items, handleCount, handleQty, handleC
               </div>
 
               <div className='item__check-box'>
-                <CheckBox id='select-check' name={d._id} checked={checkedItem.includes(d._id)} value={d._id} onChange={handleChecked} />
+                <CheckBox 
+                id='select-check' 
+                name={d._id} 
+                checked={checkedItem.includes(d._id)} 
+                value={d._id} 
+                onChange={handleChecked} />
               </div>
 
             </li>

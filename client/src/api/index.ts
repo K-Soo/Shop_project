@@ -70,6 +70,7 @@ export const Put = {
   updateUserBasketQty: (idx: string, productId: string, body: any) => requests.put(`/api/users/basket/${idx}/${productId}`, body),
   updateProductQty: (idx: string, body: any) => requests.put(`/api/products/qty/${idx}`, body),
   updateProductClose: (body: any) => requests.put('/api/products/close', body),
+  updateProductColor: (body: any) => requests.put('/api/products/color', body),
   updateUserInfo: (idx: string, body: any) => requests.put(`/api/users/${idx}`, body),
   deleteManyNotice: (body: any) => requests.put(`/api/admin/notice`, body),
   updatePassword: (body: any) => requests.put('/api/users/find-password', body),

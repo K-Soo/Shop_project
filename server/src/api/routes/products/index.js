@@ -20,6 +20,7 @@ product.post('/image', (req, res, next) => {
 }, ProductController.Images);
 
 product.put('/close', ProductController.updateProductClose); //상품마감
+product.put('/color', ProductController.updateProductColor); //색상 업데이트
 product.put('/qty/:idx', ProductController.updateProductQty); // 단일상품 수량변경
 product.get('/admin/:product_type', ProductController.getProductListsA); // 상품타입에 따라 모든상품을 가져온다
 

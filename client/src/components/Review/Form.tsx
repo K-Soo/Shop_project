@@ -85,10 +85,8 @@ const starArray = ['★', '★★', '★★★', '★★★★', '★★★★�
 export default function Form({ }: IForm) {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [textLength,setTextLength] = useState(0);
-  console.log('editorState+++++: ', editorState);
   const strCnt = convertToRaw(editorState.getCurrentContent()).blocks[0].text.length; // 문자열 길이
   const test = convertToRaw(editorState.getCurrentContent()).blocks; // 문자열 길이
-  console.log('test: ', test);
   const App = useAppContext();
   const Review = useReviewContext();
   const idx = App.state?.userInfo?.idx;

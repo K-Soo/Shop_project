@@ -65,7 +65,6 @@ const S = {
 
 export default function List({ items, handleCheckBox, checkedArray }: IList) {
   const router = useRouter();
-  console.log('router: ', router);
   return (
     <S.List>
       <table>

@@ -225,7 +225,7 @@ export default function Register() {
       }
       setStatus(res.success);
     } catch (error) {
-      console.log('Register-error: ', error);
+      console.error('Register-error: ', error);
     }
   };
 

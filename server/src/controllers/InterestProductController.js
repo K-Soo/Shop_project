@@ -40,7 +40,6 @@ const update = async (req, res, next) => {
   const { userId, name } = req.body;
   try {
     const target = await User.findByUserId(userId);
-    console.log('target: ', target);
     const exist = await InterestProduct.findOne({ InterestProductOwner: target.id });
 
     const findProduct = await Product.findOne({name});

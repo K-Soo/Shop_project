@@ -355,7 +355,6 @@ export default function ProductInfo({ item }: IProductInfo) {
   const [showSpec, setShowSpec] = useState<boolean>(false);
   const [isSoldOut, setIsSoldOut] = useState<boolean>(false);
   const [selectItems, setSelectItems] = useState<IBasketItem[]>([]);
-  console.log('selectItems: ', selectItems);
   const [interestProduct, setInterestProduct] = useState<string>('');
   const { action } = useBasketContext();
   const router = useRouter();

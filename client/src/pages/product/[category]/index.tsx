@@ -39,7 +39,11 @@ export default function ProductType() {
             </Link>
           ))}
         </Breadcrumb>
-        <Product item={productData} isLoading={isLoading} isSuccess={isSuccess} />
+        <Product 
+          item={productData.length > 0 && productData} 
+          isLoading={isLoading} 
+          isSuccess={isSuccess} 
+        />
       </MainContainer>
     </>
   );

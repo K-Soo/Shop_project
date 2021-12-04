@@ -3,7 +3,6 @@ import { BasketController } from '../../../../controllers';
 
 const basket = express.Router();
 
-basket.get('/', BasketController.list);
 basket.put('/', BasketController.update);
 basket.delete('/:user/:id', BasketController.remove);
 basket.put('/:idx/:productId', BasketController.updateProductQty);

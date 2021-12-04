@@ -70,7 +70,12 @@ const S = {
             justify-content: space-between;
             &__name{
               display: flex;
-              align-items: flex-start;
+              align-items: center;
+              a{
+                &:hover{
+                  text-decoration: underline;
+                }
+              }
             }
           }
           .consumer-price{

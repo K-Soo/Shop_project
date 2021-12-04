@@ -35,7 +35,6 @@ const TodaySales = async (req, res, next) => {
 const CurrentTotalUsedPoints = async (req, res, next) => {
   try {
     let exist = await History.find({}).lean();
-    console.log('exist: ', exist);
 
     if (exist) {
       const result = exist.reduce((acc, cur) => {
@@ -59,7 +58,6 @@ const CurrentTotalUsedPoints = async (req, res, next) => {
 };
 
 const statistics = async (req, res, next) => {
-  console.log('req: ', req.query);
   const { type } = req.query;
 
   const dateArray = weekDate(7);

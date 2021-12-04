@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import BestProducts from 'components/Product/BestProducts';
 import ProductList from 'components/Product/ProductList';
@@ -6,12 +6,10 @@ import ProductCategory from 'components/Product/ProductCategory';
 import { PRODUCT, CategoryEnum } from 'constants/product';
 import { useRouter } from 'next/router';
 import ProductSortMenu from 'components/Common/ProductSortMenu';
-import { useAppContext } from 'context/AppProvider';
 import { useSelectCategory } from 'hooks/useSelectCategory';
 import { useSort } from 'hooks/useSort';
 import { IProduct } from 'interfaces/IProduct';
 import Loading from 'components/Loading';
-
 
 interface IProductProps {
   item: IProduct[];
@@ -33,7 +31,6 @@ export default function Product({ item, isLoading, isSuccess }: IProductProps) {
   const currentProduct: categoryType = CategoryEnum[keyName]
   const selectedItem = useSelectCategory(item);
   const { setSort, sortingData } = useSort(selectedItem);
-  console.log('sortingData: ', sortingData);
 
   return (
     <S.Product>

@@ -78,7 +78,7 @@ export default function DeliveryInfo({ items, handlePrint }: IDeliveryInfo) {
   const router: NextRouter = useRouter();
   const handleRoute = () => {
     if (router.pathname !== "/users/history/guest-detail/[idx]") {
-      router.back();
+      router.push(PAGE.HISTORY.path);
     } else {
       router.push(PAGE.MAIN.path);
     }
@@ -113,7 +113,8 @@ export default function DeliveryInfo({ items, handlePrint }: IDeliveryInfo) {
         </table>
       ))}
       <S.ButtonBox>
-        <Button className='print' height='20px' white width='100px' onClick={handlePrint}>프린트</Button>
+        <Button className='print' height='30px' white width='100px' onClick={handlePrint}>주문내역 출력</Button>
+
         <Button className='back' height='30px' black width='120px' onClick={handleRoute}>
           <i><Icon name='back' /></i>
           {router.pathname !== "/users/history/guest-detail/[idx]" && <span>주문목록 보기</span>}

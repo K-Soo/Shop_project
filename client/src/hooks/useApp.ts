@@ -121,9 +121,7 @@ const generateAction = (update: (recipe: (draft: IAppState) => void) => void) =>
   const setGlobalToggle = (e:any) => {
     update((draft) => {
       const dataSetName = e.target?.dataset?.name;
-      console.log('dataSetName: ', dataSetName);
       const tagName = e.target?.name;
-      console.log('tagName: ', tagName);
       if (dataSetName) {
         const keyArray = dataSetName.split('.');
         if(keyArray[0] === 'openMyShop' || keyArray[1] === 'openMyShop'){
@@ -224,7 +222,6 @@ const generateAction = (update: (recipe: (draft: IAppState) => void) => void) =>
     update((draft) => {
       const { name, value } = e.target as HTMLInputElement;
       let cnt = +value
-      console.log('cnt: ', cnt);
       if (!cnt) return alert('최소 주문수량은 1개 입니다.');
       if (cnt > 10) return alert('최대 주문수량은 10개 입니다.');
       if (draft.userInfo.userId) {
