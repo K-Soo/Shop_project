@@ -15,9 +15,9 @@ export default function DetailsPage(props: InferGetServerSidePropsType<typeof ge
   const router = useRouter();
   const { idx, orderNum } = router.query as { idx: string, orderNum: string };
 
-  if (props.errorCode) {
-    return <Error statusCode={props.errorCode} />
-  }
+  // if (props.errorCode) {
+  //   return <Error statusCode={props.errorCode} />
+  // }
 
   return (
     <>
@@ -51,7 +51,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   } catch (error: any) {
     return {
       props: {
-        errorCode: error.response.status,
+        errorCode: error?.response?.status,
       },
     }
   }

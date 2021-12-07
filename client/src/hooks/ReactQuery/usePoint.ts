@@ -13,6 +13,8 @@ export default function usePoint(){
   const { data, isLoading, isSuccess, isError } = useQuery<IPointInfo>([queryKeys.POINT, idx], async () => await Get.getPointInfo(idx), {
     retry: 0,
     refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
     enabled: !!idx,
     staleTime: 2000,
   });

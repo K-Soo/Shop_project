@@ -7,7 +7,7 @@ import { IProduct } from 'interfaces/IProduct';
 import ProductCard from 'components/ProductCard';
 
 interface IImageSlider {
-  item?: IProduct[]
+  item: IProduct[]
 }
 
 const S = {
@@ -62,6 +62,7 @@ export default function ImageSlider({ item }: IImageSlider) {
             product_colors={d.product_colors}
             best_product={d.best_product}
             new_product={d.new_product}
+            isList={false}
           />
         ))}
       </Slider>

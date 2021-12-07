@@ -22,7 +22,7 @@ const S = {
 export default function Information({ pointData, PointStatus, noticeData,noticeStatus }: IInformation) {
   return (
     <S.Information>
-      <QuickSettingBoard />
+      {/* <QuickSettingBoard /> */}
       <PointBoard pointData={pointData} PointStatus={PointStatus} />
       <NoticeBoard noticeData={noticeData} noticeStatus={noticeStatus}/>
     </S.Information>

@@ -78,18 +78,21 @@ UserSchema.methods.serialize = function () {
 };
 
 UserSchema.methods.generateToken = function () {
-  const payload = { // access token에 들어갈 payload
+  const payload = {
     id: this.id,
     userId: this.userId,
   };
 
-  const token = jwt.sign(
+  const result = jwt.sign(
     payload,
     config.JWT_SECRET_KEY,
     {
-      expiresIn: 10,
+      // expiresIn: '30m',
+      expiresIn: '30m',
     }
   );
+  const token  = `Bearer ${result}`;
+
   return token;
 };
 

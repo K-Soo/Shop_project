@@ -132,33 +132,35 @@ export default function RightSide({ directionSwap, onClick }: IRightSide) {
 
   return (
     <S.RightSide openSideMenu={state.openSideMenu} directionSwap={directionSwap}>
-      <S.Container>
-        <div>
-          <S.Panel directionSwap={directionSwap} openSideMenu={state.openSideMenu}>
-            <ul className='wrapper'>
-              <span>SHOP</span>
-              <li onClick={onClick}>SHOP</li>
-              <li >CART</li>
-            </ul>
-          </S.Panel>
+      {!directionSwap && (
+        <>
+          <S.Container>
+            <div>
+              <S.Panel directionSwap={directionSwap} openSideMenu={state.openSideMenu}>
+                <ul className='wrapper'>
+                  <span>SHOP</span>
+                  <li onClick={onClick}>SHOP</li>
+                  <li >CART</li>
+                </ul>
+              </S.Panel>
 
-          <S.ImageBanner>
-            <img className='main-logo' src="/images/41p61tShGfL._AC_.jpg" alt='side_left_main_logo' />
-          </S.ImageBanner>
+              <S.ImageBanner>
+                <img className='main-logo' src="/images/41p61tShGfL._AC_.jpg" alt='side_left_main_logo' />
+              </S.ImageBanner>
 
-          <TitleLine text='MY SHOPPING' />
-          <QuickIcon lists={QUICK_ICON_RIGHT} />
+              <TitleLine text='MY SHOPPING' />
+              <QuickIcon lists={QUICK_ICON_RIGHT} />
+              <TitleLine text='POINT / COUPON' />
+              <PointAndCoupon />
+            </div>
 
-          <TitleLine text='POINT / COUPON' />
-          <PointAndCoupon />
-        </div>
-
-        <div className='side-footer'>
-          <Info />
-          <Copyright />
-        </div>
-
-      </S.Container>
+            <div className='side-footer'>
+              <Info />
+              <Copyright />
+            </div>
+          </S.Container>
+        </>
+      )}
     </S.RightSide>
   )
 };

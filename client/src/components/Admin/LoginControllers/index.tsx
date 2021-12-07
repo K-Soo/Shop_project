@@ -49,8 +49,9 @@ export default function LoginControllers() {
     }
     try {
       const res = await Post.login(obj);
+      console.log('res: ', res);
       if(res.success){
-        customCookie.set("access_token", res.token);
+        customCookie.set("access_token_a", res.token);
         router.push('/admin');
       }
     } catch (error) {

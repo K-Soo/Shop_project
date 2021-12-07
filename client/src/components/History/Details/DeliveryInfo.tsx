@@ -17,7 +17,6 @@ const S = {
     font-size: 12px;
     tbody{
       tr{
-        border: 1px solid red;
         th{
           background-color: #f9f9f9;
           font-weight: 400;
@@ -75,6 +74,7 @@ const S = {
 }
 
 export default function DeliveryInfo({ items, handlePrint }: IDeliveryInfo) {
+  console.log('items: ', items);
   const router: NextRouter = useRouter();
   const handleRoute = () => {
     if (router.pathname !== "/users/history/guest-detail/[idx]") {
@@ -94,20 +94,28 @@ export default function DeliveryInfo({ items, handlePrint }: IDeliveryInfo) {
           </colgroup>
           <tbody>
             <tr>
-              <th>주문번호</th>
-              <td>{d.orderNum}</td>
-            </tr>
-            <tr>
-              <th>주문일자</th>
-              <td>{d.createdAt}</td>
-            </tr>
-            <tr>
-              <th>주문자</th>
+              <th>받으시는분</th>
               <td>{d.userName}</td>
             </tr>
             <tr>
-              <th>주문처리상태</th>
-              <td>결제완료</td>
+              <th>우편번호</th>
+              <td>{d.addr.zoneCode}</td>
+            </tr>
+            <tr>
+              <th>주소</th>
+              <td>{d.addr.addr1}</td>
+            </tr>
+            <tr>
+              <th>상세주소</th>
+              <td>{d.addr.addr2}</td>
+            </tr>
+            <tr>
+              <th>휴대전화</th>
+              <td>{d.phone}</td>
+            </tr>
+            <tr>
+              <th>배송메세지</th>
+              <td>{d.deliveryMessage || '없음'}</td>
             </tr>
           </tbody>
         </table>

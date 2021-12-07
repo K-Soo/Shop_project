@@ -10,21 +10,27 @@ import { CategoryEnum } from 'constants/product';
 import PAGE from "constants/path";
 import Breadcrumb from "components/Common/Breadcrumb";
 import Link from "next/link";
+import BestProducts from 'components/Product/BestProducts';
+import ProductCategory from 'components/Product/ProductCategory';
+
+export type categoryType = `${CategoryEnum}`;
+
 
 export default function ProductType() {
   const router: NextRouter = useRouter();
   const { category } = router.query as { category: string };
+  const keyName = router.query.category as keyof typeof CategoryEnum
+  const currentProduct: categoryType = CategoryEnum[keyName]
   const fallback: Array<null> = [];
 
   const { data: productData = fallback, isLoading, isSuccess, isError, error } = useQuery<IProduct[], Error>(['product', category], async () => await Get.products(category), {
     retry: 0,
     refetchOnWindowFocus: false,
   });
-
+  
   if (isError) {
     return <h1>error..</h1>
   }
-
   return (
     <>
       <Head>
@@ -33,16 +39,25 @@ export default function ProductType() {
       </Head>
       <MainContainer >
         <Breadcrumb>
-          {[PAGE.MAIN, {path: `/product/${category}`,tag: `${CategoryEnum[category]}`}].map(({ path, tag }) => (
+          {[PAGE.MAIN, { path: `/product/${category}`, tag: `${CategoryEnum[category]}` }].map(({ path, tag }) => (
             <Link key={path} href={path}>
               {tag}
             </Link>
           ))}
         </Breadcrumb>
-        <Product 
-          item={productData.length > 0 && productData} 
-          isLoading={isLoading} 
-          isSuccess={isSuccess} 
+        <ProductCategory
+          currentProduct={currentProduct}
+          keyName={keyName}
+        />
+        <BestProducts 
+          item={productData} 
+          isLoading={isLoading}
+          isSuccess={isSuccess}
+        />
+        <Product
+          item={productData.length > 0 && productData}
+          isLoading={isLoading}
+          isSuccess={isSuccess}
         />
       </MainContainer>
     </>

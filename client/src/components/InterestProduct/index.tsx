@@ -16,6 +16,7 @@ const S = {
 export default function InterestProduct() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const { state: { userInfo:{idx} } } = useAppContext();
+  const queryClient = useQueryClient();
   const { data = [], isLoading, isSuccess, isError, error, isFetching } = useQuery([queryKeys.INTEREST_PRODUCT,idx, currentPage], async () => await Get.getInterestProductList(idx, currentPage), {
     retry: 0,
     keepPreviousData: false,
@@ -30,11 +31,18 @@ export default function InterestProduct() {
         try {
           const res = await Delete.deleteInterestProduct(idx, name);
           if(res.success) alert('삭제되었습니다.');
+          queryClient.invalidateQueries([queryKeys.INTEREST_PRODUCT, idx,currentPage])
         } catch (error) {
           console.error('remove-error: ', error);
         }
       }
   }, [idx]);
+
+  if(isError){
+    return(
+      <div>error</div>
+    )
+  }
 
 return (
     <S.ProductList>

@@ -72,7 +72,6 @@ const generateAction = (update: (recipe: (draft: IUseBasketState) => void) => vo
 
 const useBasket = (props: any): IUseBasket => {
   const [state, setAppState] = useState(() => initializer(props));
-  // console.log('useBasket state: ', state.basket);
   const update = (recipe: (draft: IUseBasketState) => void) =>
     setAppState((prev) => produce(prev, recipe));
   const action = generateAction(update);

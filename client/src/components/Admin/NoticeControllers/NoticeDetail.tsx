@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import PageTitle from 'components/Common/PageTitle';
 import { TItems } from 'interfaces/INotice';
 import Button from 'components/style/Button'
 import { useRouter, NextRouter } from 'next/router';
@@ -56,7 +55,6 @@ export default function NoticeDetail({item}:INoticeDetail) {
 
   return (
     <S.NoticeDetail>
-      <PageTitle TitleText='공지사항' />
       <S.Content>
         <div className='title-box'>
           <p>제목</p>

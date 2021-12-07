@@ -1,15 +1,15 @@
-import React from 'react';
+import React,{useState} from 'react';
 import styled from 'styled-components';
-import BestProducts from 'components/Product/BestProducts';
 import ProductList from 'components/Product/ProductList';
-import ProductCategory from 'components/Product/ProductCategory';
-import { PRODUCT, CategoryEnum } from 'constants/product';
+import { CategoryEnum } from 'constants/product';
 import { useRouter } from 'next/router';
 import ProductSortMenu from 'components/Common/ProductSortMenu';
 import { useSelectCategory } from 'hooks/useSelectCategory';
 import { useSort } from 'hooks/useSort';
 import { IProduct } from 'interfaces/IProduct';
 import Loading from 'components/Loading';
+import { useAppContext } from 'context/AppProvider';
+import useDidMountEffect from 'hooks/useDidMountEffect';
 
 interface IProductProps {
   item: IProduct[];
@@ -26,30 +26,46 @@ const S = {
 }
 
 export default function Product({ item, isLoading, isSuccess }: IProductProps) {
+  console.log('0000000000000000000000: ', item);
   const router = useRouter();
-  const keyName = router.query.category as keyof typeof CategoryEnum
-  const currentProduct: categoryType = CategoryEnum[keyName]
+  const { state } = useAppContext();
   const selectedItem = useSelectCategory(item);
+  const [filtered, setFiltered] = useState<IProduct[]>([]);
   const { setSort, sortingData } = useSort(selectedItem);
+
+  // useDidMountEffect(() => {
+  //   if(item){
+  //     if (state.targetCategory === 'all') {
+  //       setFiltered(item);
+  //     } else {
+  //       setFiltered(item.filter(d => d.category === state.targetCategory));
+  //     }
+  //   }
+  // }, [state.targetCategory, item]);
+
+  useDidMountEffect(() => {
+    if(item){
+      if (state.targetCategory === 'all') {
+        setFiltered(item);
+      } else {
+        setFiltered(item.filter(d => d.category === state.targetCategory));
+      }
+    }
+  }, [state.targetCategory, item]);
+
 
   return (
     <S.Product>
-      <ProductCategory
-        currentProduct={currentProduct}
-        keyName={keyName}
-      />
-
       {isLoading && (
         <Loading
           isLoading={isLoading}
           height={300}
-          text='상품 갱신중...'
+          text=''
         />
       )}
 
       {isSuccess && (
         <>
-          <BestProducts item={item} />
           <ProductSortMenu
             itemCount={selectedItem?.length}
             setSort={setSort}

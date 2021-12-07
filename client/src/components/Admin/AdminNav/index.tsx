@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import HamburgerIcon from 'components/Common/HamburgerIcon';
 import { useAdminContext } from 'context/AdminProvider';
 import Image from "next/image";
 import Link from 'next/link';
@@ -8,9 +7,8 @@ import PAGE from 'constants/path';
 import Icon from 'components/Icon/Icon';
 import UserModal from 'components/Admin/AdminNav/UserModal';
 import ConfigModal from 'components/Admin/AdminNav/ConfigModal';
-interface IAdminNav {
-
-}
+import { customCookie } from 'utils';
+import { NextRouter, useRouter } from 'next/router';
 
 const S = {
   AdminNav: styled.div`
@@ -80,11 +78,12 @@ const S = {
   `,
 }
 
-export default function AdminNav({ }: IAdminNav) {
+export default function AdminNav() {
   const { state, action } = useAdminContext();
   const userName = 'admin';
   const [openUserModal, setOpenUserModal] = useState(false);
   const [openConfigModal, setOpenConfigModal] = useState(false);
+  const router: NextRouter = useRouter();
 
   const handleUserModal = () => {
     if (openConfigModal) setOpenConfigModal(!openConfigModal);
@@ -95,7 +94,10 @@ export default function AdminNav({ }: IAdminNav) {
     if (openUserModal) setOpenUserModal(!openUserModal);
     setOpenConfigModal(!openConfigModal);;
   }
-
+  const handleLogout = () => {
+    customCookie.remove('access_token_a');
+    router.push('/admin/login');
+  }
   return (
     <S.AdminNav>
       <S.Logo>
@@ -113,14 +115,17 @@ export default function AdminNav({ }: IAdminNav) {
             <Icon name='arrowNoTailBottom' />
           </i>
         </li>
-        <li className='config' onClick={handleConfigModal}>
+        {/* <li className='config' onClick={handleConfigModal}>
           <i>
             <Icon name='config' />
           </i>
-        </li>
+        </li> */}
       </S.UserInfo>
-      <UserModal openUserModal={openUserModal} />
-      <ConfigModal openConfigModal={openConfigModal} />
+      <UserModal 
+        openUserModal={openUserModal} 
+        handleLogout={handleLogout}
+      />
+      {/* <ConfigModal openConfigModal={openConfigModal} /> */}
     </S.AdminNav>
   );
 }

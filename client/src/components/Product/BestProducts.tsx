@@ -2,10 +2,12 @@ import React, { useCallback } from "react";
 import styled from "styled-components";
 import ImageSlider from 'components/Common/ImageSlider';
 import { IProduct } from 'interfaces/IProduct';
-import TitleLine from 'components/SideMenu/common/TitleLine';
+import Loading from 'components/Loading';
 
 interface IBestProducts {
   item?: IProduct[];
+  isLoading: boolean;
+  isSuccess: boolean;
 }
 
 const S = {
@@ -16,14 +18,22 @@ const S = {
   `,
 }
 
-export default function BestProducts({ item }: IBestProducts) {
+export default function BestProducts({ item, isLoading, isSuccess }: IBestProducts) {
   const bestItems = useCallback(() => {
     return item?.filter(d => d.best_product && d.qty >= 1);
   }, [item]);
-
   return (
     <S.BestProducts>
-      <ImageSlider item={bestItems()} />
+      {isLoading && (
+        <Loading
+          isLoading={isLoading}
+          height={300}
+          text=''
+        />
+      )}
+      {isSuccess && (
+        <ImageSlider item={bestItems()} />
+      )}
     </S.BestProducts>
   );
 }

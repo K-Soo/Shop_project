@@ -2,7 +2,7 @@ import { IProduct } from 'interfaces/IProduct';
 import { useMutation, useQueryClient, UseMutateFunction } from 'react-query';
 import { queryKeys } from 'constants/queryKeys';
 import { useAdminContext } from 'context/AdminProvider';
-import { Put } from "api";
+import { Put,Delete } from "api";
 import { useAppContext } from 'context/AppProvider';
 
 export function useChangeQty(): UseMutateFunction<
@@ -78,3 +78,4 @@ export function useDeleteNotice(): UseMutateFunction<
   });
   return mutate;
 }
+type Tparams = {idx:string,name: string};

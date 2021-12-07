@@ -71,13 +71,13 @@ export default function ConfigModal({ openConfigModal }: IConfigModal) {
         <ul className='list'>
           <li className='list__item'>
             <FormControlLabel
-              label={state.isWhite ? 'Dark Mode' : 'White Mode'}
+              label={state.isWhite ? 'White Mode' : 'Dark Mode'}
               labelPlacement="start"
               control={<Switch
                 onChange={handleColor}
-                defaultChecked
                 size="small"
                 name='isWhite'
+                checked={state.isWhite}
               />}
             />
           </li>

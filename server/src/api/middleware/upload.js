@@ -23,7 +23,7 @@ const fileFilter = (req, file, cb) => {
   if(file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'image/jpg'){
       cb(null, true)
   }else{
-      cb(new Error('이미지파일만 업로드 가능합니다.'), false)
+      cb(new Error('jpeg,png,jpg 파일만 업로드 가능합니다.'), false)
   }
 };
 

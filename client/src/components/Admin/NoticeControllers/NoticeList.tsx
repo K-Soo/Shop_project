@@ -1,6 +1,5 @@
 import React, { useState, useCallback } from "react";
-import styled from "styled-components";
-import PageTitle from 'components/Common/PageTitle';
+import styled,{css} from "styled-components";
 import List from 'components/Board/Notice/List';
 import Pagination from 'components/Pagination';
 import { useAppContext } from 'context/AppProvider';
@@ -11,9 +10,16 @@ import useNotice from 'hooks/ReactQuery/useNotice';
 import {Put} from 'api';
 import { useSnackbar } from 'notistack';
 import { useDeleteNotice } from 'hooks/ReactQuery/mutations';
+import { useAdminContext } from 'context/AdminProvider';
 
 const S = {
-  NoticeList: styled.div`
+  NoticeList: styled.div<{isWhite:boolean}>`
+    ${({ isWhite }) => !isWhite && css`
+      *{
+       color: #000 !important;
+       transition: color 0.3s ease;
+      }
+    `}
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -37,6 +43,7 @@ export default function NoticeList() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const { data, isLoading, isSuccess, isError, isFetching } = useNotice();
   const deleteNotice = useDeleteNotice();
+  const { state, action } = useAdminContext();
 
   const handleCheckBox = useCallback((e) => {
     const { value, checked } = e.target
@@ -61,9 +68,8 @@ export default function NoticeList() {
   if (isLoading) return <div>loading</div>
 
   return (
-    <S.NoticeList>
+    <S.NoticeList isWhite={state.isWhite}>
       <div>
-        <PageTitle TitleText='공지사항' />
         <List items={data.items} isLoading={isLoading} handleCheckBox={handleCheckBox} checkedArray={checkedArray} />
       </div>
       <div>

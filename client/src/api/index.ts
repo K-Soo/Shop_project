@@ -1,22 +1,53 @@
 import axios, { AxiosResponse, AxiosRequestConfig } from 'axios';
-import { PostType } from '../models/post.interface';
 import { IProduct } from 'interfaces/IProduct';
-import UserInfo from '../components/Forms/UserInfo';
+import { customCookie } from 'utils';
 
-// axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
 
 const config: AxiosRequestConfig = {
   baseURL: process.env.NEXT_PUBLIC_SERVER_URL,
   withCredentials: true,
-  // headers: {
-  //   "Content-Type": "application/json",
-  //   'Access-Control-Allow-Origin': '*',
-  //   'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-  //   'Access-Control-Allow-Credentials': 'true',
-  // },
+  headers: {
+    common: {
+      // Authorization: 'AUTH_TOKEN_FROM_INSTANCE'
+    }
+    // "Content-Type": "application/json",
+    // 'Access-Control-Allow-Origin': '*',
+    // 'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+    // 'Access-Control-Allow-Credentials': 'true',
+  },
 };
 
 const instance = axios.create(config);
+
+instance.interceptors.request.use((config) => {
+  const token = customCookie.get('access_token');
+  if (token) {
+    config.headers.common['Authorization'] = token;
+  }
+  console.log('config: ', config);
+  return config;
+},
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+instance.interceptors.response.use((response) => {
+  return response;
+},
+  (error) => {
+  const status = error.response ? error.response.status : null;
+  if(status === 419){
+    alert('로그인정보가 만료되었습니다.');
+    customCookie.remove('access_token');
+    localStorage.removeItem('basket');
+    localStorage.removeItem('guest');
+    localStorage.removeItem('order');
+    return location.href = '/auth/login';
+}
+    return Promise.reject(error);
+  }
+);
 
 const responseBody = (response: AxiosResponse) => response.data;
 

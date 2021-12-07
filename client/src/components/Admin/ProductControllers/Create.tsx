@@ -16,6 +16,7 @@ import FileUpload from 'components/Common/FileUpload';
 import { useMutation } from 'react-query';
 import {TColor,IProduct} from 'interfaces/IProduct';
 import axios from 'axios';
+import { useSnackbar } from 'notistack';
 
 interface ICreate {
 
@@ -125,7 +126,7 @@ export default function Create(props: ICreate) {
   const { state, action } = useAdminContext();
   const { product_type } = state.create;
   const [color, setColor] = useState(colorInit);
-  const [content, setContent] = useState();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const handleColor = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target as HTMLInputElement;
@@ -152,6 +153,14 @@ export default function Create(props: ICreate) {
   }
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    closeSnackbar();
+    if(!state.create.product_colors.length){
+      return enqueueSnackbar('최소 1개 이상의 색상을 추가해주세요.', { variant: 'info' });
+    }
+    if(!state.create.imageUrl.length){
+      return enqueueSnackbar('이미지를 추가해주세요.', { variant: 'info' });
+    }
     if (!confirm("확인(예) 또는 취소(아니오)를 선택해주세요.")) {
       return;
     } else {
@@ -177,11 +186,11 @@ export default function Create(props: ICreate) {
     (async () => {
       try {
         const res = await Post.createProductImage(formData);
-        action.setData('create.imageUrl', res)
+        action.setData('create.imageUrl', res);
       } catch (error:any) {
         console.log('error: ', error);
         console.error('handleDrop-error: ', error);
-        // alert(error.response?.data.message);
+        alert(error.response?.data.message);
       }
     })();
   }

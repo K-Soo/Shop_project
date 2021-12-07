@@ -15,6 +15,8 @@ import { useSnackbar } from 'notistack';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import Checkbox from '@mui/material/Checkbox';
+import axios from 'axios';
+
 interface ILogin {
   type: string;
 }
@@ -116,6 +118,7 @@ export default function Login({ type }: ILogin) {
     }
     try {
       const res = await Post.login({ userId: login.userId, password: login.password });
+      console.log('res: ', res);
       if (res.success) {
         customCookie.set("access_token", res.token);
         if (res.basket?.items) action.setLocalItems(res.basket.items);

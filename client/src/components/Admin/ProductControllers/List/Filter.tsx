@@ -1,12 +1,11 @@
 import React, { useEffect } from "react";
-import styled from "styled-components";
+import styled,{css} from "styled-components";
 import Select from 'components/style/Select';
 import { NAV_MENU } from 'constants/header';
 import { PRODUCT, CategoryEnum } from 'constants/product';
 import { useAdminContext } from 'context/AdminProvider';
 import useDidMountEffect from 'hooks/useDidMountEffect';
 import CheckBox from 'components/style/CheckBox';
-
 interface IFilter {
   className?: string;
   handleAllChecked?: React.ChangeEventHandler<HTMLInputElement>;
@@ -14,7 +13,13 @@ interface IFilter {
 }
 
 const S = {
-  Filter: styled.div`
+  Filter: styled.div<{isWhite:boolean}>`
+     ${({ isWhite }) => !isWhite && css`
+      *{
+       color: #000 !important;
+       transition: color 0.3s ease;
+      }
+    `}
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -32,7 +37,7 @@ export default function Filter({ className, handleAllChecked,AllCheck }: IFilter
   const { product_type } = state.filter;
 
   return (
-    <S.Filter className={className}>
+    <S.Filter className={className} isWhite={state.isWhite}>
       <div>
         <Select name='filter.product_type' width='140' height='30' onChange={action.setFormData}>
           {Object.entries(PRODUCT).map((d) => (

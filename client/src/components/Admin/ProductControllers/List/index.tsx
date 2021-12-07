@@ -1,10 +1,12 @@
 import React, { useRef, useEffect } from "react";
-import styled from "styled-components";
+import styled,{css} from "styled-components";
 import { IProduct } from 'interfaces/IProduct';
 import Input from 'components/style/Input';
 import Button from 'components/style/Button';
 import CheckBox from 'components/style/CheckBox';
 import EmptyItem from 'components/Common/EmptyItem';
+import { useAdminContext } from 'context/AdminProvider';
+
 interface IList {
   items: IProduct[];
   className?: string;
@@ -15,7 +17,13 @@ interface IList {
 }
 
 const S = {
-  List: styled.div`
+  List: styled.div<{isWhite:boolean}>`
+    ${({ isWhite }) => !isWhite && css`
+      *{
+       color: #000 !important;
+       transition: color 0.3s ease;
+      }
+    `}
     border: 1px solid #eee;
     padding: 15px;
     background-color: #F0F3F7;
@@ -99,10 +107,13 @@ const S = {
   `,
 }
 
+
+
 export default function List({ className, items, handleCount, handleQty, handleChecked, checkedItem }: IList) {
+  const { state, action } = useAdminContext();
 
   return (
-    <S.List className={className}>
+    <S.List className={className} isWhite={state.isWhite}>
       {items.length > 0 ? (
         <ul>
           <li className='header'>

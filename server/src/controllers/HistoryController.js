@@ -3,11 +3,14 @@ import History from '../models/History';
 import mongoose from 'mongoose';
 import GuestOrder from '../models/GuestOrder';
 import throwError from '../error/throwError';
+import jwt from 'jsonwebtoken';
+import config from '../config';
 
 const list = async (req, res, next) => {
   const { idx } = req.params;
   const { page, limit } = req.query;
   const skip = Number(limit) * (Number(page) - 1);
+
   try {
     const _id = mongoose.Types.ObjectId.createFromHexString(idx);
     let total = await History.findOne({ user: _id }, { data: 1 }).lean();

@@ -1,7 +1,5 @@
 import { createContext,useContext } from "react";
 import useOrder,{orderDefaultValue} from 'hooks/useOrder';
-import { AppProps } from "next/app";
-import { InferGetServerSidePropsType, GetServerSideProps, GetServerSidePropsContext } from 'next';
 
 interface IApp {
   children: React.ReactNode;

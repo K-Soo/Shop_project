@@ -15,6 +15,7 @@ product.get('/list', ProductController.list); // 모든상품 가져옴
 
 product.post('/image', (req, res, next) => {
   upload(req, res, (err) => {
+    console.log('upload err: ', err);
     err ? throwError({ statusCode: 500,msg:'이미지등록 실패' }) : next();
   });
 }, ProductController.Images);

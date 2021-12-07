@@ -18,10 +18,9 @@ import OrderProvider from 'context/OrderProvider';
 import AdminProvider from 'context/AdminProvider';
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { SnackbarProvider } from 'notistack';
+import { NextPageContext } from "next";
 // import Slide from '@material-ui/core/Slide';
 export default function App(props: AppProps) {
-  const { state, action } = useAppContext();
-
   function queryErrorHandler(error: unknown): void {
     alert('잠시후 다시 시도해주세요');
   }
@@ -72,6 +71,7 @@ export default function App(props: AppProps) {
     </>
   );
 }
+
 App.getInitialProps = async (context: NextAppContext) => {
   const { ctx, Component } = context;
 
@@ -82,14 +82,8 @@ App.getInitialProps = async (context: NextAppContext) => {
   }
 
   const { access_token } = cookies(ctx);
-  const decodedJwt = access_token && jwt.decode(access_token) as { [key: string]: string };
-  console.log('decodedJwt: ', decodedJwt);
-  console.log('access_token: ', access_token);
-
-  let pageProps = {};
-  if (Component.getInitialProps) {
-    pageProps = await Component.getInitialProps(ctx);
-  }
+  const strToken = access_token && access_token.split('Bearer ')[1];
+  const decodedJwt = jwt.decode(strToken) as { [key: string]: string };
 
   const userId = decodedJwt ? decodedJwt.userId : '';
   const idx = decodedJwt ? decodedJwt.id : '';
@@ -99,6 +93,11 @@ App.getInitialProps = async (context: NextAppContext) => {
     idx,
   };
 
+  let pageProps = {};
+  if (Component.getInitialProps) {
+    pageProps = await Component.getInitialProps(ctx);
+  }
+
   pageProps = { ...pageProps, userInfo };
 
 
@@ -107,10 +106,6 @@ App.getInitialProps = async (context: NextAppContext) => {
   //   ctx.res.end()
   // }
   // axios.defaults.headers['ㅁㄴㅇㅁㄴㅇ'] = access_token;
-  // axios.defaults.headers['Authorization'] = `Bearer ${access_token}`;
-
-
-  // const cookie = ctx.req ? ctx.req.headers.cookie : '';
 
   // if(access_token){
   //   ctx.res.writeHead(307, { Location: '/' })

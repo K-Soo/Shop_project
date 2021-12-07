@@ -36,8 +36,8 @@ export default function ModifyPage(props: InferGetServerSidePropsType<typeof get
 
 export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
   const { access_token } = cookies(context);
-  const decodedJwt = access_token && jwt.decode(access_token) as any;
-
+  const strToken = access_token && access_token.split('Bearer ')[1];
+  const decodedJwt = access_token && jwt.decode(strToken) as any;
   if (access_token) {
     try {
       const userDetail = await Get.UserInfo(decodedJwt.id);

@@ -18,15 +18,15 @@ interface IProductCard {
   seq: number;
   name: string;
   description: string;
-  summary_description: string;
+  summary_description?: string;
   product_price: string;
-  consumer_price: string;
+  consumer_price?: string;
   imageUrl: TUrl[];
   product_colors: TColor[];
   new_product: boolean;
   best_product: boolean;
-  isList?: boolean;
-  qty: number;
+  isList: boolean;
+  qty?: number;
 }
 
 const S = {

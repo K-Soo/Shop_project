@@ -21,7 +21,7 @@ export default function ProductSearch() {
   useEffect(() => {
     const { keyword } = router.query as any;
     setFilter(keyword);
-  }, [router.query]);
+  }, [router.query,setFilter]);
 
   return (
     <S.ProductSearch>

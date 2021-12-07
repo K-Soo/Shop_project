@@ -134,6 +134,7 @@ export default function LeftSide({ directionSwap, onClick }: ILeftSide) {
     customCookie.remove('access_token');
     localStorage.removeItem('basket');
     localStorage.removeItem('guest');
+    localStorage.removeItem('order');
     return router.push(PAGE.MAIN.path);
   }
 

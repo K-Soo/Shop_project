@@ -11,10 +11,10 @@ import { NAV_MENU } from "constants/header";
 import { queryKeys } from 'constants/queryKeys';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { useAdminContext } from 'context/AdminProvider';
-import PageTitle from 'components/Common/PageTitle';
 import { IProduct } from 'interfaces/IProduct';
 import { stubFalse } from "lodash";
 import { useChangeQty, useSelectCloseProducts } from 'components/Admin/hooks/useListModify';
+import Title from 'components/style/Title';
 
 const Block = styled.div`
   height: 100%;
@@ -36,7 +36,6 @@ export default function ProductsListPage(props: any) {
   const changeQty = useChangeQty();
   const closeProducts = useSelectCloseProducts();
 
-  console.log('checkedItem: ', checkedItem);
 
   const selectFc = useCallback((data: IProduct[]) => {
     return data.filter(el => el.category === state.filter.category);
@@ -127,7 +126,7 @@ export default function ProductsListPage(props: any) {
       <AdminContainer>
         <ProductControllers>
           <Block>
-            <PageTitle TitleText='상품 리스트 / 수정' />
+            <Title level={1} margin='0 0 30px 0'>상품 리스트 / 수정</Title>
             <Filter className='filter' handleAllChecked={handleAllChecked} AllCheck={AllCheck}/>
             {isSuccess && (
               <List

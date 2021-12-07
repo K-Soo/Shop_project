@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import produce from "immer";
 import useDidMountEffect from 'hooks/useDidMountEffect';
+import { NextRouter, useRouter } from 'next/router';
+import { customCookie } from 'utils';
 
 export type TAppAction = typeof generateAction extends (...args: any[]) => infer R ? R : never;
 
@@ -9,7 +11,6 @@ export interface IUseAdmin {
   action: TAppAction;
   state: IAdminState;
 }
-
 
 export interface IAdminState {
   status: { loading: boolean };
@@ -159,6 +160,7 @@ const generateAction = (update: (recipe: (draft: IAdminState) => void) => void) 
 const useAdmin = (props: any) => {
   const [state, setAppState] = useState(() => initializer(props));
   console.log('state useAdmin: ', state);
+  const router: NextRouter = useRouter();
 
   const update = (recipe: (draft: IAdminState) => void) =>
     setAppState((prev) => produce(prev, recipe));
@@ -167,6 +169,16 @@ const useAdmin = (props: any) => {
   const action = generateAction(update);
 
   const app = { props, state, action };
+
+  useDidMountEffect(() => {
+    const path = router.asPath.split('/');
+    if(path[1] === 'admin'){
+      const exist = customCookie.get("access_token_a");
+      if(!exist){
+        router.push('/admin/login');
+      }
+    }
+  },[router.asPath]);
 
   useDidMountEffect(() => {
     if(app.state.filter.product_type){

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Link from "next/link";
 import Breadcrumb from "components/Common/Breadcrumb";
@@ -7,6 +7,8 @@ import AdminProvider from 'context/AdminProvider';
 import Section from 'components/Admin/Section';
 import Aside from 'components/Admin/Aside';
 import AdminNav from 'components/Admin/AdminNav';
+import { NextRouter, useRouter } from 'next/router';
+import { useAppContext } from 'context/AppProvider';
 
 
 interface IAdminContainer {
@@ -20,6 +22,9 @@ const S = {
 }
 
 export default function AdminContainer({ children }: IAdminContainer) {
+  const router: NextRouter = useRouter();
+  const { state: { userInfo } } = useAppContext();
+
   return (
     <S.AdminContainer >
       <Section>
