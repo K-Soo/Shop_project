@@ -7,8 +7,8 @@ import { useRouter } from 'next/router';
 interface IList {
   items: TItems[];
   isLoading: boolean;
-  handleCheckBox: React.ChangeEventHandler<HTMLInputElement>;
-  checkedArray: string[];
+  handleCheckBox?: React.ChangeEventHandler<HTMLInputElement>;
+  checkedArray?: string[];
 }
 
 const S = {

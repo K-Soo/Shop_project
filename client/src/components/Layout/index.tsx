@@ -42,6 +42,8 @@ export default function Layout(props: ILayout) {
       action.setIsFooter(false);
     }
   }, [router, action]);
+  const env = process.env.NODE_ENV
+  const name = process.env.NEXT_PUBLIC_NAME
 
   return (
     <S.Layout disable={disable}>

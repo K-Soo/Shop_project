@@ -19,16 +19,16 @@ export default function OrderFormPage(props: InferGetServerSidePropsType<typeof 
   const App = useAppContext();
   const { userDetail } = props;
 
-  // useEffect(() => {
-  //   if (!userDetail) {
-  //     if (!App.state.status.guest) {
-  //       router.push({
-  //         pathname: '/auth/login',
-  //         query: { type: 'order' },
-  //       });
-  //     }
-  //   }
-  // }, [App.state.status.guest, userDetail, router]);
+  useEffect(() => {
+    if (!userDetail) {
+      if (!App.state.status.guest) {
+        router.push({
+          pathname: '/auth/login',
+          query: { type: 'order' },
+        });
+      }
+    }
+  }, [App.state.status.guest, userDetail, router]);
 
   return (
     <>
@@ -58,11 +58,12 @@ export const getServerSideProps: GetServerSideProps = async (context: GetServerS
   // if (!access_token) {
   //   return {
   //     redirect: {
-  //       destination: '/auth/login',
+  //       destination: '/auth/login?type=order',
   //       permanent: false,
   //     }
   //   }
-  // 
+  // }
+  
   if (access_token) {
     try {
       const userDetail = await Get.UserInfo(decodedJwt.id);

@@ -57,7 +57,7 @@ export default function ProductDetail({ item }: IProductDetail) {
         userRate={reviewData && reviewData.totalRate}
         percentage={reviewData && reviewData.totalPercentage}
       />
-      <Tap text={['상품정보', '상품 후기', '문의']} reviewCnt={reviewData && reviewData.reviewCnt}>
+      <Tap text={['상품정보', '상품 후기', '문의']} reviewCnt={reviewData && reviewData.reviewC1nt}>
         <InfoTap />
         <ReviewListTap
           isSuccess={isSuccess}

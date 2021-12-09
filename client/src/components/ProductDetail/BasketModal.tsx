@@ -13,13 +13,6 @@ import { TColor, IProduct, IBasketItem } from 'interfaces/IProduct';
 import { useRouter } from "next/router";
 import { useOrderContext } from 'context/OrderProvider';
 
-const CommonIcon = css`
-  padding: 1px 5px;
-  font-size: 12px;
-  letter-spacing: 1px;
-`;
-
-
 const S = {
   BasketModal: styled.article<{ open: boolean }>`
   display: ${props => props.open ? 'block' : 'none'};
@@ -53,6 +46,9 @@ const S = {
       }
       .content{
         padding: 10px 15px;
+      }
+      .pagination{
+        padding: 0 15px;
       }
       .footer{
         padding: 0 15px;
@@ -140,9 +136,38 @@ const S = {
     flex-basis: 70px;
     width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     margin: 0 auto;
+    padding: 0 25px;
+    .wrapper{
+      display: flex;
+      align-items: center;
+      .cnt{
+        display: inline-block;
+        height: 100%;
+        width: 30px;
+        text-align: center;
+        line-height : 25px;
+        margin: 0 15px;
+        padding: 3px 8px;
+        border-radius: 8px;
+        background-color: #333;
+        color: #fff;
+      }
+      button{
+        all: unset;
+        font-size: 0;
+        cursor: pointer;
+        svg{
+          color: #333;
+          &:hover{
+            color: red;
+          }
+        }
+      }
+    }
+ 
   `,
   Footer: styled.div`
     display: flex;
@@ -153,7 +178,12 @@ const S = {
     padding: 0 25px;
     button{
       font-size: 13px;
+      font-weight: 400;
       height: 40px;
+      ${({ theme }) => theme.mobile`
+        font-size: 12px;
+        height: 30px;
+      `}
     }
     .button-group{
       display: flex;
@@ -168,18 +198,22 @@ const S = {
 }
 
 export default function BasketModal() {
-  const [basket, setBasket] = useState<IBasketItem[]>([]);
-  const Order = useOrderContext();
+  const [basketItems, setBasketItems] = useState<IBasketItem[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
   const { state, action } = useAppContext();
-  const { userId } = state.userInfo;
-
+  const Order = useOrderContext();
   const router = useRouter();
+  const LIMIT = 5;
+  const nextPage = currentPage * LIMIT;
+  const skip = LIMIT * (currentPage - 1);
+  const { userId } = state.userInfo;
+  const maxPages = Math.ceil(basketItems.length / LIMIT);
 
   useEffect(() => {
     if (userId) {
-      setBasket(state.basket.basketList);
+      setBasketItems(state.basket.basketList);
     } else {
-      setBasket(state.basket.nonMemberBasket);
+      setBasketItems(state.basket.nonMemberBasket);
     }
   }, [userId, state.basket]);
 
@@ -205,7 +239,7 @@ export default function BasketModal() {
         </S.Header>
 
         <S.Content className='content'>
-          <p className='total-cnt'>총 {basket?.length ?? 0}개의 상품이 있습니다.</p>
+          <p className='total-cnt'>총 {basketItems.length ?? 0}개의 상품이 있습니다.</p>
           <table>
             <caption>장바구니 목록 확인</caption>
             <colgroup>
@@ -221,7 +255,7 @@ export default function BasketModal() {
               </tr>
             </thead>
             <tbody>
-              {basket.length > 0 && basket.map((d, i) =>
+              {basketItems.length > 0 && basketItems.slice(skip, nextPage).map((d, i) =>
                 <tr className='row' key={i}>
                   <td className='image'>
                     <img
@@ -247,10 +281,25 @@ export default function BasketModal() {
               )}
             </tbody>
           </table>
-
         </S.Content>
 
-        <S.Pagination>페이지</S.Pagination>
+        <S.Pagination className='pagination'>
+          <div className="wrapper">
+            <button
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage(prev => prev - 1)}
+            >
+              <Icon name='arrowLeft2' />
+            </button>
+            <span className='cnt'>{currentPage}</span>
+            <button
+              disabled={currentPage === maxPages}
+              onClick={() => setCurrentPage(prev => prev + 1)}
+            >
+              <Icon name='arrowRight' />
+            </button>
+          </div>
+        </S.Pagination>
 
         <S.Footer className='footer'>
           <div className='button-group'>
@@ -269,7 +318,11 @@ export default function BasketModal() {
             </Button>
           </div>
 
-          <Button margin='0 0 0 20px' login onClick={handleSubmit}>바로구매 하기</Button>
+          <Button
+            margin='0 0 0 20px'
+            black
+            onClick={handleSubmit}
+          >전체상품 주문</Button>
         </S.Footer>
       </S.Containers>
     </S.BasketModal>

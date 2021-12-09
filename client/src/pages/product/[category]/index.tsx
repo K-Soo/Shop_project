@@ -23,9 +23,11 @@ export default function ProductType() {
   const currentProduct: categoryType = CategoryEnum[keyName]
   const fallback: Array<null> = [];
 
-  const { data: productData = fallback, isLoading, isSuccess, isError, error } = useQuery<IProduct[], Error>(['product', category], async () => await Get.products(category), {
+  const { data: productData = fallback, isLoading, isSuccess, isError } = useQuery<IProduct[], Error>(['product', category], async () => await Get.products(category), {
     retry: 0,
-    refetchOnWindowFocus: false,
+    // keepPreviousData: true,
+    // refetchOnWindowFocus: false,
+    // refetchOnMount: false,
   });
   
   if (isError) {

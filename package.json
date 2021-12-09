@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon ./server/src/app.js --exec babel-node",
+    "prebuid":"cd client && npm run build",
+    "build": "babel server --out-dir build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

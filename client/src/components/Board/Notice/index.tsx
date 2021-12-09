@@ -30,7 +30,6 @@ export default function Notice() {
     keepPreviousData: true,
     refetchOnWindowFocus: false,
     staleTime: 2000,
-    // select: selectFc,
   });
   if (isError) return <div>isError</div>
 

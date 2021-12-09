@@ -2,7 +2,6 @@ import axios, { AxiosResponse, AxiosRequestConfig } from 'axios';
 import { IProduct } from 'interfaces/IProduct';
 import { customCookie } from 'utils';
 
-
 const config: AxiosRequestConfig = {
   baseURL: process.env.NEXT_PUBLIC_SERVER_URL,
   withCredentials: true,
@@ -24,7 +23,6 @@ instance.interceptors.request.use((config) => {
   if (token) {
     config.headers.common['Authorization'] = token;
   }
-  console.log('config: ', config);
   return config;
 },
   (error) => {

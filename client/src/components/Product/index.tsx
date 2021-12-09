@@ -26,7 +26,6 @@ const S = {
 }
 
 export default function Product({ item, isLoading, isSuccess }: IProductProps) {
-  console.log('0000000000000000000000: ', item);
   const router = useRouter();
   const { state } = useAppContext();
   const selectedItem = useSelectCategory(item);

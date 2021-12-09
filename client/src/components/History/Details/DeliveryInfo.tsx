@@ -13,13 +13,13 @@ interface IDeliveryInfo {
 const S = {
   DeliveryInfo: styled.div`
     table{
-    border-collapse: collapse;
-    font-size: 12px;
+      border-collapse: collapse;
+      font-size: 12px;
     tbody{
       tr{
         th{
           background-color: #f9f9f9;
-          font-weight: 400;
+          font-weight: normal;
           color: #000;
         }
         td{
