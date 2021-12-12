@@ -11,7 +11,7 @@ import cookieParser from 'cookie-parser';
 
 const app = express();
 
-// const prod = process.env.NODE_ENV === 'production';
+const prod = process.env.NODE_ENV === 'production';
 app.use(compression());
 app.use(express.json());
 app.use(cors({ origin: true, credentials: true,  exposedHeaders: ["set-cookie"], }));
@@ -19,6 +19,13 @@ app.use(cookieParser());
 
 app.use('/api', api);
 app.use(generalErrorHandler);
+
+if(prod){
+  app.use(express.static(path.join(__dirname,"../../client/public")));
+  app.use(express.static(path.join(__dirname,"../../client/.next")));
+}
+
+
 
 mongooseLoader(); // DB 연결
 //서버연결
