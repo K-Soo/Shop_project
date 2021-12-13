@@ -85,7 +85,7 @@ export default function List({ items, handleCheckBox, checkedArray }: IList) {
             <tr key={d._id} className='notice-tr'>
               <td className='index'>공지</td>
               <td className='title'>
-                <Link href={`/admin/notice/${d._id}`}>
+                <Link href={router.asPath.includes('admin') ? `/admin/notice/${d._id}` : `/board/notice/${d._id}`}>
                   <a>{d.title}</a>
                 </Link>
               </td>

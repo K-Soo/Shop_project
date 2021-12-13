@@ -121,9 +121,7 @@ const S = {
   `,
 }
 export default function RightSide({ directionSwap, onClick }: IRightSide) {
-  console.log('directionSwap: ', directionSwap);
   const { state } = useAppContext();
-  console.log('openSideMenu: ', state.openSideMenu);
 
   return (
     <S.RightSide openSideMenu={state.openSideMenu} directionSwap={directionSwap}>
