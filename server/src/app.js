@@ -12,6 +12,7 @@ import cookieParser from 'cookie-parser';
 const app = express();
 
 const prod = process.env.NODE_ENV === 'production';
+
 app.use(compression());
 app.use(express.json());
 app.use(cors({ origin: true, credentials: true,  exposedHeaders: ["set-cookie"], }));

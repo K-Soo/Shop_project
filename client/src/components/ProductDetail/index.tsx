@@ -39,6 +39,7 @@ export default function ProductDetail({ item }: IProductDetail) {
       retry: 0,
       keepPreviousData: true,
     });
+    console.log('reviewData: ', reviewData);
 
   const handleFiltered = (e:React.ChangeEvent<HTMLSelectElement>) => {
     const { value, selectedOptions } = e.target
@@ -57,7 +58,7 @@ export default function ProductDetail({ item }: IProductDetail) {
         userRate={reviewData && reviewData.totalRate}
         percentage={reviewData && reviewData.totalPercentage}
       />
-      <Tap text={['상품정보', '상품 후기', '문의']} reviewCnt={reviewData && reviewData.reviewC1nt}>
+      <Tap text={['상품정보', '상품 후기', '문의']} reviewCnt={reviewData && reviewData.reviewCnt}>
         <InfoTap />
         <ReviewListTap
           isSuccess={isSuccess}
