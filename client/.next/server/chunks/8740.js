@@ -18,7 +18,7 @@ exports.modules = {
 
 
 const config = {
-  baseURL: "http://localhost:8000",
+  baseURL: "http://3.34.148.169:8000",
   withCredentials: true,
   headers: {
     common: {// Authorization: 'AUTH_TOKEN_FROM_INSTANCE'
