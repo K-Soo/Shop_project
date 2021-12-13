@@ -312,6 +312,7 @@ const useOrder = props => {
     0: state,
     1: setAppState
   } = (0,external_react_.useState)(initializer(props));
+  console.log('useOrder state: ', state);
   const App = (0,AppProvider/* useAppContext */.bp)();
   const router = (0,router_.useRouter)();
 
@@ -342,6 +343,7 @@ const useOrder = props => {
 
     // 유저정보값
     const result = props === null || props === void 0 ? void 0 : (_props$pageProps = props.pageProps) === null || _props$pageProps === void 0 ? void 0 : _props$pageProps.userDetail;
+    console.log('result: ', result);
 
     if (result) {
       if (app.state.deliveryTap === 'recently') {

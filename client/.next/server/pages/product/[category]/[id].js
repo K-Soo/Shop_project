@@ -183,6 +183,7 @@ function Tap({
   text,
   reviewCnt
 }) {
+  console.log('reviewCnt: ', reviewCnt);
   const {
     0: selectTap,
     1: setSelectTap
@@ -774,7 +775,9 @@ function ProductInfo({
       } else {
         alert('로그인후 이용가능합니다.');
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log('error: ', error);
+    }
   };
 
   const handleOrderToProduct = async () => {
@@ -1548,6 +1551,7 @@ function ProductDetail({
     retry: 0,
     keepPreviousData: true
   });
+  console.log('reviewData: ', reviewData);
 
   const handleFiltered = e => {
     const {

@@ -310,6 +310,7 @@ var next_link = __webpack_require__(1664);
 
 function SearchPage() {
   const router = (0,router_.useRouter)();
+  console.log('router.query: ', router.query);
   const {
     keyword
   } = router.query;

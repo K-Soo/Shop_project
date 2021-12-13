@@ -581,7 +581,9 @@ function ProductsListPage(props) {
       if (res.success) {
         alert('완료');
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log('error: ', error);
+    }
   };
 
   return /*#__PURE__*/(0,jsx_runtime_.jsxs)(jsx_runtime_.Fragment, {

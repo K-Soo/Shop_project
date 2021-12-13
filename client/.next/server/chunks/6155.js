@@ -156,6 +156,7 @@ const useAdmin = props => {
     0: state,
     1: setAppState
   } = (0,external_react_.useState)(() => initializer(props));
+  console.log('state useAdmin: ', state);
   const router = (0,router_.useRouter)();
 
   const update = recipe => setAppState(prev => external_immer_default()(prev, recipe));

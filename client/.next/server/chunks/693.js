@@ -247,6 +247,7 @@ const useApp = props => {
     0: state,
     1: setAppState
   } = (0,external_react_.useState)(initializer(props));
+  console.log('useApp state: ', state);
 
   const update = recipe => setAppState(prev => external_immer_default()(prev, recipe));
 

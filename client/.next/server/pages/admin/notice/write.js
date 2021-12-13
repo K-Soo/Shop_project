@@ -177,6 +177,7 @@ function Write() {
           router.push(path/* default.ADMIN_NOTICE.path */.Z.ADMIN_NOTICE.path);
         }
       } catch (error) {
+        console.log('error: ', error);
         alert('잠시후 다시시도해주세요');
       }
     }

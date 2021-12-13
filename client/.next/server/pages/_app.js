@@ -1720,9 +1720,11 @@ function RightSide({
   directionSwap,
   onClick
 }) {
+  console.log('directionSwap: ', directionSwap);
   const {
     state
   } = (0,AppProvider/* useAppContext */.bp)();
+  console.log('openSideMenu: ', state.openSideMenu);
   return /*#__PURE__*/jsx_runtime_.jsx(RightSide_S.RightSide, {
     openSideMenu: state.openSideMenu,
     directionSwap: directionSwap,
@@ -2290,7 +2292,11 @@ App.getInitialProps = async context => {
     Component
   } = context;
 
-  if (ctx.req) {} else {}
+  if (ctx.req) {
+    console.log('서버사이드');
+  } else {
+    console.log('클라이언트 사이드');
+  }
 
   const {
     access_token

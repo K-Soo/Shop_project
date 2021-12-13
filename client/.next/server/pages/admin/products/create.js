@@ -305,6 +305,8 @@ function Create(props) {
           const res = await api/* Post.createProduct */.SO.createProduct(state.create);
           alert('등록이 완료되었습니다.');
         } catch (error) {
+          console.log('error: ', error);
+
           if (external_axios_default().isAxiosError(error)) {
             console.error('create-error: ', error);
             alert(error.response.data.message);
@@ -325,6 +327,7 @@ function Create(props) {
       } catch (error) {
         var _error$response;
 
+        console.log('error: ', error);
         console.error('handleDrop-error: ', error);
         alert((_error$response = error.response) === null || _error$response === void 0 ? void 0 : _error$response.data.message);
       }

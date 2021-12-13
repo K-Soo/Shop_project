@@ -121,6 +121,7 @@ var next_link = __webpack_require__(1664);
 
 function NoticeDetailPage(props) {
   const router = (0,router_.useRouter)();
+  console.log('router: ', router);
 
   if (props.errorCode) {
     return /*#__PURE__*/jsx_runtime_.jsx((error_default()), {

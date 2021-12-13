@@ -215,6 +215,7 @@ function DeliveryInfo({
   items,
   handlePrint
 }) {
+  console.log('items: ', items);
   const router = (0,router_.useRouter)();
 
   const handleRoute = () => {

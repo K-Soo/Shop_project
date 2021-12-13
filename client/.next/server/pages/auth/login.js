@@ -261,6 +261,7 @@ function Login({
         userId: login.userId,
         password: login.password
       });
+      console.log('res: ', res);
 
       if (res.success) {
         var _res$basket;

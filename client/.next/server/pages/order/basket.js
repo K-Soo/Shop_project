@@ -133,6 +133,7 @@ function Basket() {
       name
     } = e.target;
     const target = state.basket.basketList.find(d => d._id === name);
+    console.log('target: ', target.qty);
 
     if (state.userInfo.userId) {
       try {
@@ -141,7 +142,9 @@ function Basket() {
         });
         action.setLocalItems(res.items);
         alert('변경되었습니다.');
-      } catch (error) {}
+      } catch (error) {
+        console.log('error: ', error);
+      }
     } else {}
   }, [state.basket.basketList, state.userInfo.idx, state.userInfo.userId]);
   const initBasket = (0,external_react_.useCallback)(async () => {
@@ -194,7 +197,9 @@ function Basket() {
       } else {
         alert('로그인후 이용가능합니다.');
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log('error: ', error);
+    }
   }, [state.userInfo.userId]);
   const handleCheckbox = (0,external_react_.useCallback)(e => {
     const {

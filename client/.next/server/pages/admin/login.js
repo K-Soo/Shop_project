@@ -102,6 +102,7 @@ function LoginControllers() {
 
     try {
       const res = await api/* Post.login */.SO.login(obj);
+      console.log('res: ', res);
 
       if (res.success) {
         utils/* customCookie.set */.S1.set("access_token_a", res.token);

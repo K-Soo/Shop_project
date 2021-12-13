@@ -46,6 +46,7 @@ __webpack_require__.r(__webpack_exports__);
 
 function GuestDetailsPage(props) {
   const router = (0,next_router__WEBPACK_IMPORTED_MODULE_5__.useRouter)();
+  console.log('router: ', router);
   const {
     state: {
       userInfo
@@ -89,6 +90,7 @@ const getServerSideProps = async context => {
 
   try {
     const res = await api__WEBPACK_IMPORTED_MODULE_8__/* .Get.getGuestHistoryDetail */ .dX.getGuestHistoryDetail(idx);
+    console.log('res: ', res);
     return {
       props: {
         items: res
