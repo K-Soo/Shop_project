@@ -5,7 +5,6 @@ import Title from 'components/style/Title';
 import Icon from 'components/Icon/Icon';
 import Button from 'components/style/Button';
 import Link from 'next/link';
-import DarkBackground from 'components/Common/DarkBackground';
 import { PriceComma } from 'utils/PriceComma';
 import { useAppContext } from 'context/AppProvider';
 import Image from 'next/image'

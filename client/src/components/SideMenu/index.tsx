@@ -3,20 +3,21 @@ import LeftSide from 'components/SideMenu/LeftSide';
 import RightSide from 'components/SideMenu/RightSide';
 import DarkBackground from 'components/Common/DarkBackground';
 import { useAppContext } from 'context/AppProvider';
+import useDidMountEffect from 'hooks/useDidMountEffect';
 
 export default function SideMenu() {
-  const [directionSwap, setDirectionSwap] = useState<boolean>(true);
+  const [directionSwap, setDirectionSwap] = useState(true);
   const { state } = useAppContext();
 
   const handler = useCallback(() => {
     setDirectionSwap(!directionSwap);
   }, [directionSwap])
 
-  useEffect(() => {
+  useDidMountEffect(() => {
     if (!state.openSideMenu) {
       setDirectionSwap(true);
     }
-  }, [state.openSideMenu])
+  }, [state.openSideMenu]);
 
   return (
     <>

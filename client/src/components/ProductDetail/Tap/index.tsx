@@ -67,6 +67,7 @@ const S = {
 }
 
 export default function Tap({ children, text, reviewCnt }: ITap) {
+  console.log('reviewCnt: ', reviewCnt);
   const [selectTap, setSelectTap] = useState<number>(1);
 
   return (

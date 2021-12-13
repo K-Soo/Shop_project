@@ -10,7 +10,7 @@ interface IDarkBackground {
 }
 
 const S = {
-  DarkBackground: styled.div<{ active: boolean}>`
+  DarkBackground: styled.div<{ active: boolean }>`
   visibility:hidden;
   position: fixed; 
   top: 0;
@@ -34,21 +34,20 @@ const S = {
     font-size: 0;
     cursor: pointer;
     top: 15px;
-    ${(props) => props.openSideMenu === false && props.directionSwap  && css`
+    ${(props) => props.openSideMenu === false && props.directionSwap && css`
     // init
       right: -100px;
     `}
-    ${(props) => props.openSideMenu  && props.directionSwap  && css`
+    ${(props) => props.openSideMenu && props.directionSwap && css`
       right: 5px;
       transform: translateX(-50%);
       transition: all 0.5s ease;
     `}
-    ${(props) => props.openSideMenu  && props.directionSwap === false && css`
+    ${(props) => props.openSideMenu && props.directionSwap === false && css`
       left: 5px;
       transform: translateX(50%);
       transition: all 0.5s ease;
     `}
-    visibility: ${props => props.openSideMenu ? 'visible' : 'hidden'};
     svg{
       color: #fff;
       width: 35px;
@@ -61,19 +60,23 @@ const S = {
 export default function DarkBackground({ children, directionSwap }: IDarkBackground) {
   const { action, state } = useAppContext();
 
-  const handleClose = (e:React.MouseEvent<HTMLDivElement>) => {
-    const {className} = e.target as HTMLDivElement
+  const handleClose = (e: React.MouseEvent<HTMLDivElement>) => {
+    const { className } = e.target as HTMLDivElement
     const str = className.split('-');
-    if(str[0] === 'DarkBackground'){
+    if (str[0] === 'DarkBackground') {
       action.setToggleSideMenu();
     }
   }
 
   return (
-    <S.DarkBackground className='dark-background' active={state.openSideMenu} onClick={handleClose} >
-      <S.Close 
-        onClick={action.setToggleSideMenu} 
-        directionSwap={directionSwap} 
+    <S.DarkBackground 
+      className='dark-background' 
+      active={state.openSideMenu} 
+      onClick={handleClose} 
+      >
+      <S.Close
+        onClick={action.setToggleSideMenu}
+        directionSwap={directionSwap}
         openSideMenu={state.openSideMenu}
       >
         <Icon name='close' />

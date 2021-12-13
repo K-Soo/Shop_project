@@ -41,12 +41,6 @@ const S = {
       margin-top: 15px;
     }
   `,
-  directionSwap: styled.div`
-    width: 100px;
-    border: 1px solid red;
-    height:30px;
-    border-radius: 10px;
-  `,
   Panel: styled.div<{ directionSwap: boolean, openSideMenu: boolean }>`
     margin-bottom: 15px;
     .wrapper{
@@ -63,8 +57,6 @@ const S = {
         width: 50px;
         color: #555;
         font-size: 14px;
-      }
-      li:nth-child(2){
         cursor: pointer;
       }
       span{
@@ -73,7 +65,7 @@ const S = {
         border-radius: 10px;
         padding: 2px 0;
         top: 2px;
-        right: 3px;
+        left: 3px;
         width: 46px;
         text-align: center;
         display: flex;
@@ -81,11 +73,12 @@ const S = {
         justify-content: center;
         font-size: 13px;
         color: #fff;
+        transform: translateX(0%);
         cursor: default;
-        ${({ openSideMenu, directionSwap }) => openSideMenu && directionSwap && css`
-        transform: translateX(-100%);
+        ${({ openSideMenu, directionSwap }) => openSideMenu && directionSwap === false && css`
+        transform: translateX(100%);
+        transition: transform 7s ease-in;
         `};
-        transition: all 0.7s ease-in;
       }
     }
   `,
@@ -128,7 +121,9 @@ const S = {
   `,
 }
 export default function RightSide({ directionSwap, onClick }: IRightSide) {
+  console.log('directionSwap: ', directionSwap);
   const { state } = useAppContext();
+  console.log('openSideMenu: ', state.openSideMenu);
 
   return (
     <S.RightSide openSideMenu={state.openSideMenu} directionSwap={directionSwap}>
@@ -136,11 +131,14 @@ export default function RightSide({ directionSwap, onClick }: IRightSide) {
         <>
           <S.Container>
             <div>
-              <S.Panel directionSwap={directionSwap} openSideMenu={state.openSideMenu}>
+              <S.Panel 
+                directionSwap={directionSwap} 
+                openSideMenu={state.openSideMenu}
+              >
                 <ul className='wrapper'>
-                  <span>SHOP</span>
+                  <span>CART</span>
                   <li onClick={onClick}>SHOP</li>
-                  <li >CART</li>
+                  <li>CART</li>
                 </ul>
               </S.Panel>
 

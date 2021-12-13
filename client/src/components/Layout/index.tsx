@@ -12,14 +12,14 @@ interface ILayout {
 }
 
 const S = {
-  Layout: styled.div<{ disable: boolean }>`
+  Layout: styled.div<{ isAdminPage: boolean }>`
     height: calc(100vh - 40px);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     .layout-wrap{
       flex: 1;
-      display: ${props => props.disable ? 'block' : 'flex'};
+      display: ${props => props.isAdminPage ? 'block' : 'flex'};
       flex-direction: column;
       main{
         flex: 1;
@@ -30,23 +30,21 @@ const S = {
 
 export default function Layout(props: ILayout) {
   const router: NextRouter = useRouter();
-  const [disable, setDisable] = useState<boolean>(false);
+  const [isAdminPage, setIsAdminPage] = useState<boolean>(false);
   const { action, state } = useAppContext();
   const { isFooter, isHeader } = state.layout;
 
   useEffect(() => {
     const result = router.asPath.includes('admin');
     if (result) {
-      setDisable(true);
+      setIsAdminPage(true);
       action.setIsHeader(false);
       action.setIsFooter(false);
     }
   }, [router, action]);
-  const env = process.env.NODE_ENV
-  const name = process.env.NEXT_PUBLIC_NAME
 
   return (
-    <S.Layout disable={disable}>
+    <S.Layout isAdminPage={isAdminPage}>
       <div className='layout-wrap' id='soo'>
         {isHeader && <Header />}
         {props.children}

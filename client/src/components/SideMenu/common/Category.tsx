@@ -53,13 +53,14 @@ const S = {
   `,
 }
 const initNameValue = {target:'',disable: false};
+
 export default function Category() {
   const [nameValue, setNameValue] = useState<{ target: string, disable: boolean }>(initNameValue);
   const { action,state } = useAppContext();
 
   useEffect(() => {
     setNameValue(initNameValue);
-  },[state.openSideMenu])
+  },[state.openSideMenu]);
 
   const handleCategory = (e:React.MouseEvent<HTMLDivElement>) => {
     const { category } = (e.target as HTMLDivElement).dataset;

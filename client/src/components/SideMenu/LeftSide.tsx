@@ -36,6 +36,9 @@ const S = {
       transform: translateX(-100%);
       transition: all 0.5s ease;
     `}
+    ${({ theme }) => theme.mobile`
+      // height: auto;
+    `}
   `,
   Container: styled.div`
     height: 100%;
@@ -88,8 +91,6 @@ const S = {
         width: 50px;
         color: #555;
         font-size: 14px;
-      }
-      li:nth-child(3){
         cursor: pointer;
       }
       span{
@@ -110,13 +111,12 @@ const S = {
         ${({ openSideMenu, directionSwap }) => openSideMenu && directionSwap && css`
         transform: translateX(-100%);
         `};
-        transition: all 0.7s ease-in;
+        transition: transform 0.7s ease-in;
       }
     }
   `,
   Tap: styled.div`
     margin-top: 15px;
-
   `,
 }
 
