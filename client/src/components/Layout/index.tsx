@@ -32,7 +32,7 @@ export default function Layout(props: ILayout) {
   const router: NextRouter = useRouter();
   const [isAdminPage, setIsAdminPage] = useState<boolean>(false);
   const { action, state } = useAppContext();
-  const { isFooter, isHeader } = state.layout;
+  const { isFooter, isHeader } = state.layout
 
   useEffect(() => {
     const result = router.asPath.includes('admin');
