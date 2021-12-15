@@ -157,28 +157,33 @@ export default function MyShopMenuBar({ }: IMyShopMenuBar) {
 
 
       <div className='auth-box'>
-        <div className='auth-box__users'>
-          <Button black>
-            <Link href='/auth/login'>
-              <a>
-                로그인
-              </a>
-            </Link>
-          </Button>
-          <Button white>
-            <Link href='/auth/register'>
-              <a>
-                회원가입
-              </a>
-            </Link>
-          </Button>
-        </div>
+        {!state.userInfo.idx && (
+          <>
+            <div className='auth-box__users'>
+              <Button black>
+                <Link href='/auth/login'>
+                  <a>
+                    로그인
+                  </a>
+                </Link>
+              </Button>
+              <Button white>
+                <Link href='/auth/register'>
+                  <a>
+                    회원가입
+                  </a>
+                </Link>
+              </Button>
+            </div>
+          </>
+        )}
+
         <Button black>
-        <Link href='/users'>
-              <a>
+          <Link href='/users'>
+            <a>
               마이쇼핑 바로가기
-              </a>
-            </Link>
+            </a>
+          </Link>
         </Button>
       </div>
 

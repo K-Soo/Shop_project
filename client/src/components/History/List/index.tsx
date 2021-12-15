@@ -34,6 +34,7 @@ export default function List({ idx }: IList) {
     staleTime: 2000,
     enabled: !!idx,
   });
+  console.log('responseData: ', responseData);
   
   useEffect(() => {
     if (currentPage < responseData.total) {

@@ -16,9 +16,10 @@ const list = async (req, res, next) => {
     let total = await History.findOne({ user: _id }, { data: 1 }).lean();
 
     let exist = await History.findOne({ user: _id },
-      { data: { $slice: [skip, Number(limit)] }, createdAt: 0, updatedAt: 0, __v: 0, _id: 0 },
-    ).lean();
-
+      { data: { $slice: [skip, Number(limit)]}, createdAt: 0, updatedAt: 0, __v: 0, _id: 0 },
+      ).
+      lean();
+      
     const response = {
       ...exist,
       total: total.data.length,

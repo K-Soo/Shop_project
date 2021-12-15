@@ -5,13 +5,6 @@ import { customCookie } from 'utils';
 const config: AxiosRequestConfig = {
   baseURL: process.env.NEXT_PUBLIC_SERVER_URL,
   withCredentials: true,
-  headers: {
-    common: {
-      // Authorization: 'AUTH_TOKEN_FROM_INSTANCE'
-    }
-    // 'Access-Control-Allow-Origin': '*',
-    // 'Access-Control-Allow-Credentials': 'true',
-  },
 };
 
 const instance = axios.create(config);
@@ -32,15 +25,15 @@ instance.interceptors.response.use((response) => {
   return response;
 },
   (error) => {
-  const status = error.response ? error.response.status : null;
-  if(status === 419){
-    alert('로그인정보가 만료되었습니다.');
-    customCookie.remove('access_token');
-    localStorage.removeItem('basket');
-    localStorage.removeItem('guest');
-    localStorage.removeItem('order');
-    return location.href = '/auth/login';
-}
+    const status = error.response ? error.response.status : null;
+    if (status === 419) {
+      alert('로그인정보가 만료되었습니다.');
+      customCookie.remove('access_token');
+      localStorage.removeItem('basket');
+      localStorage.removeItem('guest');
+      localStorage.removeItem('order');
+      return location.href = '/auth/login';
+    }
     return Promise.reject(error);
   }
 );

@@ -1,5 +1,4 @@
-import { useCallback, Dispatch, SetStateAction, useState, useEffect } from 'react';
-import useDidMountEffect from 'hooks/useDidMountEffect';
+import { useState, useEffect } from 'react';
 
 export default function usePaginate(maxPages: number, pageSize: number, turnPage: number) {
   const [array, setArray] = useState([]);
