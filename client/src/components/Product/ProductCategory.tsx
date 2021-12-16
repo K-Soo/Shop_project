@@ -109,6 +109,15 @@ export default function ProductCategory({ currentProduct, keyName }: IProductCat
   const { action, state } = useAppContext();
   const router: NextRouter = useRouter();
 
+  const handleCategoryDetailTypes = (e:React.MouseEvent<HTMLLIElement>) => {
+    action.setCategory(e);
+    const { name } = (e.target as HTMLLIElement).dataset;
+    router.push({
+      pathname: `/product/${router.query.category}`,
+      query: { detail: name },
+    });
+  }
+
   return (
     <S.ProductCategory>
       <S.SubTitle>
@@ -126,7 +135,7 @@ export default function ProductCategory({ currentProduct, keyName }: IProductCat
             className='list__all'
             data-name='all' 
             data-active={'all' === state.targetCategory} 
-            onClick={action.setCategory} 
+            onClick={handleCategoryDetailTypes} 
           >
             ALL
           </li>
@@ -136,7 +145,7 @@ export default function ProductCategory({ currentProduct, keyName }: IProductCat
               className='list__item' 
               data-name={d.label} 
               data-active={d.label === state.targetCategory} 
-              onClick={action.setCategory}
+              onClick={handleCategoryDetailTypes}
              >
               {d.label}
             </li>

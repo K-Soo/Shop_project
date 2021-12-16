@@ -253,10 +253,11 @@ const generateAction = (update: (recipe: (draft: IAppState) => void) => void) =>
 
 const useApp = (props:any) => {
   const [state, setAppState] = useState(initializer(props));
-  console.log('useApp state: ', state);
+  console.log('----------------: ', state.targetCategory);
   const update = (recipe: (draft: IAppState) => void) =>
     setAppState((prev) => produce(prev, recipe));
   const router = useRouter();
+  console.log('router: ', router);
   const action = generateAction(update);
   const app = { props, state, action };
 
@@ -270,14 +271,17 @@ const useApp = (props:any) => {
     }
   }, [router.asPath]);
 
-  useEffect(() => {
-    app.action.InitData('openSubMenu', false);
-  }, [app.state.targetCategory])
+  // useDidMountEffect(() => {
+  //   app.action.InitData('openSubMenu', false);
+  // }, [app.state.targetCategory]);
 
   useDidMountEffect(() => {
-    app.action.InitData('targetCategory', 'all');
-  }, [router.asPath])
-
+    const types = router?.query?.detail
+    if(types){
+      app.action.InitData('targetCategory', types);
+    }
+    console.log('types: ', types);
+  }, [router.asPath]);
 
   // ------------------------------------- //
   useEffect(() => {

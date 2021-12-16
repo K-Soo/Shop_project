@@ -32,16 +32,6 @@ export default function Product({ item, isLoading, isSuccess }: IProductProps) {
   const [filtered, setFiltered] = useState<IProduct[]>([]);
   const { setSort, sortingData } = useSort(selectedItem);
 
-  // useDidMountEffect(() => {
-  //   if(item){
-  //     if (state.targetCategory === 'all') {
-  //       setFiltered(item);
-  //     } else {
-  //       setFiltered(item.filter(d => d.category === state.targetCategory));
-  //     }
-  //   }
-  // }, [state.targetCategory, item]);
-
   useDidMountEffect(() => {
     if(item){
       if (state.targetCategory === 'all') {

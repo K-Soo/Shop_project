@@ -2,6 +2,7 @@ import React from "react";
 import styled, { css } from "styled-components";
 import Link from 'next/link';
 import { useAppContext } from 'context/AppProvider';
+import {useRouter} from 'next/router';
 
 interface IHamburgerMenuList {
   productSubList: any;
@@ -50,13 +51,24 @@ const S = {
 
 export default function HamburgerMenuList({ productSubList }: IHamburgerMenuList) {
   const { action,state } = useAppContext();
+  const router = useRouter();
+
+  const handleCategoryDetailTypes = (e:React.MouseEvent<HTMLLIElement>) => {
+    action.setCategory(e);
+    const { name } = (e.target as HTMLLIElement).dataset;
+    router.push({
+      pathname: `/product/${router.query.category}`,
+      query: { detail: name },
+    });
+  }
+
   
   return (
     <S.HamburgerMenuList toggleSubMenu={state.openSubMenu}>
       <ul className='sub-category-box'>
-        <li className='sub-category-box__item all' data-name='all' onClick={action.setCategory}>전체</li>
+        <li className='sub-category-box__item all' data-name='all' onClick={handleCategoryDetailTypes}>전체</li>
         {productSubList && productSubList.map((d:any) => (
-          <li key={d.label} data-name={d.label} className='sub-category-box__item' onClick={action.setCategory}>
+          <li key={d.label} data-name={d.label} className='sub-category-box__item' onClick={handleCategoryDetailTypes}>
             {d.label}
           </li>
         ))}

@@ -1,9 +1,8 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { PRODUCT, CategoryEnum } from 'constants/product';
-import Link from 'next/link';
-import Icon from 'components/Icon/Icon';
 import { useAppContext } from 'context/AppProvider';
+import { useRouter } from 'next/router';
 
 const S = {
   Category: styled.div`
@@ -52,17 +51,19 @@ const S = {
     }
   `,
 }
-const initNameValue = {target:'',disable: false};
+const initNameValue = { target: '', disable: false };
 
 export default function Category() {
   const [nameValue, setNameValue] = useState<{ target: string, disable: boolean }>(initNameValue);
-  const { action,state } = useAppContext();
+  console.log('nameValue: ', nameValue);
+  const { action, state } = useAppContext();
+  const router = useRouter();
 
   useEffect(() => {
     setNameValue(initNameValue);
-  },[state.openSideMenu]);
+  }, [state.openSideMenu]);
 
-  const handleCategory = (e:React.MouseEvent<HTMLDivElement>) => {
+  const handleCategory = (e: React.MouseEvent<HTMLDivElement>) => {
     const { category } = (e.target as HTMLDivElement).dataset;
     setNameValue(prev => ({
       ...prev,
@@ -71,9 +72,13 @@ export default function Category() {
     }));
   }
 
-  const handleListItem = (e:React.MouseEvent<HTMLLIElement>) => {
+  const handleCategoryDetailTypes = (e: React.MouseEvent<HTMLLIElement>) => {
     action.setCategory(e);
-    action.setToggleSideMenu();
+    const { name } = (e.target as HTMLLIElement).dataset;
+    router.push({
+      pathname: `/product/${nameValue.target}`,
+      query: { detail: name },
+    });
   }
 
   return (
@@ -81,24 +86,26 @@ export default function Category() {
       <ul className='category-list'>
         {Object.entries(PRODUCT).map(d => (
           <li key={d[0]} className='category-list__item'>
-            <div 
-              className='category-list__item--wrapper' 
-              data-category={d[0]} 
+            <div
+              className='category-list__item--wrapper'
+              data-category={d[0]}
               onClick={handleCategory}
             >
               {d[0] === nameValue.target ? <span className='list-icon'>+</span> : <span className='list-icon'>-</span>}
               <span className='name'>{CategoryEnum[d[0]]}</span>
             </div>
 
-            <ul 
-              className='inner-list' 
+            <ul
+              className='inner-list'
               data-active={d[0] === nameValue.target && nameValue.disable}
             >
               {d[1].map(d => (
-                <li key={d.label} 
-                onClick={handleListItem}
-                data-name={d.label}
-                className='inner-list__detail-item'>{d.label}</li>
+                <li key={d.label}
+                  onClick={handleCategoryDetailTypes}
+                  data-name={d.label}
+                  className='inner-list__detail-item'>
+                  {d.label}
+                </li>
               ))}
             </ul>
           </li>
