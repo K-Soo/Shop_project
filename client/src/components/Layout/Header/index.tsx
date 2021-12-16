@@ -5,6 +5,7 @@ import MainLogo from "components/Layout/Header/MainLogo";
 import Menu from "components/Layout/Header/Menu";
 import { useScroll } from 'hooks/useScroll';
 import SideMenu from 'components/SideMenu';
+import useDidMountEffect from 'hooks/useDidMountEffect';
 
 const S = {
   Header: styled.header<{ ScrollActive: boolean }>`
@@ -20,7 +21,7 @@ export default function Header() {
   const [scrollActive, setScrollActive] = useState(false);
   const { scrollY } = useScroll();
 
-  useEffect(() => {
+  useDidMountEffect(() => {
     if (scrollY > 80) {
       setScrollActive(true);
     } else {

@@ -8,7 +8,7 @@ export function useScroll() {
     setScrollY(window.pageYOffset);
   }, []);
 
-  const delay: number = 15;
+  const delay = 30;
   useEffect(() => {
     let mounted = true;
     if(mounted){

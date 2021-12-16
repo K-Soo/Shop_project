@@ -4,6 +4,17 @@ import RightSide from 'components/SideMenu/RightSide';
 import DarkBackground from 'components/Common/DarkBackground';
 import { useAppContext } from 'context/AppProvider';
 import useDidMountEffect from 'hooks/useDidMountEffect';
+import styled, { css } from 'styled-components';
+
+const S = {
+  SideMenu: styled.aside`
+    display: none;
+    ${({ theme }) => theme.mobile`
+      display: block;
+      }
+    `}
+  `
+}
 
 export default function SideMenu() {
   const [directionSwap, setDirectionSwap] = useState(true);
@@ -20,7 +31,7 @@ export default function SideMenu() {
   }, [state.openSideMenu]);
 
   return (
-    <>
+    <S.SideMenu>
       <DarkBackground directionSwap={directionSwap} >
         <LeftSide
           onClick={handler}
@@ -31,7 +42,7 @@ export default function SideMenu() {
           directionSwap={directionSwap}
         />
       </DarkBackground >
-    </>
+    </S.SideMenu>
   );
 };
 
