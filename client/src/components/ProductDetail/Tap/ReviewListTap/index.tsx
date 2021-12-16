@@ -165,6 +165,8 @@ const StyledRate = styled(Rate)`
 `
 
 export default function ReviewListTap({ item, items, maxPages, isSuccess, isLoading, isFetching ,children}: IReviewListTap) {
+  console.log('items: ', items);
+  console.log('item: ', item);
   const [active, setActive] = useState('');
   const [imageToggler, setImageToggler] = useState({
     toggle: false,
@@ -226,7 +228,9 @@ export default function ReviewListTap({ item, items, maxPages, isSuccess, isLoad
                         defaultValue={Number(d.rate)}
                         disabled={true}
                       />
-                      <span style={{ margin: '0 10px' }}>{charConvert(d.commenter.userName)}</span>
+                      {d.commenter && (
+                        <span style={{ margin: '0 10px' }}>{charConvert(d?.commenter?.userName)}</span>
+                      )}
                     </div>
                     <p className='date'>{d.createdAt}</p>
                   </div>

@@ -85,14 +85,19 @@ const S = {
     display: flex;
   `,
   TitleBox: styled.div`
-    display: flex;
-    align-items: center;
     margin-bottom:5px;
-    ${Title}{
-      font-size: 26px;
+    .title-wrapper{
+      display: flex;
+      align-items: center;
+      ${Title}{
+        font-size: 20px;
+      }
     }
     .categoryName{
-      margin-left: 10px;
+      font-size: 14px;
+      color: #353535;
+      display: block;
+      margin-top: 10px;
     }
   `,
   PriceBox: styled.div`
@@ -324,11 +329,16 @@ const S = {
     justify-content: flex-end;
     span{
       border-bottom: 2px solid #333;
+      color: #444;
+      font-size: 16px;
       cursor: pointer;
       &:hover{
         color: #707070;
       }
-    }
+      ${({ theme }) => theme.mobile`
+        font-size: 14px;
+      `}
+      }
     .basket-add{
       &::before{
         content: '+';
@@ -383,16 +393,16 @@ export default function ProductInfo({ item }: IProductInfo) {
     }
   }
 
-  const handleOrderToProduct = async() => {
+  const handleOrderToProduct = async () => {
     // 구매하기
     if (!selectItems.length) {
       return enqueueSnackbar('필수 옵션을 선택해주세요.', { variant: 'info' });
-     }
+    }
     if (duplicate || nonMemDuplicate) {
       alert("이미동일한 상품이 장바구니에 있습니다.\n장바구니에서 확인 후 다시 추가해주세요.");
       return App.action.setBasketModal();
     }
-    if (App.state.userInfo.userId){
+    if (App.state.userInfo.userId) {
       try {
         const res = await Put.updateBasket({ userId: App.state.userInfo.userId, items: selectItems });
         App.action.setLocalItems(res.items);
@@ -404,14 +414,14 @@ export default function ProductInfo({ item }: IProductInfo) {
         console.error('error: ', error);
         return enqueueSnackbar('잠시후 다시시도해주세요.', { variant: 'error' });
       }
-    }else{
+    } else {
       Order.action.setEntireProducts(selectItems);
       if (!App.state.status.guest) {
         router.push({
           pathname: '/auth/login',
           query: { type: 'order' },
         });
-      }else{
+      } else {
         router.push(PAGE.ORDER.path);
       }
     }
@@ -420,7 +430,7 @@ export default function ProductInfo({ item }: IProductInfo) {
   const handleAddToBasket = async () => {
     // 장바구니 추가
     if (!selectItems.length) {
-     return enqueueSnackbar('필수 옵션을 선택해주세요.', { variant: 'info' });
+      return enqueueSnackbar('필수 옵션을 선택해주세요.', { variant: 'info' });
     }
     if (duplicate || nonMemDuplicate) {
       alert("이미동일한 상품이 장바구니에 있습니다.\n장바구니에서 확인 후 다시 추가해주세요.");
@@ -515,16 +525,20 @@ export default function ProductInfo({ item }: IProductInfo) {
                 <S.ColorIcon className='color-icon' key={d.hex_value} color={d.hex_value} />
               ))}
             </S.ColorListShow>
-            <S.IconBox >
-              {d.new_product && <TextIcon text='new' margin='0 3px 0 0' />}
-              {d.best_product && <TextIcon text='best' />}
-            </S.IconBox>
+
 
             <S.TitleBox>
-              <Title level={3} textAlign="left">
-                {d.name}
-              </Title>
               <span className='categoryName'>{d.category}</span>
+              <div className='title-wrapper'>
+                <Title level={3} textAlign="left">
+                  {d.name}
+                </Title>
+                <S.IconBox >
+                  {d.new_product && <TextIcon text='new' height="17px" margin='0 3px 0 0' />}
+                  {d.best_product && <TextIcon height="17px" text='best' />}
+                </S.IconBox>
+              </div>
+
             </S.TitleBox>
 
             <S.PriceBox>

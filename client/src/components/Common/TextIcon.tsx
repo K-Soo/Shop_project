@@ -4,10 +4,11 @@ import styled, { css } from "styled-components";
 interface ITextIcon {
   text: string;
   margin?: string;
+  height?: string;
 }
 
 const S = {
-  TextIcon: styled.span<{ text: string, margin: string }>`
+  TextIcon: styled.span<{ text: string, margin: string,height: string }>`
     background-color: #999;
     display: block;
     align-items: center;
@@ -16,6 +17,7 @@ const S = {
     color: #fff;
     font-size: 12px;
     margin: ${({ margin }) => margin ?? "0px"};
+    height: ${({ height }) => height ?? "100%"};
     ${props =>
       props.text === 'best' &&
       css`
@@ -32,9 +34,9 @@ const S = {
   `,
 }
 
-export default function TextIcon({ text, margin }: ITextIcon) {
+export default function TextIcon({ text, margin ,height}: ITextIcon) {
   return (
-    <S.TextIcon text={text} margin={margin}>
+    <S.TextIcon text={text} margin={margin} height={height}>
       {text}
     </S.TextIcon>
   );

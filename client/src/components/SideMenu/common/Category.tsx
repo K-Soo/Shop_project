@@ -55,7 +55,6 @@ const initNameValue = { target: '', disable: false };
 
 export default function Category() {
   const [nameValue, setNameValue] = useState<{ target: string, disable: boolean }>(initNameValue);
-  console.log('nameValue: ', nameValue);
   const { action, state } = useAppContext();
   const router = useRouter();
 
