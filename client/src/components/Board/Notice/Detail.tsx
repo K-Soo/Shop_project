@@ -55,6 +55,15 @@ const S = {
 export default function Detail({ item }: IDetail) {
   const router: NextRouter = useRouter();
 
+  const handleRouter = () => {
+    const {pathname} = router;
+    if( pathname === "/board/notice/[idx]"){
+      router.push('/board/notice')
+    }else{
+      router.push('/admin/notice')
+    }
+  }
+
   return (
     <S.Detail>
       <PageTitle TitleText='공지사항' />
@@ -69,7 +78,7 @@ export default function Detail({ item }: IDetail) {
           margin='15px 0 0 0'
           width='100' 
           height='30px'
-          onClick={() => router.back()}
+          onClick={handleRouter}
         >
         목록으로
       </Button>
