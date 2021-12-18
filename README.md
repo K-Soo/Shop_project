@@ -1,5 +1,5 @@
 # Portfolio	
-- develop period : 2021-09 ~ 2020-12
+- develop period : 2021-09 ~ 2021-12
 - url : http://3.18.66.154/
 
 
@@ -23,13 +23,13 @@
   # TEST Account
   ```
   Admin
-  Id: admin
-  password: 123456
+    Id: admin
+    password: 123456
   ```
    ```
   PayPal
-  Id: sb-skflw7557000@personal.example.com
-  password: 12341234
+    Id: sb-skflw7557000@personal.example.com
+    password: 12341234
   ```
  # Skill
 - language
