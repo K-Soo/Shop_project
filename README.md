@@ -1,25 +1,24 @@
 # Portfolio	
 - 반응형 웹사이트
-- 개발기간 : 2020-09 ~ 2020-12(3개월)
-- Site : http://3.18.66.154/
-# 설치 및 시작
+- develop period : 2020-09 ~ 2020-12(3개월)
+- url : http://3.18.66.154/
+# Install
+  ```
   in the main folder
-  ```
   npm install
-  ```
   in the Client folder
-  ```
   npm install
+  ```
+  
+  # Start
   ```
   To start the development Client, run this command:
-  ```
-  npm start
-  ```
+    npm run dev
+    
   To start the development server, run this command:
+    npm run dev
   ```
-  npm run dev
-  ```
-
+ # Skill
 - language
   - Javascript
   
