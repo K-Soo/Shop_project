@@ -1,6 +1,6 @@
 # Portfolio	
 - develop period : 2021-09 ~ 2021-12
-- url : http://3.18.66.154/
+- url : http://3.34.148.169
 
 
 # Install
