@@ -31,20 +31,3 @@
     Id: sb-skflw7557000@personal.example.com
     password: 12341234
   ```
- # Skill
-- language
-  - Javascript
- - etc. 
-   - React
-   - next.js
-   - styled-components
-   - express
- - API
-    - paypal
-- 클라우드 서버
-   - AWS EC2
-   - AWS S3
-- DATABASE 
-  - mongoDB 
-- Development environment
-  - MAC OS
