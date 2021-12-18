@@ -1,7 +1,8 @@
 # Portfolio	
-- 반응형 웹사이트
-- develop period : 2020-09 ~ 2020-12(3개월)
+- develop period : 2021-09 ~ 2020-12
 - url : http://3.18.66.154/
+
+
 # Install
   ```
   in the main folder
