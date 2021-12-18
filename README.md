@@ -19,6 +19,18 @@
   To start the development server, run this command:
     npm run dev
   ```
+  
+  # TEST Account
+  ```
+  Admin
+  Id: admin
+  password: 123456
+  ```
+   ```
+  PayPal
+  Id: sb-skflw7557000@personal.example.com
+  password: 12341234
+  ```
  # Skill
 - language
   - Javascript
