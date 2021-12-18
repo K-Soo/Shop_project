@@ -1,4 +1,5 @@
-# Portfolio	
+# Introduction	
+- 사용자가 상품 선택 및 구매가 가능한 반응형 웹쇼핑몰을 구현했습니다
 - develop period : 2021-09 ~ 2021-12
 - url : http://3.34.148.169
 
