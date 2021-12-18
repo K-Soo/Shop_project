@@ -5,10 +5,10 @@
 
 # Install
   ```
-  in the main folder
-  npm install
-  in the Client folder
-  npm install
+  main folder
+    npm install
+  cd client
+    npm install
   ```
   
   # Start
@@ -22,22 +22,17 @@
  # Skill
 - language
   - Javascript
-  
  - etc. 
    - React
    - next.js
    - styled-components
    - express
-
  - API
     - paypal
-    
 - 클라우드 서버
    - AWS EC2
    - AWS S3
-   
 - DATABASE 
   - mongoDB 
-  
 - Development environment
   - MAC OS
