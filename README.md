@@ -20,23 +20,24 @@
   npm run dev
   ```
 
-- 언어
-  - Javascript / node.js
+- language
+  - Javascript
   
  - etc. 
    - React
-   - redux (react-redux),redux-Saga
+   - next.js
    - styled-components
    - express
 
  - API
-    - kakao map
+    - paypal
     
 - 클라우드 서버
    - AWS EC2
+   - AWS S3
    
 - DATABASE 
-  - mongoDB / mongoose
+  - mongoDB 
   
-- 개발환경
+- Development environment
   - MAC OS
