@@ -11,7 +11,12 @@ import PAGE from "constants/path";
 import Breadcrumb from "components/Common/Breadcrumb";
 import Link from "next/link";
 import BestProducts from 'components/Product/BestProducts';
-import ProductCategory from 'components/Product/ProductCategory';
+import dynamic from 'next/dynamic'
+
+const DynamicComponentWithNoSSRMenu = dynamic(
+  () => import('components/Product/ProductCategory'),
+  { ssr: false }
+)
 
 export type categoryType = `${CategoryEnum}`;
 
@@ -47,7 +52,7 @@ export default function ProductType() {
             </Link>
           ))}
         </Breadcrumb>
-        <ProductCategory
+        <DynamicComponentWithNoSSRMenu
           currentProduct={currentProduct}
           keyName={keyName}
         />

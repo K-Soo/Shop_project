@@ -19,6 +19,11 @@ import AdminProvider from 'context/AdminProvider';
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import { SnackbarProvider } from 'notistack';
 import { NextPageContext } from "next";
+import dynamic from 'next/dynamic'
+
+// export const ComponentWithNoSSR = dynamic(() => import('./Component'), {
+//   ssr: false,
+// })
 // import Slide from '@material-ui/core/Slide';
 export default function App(props: AppProps) {
   function queryErrorHandler(error: unknown): void {

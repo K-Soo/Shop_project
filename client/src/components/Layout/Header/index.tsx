@@ -1,12 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled, { css } from "styled-components";
-import Nav from "components/Layout/Header/Nav";
 import MainLogo from "components/Layout/Header/MainLogo";
-import Menu from "components/Layout/Header/Menu";
 import { useScroll } from 'hooks/useScroll';
-import SideMenu from 'components/SideMenu';
 import useDidMountEffect from 'hooks/useDidMountEffect';
+import dynamic from 'next/dynamic'
 
+const DynamicComponentWithNoSSRMenu = dynamic(
+  () => import('components/Layout/Header/Menu'),
+  { ssr: false }
+)
+const DynamicComponentWithNoSSRMainLogo = dynamic(
+  () => import('components/Layout/Header/MainLogo'),
+  { ssr: false }
+)
+
+const DynamicComponentWithNoSSRNav = dynamic(
+  () => import('components/Layout/Header/Nav'),
+  { ssr: false }
+)
+const DynamicComponentWithNoSSRSideMenu = dynamic(
+  () => import('components/SideMenu'),
+  { ssr: false }
+)
 const S = {
   Header: styled.header<{ ScrollActive: boolean }>`
   ${props =>
@@ -31,10 +46,10 @@ export default function Header() {
 
   return (
     <S.Header ScrollActive={scrollActive} >
-      <Menu ScrollActive={scrollActive} />
-      <MainLogo />
-      <Nav ScrollActive={scrollActive} />
-      <SideMenu />
+      <DynamicComponentWithNoSSRMenu ScrollActive={scrollActive}/>
+      <DynamicComponentWithNoSSRMainLogo />
+      <DynamicComponentWithNoSSRNav ScrollActive={scrollActive} />
+      <DynamicComponentWithNoSSRSideMenu />
     </S.Header>
   );
 };

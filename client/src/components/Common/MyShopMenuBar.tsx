@@ -5,15 +5,14 @@ import { MY_SHOP_MENU } from 'constants/myshop';
 import Icon, { IconType } from 'components/Icon/Icon';
 import Link from 'next/link';
 import { useAppContext } from 'context/AppProvider';
-interface IMyShopMenuBar {
 
-}
 
 const S = {
   MyShopMenuBar: styled.div<{ toggle: boolean }>`
     background-color: #fff;
     position: fixed;
     visibility: hidden;
+    display: none;
     opacity: 0;
     top: 40px;
     width: 450px;
@@ -26,6 +25,7 @@ const S = {
     border-bottom-left-radius: 10px; 
     ${(props: any) => props.toggle && css`
       visibility: visible;
+      display: block;
       opacity: 1;
       transition: all 0.3s ease;
     `}
@@ -146,7 +146,7 @@ const S = {
   `,
 }
 
-export default function MyShopMenuBar({ }: IMyShopMenuBar) {
+export default function MyShopMenuBar() {
   const { action, state } = useAppContext();
 
   return (

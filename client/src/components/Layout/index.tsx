@@ -5,7 +5,12 @@ import { useAppContext } from 'context/AppProvider';
 import { NextRouter, useRouter } from 'next/router';
 import styled, { css } from "styled-components";
 import QuickScroll from 'components/Common/QuickScroll';
+import dynamic from 'next/dynamic'
 
+const DynamicComponentWithNoSSRFooter = dynamic(
+  () => import('components/Layout/Footer'),
+  { ssr: false }
+)
 interface ILayout {
   children?: React.ReactNode;
   className?: string;
@@ -34,6 +39,7 @@ export default function Layout(props: ILayout) {
   const { action, state } = useAppContext();
   const { isFooter, isHeader } = state.layout
 
+
   useEffect(() => {
     const result = router.asPath.includes('admin');
     if (result) {
@@ -49,7 +55,7 @@ export default function Layout(props: ILayout) {
         {isHeader && <Header />}
         {props.children}
       </div>
-      {isFooter && <Footer className='footer' />}
+      {isFooter && <DynamicComponentWithNoSSRFooter className='footer' />}
       <QuickScroll />
     </S.Layout>
   );

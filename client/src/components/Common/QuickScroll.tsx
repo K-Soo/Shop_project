@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useScroll } from 'hooks/useScroll';
 import Icon from 'components/Icon/Icon';
 import Link from 'next/link';
+import dynamic from 'next/dynamic'
 
 interface IQuickScroll {
   className?: string;
@@ -65,4 +66,6 @@ const QuickScroll: React.FC<IQuickScroll> = ({ className }) => {
   )
 };
 
-export default QuickScroll;
+export default dynamic(() => Promise.resolve(QuickScroll), {
+  ssr: false
+})

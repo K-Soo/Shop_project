@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import dynamic from 'next/dynamic'
 
 interface IBreadcrumb {
   className?: string;
@@ -32,8 +33,7 @@ const S = {
     }
   `,
 }
-
-export default function Breadcrumb (props:IBreadcrumb) {
+function Breadcrumb (props:IBreadcrumb) {
 
   const BreadcrumbItem: React.FC = props => (
     <li className='breadcrumb-item'>{props.children}</li>
@@ -65,3 +65,6 @@ export default function Breadcrumb (props:IBreadcrumb) {
 };
 
 
+export default dynamic(() => Promise.resolve(Breadcrumb), {
+  ssr: false
+})
