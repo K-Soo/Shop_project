@@ -4,6 +4,7 @@ import useDidMountEffect from 'hooks/useDidMountEffect';
 
 export function useSort(selectedItem: IProduct[]) {
   const [sort, setSort] = useState<string>('');
+  console.log('sort: ', sort);
   const [sortingData, setSortingData] = useState([]);
 
   useEffect(() => {

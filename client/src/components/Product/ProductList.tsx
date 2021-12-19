@@ -11,6 +11,7 @@ interface IProductList {
   items?: IProduct[];
   isLoading?: boolean;
   isSuccess?: boolean;
+  sort?: string;
 }
 
 const S = {
@@ -32,32 +33,141 @@ const S = {
   `,
 }
 
-export default function ProductList({ items }: IProductList) {
-  return (
-    <S.ProductList>
-      {items && items.length > 0 ? items.map((d: IProduct, i) => (
-        <ProductCard
-          key={d._id}
-          product_type={d.product_type}
-          seq={d.seq}
-          name={d.name}
-          description={d.description}
-          summary_description={d.summary_description}
-          product_price={d.product_price}
-          consumer_price={d.consumer_price}
-          imageUrl={d.imageUrl}
-          product_colors={d.product_colors}
-          best_product={d.best_product}
-          new_product={d.new_product}
-          qty={d.qty}
-          isList={true}
-        />
-      )) : (
+export default function ProductList({ items, sort }: IProductList) {
+
+  if (!items.length) {
+    return (
+      <S.ProductList>
         <S.EmptyItems >
           <i><Icon name='menu' style={{ color: '#000' }} /></i>
           <p style={{ 'marginTop': '10px' }}>검색된 상품이 없습니다.</p>
         </S.EmptyItems>
-      )}
-    </S.ProductList>
-  );
+      </S.ProductList>
+    )
+  }
+
+  if (sort === '') {
+    return (
+      <S.ProductList>
+        {items.length > 0 && items.sort(x => x.qty ? -1 : 1).map((d: IProduct) => (
+          <ProductCard
+            key={d._id}
+            product_type={d.product_type}
+            seq={d.seq}
+            name={d.name}
+            description={d.description}
+            summary_description={d.summary_description}
+            product_price={d.product_price}
+            consumer_price={d.consumer_price}
+            imageUrl={d.imageUrl}
+            product_colors={d.product_colors}
+            best_product={d.best_product}
+            new_product={d.new_product}
+            qty={d.qty}
+            el={d}
+            isList={true}
+          />
+        ))}
+      </S.ProductList>
+    )
+  }
+
+  if (sort === 'row') {
+    return (
+      <S.ProductList>
+        {items.length > 0 && items.sort((a, b) => +b.consumer_price - +a.consumer_price).sort(x => x.qty ? -1 : 1).map((d: IProduct) => (
+          <ProductCard
+            key={d._id}
+            product_type={d.product_type}
+            seq={d.seq}
+            name={d.name}
+            description={d.description}
+            summary_description={d.summary_description}
+            product_price={d.product_price}
+            consumer_price={d.consumer_price}
+            imageUrl={d.imageUrl}
+            product_colors={d.product_colors}
+            best_product={d.best_product}
+            new_product={d.new_product}
+            qty={d.qty}
+            isList={true}
+          />
+        ))}
+      </S.ProductList>
+    )
+  }
+
+  if (sort === 'hight') {
+    return (
+      <S.ProductList>
+        {items.length > 0 && items.sort((a, b) => +a.consumer_price - +b.consumer_price).sort(x => x.qty ? -1 : 1).map((d: IProduct) => (
+          <ProductCard
+            key={d._id}
+            product_type={d.product_type}
+            seq={d.seq}
+            name={d.name}
+            description={d.description}
+            summary_description={d.summary_description}
+            product_price={d.product_price}
+            consumer_price={d.consumer_price}
+            imageUrl={d.imageUrl}
+            product_colors={d.product_colors}
+            best_product={d.best_product}
+            new_product={d.new_product}
+            qty={d.qty}
+            isList={true}
+          />
+        ))}
+      </S.ProductList>
+    )
+  }
+  if (sort === 'new') {
+    return (
+      <S.ProductList>
+        {items.length > 0 && items.sort((x) => x.new_product ? 1 : -1).sort(x => x.qty ? -1 : 1).map((d: IProduct) => (
+          <ProductCard
+            key={d._id}
+            product_type={d.product_type}
+            seq={d.seq}
+            name={d.name}
+            description={d.description}
+            summary_description={d.summary_description}
+            product_price={d.product_price}
+            consumer_price={d.consumer_price}
+            imageUrl={d.imageUrl}
+            product_colors={d.product_colors}
+            best_product={d.best_product}
+            new_product={d.new_product}
+            qty={d.qty}
+            isList={true}
+          />
+        ))}
+      </S.ProductList>
+    )
+  }
+
+  if (sort === 'best') {
+    return (
+      <S.ProductList>
+        {items.length > 0 && items.sort((x) => x.best_product ? 1 : -1).sort(x => x.qty ? -1 : 1).map((d: IProduct) => (
+          <ProductCard
+            key={d._id}
+            product_type={d.product_type}
+            seq={d.seq}
+            name={d.name}
+            description={d.description}
+            summary_description={d.summary_description}
+            product_price={d.product_price}
+            consumer_price={d.consumer_price}
+            imageUrl={d.imageUrl}
+            product_colors={d.product_colors}
+            best_product={d.best_product}
+            new_product={d.new_product}
+            qty={d.qty}
+            isList={true}
+          />
+        ))}
+      </S.ProductList>
+    )
+  }
 }

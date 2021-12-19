@@ -27,6 +27,7 @@ interface IProductCard {
   best_product: boolean;
   isList: boolean;
   qty?: number;
+  el?:any;
 }
 
 const S = {
@@ -160,10 +161,11 @@ export default function ProductCard({
   best_product,
   new_product,
   isList,
-  qty
+  qty,
+  el
 }: IProductCard) {
   const [isSoldOut, setIsSoldOut] = useState<boolean>(false);
-
+  
   useEffect(() => {
     if (qty === 0) setIsSoldOut(true);
   }, [qty]);

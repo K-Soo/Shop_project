@@ -60,7 +60,6 @@ export default function ProductSortMenu({ itemCount, setSort }: IProductSortMenu
 
       <div className='select-box'>
         <Select width='140' onChange={(e) => setSort(e.target.value)}>
-          <option value="">상품정렬</option>
           <option value="row">낮은가격</option>
           <option value="hight">높은가격</option>
           <option value="new">신상품</option>

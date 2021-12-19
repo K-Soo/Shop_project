@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import styled from 'styled-components';
 import ProductList from 'components/Product/ProductList';
 import { CategoryEnum } from 'constants/product';
@@ -30,7 +30,12 @@ export default function Product({ item, isLoading, isSuccess }: IProductProps) {
   const { state } = useAppContext();
   const selectedItem = useSelectCategory(item);
   const [filtered, setFiltered] = useState<IProduct[]>([]);
-  const { setSort, sortingData } = useSort(selectedItem);
+  // const { setSort, sortingData } = useSort(selectedItem);
+  const [sort, setSort] = useState<string>('row');
+
+  useDidMountEffect(() => {
+    setSort('row');
+  },[router]);
 
   useDidMountEffect(() => {
     if(item){
@@ -41,7 +46,6 @@ export default function Product({ item, isLoading, isSuccess }: IProductProps) {
       }
     }
   }, [state.targetCategory, item]);
-
 
   return (
     <S.Product>
@@ -60,7 +64,8 @@ export default function Product({ item, isLoading, isSuccess }: IProductProps) {
             setSort={setSort}
           />
           <ProductList
-            items={sortingData}
+            items={selectedItem}
+            sort={sort}
           />
         </>
       )}
