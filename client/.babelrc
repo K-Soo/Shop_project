@@ -17,7 +17,7 @@
   ],
   "env": {
     "production": {
-      "plugins": [ ["transform-remove-console", { "exclude": [ "warn", "info","log"] }] ]
+      "plugins": [ ["transform-remove-console", { "exclude": [ "warn", "info"] }] ]
     }
   }
 }
