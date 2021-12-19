@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState} from "react";
 import styled from "styled-components";
 import PageTitle from 'components/Common/PageTitle';
 import SearchBox from 'components/ProductSearch/SearchBox';
@@ -15,8 +15,8 @@ const S = {
 
 export default function ProductSearch() {
   const router: NextRouter = useRouter();
+  const [sort, setSort] = useState('row');
   const { FilteredData, isSuccess, setFilter, filter, isLoading } = useSearch();
-  const { setSort, sortingData } = useSort(FilteredData);
 
   useEffect(() => {
     const { keyword } = router.query as any;
@@ -28,7 +28,7 @@ export default function ProductSearch() {
       <PageTitle TitleText='상품검색' />
       <SearchBox filter={filter} setFilter={setFilter} />
       <ProductSortMenu itemCount={FilteredData.length} setSort={setSort} />
-      {isSuccess && <ProductList items={sortingData} isLoading={isLoading} isSuccess={isSuccess} />}
+      {isSuccess && <ProductList items={FilteredData}  sort={sort}  isLoading={isLoading} isSuccess={isSuccess} />}
     </S.ProductSearch>
   );
 }

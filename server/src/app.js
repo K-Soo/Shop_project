@@ -21,10 +21,10 @@ app.use(cookieParser());
 app.use('/api', api);
 app.use(generalErrorHandler);
 
-if(prod){
-  app.use(express.static(path.join(__dirname,"../../client/public")));
-  app.use(express.static(path.join(__dirname,"../../client/.next")));
-}
+// if(prod){
+//   app.use(express.static(path.join(__dirname,"../../client/public")));
+//   app.use(express.static(path.join(__dirname,"../../client/.next")));
+// }
 
 
 
