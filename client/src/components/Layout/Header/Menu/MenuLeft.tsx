@@ -19,7 +19,7 @@ const S = {
     font-size: 12px;
     letter-spacing: 0.5px;
     .item{
-      width: 70px;
+      width: 80px;
       border-right: 1px solid #999;
       text-align: center;
       padding: 0 5px;

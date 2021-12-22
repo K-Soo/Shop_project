@@ -46,17 +46,11 @@ const S = {
       align-items: center;
       justify-content: center;
       span{
+        padding: 10px 0;
         display: inline-block;
-
         pointer-events: none;
         font-size: 16px;
         color: #333;
-        &::after{
-          content: '+';
-          font-size: 24px;
-          padding-left: 3px;
-          vertical-align: middle;
-        }
       }
     }
   }
