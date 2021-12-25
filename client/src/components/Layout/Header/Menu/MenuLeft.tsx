@@ -4,7 +4,6 @@ import styled, { css } from "styled-components";
 import { MAIN_MENU } from "constants/header";
 import PAGE from "constants/path";
 import Link from "next/link";
-import Icon from 'components/Icon/Icon';
 
 interface IMenuLeft {
   ScrollActive: boolean;
@@ -58,7 +57,6 @@ const S = {
 }
 
 export default function MenuLeft({ ScrollActive }: IMenuLeft) {
-
 
   return (
     <S.MenuLeft >
