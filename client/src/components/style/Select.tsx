@@ -53,6 +53,18 @@ Select = styled(Select)`
   padding-left: 15px;
   border: 1px solid #dee2e6;
   cursor: pointer;
+  appearance: none; 
+  -moz-appearance: none; 
+  -webkit-appearance: none; 
+  border-radius: 0; 
+  -webkit-border-radius: 0; 
+  -moz-border-radius: 0;
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' fill='f000000'><polygon points='0,0 100,0 50,50'/></svg>") no-repeat 98% 50% #fff;
+  background-size: 12px;
+  background-position: calc(100% - 10px) center;
+  background-repeat: no-repeat;
+  background-color: #fff;
+}
   :hover{
     border: 1px solid #333;
   }

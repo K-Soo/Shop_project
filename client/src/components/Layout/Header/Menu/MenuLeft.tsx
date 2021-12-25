@@ -58,6 +58,8 @@ const S = {
 }
 
 export default function MenuLeft({ ScrollActive }: IMenuLeft) {
+
+
   return (
     <S.MenuLeft >
       <S.Home ScrollActive={ScrollActive}>
