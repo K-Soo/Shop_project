@@ -31,7 +31,9 @@ export default function Notice() {
     refetchOnWindowFocus: false,
     staleTime: 2000,
   });
+  console.log('data: ', data);
   if (isError) return <div>isError</div>
+  
 
   if (isLoading) return <div>loading</div>
 

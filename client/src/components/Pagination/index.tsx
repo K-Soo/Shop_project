@@ -26,7 +26,7 @@ const S = {
   `,
 }
 
-export default function Pagination({ maxPages,className, isFetching, margin, pageSize = 3 }: IPagination) {
+export default function Pagination({ maxPages,className, isFetching, margin, pageSize = 2 }: IPagination) {
   const { state, action } = useAppContext();
   const [turnPage, setTurnPage] = useState<number>(1);
   const [checkLast, setCheckLast] = useState(false);
@@ -43,7 +43,6 @@ export default function Pagination({ maxPages,className, isFetching, margin, pag
       }
     }
   }, [turnPage, array]);
-
 
   const handleFirstPage = () => {
     // 처음
@@ -78,6 +77,7 @@ export default function Pagination({ maxPages,className, isFetching, margin, pag
           disabled={isFetching || turnPage == 1}
         >이전
         </TurnBtn>
+        
         {array && array.map(d => (
           <NumBtn
             key={d}
